@@ -33,7 +33,6 @@ public class ControllerAcudiente extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         if (action!=null) {
-            System.out.println("Entre al Controlador de Acudientes");
         }
         
     }
