@@ -10,7 +10,6 @@ import Model.Data.ModelCliente;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
-import java.time.LocalDate;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -54,9 +53,7 @@ public class ControllerCliente extends HttpServlet {
                 int estado = Integer.parseInt(request.getParameter("radioEstado"));
                 //Estado 0->No Subvencionado 1->Subvencionado?
                 
-                        LocalDate hoy = LocalDate.now();
                         
-                        System.out.println(hoy.toString());
 
 //                if(esMenorDeEdad(fechaNacimiento)){
 //                    
