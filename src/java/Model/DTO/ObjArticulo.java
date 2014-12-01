@@ -12,8 +12,6 @@ package Model.DTO;
 public class ObjArticulo {
 
     private int idArticulo;
-
-  
     private int idCategoriaArticulo;
     private String descripcionArticulo;
     private int cantidadDisponible;

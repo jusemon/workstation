@@ -19,35 +19,38 @@ import Model.JDBC.ConnectionDB;
  * @author Administrador
  */
 public class ModelCategoriaArticulo extends ConnectionDB {
+
     private PreparedStatement pStmt;
-    
-    public ModelCategoriaArticulo(){
+
+    public ModelCategoriaArticulo() {
         getConnection();
     }
-    public boolean Add(ObjCategoriaArticulo _objCategoriaArticulo){
+
+    public boolean Add(ObjCategoriaArticulo _objCategoriaArticulo) {
         boolean objReturn = false;
         String sql = "INSERT INTO `tblcategoriaarticulo`(`nombreCategoriaArticulo`) VALUES (?)";
-        
+
         try {
             getStmt();
             pStmt = connection.prepareStatement(sql);
-            pStmt.setString(1 ,_objCategoriaArticulo.getNombreCategoriaArticulo());
+            pStmt.setString(1, _objCategoriaArticulo.getNombreCategoriaArticulo());
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
             }
-            
+
         } catch (Exception e) {
-             System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
         return objReturn;
     }
-       public ResultSet ListAll() throws Exception {
+
+    public ResultSet ListAll() throws Exception {
 
         ResultSet rs = null;
         String sql = "SELECT `idCategoriaArticulo`,"
-                   + "`nombreCategoriaArticulo`"
-                   + "FROM `tblcategoriaarticulo`";
+                + "`nombreCategoriaArticulo`"
+                + "FROM `tblcategoriaarticulo`";
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
@@ -56,6 +59,20 @@ public class ModelCategoriaArticulo extends ConnectionDB {
             System.err.println("SQLException:" + e.getMessage());
         }
 
+        return rs;
+    }
+
+    public ResultSet Buscar (int idCategoriaArticulo) throws Exception {
+        ResultSet rs = null;
+        String sql = "SELECT `nombreCategoriaArticulo` ,"
+                + "FROM `tblcategoriaarticulo` WHERE `idCategoriaArticulo` = "+idCategoriaArticulo;
+        try {
+            getStmt();
+            rs = stmt.executeQuery(sql);
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         return rs;
     }
 }

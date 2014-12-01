@@ -4,6 +4,7 @@
     Author     : Administrador
 --%>
 
+<%@page import="Controller.ControllerArticulo"%>
 <%@page import="Controller.ControllerCategoriaArticulo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -27,6 +28,10 @@
         <script type="text/javascript" src="public/js/javascript.js"></script>
     </head>
     <body>
+        <%
+            Controller.ControllerCategoriaArticulo controllerCategoriaArticulo = new ControllerCategoriaArticulo();
+            Controller.ControllerArticulo controllerArticulo = new ControllerArticulo();
+        %>
         <div class="modal" id="miPopup">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -187,10 +192,10 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="txtNombre">
-                                                        Nombre Articulo:
+                                                    <label for="txtDescripcion">
+                                                        Descripcion Articulo:
                                                     </label>
-                                                    <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>
+                                                    <input name="txtDescripcion" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -220,10 +225,11 @@
                                                     <label for="idCategoria">
                                                         Categoria:
                                                     </label>
-                                                    <select name="idCategoria" id="ddlEstado" class="form-control" required>
-                                                        <option value="1">Pinceles</option>
-                                                        <option value="0">Vinilos</option>
-                                                        <option value="2">Agregar una nueva...</option>
+                                                    <select name="idCategoria" id="idCategoria" class="form-control" required>
+                                                        <option value="">Seleccionar...</option>
+                                                        <%
+                                                            out.print(controllerArticulo.getOptionsCategorias());
+                                                        %>
                                                     </select>
                                                 </div>
                                             </div>
@@ -233,7 +239,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <input data-toggle="modal" id="boton" class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                                    <input class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -255,13 +261,13 @@
                                 </h4>
                             </div>
                             <div id="collapseTwo" class="panel-collapse collapse">
-                                <form id="form_categoria" class="" action="ControllerCategoriaArticulos" method="POST">
+                                <form id="form_categoria" class="" action="ControllerCategoriaArticulo" method="POST">
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="txtNombre">
-                                                        Nombre
+                                                        Nombre:
                                                     </label>
                                                     <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
                                                 </div>
@@ -322,7 +328,6 @@
                                     <tr>
                                         <th class="text-center">Codigo</th>
                                         <th class="text-center">Categoria</th>
-                                        <th class="text-center">Nombre</th>
                                         <th class="text-center">Descripcion</th>
                                         <td class="text-center">Cantidad</td>                                        
                                         <th class="text-center">Precio</th>
@@ -330,30 +335,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">00001</td>
-                                        <td class="text-center">Vinilos</td>
-                                        <td class="text-center">Vinilo Azul Mediano</td>
-                                        <td class="text-center">Vinilo en agua Azul 200 ml, ideal para madera</td>
-                                        <td class="text-center">30</td>
-                                        <td class="text-center">1200</td>
-                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " href="javascript:void(0)"  onclick="add('Estado')">
-                                                <span class="glyphicon glyphicon-pencil"></span></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">00002</td>
-                                        <td class="text-center">Pinceles</td>
-                                        <td class="text-center">Pincel 3/4"</td>
-                                        <td class="text-center">Pincel con grosor de 3/4" pensado para vinilos de agua</td>
-                                        <td class="text-center">50</td>                                        
-                                        <td class="text-center">1200</td>
-                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " href="javascript:void(0)"  onclick="add('Estado')">
-                                                <span class="glyphicon glyphicon-pencil"></span></a>
-                                        </td>
-                                    </tr>
-
-
+                                    <%
+                                                            out.print(controllerArticulo.getTableArticulo());
+                                    %>
 
                                 </tbody>
                             </table>
@@ -367,24 +351,9 @@
                                         <th class="text-center">Editar</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="text-center">001</td>                                        
-                                        <td class="text-center">Vinilos</td>
-                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " href="javascript:void(0)"  onclick="add("Estado")">
-                                                                   <span class="glyphicon glyphicon-pencil"></span></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">002</td>         
-                                        <td class="text-center">Pinceles</td>
-                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " href="javascript:void(0)"  onclick="add("Estado")">
-                                                                   <span class="glyphicon glyphicon-pencil"></span></a>
-                                        </td>
-                                    </tr>   
-                                    <%
-                                        Controller.ControllerCategoriaArticulo controllerCategoriaArticulo = new ControllerCategoriaArticulo();
-                                        out.print(controllerCategoriaArticulo.getTablecategoriaarticulo());
+                                <tbody> 
+                                    <%out
+                                        .print(controllerCategoriaArticulo.getTableCategoriaArticulo());
                                     %>
                                 </tbody>
                             </table>

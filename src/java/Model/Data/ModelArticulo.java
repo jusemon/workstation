@@ -27,7 +27,7 @@ public class ModelArticulo extends ConnectionDB {
     
     public boolean Add(ObjArticulo _objArticulo){
         boolean objReturn = false;
-        String sql = "INSERT INTO `tblarticulo`(`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioUnitario`) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO `tblarticulo`(`idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioUnitario`) VALUES (?,?,?,?)";
         
         try {
             getStmt();
@@ -52,10 +52,8 @@ public class ModelArticulo extends ConnectionDB {
      public ResultSet ListAll() throws Exception {
 
         ResultSet rs = null;
-        String sql ="SELECT `idArticulo`, `idCategoriaArticulo`,"
-                + "`descripcionArticulo`, `cantidadDisponible`,"
-                + "`precioUnitario` "
-                + "FROM `tblarticulo`" ;
+        String sql ="SELECT * FROM tblarticulo INNER JOIN tblcategoriaarticulo "
+                + "ON tblarticulo.idCategoriaArticulo = tblcategoriaarticulo.idCategoriaArticulo";
            try {
             getStmt();
             rs = stmt.executeQuery(sql);

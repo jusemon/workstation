@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerCategoriaArticulo extends HttpServlet {
 
-  /**
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -30,56 +30,54 @@ public class ControllerCategoriaArticulo extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-       public ModelCategoriaArticulo daoModelCategoriaArticulo = new ModelCategoriaArticulo();
-       public ObjCategoriaArticulo _objCategoriaArticulo = new ObjCategoriaArticulo();
-    
+    public ModelCategoriaArticulo daoModelCategoriaArticulo = new ModelCategoriaArticulo();
+    public ObjCategoriaArticulo _objCategoriaArticulo = new ObjCategoriaArticulo();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-        if (action != null){
+        if (action != null) {
             try {
-                  String nombreCategoriaArticulo = String.valueOf(request.getParameter("txtNombre"));
-         _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
-         daoModelCategoriaArticulo.Add(_objCategoriaArticulo);
-         
-        response.sendRedirect("articulo.jsp");
-                
+                String nombreCategoriaArticulo = String.valueOf(request.getParameter("txtNombre"));
+                _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
+                daoModelCategoriaArticulo.Add(_objCategoriaArticulo);
+
+                response.sendRedirect("articulo.jsp");
+
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-       
-            
+
         }
     }
-    public String getTablecategoriaarticulo(){
-        
+
+    public String getTableCategoriaArticulo() {
+
         ResultSet result = null;
-        String   tableCategoriaarticulos="";
-        
+        String tableCategoriaarticulos = "";
+
         try {
-            result =daoModelCategoriaArticulo.ListAll();
-            
+            result = daoModelCategoriaArticulo.ListAll();
+
             while (result.next()) {
-               tableCategoriaarticulos += "<tr>";
-               tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idCategoriaArticulo").toString().trim() + "</td>";
-               tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaArticulo").toString().trim() + "</td>";
-               tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulos\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n" +
-"                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
+                tableCategoriaarticulos += "<tr>";
+                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idCategoriaArticulo").toString().trim() + "</td>";
+                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaArticulo").toString().trim() + "</td>";
+                tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulos\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
+                        + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
 
                 tableCategoriaarticulos += "</tr>";
-                
+
             }
         } catch (Exception e) {
-           tableCategoriaarticulos = "Ha ocurrido un error" + e.getMessage();
-        }finally{
-           daoModelCategoriaArticulo.Signout();
+            tableCategoriaarticulos = "Ha ocurrido un error" + e.getMessage();
+        } finally {
+            daoModelCategoriaArticulo.Signout();
         }
         return tableCategoriaarticulos;
-    }      
-    
-    
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
