@@ -7,11 +7,14 @@ package Model.DTO;
 
 /**
  *
- * @author Administrador
+ * @author Lorenzo
  */
 public class ObjArticulo {
+
     private int idArticulo;
-    private int idCompra;
+
+  
+    private int idCategoriaArticulo;
     private String descripcionArticulo;
     private int cantidadDisponible;
     private double precioUnitario;
@@ -24,12 +27,12 @@ public class ObjArticulo {
         this.idArticulo = idArticulo;
     }
 
-    public int getIdCompra() {
-        return idCompra;
+    public int getIdCategoriaArticulo() {
+        return idCategoriaArticulo;
     }
 
-    public void setIdCompra(int idCompra) {
-        this.idCompra = idCompra;
+    public void setIdCategoriaArticulo(int idCategoriaArticulo) {
+        this.idCategoriaArticulo = idCategoriaArticulo;
     }
 
     public String getDescripcionArticulo() {
@@ -55,5 +58,5 @@ public class ObjArticulo {
     public void setPrecioUnitario(double precioUnitario) {
         this.precioUnitario = precioUnitario;
     }
-    
+
 }

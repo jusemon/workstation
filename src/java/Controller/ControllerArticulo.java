@@ -5,8 +5,6 @@
  */
 package Controller;
 
-import Model.DTO.ObjCategoriaArticulo;
-import Model.Data.ModelCategoriaArticulo;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -14,14 +12,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import Model.DTO.ObjArticulo;
+import Model.Data.ModelArticulo;
 
 /**
  *
- * @author Lorenzo
+ * @author lorenzo
  */
-public class ControllerCategoriaArticulo extends HttpServlet {
+public class ControllerArticulo extends HttpServlet {
 
-  /**
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -31,55 +31,70 @@ public class ControllerCategoriaArticulo extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
-       public ModelCategoriaArticulo daoModelCategoriaArticulo = new ModelCategoriaArticulo();
-       public ObjCategoriaArticulo _objCategoriaArticulo = new ObjCategoriaArticulo();
+    
+    public ModelArticulo daoModelArticulo = new ModelArticulo();
+    public ObjArticulo _objArticulo = new ObjArticulo();
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         if (action != null){
+            
             try {
-                  String nombreCategoriaArticulo = String.valueOf(request.getParameter("txtNombre"));
-         _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
-         daoModelCategoriaArticulo.Add(_objCategoriaArticulo);
-         
+                
+                String descripcionArticulo = String.valueOf(request.getParameter("txtdescripcionArticulo"));
+                int cantidadDisponible = Integer.parseInt(request.getParameter("txtcantidadArticulo"));
+                int precioUnitario = Integer.parseInt(request.getParameter("txtprecioUnitario"));
+                
+            int idCategoriaArticulo;
+                if (request.getParameter("idCategoriaArticulo") != null) {
+                    idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoriaArticulo"));
+                    _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
+             _objArticulo.setDescripcionArticulo(descripcionArticulo);
+             _objArticulo.setCantidadDisponible(cantidadDisponible);
+             _objArticulo.setPrecioUnitario(precioUnitario);
+             
+                }
+
         response.sendRedirect("articulo.jsp");
                 
+            
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                 System.out.println(e.getMessage());
             }
-       
             
         }
+       
     }
-    public String getTablecategoriaarticulo(){
+    public String getTableArticulo(){
         
         ResultSet result = null;
-        String   tableCategoriaarticulos="";
+        String tableArticulos = "";
         
-        try {
-            result =daoModelCategoriaArticulo.ListAll();
+        try{
+            result = daoModelArticulo.ListAll();
             
-            while (result.next()) {
-               tableCategoriaarticulos += "<tr>";
-               tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idCategoriaArticulo").toString().trim() + "</td>";
-               tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaArticulo").toString().trim() + "</td>";
-               tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulos\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n" +
-"                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
+             while (result.next()){
+                 tableArticulos += "<tr>";
+                 tableArticulos += "<td class=\"text-center\">" + result.getString("idCategoriaArticulo").toString().trim() + "</td>";
+                 tableArticulos += "<td class=\"text-center\">" + result.getString("descripcionArticulo").toString().trim() + "</td>";
+                 tableArticulos += "<td class=\"text-center\">" + result.getString("cantidadDisponible").toString().trim() + "</td>";
+                 tableArticulos += "<td class=\"text-center\">" + result.getString("precioUnitario").toString().trim() + "</td>";
+                 tableArticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulo\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n" +
+"                                                <span class=\"glyphicon glyphicon-search\"></span></a>\n</td>";
 
-                tableCategoriaarticulos += "</tr>";
-                
-            }
-        } catch (Exception e) {
-           tableCategoriaarticulos = "Ha ocurrido un error" + e.getMessage();
-        }finally{
-           daoModelCategoriaArticulo.Signout();
+                tableArticulos += "</tr>";
+             }
+       } catch (Exception e) {
+            tableArticulos = "Ha Ocurrido un error" + e.getMessage();
+        } finally {
+            daoModelArticulo.Signout();
         }
-        return tableCategoriaarticulos;
-    }      
-    
-    
+
+        return tableArticulos;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
