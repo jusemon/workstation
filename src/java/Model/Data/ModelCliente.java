@@ -69,7 +69,7 @@ public class ModelCliente extends ConnectionDB {
                 + " `apellidoCliente`, `direccionCliente`,"
                 + " `telefonoFijo`, `telefonoMovil`,"
                 + " `emailCliente`, `estadoEstudiante`,"
-                + " `idAcudiente`, `generoCliente` "
+                + " `tblacudiente_idAcudiente`, `generoCliente` "
                 + "FROM `tblcliente`";
         try {
             getStmt();
