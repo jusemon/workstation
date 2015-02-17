@@ -59,7 +59,6 @@ public class ControllerCliente extends HttpServlet {
 //                    
 //                }
 //                
-                _objCliente.setIdCliente(tipoDocumento, numeroIdentificacion);
                 _objCliente.setTipoDocumento(tipoDocumento);
                 _objCliente.setNumeroDocumento(numeroIdentificacion);
                 _objCliente.setNombreCliente(nombre);
@@ -74,7 +73,7 @@ public class ControllerCliente extends HttpServlet {
                 int idAcudiente;
                 if (request.getParameter("idAcudiente") != null) {
                     idAcudiente = Integer.parseInt(request.getParameter("idAcudiente"));
-                    _objCliente.setIdAcudiante(idAcudiente);
+                    
                 }
 
                 response.sendRedirect("matricula.jsp");
