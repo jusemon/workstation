@@ -11,6 +11,8 @@ package Model.DTO;
  */
 public class ObjCliente {
 
+    private int tipoDocumentoAcudiente;
+    private String numeroDocumentoAcudiente;
     private String idCliente;
     private int tipoCliente;
     private String tipoDocumento;
@@ -24,14 +26,27 @@ public class ObjCliente {
     private String telefonoMovil;
     private String emailCliente;
     private int estadoCliente;
-    private int idAcudiante = 0;
 
-    public String getIdCliente() {
-        return idCliente;
+    public int getTipoDocumentoAcudiente() {
+        return tipoDocumentoAcudiente;
     }
 
-    public void setIdCliente(String tipoDocumento, int numeroDocumento) {
-        this.idCliente = tipoDocumento+numeroDocumento;
+    public void setTipoDocumentoAcudiente(int tipoDocumentoAcudiente) {
+        this.tipoDocumentoAcudiente = tipoDocumentoAcudiente;
+    }
+
+    public String getNumeroDocumentoAcudiente() {
+        return numeroDocumentoAcudiente;
+    }
+
+    public void setNumeroDocumentoAcudiente(String numeroDocumentoAcudiente) {
+        this.numeroDocumentoAcudiente = numeroDocumentoAcudiente;
+    }
+
+    
+    
+    public String getIdCliente() {
+        return idCliente;
     }
 
     public int getTipoCliente() {
@@ -128,14 +143,6 @@ public class ObjCliente {
 
     public void setEstadoCliente(int estadoCliente) {
         this.estadoCliente = estadoCliente;
-    }
-
-    public int getIdAcudiante() {
-        return idAcudiante;
-    }
-
-    public void setIdAcudiante(int idAcudiante) {
-        this.idAcudiante = idAcudiante;
     }
 
 }

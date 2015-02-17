@@ -32,19 +32,19 @@ public class ModelCliente extends ConnectionDB {
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setString(1, _objCliente.getIdCliente());
-            pStmt.setInt(2, _objCliente.getTipoCliente());
-            pStmt.setString(3, _objCliente.getTipoDocumento());
-            pStmt.setInt(4, _objCliente.getNumeroDocumento());
-            pStmt.setDate(5, Date.valueOf(_objCliente.getFechaNacimiento()));
-            pStmt.setInt(6, _objCliente.getGeneroCliente());
-            pStmt.setString(7, _objCliente.getNombreCliente());
-            pStmt.setString(8, _objCliente.getApellidoCliente());
-            pStmt.setString(9, _objCliente.getDireccionCliente());
-            pStmt.setString(10, _objCliente.getTelefonoFijo());
-            pStmt.setString(11, _objCliente.getTelefonoMovil());
-            pStmt.setString(12, _objCliente.getEmailCliente());
-            pStmt.setInt(13, _objCliente.getIdAcudiante());
+            pStmt.setInt(1, _objCliente.getTipoCliente());
+            pStmt.setString(2, _objCliente.getTipoDocumento());
+            pStmt.setInt(3, _objCliente.getNumeroDocumento());
+            pStmt.setDate(4, Date.valueOf(_objCliente.getFechaNacimiento()));
+            pStmt.setInt(5, _objCliente.getGeneroCliente());
+            pStmt.setString(6, _objCliente.getNombreCliente());
+            pStmt.setString(7, _objCliente.getApellidoCliente());
+            pStmt.setString(8, _objCliente.getDireccionCliente());
+            pStmt.setString(9, _objCliente.getTelefonoFijo());
+            pStmt.setString(10, _objCliente.getTelefonoMovil());
+            pStmt.setString(11, _objCliente.getEmailCliente());
+            pStmt.setInt(12, _objCliente.getTipoDocumentoAcudiente());
+            pStmt.setString(13, _objCliente.getNumeroDocumentoAcudiente());
 
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
@@ -63,13 +63,13 @@ public class ModelCliente extends ConnectionDB {
     public ResultSet ListAll() throws Exception {
 
         ResultSet rs = null;
-        String sql = "SELECT `idCliente`, `tipoCliente`,"
+        String sql = "SELECT `tipoCliente`,"
                 + " `tipoDocumento`, `numeroDocumento`,"
                 + " `fechaNacimiento`, `nombreCliente`,"
                 + " `apellidoCliente`, `direccionCliente`,"
                 + " `telefonoFijo`, `telefonoMovil`,"
                 + " `emailCliente`, `estadoEstudiante`,"
-                + " `tblacudiente_idAcudiente`, `generoCliente` "
+                + "`tblacudiente_tipoDocumento`, `tblacudiente_numeroDocumento`, `generoCliente` "
                 + "FROM `tblcliente`";
         try {
             getStmt();
@@ -113,7 +113,6 @@ public class ModelCliente extends ConnectionDB {
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 ObjCliente cliente = new ObjCliente();
-                cliente.setIdAcudiante(rs.getInt("idArea"));
                 cliente.setTipoDocumento(rs.getString("Descripcion"));
                 cliente.setNumeroDocumento(rs.getInt("numeroDocumento"));
                 clientes.add(cliente);
