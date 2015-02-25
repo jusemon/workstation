@@ -12,6 +12,10 @@
         <servlet-name>ControllerArticulo</servlet-name>
         <servlet-class>Controller.ControllerArticulo</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControllerLogin</servlet-name>
+        <servlet-class>Controller.ControllerLogin</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControllerCliente</servlet-name>
         <url-pattern>/ControllerCliente</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>ControllerArticulo</servlet-name>
         <url-pattern>/ControllerArticulo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControllerLogin</servlet-name>
+        <url-pattern>/ControllerLogin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

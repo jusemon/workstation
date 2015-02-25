@@ -13,6 +13,15 @@ public class ObjUsuario {
     private String nombre;
     private String password;
     private String email;
+    private int telefono;
+
+    public int getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(int telefono) {
+        this.telefono = telefono;
+    }
     private int rol;
 
     public String getNombre() {
