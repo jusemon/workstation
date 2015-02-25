@@ -9,11 +9,20 @@ package Model.DTO;
  *
  * @author Administrador
  */
-public class ObjAcudiente {
+public class ObjAcudiante {
+    private int idAcudiante;
     private int tipoDocumento;
     private String numeroDocumento;
     private String nombreAcudiante;
     private String telefonoAcudiante;
+
+    public int getIdAcudiante() {
+        return idAcudiante;
+    }
+
+    public void setIdAcudiante(int idAcudiante) {
+        this.idAcudiante = idAcudiante;
+    }
 
     public int getTipoDocumento() {
         return tipoDocumento;
