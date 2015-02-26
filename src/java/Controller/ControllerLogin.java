@@ -7,7 +7,6 @@ package Controller;
 
 import Model.DTO.ObjUsuario;
 import Model.Data.ModelUsuario;
-import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -32,6 +31,9 @@ public class ControllerLogin extends HttpServlet {
      * servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    ObjUsuario _objUsuario = new ObjUsuario();
+    ModelUsuario _modelUsuario = new ModelUsuario();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -45,6 +47,7 @@ public class ControllerLogin extends HttpServlet {
                 if (comprobarUsuario(nombre, pass)) {
                     session.setAttribute("usuario", nombre);
                     session.setAttribute("pass", pass);
+                    session.setAttribute("correo",_objUsuario.getEmail());
                     response.sendRedirect("index.jsp");
                 } else {
                     response.sendRedirect("index.jsp");
@@ -59,23 +62,27 @@ public class ControllerLogin extends HttpServlet {
 
     public boolean comprobarUsuario(String nombre, String pass) {
 
-        ObjUsuario _objUsuario = new ObjUsuario();
         _objUsuario.setNombre(nombre);
         _objUsuario.setPassword(pass);
-        ModelUsuario _modelUsuario = new ModelUsuario();
         ResultSet rs = null;
 
         try {
             rs = _modelUsuario.Find(_objUsuario);
             while (rs.next()) {
                 if (rs.getString("nombreUsuario").equals(nombre) && rs.getString("password").equals(pass)) {
+                    _objUsuario.setEmail(rs.getString("email"));
                     return true;
                 }
             }
 
         } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
         return false;
+    }
+
+    public String imprimirBarra() {
+        return null;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

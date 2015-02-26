@@ -17,71 +17,7 @@
         <script type="text/javascript" src="public/js/javascript.js"></script>
     </head>
     <body>
-        <div class="navbar navbar-inverse" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span> 
-                </button>
-                <a href="#" class="navbar-brand">WorkStation</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class=""><a href="index2.jsp">Inicio</a></li>
-                    <li class=""><a href="nuestro.jsp">Nuestros Cursos</a></li>
-                    <li class="active"><a href="acerca.jsp">Acerca de Nosotros</a>
-                    </li>              
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="glyphicon glyphicon-user"></span> 
-                            <strong>Aun no has iniciado sesion</strong>
-                            <span class="glyphicon glyphicon-chevron-down"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <div class="navbar-login">
-                                    <div class="row">
-                                        <div class="col-lg-4">
-                                            <p class="text-center">
-                                                <span class="glyphicon glyphicon-user icon-size"></span>
-                                            </p>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <form action="#" method="POST">
-                                                <p class="text-left">
-                                                    <label for="nom">Ingresa tu Nombre</label>
-                                                    <input name="nom" id="nom" class="form-group" type="text"/></p>
-                                                <p class="text-left small">
-                                                    <label for="pass">Ingresa tu Contraseña</label>
-                                                    <input name="pass" id="pass" class="form-group" type="password"/></p>
-                                                <p class="text-left">
-                                                    <input type="submit" name="Action" value="Iniciar Sesion" class="btn-success btn-block btn"/>
-                                                </p>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="navbar-login navbar-login-session">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <p>
-                                                <a href="#" class="btn btn-primary btn-block btn-sm">Recuperar Contraseña</a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <%@include file="WEB-INF/jspf/superior.jspf" %>
         <div class="container-fluid">
             <div class="row col-md-10 col-md-offset-2">
                 Acerca de Nosotros

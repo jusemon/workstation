@@ -57,7 +57,7 @@ public class ModelUsuario extends ConnectionDB {
     
     public ResultSet Find (ObjUsuario _objUsuario){
     ResultSet rs = null;
-    String query = "SELECT `idUsuario`, `nombreUsuario`, `password`, `email`, `telefono`, `rol` FROM `tblusuario` WHERE `nombreUsuario` = '%s' and `password` '%s'";
+    String query = "SELECT `idUsuario`, `nombreUsuario`, `password`, `email`, `telefono`, `rol` FROM `tblusuario` WHERE `nombreUsuario` = '%s' and `password` = '%s'";
     String sql = String.format(query, _objUsuario.getNombre(), _objUsuario.getPassword());
         try {
             getStmt();
