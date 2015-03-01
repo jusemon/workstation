@@ -10,11 +10,20 @@ package Model.DTO;
  * @author Administrador
  */
 public class ObjUsuario {
+    private int id = 0;
     private String nombre;
     private String password;
     private String email;
     private int telefono;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public int getTelefono() {
         return telefono;
     }

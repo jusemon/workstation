@@ -21,9 +21,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
-        <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="public/js/javascript.js"></script>
     </head>
     <body>
 
@@ -32,7 +29,7 @@
         en ella esta el login y los botones para navegar atravez del aplicativo.
         -->
         <%@include file="WEB-INF/jspf/superior.jspf" %>
-        
+
         <!--
         Este contenedor tiene el contenido de la pagina, en este caso un carrusel que pasa productos de Stellarte Decoracion
         -->
@@ -84,4 +81,8 @@
             </div>
         </div>
     </body>
+    <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="public/js/javascript.js"></script>
+
 </html>

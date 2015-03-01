@@ -6,6 +6,7 @@
 package Controller;
 
 import Model.DTO.ObjUsuario;
+import Model.Data.ModelModulo;
 import Model.Data.ModelUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,6 +34,7 @@ public class ControllerLogin extends HttpServlet {
      */
     ObjUsuario _objUsuario = new ObjUsuario();
     ModelUsuario _modelUsuario = new ModelUsuario();
+    ModelModulo _modelModulo = new ModelModulo();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -47,10 +49,11 @@ public class ControllerLogin extends HttpServlet {
                 if (comprobarUsuario(nombre, pass)) {
                     session.setAttribute("usuario", nombre);
                     session.setAttribute("pass", pass);
-                    session.setAttribute("correo",_objUsuario.getEmail());
-                    response.sendRedirect("index.jsp");
+                    session.setAttribute("correo", _objUsuario.getEmail());
+                    response.sendRedirect("index.jsp?a=1");
+
                 } else {
-                    response.sendRedirect("index.jsp");
+                    response.sendRedirect("index.jsp?b?2");
                 }
             } else if (request.getParameter("Action").equals("Cerrar Sesion")) {
                 HttpSession session = request.getSession();
@@ -62,14 +65,14 @@ public class ControllerLogin extends HttpServlet {
 
     public boolean comprobarUsuario(String nombre, String pass) {
 
+        ResultSet rs = null;
         _objUsuario.setNombre(nombre);
         _objUsuario.setPassword(pass);
-        ResultSet rs = null;
-
         try {
             rs = _modelUsuario.Find(_objUsuario);
             while (rs.next()) {
                 if (rs.getString("nombreUsuario").equals(nombre) && rs.getString("password").equals(pass)) {
+                    _objUsuario.setId(rs.getInt("idusuario"));
                     _objUsuario.setEmail(rs.getString("email"));
                     return true;
                 }
@@ -81,8 +84,34 @@ public class ControllerLogin extends HttpServlet {
         return false;
     }
 
-    public String imprimirBarra() {
-        return null;
+    public String imprimirBarra(String nombre, String pass) {
+        ResultSet result = null;
+        String barraModulos = "";
+        if (!comprobarUsuario(nombre, pass)) {
+            barraModulos += "            <li id=\"btnindex\" class=\"\"><a href=\"index.jsp\">Inicio</a></li>\n"
+                    + "            <li id=\"btnnuestro\" class=\"\"><a href=\"nuestro.jsp\">Nuestros Cursos</a></li>\n"
+                    + "            <li id=\"btnacerca\" class=\"\"><a href=\"acerca.jsp\">Acerca de Nosotros</a></li>";
+            return barraModulos;
+        }
+        try {
+            comprobarUsuario(nombre, pass);
+            System.err.println(_objUsuario.getId());
+            result = _modelModulo.ListByUser(_objUsuario.getId());
+            String btn = null;
+            while (result.next()) {
+                btn = "btn" + result.getString("enlace");
+                btn = btn.replace(".jsp", "");
+                barraModulos += "<ul class=\"nav navbar-nav\">";
+                barraModulos += "<li id=\"" + btn + "\"><a href=\"" + result.getString("enlace") + "\">" + result.getString("nombre") + "</a></li>";
+                barraModulos += "</ul>";
+
+            }
+        } catch (Exception e) {
+            barraModulos = "Ha ocurrido un error" + e.getMessage();
+        } finally {
+            _modelModulo.Signout();
+        }
+        return barraModulos;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

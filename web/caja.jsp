@@ -5,6 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% if (session.getAttribute("usuario")==null) {
+   response.sendRedirect("index.jsp");
+}; %>
 <!DOCTYPE html>
 <html>
     <!--
@@ -21,12 +24,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
-        <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="public/js/javascript.js"></script>
     </head>
     <body>
-
+       
         <!--
         Popup Detalle Compra
         
@@ -597,4 +597,7 @@
 
     </script> 
 </body>
+<script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="public/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="public/js/javascript.js"></script>
 </html>
