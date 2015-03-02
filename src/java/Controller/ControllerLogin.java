@@ -88,8 +88,7 @@ public class ControllerLogin extends HttpServlet {
         ResultSet result = null;
         String barraModulos = "";
         if (!comprobarUsuario(nombre, pass)) {
-            barraModulos += "            <li id=\"btnindex\" class=\"\"><a href=\"index.jsp\">Inicio</a></li>\n"
-                    + "            <li id=\"btnnuestro\" class=\"\"><a href=\"nuestro.jsp\">Nuestros Cursos</a></li>\n"
+            barraModulos +="            <li id=\"btnnuestro\" class=\"\"><a href=\"nuestro.jsp\">Nuestros Cursos</a></li>\n"
                     + "            <li id=\"btnacerca\" class=\"\"><a href=\"acerca.jsp\">Acerca de Nosotros</a></li>";
             return barraModulos;
         }

@@ -9,7 +9,7 @@ package Model.DTO;
  *
  * @author Administrador
  */
-public class ObjSubsideo {
+public class ObjSubsidio {
     private int idSubsideo;
     private String nitEmpresa;
     private int idCliente;
