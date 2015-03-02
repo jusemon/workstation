@@ -8,7 +8,6 @@ package Controller;
 import Model.DTO.ObjCategoriaArticulo;
 import Model.Data.ModelCategoriaArticulo;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

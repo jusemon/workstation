@@ -1,6 +1,37 @@
 
 $(document).ready(function () {
 
+    var URLactual = window.location.pathname;
+    if (URLactual.indexOf('index') !== -1) {
+        $('#btnindex').attr('class', 'active');
+    } else if (URLactual.indexOf('nuestro') !== -1) {
+        $('#btnnuestro').attr('class', 'active');
+
+    } else if (URLactual.indexOf('acerca') !== -1) {
+        $('#btnacerca').attr('class', 'active');
+
+    } else if (URLactual.indexOf('matricula') !== -1) {
+        $('#btnmatricula').attr('class', 'active');
+
+    } else if (URLactual.indexOf('empresa') !== -1) {
+        $('#btnempresa').attr('class', 'active');
+
+    } else if (URLactual.indexOf('curso') !== -1) {
+        $('#btncurso').attr('class', 'active');
+
+    } else if (URLactual.indexOf('ficha') !== -1) {
+        $('#btnficha').attr('class', 'active');
+
+    } else if (URLactual.indexOf('articulo') !== -1) {
+        $('#btnarticulo').attr('class', 'active');
+
+    } else if (URLactual.indexOf('caja') !== -1) {
+        $('#btncaja').attr('class', 'active');
+
+    } else {
+        $('#btnindex').attr('class', 'active');
+    }
+
     $('.imgIndex').on('load', function () {
         $('.imgIndex').height('80%');
     });

@@ -1,7 +1,5 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
-
-
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">

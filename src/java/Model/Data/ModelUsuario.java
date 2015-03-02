@@ -24,7 +24,7 @@ public class ModelUsuario extends ConnectionDB {
 
     public boolean Add(ObjUsuario _objUsuario) {
         boolean objReturn = false;
-        String sql = "INSERT INTO `tblusuario`(`nombreUsuario`, `password`, `email`, `telefono`, `rol`) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO `tblusuario`(`nombreUsuario`, `password`, `email`, `telefono`, `idrol`) VALUES (?,?,?,?,?)";
         try {
             pStmt = connection.prepareStatement(sql);
             pStmt.setString(1, _objUsuario.getNombre());
@@ -45,7 +45,7 @@ public class ModelUsuario extends ConnectionDB {
     
     public ResultSet ListAll() throws Exception{
         ResultSet rs= null;
-        String sql = "SELECT `idUsuario`, `nombreUsuario`, `password`, `email`, `telefono`, `rol` FROM `tblusuario`";
+        String sql = "SELECT `idUsuario`, `nombreUsuario`, `password`, `email`, `telefono`, `idrol` FROM `tblusuario`";
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
@@ -57,7 +57,7 @@ public class ModelUsuario extends ConnectionDB {
     
     public ResultSet Find (ObjUsuario _objUsuario){
     ResultSet rs = null;
-    String query = "SELECT `idUsuario`, `nombreUsuario`, `password`, `email`, `telefono`, `rol` FROM `tblusuario` WHERE `nombreUsuario` = '%s' and `password` = '%s'";
+    String query = "SELECT `idUsuario`, `nombreUsuario`, `password`, `email`, `telefono`, `idrol` FROM `tblusuario` WHERE `nombreUsuario` = '%s' and `password` = '%s'";
     String sql = String.format(query, _objUsuario.getNombre(), _objUsuario.getPassword());
         try {
             getStmt();

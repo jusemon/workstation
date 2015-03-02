@@ -11,6 +11,6 @@ import Model.JDBC.ConnectionDB;
  *
  * @author Administrador
  */
-public class ModelSubsideo extends ConnectionDB {
+public class ModelSubsidio extends ConnectionDB {
     
 }
