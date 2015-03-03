@@ -5,9 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% if (session.getAttribute("usuario")==null) {
-   response.sendRedirect("index.jsp");
-}; %>
+<% if (session.getAttribute("usuario") == null) {
+        response.sendRedirect("index.jsp");
+    };%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,75 +22,223 @@
     <body>
         <%@include file="WEB-INF/jspf/superior.jspf" %>
 
+        <div class="modal" id="miPopupCurso">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">                               
+                                <form id="form_Maestros" action="ControllerCurso" method="POST">
+                                    <div class="panel">
+                                        <div class="panel-heading estilo2">
+                                            <h3 class="panel-title">
+                                                Ingresar Curso
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                            </h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNombre">
+                                                            Nombre Curso
+                                                        </label>
+                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Oleo" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="dateDuracion">
+                                                            Duración (En dias)
+                                                        </label>
+                                                        <input name="dateDuracion" id="dateDuracion" type="number" class="form-control" placeholder="Ejm: 10" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="ddlEstado">
+                                                            Estado
+                                                        </label>
+                                                        <select name="ddlEstado" id="ddlEstado" class="form-control" required>
+                                                            <option value="1">Activo</option>
+                                                            <option value="0">Inactivo</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="miPopupSeminario">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">                               
+                                <form id="form_Maestros" action="ControllerSeminario" method="POST">
+                                    <div class="panel">
+                                        <div class="panel-heading estilo2">
+                                            <h3 class="panel-title">
+                                                Gestion de Seminarios
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                            </h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNombre">
+                                                            Nombre
+                                                        </label>
+                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNombre">
+                                                            Duracion (En horas)
+                                                        </label>
+                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNombre">
+                                                            Precio
+                                                        </label>
+                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="ddlEstado">
+                                                            Estado
+                                                        </label>
+                                                        <select name="ddlEstado" id="ddlEstado" class="form-control" required>
+                                                            <option value="1">Activo</option>
+                                                            <option value="0">Inactivo</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4">
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                        Gestion de Cursos
+                                <h4 class="panel-title">
+                                    <a  data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                        Gestionar Cursos 
                                     </a>
-                                </h3>
+                                </h4>
                             </div>
+
                             <div id="collapseOne" class="panel-collapse collapse in">
-                                <form id="form_Maestros" action="ControllerCurso" method="POST">
-                                    <div class="panel-body">
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="txtNombre">
-                                                        Nombre Curso
-                                                    </label>
-                                                    <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Oleo" required>
-                                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupCurso" data-dismiss="modal" name="regCurso" value="Registrar Curso">
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="dateDuracion">
-                                                        Duración (En dias)
-                                                    </label>
-                                                    <input name="dateDuracion" id="dateDuracion" type="number" class="form-control" placeholder="Ejm: 10" required>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="panel-group" id="accordion">
+                                                <div class="panel panel-default">
+                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Curso" data-parent="#accodion" href="#collapseConsultaCurso"/>                                                           
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="ddlEstado">
-                                                        Estado
-                                                    </label>
-                                                    <select name="ddlEstado" id="ddlEstado" class="form-control" required>
-                                                        <option value="1">Activo</option>
-                                                        <option value="0">Inactivo</option>
-                                                    </select>
+                                            <div class="panel-collapse collapse" id="collapseConsultaCurso">
+                                                <div class="panel-body">
+                                                    <form action="ControllerCurso" method="POST">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="nombreCurso">
+                                                                        Ingresa el nombre
+                                                                    </label>
+                                                                    <input name="nombreCurso" id="nombreCurso" type="text" class="form-control" placeholder="Ejm: Oleo" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <button type="button" class=" btn btn-default btn-block" >
+                                                                        <span class="glyphicon glyphicon-search "></span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="panel-footer">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-
+                                </div>
                             </div>
                         </div>
                         <div class="panel panel-default">
+
+
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
@@ -98,68 +246,55 @@
                                     </a>
                                 </h4>
                             </div>
+
+
                             <div id="collapseTwo" class="panel-collapse collapse">
-                                <form>
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="txtNombre">
-                                                        Nombre
-                                                    </label>
-                                                    <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
-                                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupSeminario" data-dismiss="modal" name="regSeminario" value="Registrar Seminario">
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="txtNombre">
-                                                        Duracion (En horas)
-                                                    </label>
-                                                    <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="panel-group" id="accordion">
+                                                <div class="panel panel-default">
+                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Seminario" data-parent="#accodion" href="#collapseConsultaSeminario"/>                                                           
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="txtNombre">
-                                                        Precio
-                                                    </label>
-                                                    <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="ddlEstado">
-                                                        Estado
-                                                    </label>
-                                                    <select name="ddlEstado" id="ddlEstado" class="form-control" required>
-                                                        <option value="1">Activo</option>
-                                                        <option value="0">Inactivo</option>
-                                                    </select>
+                                            <div class="panel-collapse collapse" id="collapseConsultaSeminario">
+                                                <div class="panel-body">
+                                                    <form action="ControllerSeminario" method="POST">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="nombreSeminario">
+                                                                        Ingresa el nombre
+                                                                    </label>
+                                                                    <input name="nombreSeminario" id="nombreSeminario" type="text" class="form-control" placeholder="Ejm: Seminario de Patchwork" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <button type="button" class=" btn btn-default btn-block" >
+                                                                        <span class="glyphicon glyphicon-search "></span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="panel-footer">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                </div>
+                                <div class="panel-footer">
+
+                                </div>
                             </div>
                         </div>
                     </div>

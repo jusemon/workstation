@@ -128,11 +128,8 @@
                 </div>
             </div>
         </div>
-
-
         <!--
         Popup Venta
-        
         -->
         <div class="modal" id="miPopupVenta">
             <div class="modal-dialog ">
