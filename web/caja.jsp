@@ -539,6 +539,9 @@
                     <li>
                         <a href="#ventas" role="tab" data-toggle="tab">Listado de Ventas</a>
                     </li>
+                     <li>
+                        <a href="#diario" role="tab" data-toggle="tab">Caja del día</a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="compra">
@@ -579,6 +582,31 @@
                                     <td class="text-center">0001</td>
                                     <td class="text-center">21/11/2014</td>
                                     <td class="text-center">56000</td>
+                                    <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)">                                                <span class="glyphicon glyphicon-search"></span></a>
+                                    </td>  
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="diario">
+                        <table id="tbdiario" class="table table-hover" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Código</th>
+                                    <th class="text-center">Total Compras</th>
+                                    <th class="text-center">Total Ventas</th>
+                                    <th class="text-center">Fecha</th>
+                                    <th class="text-center">Total </th>                                
+                                    <th class="text-center">Consultar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">0001</td>
+                                    <td class="text-center">10000</td>
+                                    <td class="text-center">30000</td>
+                                    <td class="text-center">21/11/2014</td>
+                                    <td class="text-center">20000</td>
                                     <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)">                                                <span class="glyphicon glyphicon-search"></span></a>
                                     </td>  
                                 </tr>
