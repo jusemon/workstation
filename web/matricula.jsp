@@ -3,12 +3,18 @@
     Created on : 23-oct-2014, 12:13:22
     Author     : Administrador
 --%>
-
 <%@page import="Controller.ControllerCliente"%>
+<%@page import="Controller.ControllerLogin"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% if (session.getAttribute("usuario")==null) {
    response.sendRedirect("index.jsp");
-}; %>
+}
+ControllerLogin controllerLogin1 = new ControllerLogin();
+if (!controllerLogin1.comprobarEntrada(session.getAttribute("derechos"), "matricula.jsp")) {
+           response.sendRedirect("index.jsp");
+    }
+
+%>
 <!DOCTYPE html>
 <html>
     <!--
@@ -631,6 +637,9 @@
                 </div>
             </div>
         </div>
+                                    <%
+                                    out.print(request.getRequestURI());
+                                    %>
         <script type="text/javascript">
                                     function esMenor () {
                                     var nacimiento = document.getElementById("dateFechaNacimiento").getAttribute("value");
