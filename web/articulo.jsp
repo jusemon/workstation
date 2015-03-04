@@ -3,7 +3,9 @@
     Created on : 23-oct-2014, 12:13:31
     Author     : Administrador
 --%>
-
+<% if (session.getAttribute("usuario") == null) {
+        response.sendRedirect("index.jsp");
+    }; %>
 <%@page import="Controller.ControllerArticulo"%>
 <%@page import="Controller.ControllerCategoriaArticulo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

@@ -6,12 +6,8 @@
 <%@page import="Controller.ControllerCliente"%>
 <%@page import="Controller.ControllerLogin"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% if (session.getAttribute("usuario")==null) {
-   response.sendRedirect("index.jsp");
-}
-ControllerLogin controllerLogin1 = new ControllerLogin();
-if (!controllerLogin1.comprobarEntrada(session.getAttribute("derechos"), "matricula.jsp")) {
-           response.sendRedirect("index.jsp");
+<% if (session.getAttribute("usuario") == null) {
+        response.sendRedirect("index.jsp");
     }
 
 %>
@@ -637,9 +633,9 @@ if (!controllerLogin1.comprobarEntrada(session.getAttribute("derechos"), "matric
                 </div>
             </div>
         </div>
-                                    <%
-                                    out.print(request.getRequestURI());
-                                    %>
+        <%
+            out.print(request.getRequestURI());
+        %>
         <script type="text/javascript">
                                     function esMenor () {
                                     var nacimiento = document.getElementById("dateFechaNacimiento").getAttribute("value");

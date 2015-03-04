@@ -50,10 +50,15 @@ public class ControllerLogin extends HttpServlet {
                     session.setAttribute("usuario", nombre);
                     session.setAttribute("pass", pass);
                     session.setAttribute("correo", _objUsuario.getEmail());
+                    try {
+                        session.setAttribute("derechos", _modelModulo.ListByUser(_objUsuario.getId()));
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
                     response.sendRedirect("index.jsp?a=1");
 
                 } else {
-                    response.sendRedirect("index.jsp?b?2");
+                    response.sendRedirect("index.jsp?b=2");
                 }
             } else if (request.getParameter("Action").equals("Cerrar Sesion")) {
                 HttpSession session = request.getSession();
@@ -64,7 +69,6 @@ public class ControllerLogin extends HttpServlet {
     }
 
     public boolean comprobarUsuario(String nombre, String pass) {
-
         ResultSet rs = null;
         _objUsuario.setNombre(nombre);
         _objUsuario.setPassword(pass);
@@ -88,7 +92,7 @@ public class ControllerLogin extends HttpServlet {
         ResultSet result = null;
         String barraModulos = "";
         if (!comprobarUsuario(nombre, pass)) {
-            barraModulos +="            <li id=\"btnnuestro\" class=\"\"><a href=\"nuestro.jsp\">Nuestros Cursos</a></li>\n"
+            barraModulos += "            <li id=\"btnnuestro\" class=\"\"><a href=\"nuestro.jsp\">Nuestros Cursos</a></li>\n"
                     + "            <li id=\"btnacerca\" class=\"\"><a href=\"acerca.jsp\">Acerca de Nosotros</a></li>";
             return barraModulos;
         }
@@ -111,6 +115,22 @@ public class ControllerLogin extends HttpServlet {
             _modelModulo.Signout();
         }
         return barraModulos;
+    }
+
+    public boolean comprobarEntrada(Object derechos, String urlActual) {
+        try {
+            if (derechos instanceof ResultSet) {
+                ResultSet result = (ResultSet) derechos;
+                while (result.next()) {
+                    if (result.getString("enlace").equals(urlActual)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

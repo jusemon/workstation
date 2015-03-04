@@ -185,7 +185,7 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a  data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                        Gestionar Cursos 
+                                        Gestionar Cursos
                                     </a>
                                 </h4>
                             </div>
