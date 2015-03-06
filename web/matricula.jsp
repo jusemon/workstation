@@ -627,6 +627,9 @@
                 </div>
             </div>
         </div>
+                                    <%
+                                    out.print(request.getRequestURI());
+                                    %>
         <script type="text/javascript">
                                     function esMenor () {
                                     var nacimiento = document.getElementById("dateFechaNacimiento").getAttribute("value");
