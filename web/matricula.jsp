@@ -6,11 +6,6 @@
 <%@page import="Controller.ControllerCliente"%>
 <%@page import="Controller.ControllerLogin"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% if (session.getAttribute("usuario") == null) {
-        response.sendRedirect("index.jsp");
-    }
-
-%>
 <!DOCTYPE html>
 <html>
     <!--
@@ -34,6 +29,8 @@
     </head>
     <body>
 
+        <%@include file="WEB-INF/jspf/superior.jspf" %>
+        
         <div class="modal" id="matricular">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -386,9 +383,6 @@
             </div>
         </div>
 
-        <%@include file="WEB-INF/jspf/superior.jspf" %>
-
-
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4 ">
@@ -633,9 +627,6 @@
                 </div>
             </div>
         </div>
-        <%
-            out.print(request.getRequestURI());
-        %>
         <script type="text/javascript">
                                     function esMenor () {
                                     var nacimiento = document.getElementById("dateFechaNacimiento").getAttribute("value");

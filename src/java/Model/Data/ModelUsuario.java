@@ -55,6 +55,7 @@ public class ModelUsuario extends ConnectionDB {
         return rs;
     }
     
+    //Busca el usuario en la base de datos segun su nombre  de usuario y contraseña
     public ResultSet Find (ObjUsuario _objUsuario){
     ResultSet rs = null;
     String query = "SELECT `idUsuario`, `nombreUsuario`, `password`, `email`, `telefono`, `idrol` FROM `tblusuario` WHERE `nombreUsuario` = '%s' and `password` = '%s'";

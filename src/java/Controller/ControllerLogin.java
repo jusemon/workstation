@@ -88,6 +88,7 @@ public class ControllerLogin extends HttpServlet {
         return false;
     }
 
+    //Este metodo imprime la barra superior segun los privilegios del usuario logueado
     public String imprimirBarra(String nombre, String pass) {
         ResultSet result = null;
         String barraModulos = "";
@@ -117,12 +118,18 @@ public class ControllerLogin extends HttpServlet {
         return barraModulos;
     }
 
+    //Con este metodo compruebo los derechos del usuario y permito su entrada
     public boolean comprobarEntrada(Object derechos, String urlActual) {
         try {
+            if (urlActual.endsWith("index.jsp")||urlActual.endsWith("acerca.jsp")||urlActual.endsWith("nuestro.jsp")) {
+                return true;
+            }
             if (derechos instanceof ResultSet) {
                 ResultSet result = (ResultSet) derechos;
                 while (result.next()) {
-                    if (result.getString("enlace").equals(urlActual)) {
+                    System.out.println(urlActual);
+                    System.out.println(("/"+result.getString("enlace")));
+                    if (urlActual.endsWith(result.getString("enlace"))) {
                         return true;
                     }
                 }

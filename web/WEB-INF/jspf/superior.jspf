@@ -2,7 +2,8 @@
 <%@page import="Controller.ControllerLogin"%>
         <%
             ControllerLogin controllerLogin = new ControllerLogin();
-            if (!controllerLogin.comprobarEntrada(session.getAttribute("derechos"), "matricula.jsp")) {
+            if (!controllerLogin.comprobarEntrada(session.getAttribute("derechos"), request.getRequestURI())) {
+                
                 response.sendRedirect("index.jsp");
             }
         %>

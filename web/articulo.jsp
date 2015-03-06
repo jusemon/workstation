@@ -3,9 +3,6 @@
     Created on : 23-oct-2014, 12:13:31
     Author     : Administrador
 --%>
-<% if (session.getAttribute("usuario") == null) {
-        response.sendRedirect("index.jsp");
-    }; %>
 <%@page import="Controller.ControllerArticulo"%>
 <%@page import="Controller.ControllerCategoriaArticulo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -30,8 +27,9 @@
         <script type="text/javascript" src="public/js/javascript.js"></script>
     </head>
     <body>
-        <%
-            Controller.ControllerCategoriaArticulo controllerCategoriaArticulo = new ControllerCategoriaArticulo();
+        <%@include file="WEB-INF/jspf/superior.jspf" %>
+
+        <%            Controller.ControllerCategoriaArticulo controllerCategoriaArticulo = new ControllerCategoriaArticulo();
             Controller.ControllerArticulo controllerArticulo = new ControllerArticulo();
         %>
         <div class="modal" id="miPopup">
@@ -81,9 +79,6 @@
                 </div>
             </div>
         </div>
-
-        <%@include file="WEB-INF/jspf/superior.jspf" %>
-
 
         <div class="container-fluid">
             <div class="row">

@@ -5,9 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% if (session.getAttribute("usuario")==null) {
-   response.sendRedirect("index.jsp");
-}; %>
+<% if (session.getAttribute("usuario") == null) {
+        response.sendRedirect("index.jsp");
+    };%>
 <!DOCTYPE html>
 <html>
     <!--
@@ -26,7 +26,8 @@
         <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
     </head>
     <body>
-       
+        <%@include file="WEB-INF/jspf/superior.jspf" %>
+
         <!--
         Popup Detalle Compra
         
@@ -395,234 +396,232 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!--
-    Aquí se encuantra la barra superior, lo que se le llama navbar que es barra de navegación, 
-    en ella esta el login y los botones para navegar a traves del aplicativo.
-    -->
-
-    <%@include file="WEB-INF/jspf/superior.jspf" %>
+        <!--
+        Aquí se encuantra la barra superior, lo que se le llama navbar que es barra de navegación, 
+        en ella esta el login y los botones para navegar a traves del aplicativo.
+        -->
 
 
-    <!--
-    Este contenedor tiene el contenido de la pagina, en este caso un accordion que contendra 
-    un par de panel uno para la gestion de Compras, otro para la gestion de Ventas.
-    -->
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="panel-group" id="accordion">
-                    <!--Gestión de Compras-->
-                    <div class="panel panel-default">
-                        <!--
-                        Aqui el boton que desplegara la gestion de Compras
-                        -->
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a  data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                    Gestionar Compras 
-                                </a>
-                            </h4>
-                        </div>
-                        <!--
-                        Aqui el contenido de la gestion de Compras, en este caso un boton para registrar  una compra
-                        y otro para consultar el registro de comrpas
-                        -->                            
-                        <div id="collapseOne" class="panel-collapse collapse in">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupCompra" data-dismiss="modal" name="regCompra" value="Registrar Compra">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="panel-group" id="accordion">
-                                            <div class="panel panel-default">
-                                                <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Compra" data-parent="#accodion" href="#collapseConsultaCompra"/>                                                           
+        <!--
+        Este contenedor tiene el contenido de la pagina, en este caso un accordion que contendra 
+        un par de panel uno para la gestion de Compras, otro para la gestion de Ventas.
+        -->
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="panel-group" id="accordion">
+                        <!--Gestión de Compras-->
+                        <div class="panel panel-default">
+                            <!--
+                            Aqui el boton que desplegara la gestion de Compras
+                            -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a  data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                        Gestionar Compras 
+                                    </a>
+                                </h4>
+                            </div>
+                            <!--
+                            Aqui el contenido de la gestion de Compras, en este caso un boton para registrar  una compra
+                            y otro para consultar el registro de comrpas
+                            -->                            
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupCompra" data-dismiss="modal" name="regCompra" value="Registrar Compra">
                                             </div>
                                         </div>
-                                        <div class="panel-collapse collapse" id="collapseConsultaCompra">
-                                            <div class="panel-body">
-                                                <form action="ControllerCompra" method="POST">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label for="dateFechaInicio">
-                                                                    Fecha de Inicio 
-                                                                </label>
-                                                                <input name="dateFechaInicio" id="dateFechaInicio" type="date" class="form-control" placeholder="Ejm: 10/10/2014" required>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="panel-group" id="accordion">
+                                                <div class="panel panel-default">
+                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Compra" data-parent="#accodion" href="#collapseConsultaCompra"/>                                                           
+                                                </div>
+                                            </div>
+                                            <div class="panel-collapse collapse" id="collapseConsultaCompra">
+                                                <div class="panel-body">
+                                                    <form action="ControllerCompra" method="POST">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="dateFechaInicio">
+                                                                        Fecha de Inicio 
+                                                                    </label>
+                                                                    <input name="dateFechaInicio" id="dateFechaInicio" type="date" class="form-control" placeholder="Ejm: 10/10/2014" required>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label for="dateFechaFinal">
-                                                                    Fecha de Final 
-                                                                </label>
-                                                                <input name="dateFechaFinal" id="dateFechaFinal" type="date" class="form-control" placeholder="Ejm: 10/10/2014" required>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="dateFechaFinal">
+                                                                        Fecha de Final 
+                                                                    </label>
+                                                                    <input name="dateFechaFinal" id="dateFechaFinal" type="date" class="form-control" placeholder="Ejm: 10/10/2014" required>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <button type="button" class=" btn btn-default btn-block" >
-                                                                    <span class="glyphicon glyphicon-search "></span>
-                                                                </button>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <button type="button" class=" btn btn-default btn-block" >
+                                                                        <span class="glyphicon glyphicon-search "></span>
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </form>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!--Gestión de Ventas-->
-                    <div class="panel panel-default">
-                        <!--
-                        Aqui el boton que desplegara la gestión Ventas
-                        -->
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                    Gestion de Ventas
-                                </a>
-                            </h4>
-                        </div>
-                        <!--
-                        Aqui el contenido de la gestion de Ventas, en este caso un boton para registrar  una Venta
-                        y otro para consultar el registro de Ventas
-                        -->                              
-                        <div id="collapseTwo" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupVenta" data-dismiss="modal" name="regVenta" value="Registrar Venta">
+                        <!--Gestión de Ventas-->
+                        <div class="panel panel-default">
+                            <!--
+                            Aqui el boton que desplegara la gestión Ventas
+                            -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                        Gestion de Ventas
+                                    </a>
+                                </h4>
+                            </div>
+                            <!--
+                            Aqui el contenido de la gestion de Ventas, en este caso un boton para registrar  una Venta
+                            y otro para consultar el registro de Ventas
+                            -->                              
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupVenta" data-dismiss="modal" name="regVenta" value="Registrar Venta">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="panel-group" id="accordion">
-                                            <div class="panel panel-default">
-                                                <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Venta" data-parent="#accodion" href="#collapseConsultaVenta"/>                                                           
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="panel-group" id="accordion">
+                                                <div class="panel panel-default">
+                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Venta" data-parent="#accodion" href="#collapseConsultaVenta"/>                                                           
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
 
                         </div>
-
                     </div>
                 </div>
-            </div>
 
 
-            <div class="col-md-9">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="active">
-                        <a href="#compra" role="tab" data-toggle="tab">Listado de Compra</a>
-                    </li>
-                    <li>
-                        <a href="#ventas" role="tab" data-toggle="tab">Listado de Ventas</a>
-                    </li>
-                     <li>
-                        <a href="#diario" role="tab" data-toggle="tab">Caja del día</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="compra">
-                        <table id="example" class="table table-hover" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">Codigo</th>
-                                    <th class="text-center">Fecha</th>
-                                    <th class="text-center">Total</th>
-                                    <th class="text-center">Consultar</th>
-                                </tr>
-                            </thead>
+                <div class="col-md-9">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active">
+                            <a href="#compra" role="tab" data-toggle="tab">Listado de Compra</a>
+                        </li>
+                        <li>
+                            <a href="#ventas" role="tab" data-toggle="tab">Listado de Ventas</a>
+                        </li>
+                        <li>
+                            <a href="#diario" role="tab" data-toggle="tab">Caja del día</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="compra">
+                            <table id="example" class="table table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Codigo</th>
+                                        <th class="text-center">Fecha</th>
+                                        <th class="text-center">Total</th>
+                                        <th class="text-center">Consultar</th>
+                                    </tr>
+                                </thead>
 
-                            <tbody>
-                                <tr>
-                                    <td class="text-center">001</td>
-                                    <td class="text-center">21/11/2014</td>
-                                    <td class="text-center">155000</td>
-                                    <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleCompra" href="javascript:void(0)">
-                                            <span class="glyphicon glyphicon-search"></span></a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane" id="ventas">
-                        <table id="tbSeminarios" class="table table-hover" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">Código</th>
-                                    <th class="text-center">Fecha</th>
-                                    <th class="text-center">Total </th>                                
-                                    <th class="text-center">Consultar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-center">0001</td>
-                                    <td class="text-center">21/11/2014</td>
-                                    <td class="text-center">56000</td>
-                                    <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)">                                                <span class="glyphicon glyphicon-search"></span></a>
-                                    </td>  
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane" id="diario">
-                        <table id="tbdiario" class="table table-hover" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">Código</th>
-                                    <th class="text-center">Total Compras</th>
-                                    <th class="text-center">Total Ventas</th>
-                                    <th class="text-center">Fecha</th>
-                                    <th class="text-center">Total </th>                                
-                                    <th class="text-center">Consultar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-center">0001</td>
-                                    <td class="text-center">10000</td>
-                                    <td class="text-center">30000</td>
-                                    <td class="text-center">21/11/2014</td>
-                                    <td class="text-center">20000</td>
-                                    <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)">                                                <span class="glyphicon glyphicon-search"></span></a>
-                                    </td>  
-                                </tr>
-                            </tbody>
-                        </table>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">001</td>
+                                        <td class="text-center">21/11/2014</td>
+                                        <td class="text-center">155000</td>
+                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleCompra" href="javascript:void(0)">
+                                                <span class="glyphicon glyphicon-search"></span></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="ventas">
+                            <table id="tbSeminarios" class="table table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Código</th>
+                                        <th class="text-center">Fecha</th>
+                                        <th class="text-center">Total </th>                                
+                                        <th class="text-center">Consultar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">0001</td>
+                                        <td class="text-center">21/11/2014</td>
+                                        <td class="text-center">56000</td>
+                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)">                                                <span class="glyphicon glyphicon-search"></span></a>
+                                        </td>  
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="diario">
+                            <table id="tbdiario" class="table table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Código</th>
+                                        <th class="text-center">Total Compras</th>
+                                        <th class="text-center">Total Ventas</th>
+                                        <th class="text-center">Fecha</th>
+                                        <th class="text-center">Total </th>                                
+                                        <th class="text-center">Consultar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">0001</td>
+                                        <td class="text-center">10000</td>
+                                        <td class="text-center">30000</td>
+                                        <td class="text-center">21/11/2014</td>
+                                        <td class="text-center">20000</td>
+                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)">                                                <span class="glyphicon glyphicon-search"></span></a>
+                                        </td>  
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script type="text/javascript">
-        function imprimir() {
-            var d = document.getElementById("boton1");
-            d.setAttribute("value", "Imprimir");
-        }
+        <script type="text/javascript">
+            function imprimir() {
+                var d = document.getElementById("boton1");
+                d.setAttribute("value", "Imprimir");
+            }
 
-    </script> 
-</body>
-<script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="public/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="public/js/javascript.js"></script>
+        </script> 
+    </body>
+    <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="public/js/javascript.js"></script>
 </html>
