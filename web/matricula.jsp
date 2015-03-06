@@ -31,6 +31,7 @@
 
         <%@include file="WEB-INF/jspf/superior.jspf" %>
         
+        <!--Emergente de Matricular-->
         <div class="modal" id="matricular">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -170,7 +171,7 @@
                 </div>
             </div>
         </div>
-
+        <!--Emergente de Acudiente-->
         <div class="modal" id="miPopup">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -293,7 +294,7 @@
                 </div>
             </div>
         </div>
-
+        <!--Emergente de Asignar Ficha-->
         <div class="modal" id="asignarFicha">
             <div class="modal-dialog ">
                 <div class="modal-content">
