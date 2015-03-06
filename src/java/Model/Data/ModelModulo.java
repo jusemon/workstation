@@ -8,6 +8,12 @@ package Model.Data;
 import Model.JDBC.ConnectionDB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Vector;
 
 /**
  *
@@ -20,9 +26,9 @@ public class ModelModulo extends ConnectionDB {
     public ModelModulo() {
         getConnection();
     }
-       
-    public ResultSet ListByUser(int user) throws Exception{
-        ResultSet rs= null;
+
+    public ResultSet ListByUser(int user) throws Exception {
+        ResultSet rs = null;
         String sql = "CALL `spConsultarUsuarioModulo` (?)";
         pStmt = connection.prepareCall(sql);
         try {
@@ -30,23 +36,39 @@ public class ModelModulo extends ConnectionDB {
             pStmt.setInt(1, user);
             rs = pStmt.executeQuery();
         } catch (Exception e) {
-            System.err.println("SQLException: "+e.getMessage());
+            System.err.println("SQLException: " + e.getMessage());
         }
         return rs;
     }
-    
-        public ResultSet ListAll() throws Exception{
-        ResultSet rs= null;
+
+    public ResultSet ListAll() throws Exception {
+        ResultSet rs = null;
         String sql = "SELECT `idmodulo`, `enlace`, `nombre` FROM `tblmodulo`";
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
         } catch (Exception e) {
-            System.err.println("SQLException: "+e.getMessage());
+            System.err.println("SQLException: " + e.getMessage());
         }
         return rs;
     }
-    
-    
-    
+
+    public String[] convertirRSaArray(ResultSet entrada) {
+        String[] salida = null;
+        List aux = new ArrayList();
+        try {
+            while (entrada.next()) {
+                aux.add(entrada.getString("enlace"));
+            }
+            salida = new String[aux.size()];
+
+            for (int i = 0; i < salida.length; i++) {
+                salida[i] = (String) aux.get(i);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return salida;
+    }
+
 }

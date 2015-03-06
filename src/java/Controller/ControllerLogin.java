@@ -51,7 +51,8 @@ public class ControllerLogin extends HttpServlet {
                     session.setAttribute("pass", pass);
                     session.setAttribute("correo", _objUsuario.getEmail());
                     try {
-                        session.setAttribute("derechos", _modelModulo.ListByUser(_objUsuario.getId()));
+                        String[] aux = _modelModulo.convertirRSaArray(_modelModulo.ListByUser(_objUsuario.getId()));
+                        session.setAttribute("derechos", aux);
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
@@ -121,15 +122,13 @@ public class ControllerLogin extends HttpServlet {
     //Con este metodo compruebo los derechos del usuario y permito su entrada
     public boolean comprobarEntrada(Object derechos, String urlActual) {
         try {
-            if (urlActual.endsWith("index.jsp")||urlActual.endsWith("acerca.jsp")||urlActual.endsWith("nuestro.jsp")) {
+            if (urlActual.endsWith("index.jsp") || urlActual.endsWith("acerca.jsp") || urlActual.endsWith("nuestro.jsp")) {
                 return true;
             }
-            if (derechos instanceof ResultSet) {
-                ResultSet result = (ResultSet) derechos;
-                while (result.next()) {
-                    System.out.println(urlActual);
-                    System.out.println(("/"+result.getString("enlace")));
-                    if (urlActual.endsWith(result.getString("enlace"))) {
+            if (derechos instanceof String[]) {
+                String[] result = (String[]) derechos;
+                for (int i = 0; i < result.length; i++) {
+                    if (urlActual.endsWith(result[i])) {
                         return true;
                     }
                 }
