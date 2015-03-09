@@ -30,7 +30,7 @@
     <body>
 
         <%@include file="WEB-INF/jspf/superior.jspf" %>
-        
+
         <!--Emergente de Matricular-->
         <div class="modal" id="matricular">
             <div class="modal-dialog ">
@@ -384,169 +384,248 @@
             </div>
         </div>
 
+        <div class="modal" id="miPopupEstudiante">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form id="form_estudiante" class="" action="ControllerEstudiante" method="POST">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">
+                                                Formulario de Estudiante
+                                            </h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="ddlIdentificacion">
+                                                            Tipo de Identificación
+                                                        </label>
+                                                        <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control" required>
+                                                            <option value="">Seleccionar...</option>
+                                                            <option value="CC" > Cedula </option>
+                                                            <option value="CE" > Cedula Extranjeria </option>
+                                                            <option value="TI" > Tarjeta de Identidad </option>
+                                                            <option value="RC" > Registro Civil </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtIdentificacion">
+                                                            Numero de Identificación
+                                                        </label>
+                                                        <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNombre">
+                                                            Nombres
+                                                        </label>
+                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Juan Sebastian" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtApellido">
+                                                            Apellidos
+                                                        </label>
+                                                        <input name="txtApellido" id="txtApellido" type="text" class="form-control" placeholder="Ejm: Montoya Montoya" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="radioBtn2">
+                                                            Genero
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div id="radioBtn2" class="btn-group">
+                                                                <a id="radio2" class="btn btn-success btn-sm active" data-toggle="radioGenero" data-title="1">Femenino</a>
+                                                                <a id="radio2" class="btn btn-danger btn-sm notActive" data-toggle="radioGenero" data-title="2">Masculino</a>
+                                                            </div>
+                                                            <input type="hidden" name="radioGenero" id="radioGenero" value="0">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="dateFechaNacimiento">
+                                                            Fecha de Nacimiento
+                                                        </label>
+                                                        <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="date" class="form-control" placeholder="Ejm: 10/10/2014" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtDireccion">
+                                                            Dirección
+                                                        </label>
+                                                        <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtTelefono">
+                                                            Telefono
+                                                        </label>
+                                                        <input name="txtTelefono" id="txtTelefono" type="text" class="form-control" placeholder="Ejm: 5 65 85 45" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtCelular">
+                                                            Celular
+                                                        </label>
+                                                        <input name="txtCelular" id="txtCelular" type="number" class="form-control" placeholder="Ejm: 321 801 62 37">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtCorreo">
+                                                            Correo Electronico
+                                                        </label>
+                                                        <input name="txtCorreo" id="txtCorreo" type="text" class="form-control" placeholder="Ejm: juansmm@outlook.com" required>
+                                                    </div>
+                                                </div>
+                                            </div>                             
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="radioBtn">
+                                                            Beneficiario
+                                                        </label>
+                                                        <div class="input-group">
+                                                            <div id="radioBtn" class="btn-group">
+                                                                <a id="radio1" class="btn btn-primary btn-sm active" data-toggle="radioEstado" data-title="1">Si</a>
+                                                                <a id="radio1" class="btn btn-primary btn-sm notActive" data-toggle="radioEstado" data-title="0">NO</a>
+                                                            </div>
+                                                            <input type="hidden" name="radioEstado" id="radioEstado" value="0">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4 ">
-                    <form id="form_estudiante" class="" action="ControllerCliente" method="POST">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">
-                                    Formulario de Estudiante
-                                </h3>
-                            </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Formulario de Estidiante
+                            </h3>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse in">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="ddlIdentificacion">
-                                                Tipo de Identificación
-                                            </label>
-                                            <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control" required>
-                                                <option value="">Seleccionar...</option>
-                                                <option value="CC" > Cedula </option>
-                                                <option value="CE" > Cedula Extranjeria </option>
-                                                <option value="TI" > Tarjeta de Identidad </option>
-                                                <option value="RC" > Registro Civil </option>
-                                            </select>
+                                            <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupEstudiante" data-dismiss="modal" name="regEstudiante" value="Registrar Estudiante">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="txtIdentificacion">
-                                                Numero de Identificación
-                                            </label>
-                                            <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="txtNombre">
-                                                Nombres
-                                            </label>
-                                            <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Juan Sebastian" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="txtApellido">
-                                                Apellidos
-                                            </label>
-                                            <input name="txtApellido" id="txtApellido" type="text" class="form-control" placeholder="Ejm: Montoya Montoya" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="radioBtn2">
-                                                Genero
-                                            </label>
-                                            <div class="input-group">
-                                                <div id="radioBtn2" class="btn-group">
-                                                    <a id="radio2" class="btn btn-success btn-sm active" data-toggle="radioGenero" data-title="1">Femenino</a>
-                                                    <a id="radio2" class="btn btn-danger btn-sm notActive" data-toggle="radioGenero" data-title="2">Masculino</a>
-                                                </div>
-                                                <input type="hidden" name="radioGenero" id="radioGenero" value="0">
+                                        <div class="panel-group" id="accordion">
+                                            <div class="panel panel-default">
+                                                <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Estudiante" data-parent="#accodion" href="#collapseConsultaEstudiante"/>                                                           
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="dateFechaNacimiento">
-                                                Fecha de Nacimiento
-                                            </label>
-                                            <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="date" class="form-control" placeholder="Ejm: 10/10/2014" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="txtDireccion">
-                                                Dirección
-                                            </label>
-                                            <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="txtTelefono">
-                                                Telefono
-                                            </label>
-                                            <input name="txtTelefono" id="txtTelefono" type="text" class="form-control" placeholder="Ejm: 5 65 85 45" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="txtCelular">
-                                                Celular
-                                            </label>
-                                            <input name="txtCelular" id="txtCelular" type="number" class="form-control" placeholder="Ejm: 321 801 62 37">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="txtCorreo">
-                                                Correo Electronico
-                                            </label>
-                                            <input name="txtCorreo" id="txtCorreo" type="text" class="form-control" placeholder="Ejm: juansmm@outlook.com" required>
-                                        </div>
-                                    </div>
-                                </div>                             
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="radioBtn">
-                                                Beneficiario
-                                            </label>
-                                            <div class="input-group">
-                                                <div id="radioBtn" class="btn-group">
-                                                    <a id="radio1" class="btn btn-primary btn-sm active" data-toggle="radioEstado" data-title="1">Si</a>
-                                                    <a id="radio1" class="btn btn-primary btn-sm notActive" data-toggle="radioEstado" data-title="0">NO</a>
-                                                </div>
-                                                <input type="hidden" name="radioEstado" id="radioEstado" value="0">
+                                        <div class="panel-collapse collapse" id="collapseConsultaEstudiante">
+                                            <div class="panel-body">
+                                                <form action="ControllerEstudiante" method="POST">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="ddlIdentificacion">
+                                                                    Tipo de Identificación
+                                                                </label>
+                                                                <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control" required>
+                                                                    <option value="">Seleccionar...</option>
+                                                                    <option value="CC" > Cedula </option>
+                                                                    <option value="CE" > Cedula Extranjeria </option>
+                                                                    <option value="TI" > Tarjeta de Identidad </option>
+                                                                    <option value="RC" > Registro Civil </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="txtIdentificacion">
+                                                                    Numero de Identificación
+                                                                </label>
+                                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <button type="button" class=" btn btn-default btn-block" >
+                                                                    <span class="glyphicon glyphicon-search "></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="panel-footer">
-                                <div class="row">
+                                            <div class="panel-footer">
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
-                                        </div>
-                                        <div class="form-group">
-                                            <h5>${msg}</h5>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input class="btn btn-primary btn-block" type="button" name="action" onclick="esMenor();" value="Editar">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+
+                    </div>
                 </div>
                 <div class="col-md-8">
                     <ul class="nav nav-tabs" role="tablist">
@@ -614,10 +693,10 @@
                                         <td class="text-center">Oleo</td>
                                         <td class="text-center">11/01/2015</td>
                                         <td class="text-center">11/04/2015</td>
-                                        <td class="text-center"><a class="btn-sm btn-success btn-block " href="javascript:void(0)"  onclick="add("Estado")">
+                                        <td class="text-center"><a class="btn-sm btn-success btn-block " href="javascript:void(0)"  onclick="add("Estado")>
                                                                    <span class="glyphicon glyphicon-ok"></span></a>
                                         </td>
-                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " href="javascript:void(0)"  onclick="add("Estado")">
+                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " href="javascript:void(0)"  onclick="add("Estado")>
                                                                    <span class="glyphicon glyphicon-pencil"></span></a>
                                         </td>
                                     </tr>
@@ -628,9 +707,7 @@
                 </div>
             </div>
         </div>
-                                    <%
-                                    out.print(request.getRequestURI());
-                                    %>
+
         <script type="text/javascript">
                                     function esMenor () {
                                     var nacimiento = document.getElementById("dateFechaNacimiento").getAttribute("value");
