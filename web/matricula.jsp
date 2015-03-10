@@ -550,14 +550,13 @@
             </div>
         </div>
 
-
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4 ">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">
-                                Formulario de Estidiante
+                                Formulario de Estudiante
                             </h3>
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse in">
@@ -573,7 +572,7 @@
                                     <div class="col-md-12">
                                         <div class="panel-group" id="accordion">
                                             <div class="panel panel-default">
-                                                <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Estudiante" data-parent="#accodion" href="#collapseConsultaEstudiante"/>                                                           
+                                                <input type="button" class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Estudiante" data-parent="#accodion" href="#collapseConsultaEstudiante"/>                                                           
                                             </div>
                                         </div>
                                         <div class="panel-collapse collapse" id="collapseConsultaEstudiante">

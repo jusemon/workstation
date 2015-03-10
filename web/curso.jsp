@@ -412,7 +412,7 @@
                         <li class="active">
                             <a href="#cursos" role="tab" data-toggle="tab">Listado de Cursos</a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="#fichas" role="tab" data-toggle="tab">Listado de Fichas</a>
                         </li>
                         <li>
@@ -460,7 +460,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane active" id="fichas">
+                        <div class="tab-pane" id="fichas">
                             <table id="example" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
