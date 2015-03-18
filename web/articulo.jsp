@@ -186,9 +186,6 @@
                 </div>
             </div>
         </div>
-
-
-
         <div class="modal" id="miPopupArticulo">
             <div class="modal-dialog ">
                 <div class="modal-content">
