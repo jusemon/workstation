@@ -6,7 +6,6 @@
 package Controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -58,9 +57,13 @@ public class ControllerArticulo extends HttpServlet {
 
                 response.sendRedirect("articulo.jsp");
 
-            } catch (Exception e) {
+            }catch(NumberFormatException ne)
+            {
+                
+            }            
+            catch (IOException e) {
                 System.out.println(e.getMessage());
-            }
+            } 
 
         }
 

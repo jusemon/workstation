@@ -12,7 +12,7 @@ package Model.DTO;
 public class ObjAcudiente {
     private int tipoDocumento;
     private String numeroDocumento;
-    private String nombreAcudiante;
+    private String nombreAcudiente;
     private String telefonoAcudiante;
 
     public int getTipoDocumento() {
@@ -31,12 +31,12 @@ public class ObjAcudiente {
         this.numeroDocumento = numeroDocumento;
     }
 
-    public String getNombreAcudiante() {
-        return nombreAcudiante;
+    public String getNombreAcudiente() {
+        return nombreAcudiente;
     }
 
-    public void setNombreAcudiante(String nombreAcudiante) {
-        this.nombreAcudiante = nombreAcudiante;
+    public void setNombreAcudiente(String nombreAcudiente) {
+        this.nombreAcudiente = nombreAcudiente;
     }
 
     public String getTelefonoAcudiante() {

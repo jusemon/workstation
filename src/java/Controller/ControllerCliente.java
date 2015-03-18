@@ -5,10 +5,9 @@
  */
 package Controller;
 
-import Model.DTO.ObjCliente;
-import Model.Data.ModelCliente;
+import Model.DTO.*;
+import Model.Data.*;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,12 +31,14 @@ public class ControllerCliente extends HttpServlet {
      */
     public ModelCliente daoModelCliente = new ModelCliente();
     public ObjCliente _objCliente = new ObjCliente();
-
+    public ModelAcudiente daoModelAcudiente = new ModelAcudiente();
+    public ObjAcudiente _objAcudiente = new ObjAcudiente();
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-
+        
         if (action != null) {
             try {
                 String tipoDocumento = String.valueOf(request.getParameter("ddlIdentificacion"));
@@ -53,12 +54,6 @@ public class ControllerCliente extends HttpServlet {
                 int estado = Integer.parseInt(request.getParameter("radioEstado"));
                 //Estado 0->No Subvencionado 1->Subvencionado?
                 
-                        
-
-//                if(esMenorDeEdad(fechaNacimiento)){
-//                    
-//                }
-//                
                 _objCliente.setTipoDocumento(tipoDocumento);
                 _objCliente.setNumeroDocumento(numeroIdentificacion);
                 _objCliente.setNombreCliente(nombre);
@@ -70,55 +65,61 @@ public class ControllerCliente extends HttpServlet {
                 _objCliente.setTelefonoMovil(celular);
                 _objCliente.setEmailCliente(correo);
                 _objCliente.setEstadoCliente(estado);
-                int idAcudiente;
-                if (request.getParameter("idAcudiente") != null) {
-                    idAcudiente = Integer.parseInt(request.getParameter("idAcudiente"));
-                    
-                }
-
+                int tipoDocAcudiente = 0;
+                String numeroDocAcudiente;
+                if (request.getParameter("tipoDocAcudiente") != null && request.getParameter("numeroDocAcudiente") != null) {
+                    tipoDocAcudiente = Integer.parseInt(request.getParameter("tipoDocAcudiente"));
+                    numeroDocAcudiente = request.getParameter("idAcudiente");
+                    String nombreAcudiente = request.getParameter("nombreAcudiente");
+                    String telefonoAcudiente = request.getParameter("telefonoAcudiente");
+                    _objAcudiente.setTipoDocumento(tipoDocAcudiente);                    
+                    _objAcudiente.setNumeroDocumento(numeroDocAcudiente);
+                    _objAcudiente.setNombreAcudiente(nombreAcudiente);
+                    _objAcudiente.setTelefonoAcudiante(telefonoAcudiente);
+                }                
                 response.sendRedirect("matricula.jsp");
-
+                
                 if (daoModelCliente.Add(_objCliente)) {
                     request.setAttribute("msg", "Accion exitosa");
                     getServletConfig().getServletContext().getRequestDispatcher("/matricula.jsp").forward(request, response);
                 }
-
+                
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-
+            
         }
     }
-
+    
     public String getTableClientes() {
-
+        
         ResultSet result = null;
         String tableClientes = "";
-
+        
         try {
-
+            
             result = daoModelCliente.ListAll();
-
+            
             while (result.next()) {
                 tableClientes += "<tr>";
-
-                tableClientes += "<td class=\"text-center\">" + result.getString("tipoDocumento").toString().trim() + "</td>";
-                tableClientes += "<td class=\"text-center\">" + result.getString("numeroDocumento").toString().trim() + "</td>";
-                tableClientes += "<td class=\"text-center\">" + result.getString("nombreCliente").toString().trim() + "</td>";
-                tableClientes += "<td class=\"text-center\">" + result.getString("generoCliente").toString().trim() + "</td>";
-                tableClientes += "<td class=\"text-center\">" + result.getString("estadoEstudiante").toString().trim() + "</td>";
-                tableClientes += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#matricular\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n" +
-"                                                <span class=\"glyphicon glyphicon-search\"></span></a>\n</td>";
-
+                
+                tableClientes += "<td class=\"text-center\">" + result.getString("tipoDocumento").trim() + "</td>";
+                tableClientes += "<td class=\"text-center\">" + result.getString("numeroDocumento").trim() + "</td>";
+                tableClientes += "<td class=\"text-center\">" + result.getString("nombreCliente").trim() + "</td>";
+                tableClientes += "<td class=\"text-center\">" + result.getString("generoCliente").trim() + "</td>";
+                tableClientes += "<td class=\"text-center\">" + result.getString("estadoEstudiante").trim() + "</td>";
+                tableClientes += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#matricular\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
+                        + "                                                <span class=\"glyphicon glyphicon-search\"></span></a>\n</td>";
+                
                 tableClientes += "</tr>";
             }
-
+            
         } catch (Exception e) {
             tableClientes = "Ha Ocurrido un error" + e.getMessage();
         } finally {
             daoModelCliente.Signout();
         }
-
+        
         return tableClientes;
     }
 
