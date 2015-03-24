@@ -41,7 +41,7 @@ public class ControllerArticulo extends HttpServlet {
         if (action != null) {
 
             try {
-
+                request.setCharacterEncoding("UTF-8");
                 String descripcionArticulo = String.valueOf(request.getParameter("txtDescripcion"));
                 int cantidadDisponible = Integer.parseInt(request.getParameter("txtCantidad"));
                 int precioUnitario = Integer.parseInt(request.getParameter("txtPrecio"));
@@ -84,7 +84,7 @@ public class ControllerArticulo extends HttpServlet {
                 tableArticulos += "<tr>";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("idArticulo").toString().trim() + "</td>";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("tblcategoriaarticulo.nombreCategoriaArticulo").toString().trim() + "</td>";
-                tableArticulos += "<td class=\"text-center\">" + result.getString("descripcionArticulo").toString().trim() + "</td>";
+                tableArticulos += "<td class=\"text-center\">" + result.getString("descripcionArticulo").trim() + "</td>";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("cantidadDisponible").toString().trim() + "</td>";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("precioUnitario").toString().trim() + "</td>";
                 tableArticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulo\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"

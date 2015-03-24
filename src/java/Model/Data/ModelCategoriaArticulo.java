@@ -25,11 +25,11 @@ public class ModelCategoriaArticulo extends ConnectionDB {
 
     public boolean Add(ObjCategoriaArticulo _objCategoriaArticulo) {
         boolean objReturn = false;
-        String sql = "INSERT INTO `tblcategoriaarticulo`(`nombreCategoriaArticulo`) VALUES (?)";
+        String sql = "call spIngresarCategoriaArticulo (?)";
 
         try {
             getStmt();
-            pStmt = connection.prepareStatement(sql);
+            pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objCategoriaArticulo.getNombreCategoriaArticulo());
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {

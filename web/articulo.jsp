@@ -45,7 +45,7 @@
                                 </h4>
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in">
-                                <form id="form_articulo" action="ControllerArticulo" method="POST">
+                                <form id="form_articulo" action="ControllerArticulo" method="POST" >
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -132,9 +132,7 @@
                         <li class="pull-right">
                             <input type="search" value="Vinilos" class="form-control" />
                         </li>
-
                         <li class="pull-right">
-
                             <select class="form-control">
                                 <option>Codigo</option>
                                 <option>Nombre</option>
@@ -143,7 +141,6 @@
                         <li class="pull-right">
                             Buscar por:
                         </li>
-
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="articulos">
@@ -192,7 +189,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form>
+                                <form action="ControllerArticulo" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -272,7 +269,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form>
+                                <form method="POST" action="ControllerCategoriaArticulo">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -292,7 +289,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="panel-footer">
                                             <div class="col-md-6">
                                                 <div class="form-group">

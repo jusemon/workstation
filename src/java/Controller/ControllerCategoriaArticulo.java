@@ -41,7 +41,6 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                 String nombreCategoriaArticulo = String.valueOf(request.getParameter("txtNombre"));
                 _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                 daoModelCategoriaArticulo.Add(_objCategoriaArticulo);
-
                 response.sendRedirect("articulo.jsp");
 
             } catch (Exception e) {
@@ -61,8 +60,8 @@ public class ControllerCategoriaArticulo extends HttpServlet {
 
             while (result.next()) {
                 tableCategoriaarticulos += "<tr>";
-                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idCategoriaArticulo").toString().trim() + "</td>";
-                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaArticulo").toString().trim() + "</td>";
+                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idCategoriaArticulo").trim() + "</td>";
+                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaArticulo").trim() + "</td>";
                 tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulos\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
                         + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
 
