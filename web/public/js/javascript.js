@@ -1,6 +1,13 @@
 
 $(document).ready(function () {
 
+    var enlace = window.location.search;
+    if (enlace.indexOf('error=1') !== -1) {
+        alert('Has ingresado un usuario o contraseña incorrectos');
+    }
+    else if (enlace.indexOf('confirmacion=1') !== -1) {
+        alert('Bienvenido al Sistema WorkStation');
+    }
     var URLactual = window.location.pathname;
     if (URLactual.indexOf('index') !== -1) {
         $('#btnindex').attr('class', 'active');

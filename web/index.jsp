@@ -80,7 +80,6 @@
                 </div>    
             </div>
         </div>
-        
         todos los derechos reservados.
     </body>
     <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>

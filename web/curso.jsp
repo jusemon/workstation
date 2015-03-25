@@ -412,7 +412,7 @@
                         <li class="active">
                             <a href="#cursos" role="tab" data-toggle="tab">Listado de Cursos</a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="#fichas" role="tab" data-toggle="tab">Listado de Fichas</a>
                         </li>
                         <li>
@@ -427,7 +427,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="cursos">
-                            <table id="example" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblCursos" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -460,8 +460,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane active" id="fichas">
-                            <table id="example" class="table table-hover" cellspacing="0" width="100%">
+                        <div class="tab-pane" id="fichas">
+                            <table id="tblFichas" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -504,7 +504,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="seminarios">
-                            <table id="tbSeminarios" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblSeminarios" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>

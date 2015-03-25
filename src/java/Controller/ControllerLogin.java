@@ -56,10 +56,11 @@ public class ControllerLogin extends HttpServlet {
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
-                    response.sendRedirect("index.jsp?a=1");
+                    response.sendRedirect("index.jsp?confirmacion=1");
 
                 } else {
-                    response.sendRedirect("index.jsp?b=2");
+                    response.sendRedirect("index.jsp?error=1");
+                    
                 }
             } else if (request.getParameter("Action").equals("Cerrar Sesion")) {
                 HttpSession session = request.getSession();
