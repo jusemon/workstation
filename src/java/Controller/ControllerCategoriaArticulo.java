@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerCategoriaArticulo extends HttpServlet {
 
+    public ModelCategoriaArticulo daoModelCategoriaArticulo = new ModelCategoriaArticulo();
+    public ObjCategoriaArticulo _objCategoriaArticulo = new ObjCategoriaArticulo();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -29,16 +32,13 @@ public class ControllerCategoriaArticulo extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    public ModelCategoriaArticulo daoModelCategoriaArticulo = new ModelCategoriaArticulo();
-    public ObjCategoriaArticulo _objCategoriaArticulo = new ObjCategoriaArticulo();
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
         if (action != null) {
             try {
-                String nombreCategoriaArticulo = String.valueOf(request.getParameter("txtNombre"));
+                String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
                 _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                 daoModelCategoriaArticulo.Add(_objCategoriaArticulo);
                 response.sendRedirect("articulo.jsp");
@@ -52,7 +52,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
 
     public String getTableCategoriaArticulo() {
 
-        ResultSet result = null;
+        ResultSet result;
         String tableCategoriaarticulos = "";
 
         try {

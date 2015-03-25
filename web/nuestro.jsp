@@ -10,11 +10,8 @@
     <head>
         <title>WorkStation</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
-        <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="public/js/javascript.js"></script>
+        <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
     </head>
     <body>
         <%@include file="WEB-INF/jspf/superior.jspf" %>
@@ -25,4 +22,7 @@
             </div>            
         </div>
     </body>
+    <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="public/js/javascript.js"></script>
 </html>

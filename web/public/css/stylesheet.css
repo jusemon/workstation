@@ -1,10 +1,10 @@
 body{
     padding-top: 70px;
-    
+
 }
 
 .navbar{
-    
+
     padding: 0 10px 0 10px;
 }
 
@@ -15,7 +15,6 @@ tbody > tr {
 .result{
     margin-top:20px;
 }
-
 
 .navbar-login
 {
@@ -117,4 +116,12 @@ tbody > tr {
 
 .mac {
     position: relative;
+}
+
+th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        margin: 0 auto;
+}
+.tab-content{
+      margin-top: 1%;
 }

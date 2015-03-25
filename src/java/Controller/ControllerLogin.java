@@ -43,8 +43,8 @@ public class ControllerLogin extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if (request.getParameter("Action").equals("Iniciar Sesion")) {
                 HttpSession session = request.getSession();
-                String nombre = request.getParameter("nom");
-                String pass = request.getParameter("pass");
+                String nombre = new String(request.getParameter("nom").getBytes("ISO-8859-1"),"UTF-8");
+                String pass = new String(request.getParameter("pass").getBytes("ISO-8859-1"),"UTF-8");
 
                 if (comprobarUsuario(nombre, pass)) {
                     session.setAttribute("usuario", nombre);
@@ -53,6 +53,8 @@ public class ControllerLogin extends HttpServlet {
                     try {
                         String[] aux = _modelModulo.convertirRSaArray(_modelModulo.ListByUser(_objUsuario.getId()));
                         session.setAttribute("derechos", aux);
+                        session.setAttribute("isConsulta", false);
+                        session.setAttribute("resultado", null);
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }

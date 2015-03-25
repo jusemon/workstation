@@ -22,8 +22,9 @@
     <head>
         <title>WorkStation</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
+        <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
+        <link href="public/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <%@include file="WEB-INF/jspf/superior.jspf" %>
@@ -167,7 +168,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="compra">
-                            <table id="example" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblCompra" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Codigo</th>
@@ -176,7 +177,6 @@
                                         <th class="text-center">Consultar</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     <tr>
                                         <td class="text-center">001</td>
@@ -190,7 +190,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="ventas">
-                            <table id="tbSeminarios" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblVentas" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -211,7 +211,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="diario">
-                            <table id="tbdiario" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblDiario" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -239,18 +239,18 @@
                 </div>
             </div>
         </div>
-                <!--
-        Popup Detalle Compra
-        
-        Los Popup son ventanas emergentes que estan formadas por la clase modal, a su vez esta clase
-        tiene categorias, en este caso este es un modal-dialog que permite ingresar informacion al usuario
-        el modal tiene un contenido que es el modal-content y este contenido esta separado por una cabeza (modal-header)
-        un cuerpo (modal-body) y un pie (modal-footer), en mi caso solo le puse el cuerpo y dentro de el puse el panel con la información
-        referente al detalle de la compra
-        
-        El panel que se encuentra en el Popup Detalle compra, esta dividido en cabeza cuerpo y pie, la capeza a su vez tiene un titulo.
-        dentro del cuerpo del panel se encuentra el formulario para agregar elementos y una tabla que muestra todos los articulos a comprar,
-        finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
+        <!--
+Popup Detalle Compra
+
+Los Popup son ventanas emergentes que estan formadas por la clase modal, a su vez esta clase
+tiene categorias, en este caso este es un modal-dialog que permite ingresar informacion al usuario
+el modal tiene un contenido que es el modal-content y este contenido esta separado por una cabeza (modal-header)
+un cuerpo (modal-body) y un pie (modal-footer), en mi caso solo le puse el cuerpo y dentro de el puse el panel con la información
+referente al detalle de la compra
+
+El panel que se encuentra en el Popup Detalle compra, esta dividido en cabeza cuerpo y pie, la capeza a su vez tiene un titulo.
+dentro del cuerpo del panel se encuentra el formulario para agregar elementos y una tabla que muestra todos los articulos a comprar,
+finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         -->
 
         <div class="modal" id="miPopupCompra">
@@ -593,15 +593,6 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
-            function imprimir() {
-                var d = document.getElementById("boton1");
-                d.setAttribute("value", "Imprimir");
-            }
-
-        </script> 
     </body>
-    <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="public/js/javascript.js"></script>
+    <%@include file="WEB-INF/jspf/imports.jspf" %>
 </html>

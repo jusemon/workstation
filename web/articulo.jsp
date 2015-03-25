@@ -22,9 +22,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
         <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
-        <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="public/js/javascript.js"></script>
+        <link href="public/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <%@include file="WEB-INF/jspf/superior.jspf" %>
@@ -67,17 +65,17 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label for="nombreArticulo">
+                                                                <label for="nombreBusqueda">
                                                                     Ingresa el nombre
                                                                 </label>
-                                                                <input name="nombreArticulo" id="nombreArticulo" type="text" class="form-control" placeholder="Ejm: Pincel" required>
+                                                                <input name="nombreBusqueda" id="nombreArticulo" type="text" class="form-control" placeholder="Ejm: Pincel" required>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <button type="button" class=" btn btn-default btn-block" >
+                                                                <button type="submit" name="action" value="Consultar" class=" btn btn-default btn-block" >
                                                                     <span class="glyphicon glyphicon-search "></span>
                                                                 </button>
                                                             </div>
@@ -126,31 +124,16 @@
                         <li>
                             <a href="#categorias" role="tab" data-toggle="tab">Listado de Categorias</a>
                         </li>
-                        <li class="pull-right">
-                            <input type="submit" class="btn glyphicon-search" value="Buscar"/>
-                        </li>
-                        <li class="pull-right">
-                            <input type="search" value="Vinilos" class="form-control" />
-                        </li>
-                        <li class="pull-right">
-                            <select class="form-control">
-                                <option>Codigo</option>
-                                <option>Nombre</option>
-                            </select>
-                        </li>
-                        <li class="pull-right">
-                            Buscar por:
-                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="articulos">
-                            <table id="tblArticulos" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblArticulos" class="table table-striped table-bordered tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Codigo</th>
                                         <th class="text-center">Categoria</th>
                                         <th class="text-center">Descripcion</th>
-                                        <td class="text-center">Cantidad</td>                                        
+                                        <th class="text-center">Cantidad</th>                                        
                                         <th class="text-center">Precio</th>
                                         <th class="text-center">Editar</th>
                                     </tr>
@@ -159,12 +142,11 @@
                                     <%
                                         out.print(controllerArticulo.getTableArticulo());
                                     %>
-
                                 </tbody>
                             </table>
                         </div>
                         <div class="tab-pane" id="categorias">
-                            <table id="tblCategorias" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblCategorias" class="table table-striped table-bordered tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -173,8 +155,8 @@
                                     </tr>
                                 </thead>
                                 <tbody> 
-                                    <%out
-                                                .print(controllerCategoriaArticulo.getTableCategoriaArticulo());
+                                    <%
+                                        out.print(controllerCategoriaArticulo.getTableCategoriaArticulo());
                                     %>
                                 </tbody>
                             </table>
@@ -236,7 +218,8 @@
                                                         </label>
                                                         <select name="idCategoria" id="idCategoria" class="form-control" required>
                                                             <option value="">Seleccionar...</option>
-                                                            <%                                                            out.print(controllerArticulo.getOptionsCategorias());
+                                                            <%
+                                                                out.print(controllerArticulo.getOptionsCategorias());
                                                             %>
                                                         </select>
                                                     </div>
@@ -309,5 +292,6 @@
                 </div>
             </div>
         </div>
+        <%@include file="WEB-INF/jspf/imports.jspf" %>
     </body>
 </html>

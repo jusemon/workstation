@@ -14,12 +14,17 @@ import javax.servlet.http.HttpServletResponse;
 import Model.DTO.ObjArticulo;
 import Model.Data.ModelArticulo;
 import Model.Data.ModelCategoriaArticulo;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author lorenzo
  */
 public class ControllerArticulo extends HttpServlet {
+
+    public ModelArticulo daoModelArticulo = new ModelArticulo();
+    public ObjArticulo _objArticulo = new ObjArticulo();
+    public ModelCategoriaArticulo daoModelCategoriaArticulo = new ModelCategoriaArticulo();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,68 +35,60 @@ public class ControllerArticulo extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    public ModelArticulo daoModelArticulo = new ModelArticulo();
-    public ObjArticulo _objArticulo = new ObjArticulo();
-    public ModelCategoriaArticulo daoModelCategoriaArticulo = new ModelCategoriaArticulo();
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
-        if (action != null) {
-
+        if (request.getParameter("action") != null) {
+            String action = new String(request.getParameter("action").getBytes("ISO-8859-1"), "UTF-8");
             try {
-                request.setCharacterEncoding("UTF-8");
-                String descripcionArticulo = String.valueOf(request.getParameter("txtDescripcion"));
-                int cantidadDisponible = Integer.parseInt(request.getParameter("txtCantidad"));
-                int precioUnitario = Integer.parseInt(request.getParameter("txtPrecio"));
-                int idCategoriaArticulo;
-                if (request.getParameter("idCategoria") != null) {
-                    idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
-                    _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
-                    _objArticulo.setDescripcionArticulo(descripcionArticulo);
-                    _objArticulo.setCantidadDisponible(cantidadDisponible);
-                    _objArticulo.setPrecioUnitario(precioUnitario);
-                    daoModelArticulo.Add(_objArticulo);
+                if (action.equals("Añadir")) {
+                    String descripcionArticulo = new String(request.getParameter("txtDescripcion").getBytes("ISO-8859-1"), "UTF-8");
+                    int cantidadDisponible = Integer.parseInt(request.getParameter("txtCantidad"));
+                    int precioUnitario = Integer.parseInt(request.getParameter("txtPrecio"));
+                    int idCategoriaArticulo;
+                    if (request.getParameter("idCategoria") != null) {
+                        idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
+                        _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
+                        _objArticulo.setDescripcionArticulo(descripcionArticulo);
+                        _objArticulo.setCantidadDisponible(cantidadDisponible);
+                        _objArticulo.setPrecioUnitario(precioUnitario);
+                        daoModelArticulo.Add(_objArticulo);
+                        response.sendRedirect("articulo.jsp");
+                    }
+                } else if (action.equals("Consultar")) {
+                    String nombreBusqueda = new String(request.getParameter("nombreBusqueda").getBytes("ISO-8859-1"), "UTF-8");
+                    HttpSession session = request.getSession();
+                    session.setAttribute("isConsulta", true);
+                    session.setAttribute("resultado", nombreBusqueda);
+                    response.sendRedirect("articulo.jsp");
                 }
 
-                response.sendRedirect("articulo.jsp");
+            } catch (NumberFormatException ne) {
 
-            }catch(NumberFormatException ne)
-            {
-                
-            }            
-            catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println(e.getMessage());
-            } 
+            }
 
         }
 
     }
 
     public String getTableArticulo() {
-
-        ResultSet result = null;
+        ResultSet result;
         String tableArticulos = "";
-        ResultSet result2 = null;
-        
-
         try {
-            result = daoModelArticulo.ListAll();
-              
-            
-            while (result.next()) {
-                tableArticulos += "<tr>";
-                tableArticulos += "<td class=\"text-center\">" + result.getString("idArticulo").toString().trim() + "</td>";
-                tableArticulos += "<td class=\"text-center\">" + result.getString("tblcategoriaarticulo.nombreCategoriaArticulo").toString().trim() + "</td>";
-                tableArticulos += "<td class=\"text-center\">" + result.getString("descripcionArticulo").trim() + "</td>";
-                tableArticulos += "<td class=\"text-center\">" + result.getString("cantidadDisponible").toString().trim() + "</td>";
-                tableArticulos += "<td class=\"text-center\">" + result.getString("precioUnitario").toString().trim() + "</td>";
-                tableArticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulo\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
-
-                tableArticulos += "</tr>";
-            }
+                result = daoModelArticulo.ListAll();
+                while (result.next()) {
+                    tableArticulos += "<tr>";
+                    tableArticulos += "<td class=\"text-center\">" + result.getString("idArticulo").trim() + "</td>";
+                    tableArticulos += "<td class=\"text-center\">" + result.getString("tblcategoriaarticulo.nombreCategoriaArticulo").trim() + "</td>";
+                    tableArticulos += "<td class=\"text-center\">" + result.getString("descripcionArticulo").trim() + "</td>";
+                    tableArticulos += "<td class=\"text-center\">" + result.getString("cantidadDisponible").trim() + "</td>";
+                    tableArticulos += "<td class=\"text-center\">" + result.getString("precioUnitario").trim() + "</td>";
+                    tableArticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulo\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
+                            + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
+                    tableArticulos += "</tr>";
+                }
         } catch (Exception e) {
             tableArticulos = "Ha Ocurrido un error" + e.getMessage();
         } finally {
@@ -102,14 +99,14 @@ public class ControllerArticulo extends HttpServlet {
     }
 
     public String getOptionsCategorias() {
-        ResultSet result = null;
+        ResultSet result;
         String OptionsCategorias = "";
 
         try {
             result = daoModelCategoriaArticulo.ListAll();
 
             while (result.next()) {
-                OptionsCategorias += "<option value=\"" + result.getString("idCategoriaArticulo").toString().trim() + "\">" + result.getString("nombreCategoriaArticulo").toString().trim() + "</option>";
+                OptionsCategorias += "<option value=\"" + result.getString("idCategoriaArticulo").trim() + "\">" + result.getString("nombreCategoriaArticulo").trim() + "</option>";
             }
 
         } catch (Exception e) {

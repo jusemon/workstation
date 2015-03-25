@@ -13,11 +13,9 @@
     <head>
         <title>WorkStation</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
-        <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="public/js/javascript.js"></script>
+        <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
+        <link href="public/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <%@include file="WEB-INF/jspf/superior.jspf" %>
@@ -188,7 +186,6 @@
                                     </div>
                                 </div>
                                 <div class="panel-footer">
-
                                 </div>
                             </div>
                         </div>
@@ -205,16 +202,10 @@
                         <li>
                             <a href="#seminarios" role="tab" data-toggle="tab">Listado de Seminarios</a>
                         </li>
-                        <li class="pull-right">
-                            <input type="submit" class="btn glyphicon-search" value="Buscar"/>
-                        </li>
-                        <li class="pull-right">
-                            <input type="search" value="Lorem Ipsum" class="form-control" />
-                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="cursos">
-                            <table id="example" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="example" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -248,7 +239,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="fichas">
-                            <table id="example" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="example" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -291,7 +282,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="seminarios">
-                            <table id="tbSeminarios" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tbSeminarios" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -548,6 +539,6 @@
                 </div>
             </div>
         </div>
-
+        <%@include file="WEB-INF/jspf/imports.jspf" %>
     </body>
 </html>

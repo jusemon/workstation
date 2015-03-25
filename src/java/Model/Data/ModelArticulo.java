@@ -6,12 +6,9 @@
 package Model.Data;
 
 import Model.JDBC.ConnectionDB;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import Model.DTO.ObjArticulo;
 
 /**
@@ -62,6 +59,21 @@ public class ModelArticulo extends ConnectionDB {
             System.err.println("SQLException:" + e.getMessage());
         }
 
+        return rs;
+    }
+
+    public ResultSet buscarPorNombre(String nombreArticulo) {
+        ResultSet rs = null;
+        String sql = "call spConsultarArticuloByNombre(?)";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, nombreArticulo);
+            rs = pStmt.executeQuery();
+            
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
         return rs;
     }
     

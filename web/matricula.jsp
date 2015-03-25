@@ -17,15 +17,12 @@
         bootstrap.min.js tiene metodos jquery para darle vida y movilidad a la pagina.
         javascript.js son librerias propias para darle algunos eventos a los botones.
     -->    
-    <head>
+    <head>       
         <title>WorkStation</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
         <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
-        <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
+        <link href="public/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
 
@@ -110,21 +107,15 @@
                 <div class="col-md-8">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="active">
-                            <a href="#area" role="tab" data-toggle="tab">Listado de Estudiantes</a>
+                            <a href="#estudiantes" role="tab" data-toggle="tab">Listado de Estudiantes</a>
                         </li>
                         <li>
                             <a href="#matriculas" role="tab" data-toggle="tab">Listado de Matriculas</a>
                         </li>
-                        <li class="pull-right">
-                            <input type="submit" class="btn glyphicon-search" value="Buscar"/>
-                        </li>
-                        <li class="pull-right">
-                            <input type="search" value="1017225673" class="form-control" />
-                        </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="area">
-                            <table id="example" class="table table-hover" cellspacing="0" width="100%">
+                        <div class="tab-pane active" id="estudiantes">
+                            <table id="tblEstudiantes" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Tipo Documento</th>
@@ -135,7 +126,6 @@
                                         <th class="text-center">Consultar</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     <tr>
                                         <td class="text-center">CC</td>
@@ -154,7 +144,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="matriculas">
-                            <table id="tbSeminarios" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblMatriculas" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -706,19 +696,7 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
-                                    function esMenor () {
-                                    var nacimiento = document.getElementById("dateFechaNacimiento").getAttribute("value");
-                                            var hoy = Date.now();
-                                            var diferencia = hoy - nacimiento;
-                                            alert(nacimiento);
-                                    }
-
-        </script>
-
-        <script src="public/js/javascript.js" type="text/javascript"></script>
-
-
     </body>
+    <%@include file="WEB-INF/jspf/imports.jspf" %>
 </html>
 
