@@ -27,11 +27,11 @@ public class ModelArticulo extends ConnectionDB {
     
     public boolean Add(ObjArticulo _objArticulo){
         boolean objReturn = false;
-        String sql = "INSERT INTO `tblarticulo`(`idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioUnitario`) VALUES (?,?,?,?)";
+        String sql = "call spIngresarArticulo(?,?,?,?)";
         
         try {
             getStmt();
-            pStmt = connection.prepareStatement(sql);
+            pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, _objArticulo.getIdCategoriaArticulo());
             pStmt.setString(2, _objArticulo.getDescripcionArticulo());
             pStmt.setInt(3, _objArticulo.getCantidadDisponible());

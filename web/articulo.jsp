@@ -32,54 +32,6 @@
         <%            Controller.ControllerCategoriaArticulo controllerCategoriaArticulo = new ControllerCategoriaArticulo();
             Controller.ControllerArticulo controllerArticulo = new ControllerArticulo();
         %>
-        <div class="modal" id="miPopup">
-            <div class="modal-dialog ">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <form>
-                                    <div class="panel">
-                                        <div class="panel-heading estilo2">
-                                            <h3 class="panel-title">
-                                                Ingresar Categoria
-                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                                            </h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="txtNombre">
-                                                            Nombre
-                                                        </label>
-                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="panel-footer">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4">
@@ -93,68 +45,49 @@
                                 </h4>
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in">
-
-                                <form id="form_articulo" action="ControllerArticulo" method="POST">
-
+                                <form id="form_articulo" action="ControllerArticulo" method="POST" >
                                     <div class="panel-body">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="txtDescripcion">
-                                                        Descripcion Articulo:
-                                                    </label>
-                                                    <input name="txtDescripcion" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>
+                                                    <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupArticulo" data-dismiss="modal" name="regArticulo" value="Registrar Articulo">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="txtPrecio">
-                                                        Precio:
-                                                    </label>
-                                                    <input name="txtPrecio" id="txtPrecio" type="number" class="form-control" placeholder="Ejm: 10000" required>
+                                                <div class="panel-group" id="accordion">
+                                                    <div class="panel panel-default">
+                                                        <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Articulo" data-parent="#accodion" href="#collapseConsultaArticulo"/>                                                           
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="txtCantidad">
-                                                        Cantidad disponible:
-                                                    </label>
-                                                    <input name="txtCantidad" id="txtCantidad" type="text" class="form-control" placeholder="Ejm: 30" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="idCategoria">
-                                                        Categoria:
-                                                    </label>
-                                                    <select name="idCategoria" id="idCategoria" class="form-control" required>
-                                                        <option value="">Seleccionar...</option>
-                                                        <%                                                            out.print(controllerArticulo.getOptionsCategorias());
-                                                        %>
-                                                    </select>
+                                            <div class="panel-collapse collapse" id="collapseConsultaArticulo">
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="nombreArticulo">
+                                                                    Ingresa el nombre
+                                                                </label>
+                                                                <input name="nombreArticulo" id="nombreArticulo" type="text" class="form-control" placeholder="Ejm: Pincel" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <button type="button" class=" btn btn-default btn-block" >
+                                                                    <span class="glyphicon glyphicon-search "></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="panel-footer">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -173,28 +106,12 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="txtNombre">
-                                                        Nombre:
-                                                    </label>
-                                                    <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                    <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupCategoria" data-dismiss="modal" name="regCategoria" value="Registrar Categoria">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="panel-footer">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -215,9 +132,7 @@
                         <li class="pull-right">
                             <input type="search" value="Vinilos" class="form-control" />
                         </li>
-
                         <li class="pull-right">
-
                             <select class="form-control">
                                 <option>Codigo</option>
                                 <option>Nombre</option>
@@ -226,7 +141,6 @@
                         <li class="pull-right">
                             Buscar por:
                         </li>
-
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="articulos">
@@ -264,6 +178,132 @@
                                     %>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="miPopupArticulo">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form action="ControllerArticulo" method="POST">
+                                    <div class="panel">
+                                        <div class="panel-heading estilo2">
+                                            <h3 class="panel-title">
+                                                Ingresar Articulo
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                            </h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtDescripcion">
+                                                            Descripcion Articulo:
+                                                        </label>
+                                                        <input name="txtDescripcion" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtPrecio">
+                                                            Precio:
+                                                        </label>
+                                                        <input name="txtPrecio" id="txtPrecio" type="number" class="form-control" placeholder="Ejm: 10000" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtCantidad">
+                                                            Cantidad disponible:
+                                                        </label>
+                                                        <input name="txtCantidad" id="txtCantidad" type="text" class="form-control" placeholder="Ejm: 30" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="idCategoria">
+                                                            Categoria:
+                                                        </label>
+                                                        <select name="idCategoria" id="idCategoria" class="form-control" required>
+                                                            <option value="">Seleccionar...</option>
+                                                            <%                                                            out.print(controllerArticulo.getOptionsCategorias());
+                                                            %>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="miPopupCategoria">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form method="POST" action="ControllerCategoriaArticulo">
+                                    <div class="panel">
+                                        <div class="panel-heading estilo2">
+                                            <h3 class="panel-title">
+                                                Ingresar Categoria
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                            </h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNombre">
+                                                            Nombre
+                                                        </label>
+                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

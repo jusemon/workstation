@@ -101,7 +101,6 @@ public class ControllerLogin extends HttpServlet {
         }
         try {
             comprobarUsuario(nombre, pass);
-            System.err.println(_objUsuario.getId());
             result = _modelModulo.ListByUser(_objUsuario.getId());
             String btn = null;
             while (result.next()) {
