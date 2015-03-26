@@ -77,18 +77,18 @@ public class ControllerArticulo extends HttpServlet {
         ResultSet result;
         String tableArticulos = "";
         try {
-                result = daoModelArticulo.ListAll();
-                while (result.next()) {
-                    tableArticulos += "<tr>";
-                    tableArticulos += "<td class=\"text-center\">" + result.getString("idArticulo").trim() + "</td>";
-                    tableArticulos += "<td class=\"text-center\">" + result.getString("tblcategoriaarticulo.nombreCategoriaArticulo").trim() + "</td>";
-                    tableArticulos += "<td class=\"text-center\">" + result.getString("descripcionArticulo").trim() + "</td>";
-                    tableArticulos += "<td class=\"text-center\">" + result.getString("cantidadDisponible").trim() + "</td>";
-                    tableArticulos += "<td class=\"text-center\">" + result.getString("precioUnitario").trim() + "</td>";
-                    tableArticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulo\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
-                            + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
-                    tableArticulos += "</tr>";
-                }
+            result = daoModelArticulo.ListAll();
+            while (result.next()) {
+                tableArticulos += "<tr>";
+                tableArticulos += "<td class=\"text-center\">" + result.getString("idArticulo").trim() + "</td>";
+                tableArticulos += "<td class=\"text-center\">" + result.getString("tblcategoriaarticulo.nombreCategoriaArticulo").trim() + "</td>";
+                tableArticulos += "<td class=\"text-center\">" + result.getString("descripcionArticulo").trim() + "</td>";
+                tableArticulos += "<td class=\"text-center\">" + result.getString("cantidadDisponible").trim() + "</td>";
+                tableArticulos += "<td class=\"text-center\">" + result.getString("precioUnitario").trim() + "</td>";
+                tableArticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulo\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
+                        + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
+                tableArticulos += "</tr>";
+            }
         } catch (Exception e) {
             tableArticulos = "Ha Ocurrido un error" + e.getMessage();
         } finally {

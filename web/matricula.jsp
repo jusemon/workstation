@@ -185,7 +185,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form>
+                                <form action="ControllerEstudiante" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -530,7 +530,6 @@
                 </div>
             </div>
         </div>
-
         <div class="modal" id="miPopupEstudiante">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -655,7 +654,7 @@
                                                         <label for="txtCorreo">
                                                             Correo Electronico
                                                         </label>
-                                                        <input name="txtCorreo" id="txtCorreo" type="text" class="form-control" placeholder="Ejm: juansmm@outlook.com" required>
+                                                        <input name="txtCorreo" id="txtCorreo" type="email" class="form-control" placeholder="Ejm: juansmm@outlook.com" required>
                                                     </div>
                                                 </div>
                                             </div>                             
@@ -679,7 +678,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <input class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                                    <input class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">

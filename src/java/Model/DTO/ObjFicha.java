@@ -5,6 +5,8 @@
  */
 package Model.DTO;
 
+import java.sql.Date;
+
 /**
  *
  * @author Administrador
@@ -13,8 +15,17 @@ public class ObjFicha {
     private int idficha;
     private int idCurso;
     private int cuposDisponibles;
-    private String fechaInicio;
+    private int precioFicha;
+    private Date fechaInicio;
 
+    public int getPrecioFicha() {
+        return precioFicha;
+    }
+
+    public void setPrecioFicha(int precioFicha) {
+        this.precioFicha = precioFicha;
+    }
+    
     public int getIdficha() {
         return idficha;
     }
@@ -39,11 +50,11 @@ public class ObjFicha {
         this.cuposDisponibles = cuposDisponibles;
     }
 
-    public String getFechaInicio() {
+    public Date getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(String fechaInicio) {
+    public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
     
