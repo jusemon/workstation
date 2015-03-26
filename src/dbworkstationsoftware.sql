@@ -7,7 +7,6 @@
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -24,6 +23,12 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE spIngresarCategoriaCurso
+(IN `nombre` VARCHAR(30))
+BEGIN
+insert into tblCategoriaCurso (nombreCategoriaCurso) values (nombre);
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarArticulo`(
     in idArticu				int,
 	in idCategoriaArticu	int,
@@ -399,22 +404,12 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSeminario`(
-    in idSeminar        int,
     in nombreSeminar    varchar(50),
     in duracionSeminar  int,
-    in precioSeminar    int,
     in estadoSeminar    int
  )
 BEGIN
-	declare msg varchar(40);    
-	if (exists(select idSeminario from tblSeminario where idSeminario=idSeminar)) then
-		set msg="Este seminario ya existe";
-		select msg as Respuesta;
-	else
-		insert into tblSeminario (nombreSeminar,duracionSeminar,precioSeminar,estadoSeminar) Values(nombreSeminar,duracionSeminar,precioSeminar,estadoSeminar);
-		set msg="Este seminario se ha registrado exitosamente";
-		select msg as Respuesta; 
-	end if;
+        insert into tblSeminario (nombreSeminar,duracionSeminar,estadoSeminar) Values(nombreSeminar,duracionSeminar,estadoSeminar);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSubsidio`(IN `idSubsid` INT, IN `nitEmpre` INT, IN `idClien` VARCHAR(30), IN `fechaAsignaci` DATETIME, IN `valorSubsid` int)
