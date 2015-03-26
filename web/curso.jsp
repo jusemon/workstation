@@ -4,6 +4,7 @@
     Author     : Administrador
 --%>
 
+<%@page import="Controller.ControllerCategoriaCurso"%>
 <%@page import="Controller.ControllerFicha"%>
 <%@page import="Controller.ControllerCurso"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,6 +13,7 @@
     };
     ControllerCurso controllerCurso = new ControllerCurso();
     ControllerFicha controllerFicha = new ControllerFicha();
+    ControllerCategoriaCurso controllerCategoriaCurso = new ControllerCategoriaCurso();
 %>
 <!DOCTYPE html>
 <html>
@@ -42,6 +44,13 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupCurso" data-dismiss="modal" name="regCurso" value="Registrar Curso">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupCategoriaCurso" data-dismiss="modal" name="regCatCurso" value="Registrar Categoria">
                                             </div>
                                         </div>
                                     </div>
@@ -201,6 +210,9 @@
                         <li class="active">
                             <a href="#cursos" role="tab" data-toggle="tab">Listado de Cursos</a>
                         </li>
+                        <li class="">
+                            <a href="#categoriaCursos" role="tab" data-toggle="tab">Categorias de los Cursos</a>
+                        </li>
                         <li>
                             <a href="#fichas" role="tab" data-toggle="tab">Listado de Fichas</a>
                         </li>
@@ -221,8 +233,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%                     
-                                        out.print(controllerCurso.getTableCursos());
+                                    <%                                        out.print(controllerCurso.getTableCursos());
+                                    %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="categoriaCursos">
+                            <table id="example" class="table table-hover tabla" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Código</th>
+                                        <th class="text-center">Nombre</th>
+                                        <th class="text-center">Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%
+                                        out.print(controllerCategoriaCurso.getTableCategoriaCurso());
                                     %>
                                 </tbody>
                             </table>
@@ -232,7 +259,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
-                                        <th class="text-center">Curso</th>
+                                        <th class="text-center">Nombre</th>
                                         <th class="text-center">Cupos Disponibles</th>
                                         <th class="text-center">Precio</th>
                                         <th class="text-center">Fecha</th>
@@ -353,6 +380,56 @@
             </div>
         </div>
 
+        <div class="modal" id="miPopupCategoriaCurso">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">                               
+                                <form id="form_Maestros" action="ControllerCategoriaCurso" method="POST">
+                                    <div class="panel">
+                                        <div class="panel-heading estilo2">
+                                            <h3 class="panel-title">
+                                                Ingresar Categoria
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                            </h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNombre">
+                                                            Nombre Categoria Curso
+                                                        </label>
+                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Oleo" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
         <div class="modal" id="miPopupSeminario">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -434,7 +511,6 @@
                 </div>
             </div>
         </div>
-
         <div class="modal" id="miPopupFicha">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -515,7 +591,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>        
         <%@include file="WEB-INF/jspf/imports.jspf" %>
     </body>
 </html>

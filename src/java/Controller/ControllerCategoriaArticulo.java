@@ -46,7 +46,6 @@ public class ControllerCategoriaArticulo extends HttpServlet {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-
         }
     }
 
@@ -74,6 +73,26 @@ public class ControllerCategoriaArticulo extends HttpServlet {
             daoModelCategoriaArticulo.Signout();
         }
         return tableCategoriaarticulos;
+    }
+
+    public String getOptionsCategorias() {
+        ResultSet result;
+        String OptionsCategorias = "";
+
+        try {
+            result = daoModelCategoriaArticulo.ListAll();
+
+            while (result.next()) {
+                OptionsCategorias += "<option value=\"" + result.getString("idCategoriaArticulo").trim() + "\">" + result.getString("nombreCategoriaArticulo").trim() + "</option>";
+            }
+
+        } catch (Exception e) {
+            OptionsCategorias = "Ha Ocurrido un error" + e.getMessage();
+        } finally {
+            daoModelCategoriaArticulo.Signout();
+        }
+
+        return OptionsCategorias;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
