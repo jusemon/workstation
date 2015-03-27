@@ -50,7 +50,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupCategoriaCurso" data-dismiss="modal" name="regCatCurso" value="Registrar Categoria">
+                                                <input class="btn btn-default btn-block" type="button" id="registrarCategoriaCurso" name="regCatCurso" value="Registrar Categoria">
                                             </div>
                                         </div>
                                     </div>
@@ -131,13 +131,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%                                        out.print(controllerCurso.getTableCursos());
+                                    <%
+                                        out.print(controllerCurso.getTableCursos());
                                     %>
                                 </tbody>
                             </table>
                         </div>
                         <div class="tab-pane" id="categoriaCursos">
-                            <table id="tblCategoriaCursos" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblCategoriaCursos" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -323,13 +324,14 @@
                                             </h3>
                                         </div>
                                         <div class="panel-body">
+                                            <input type="hidden" id="idCategoriaCurso" name="idCategoriaCurso"/>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtNombre">
                                                             Nombre Categoria Curso
                                                         </label>
-                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Oleo" required>
+                                                        <input name="txtNombre" id="txtNombreCategoriaCurso" type="text" class="form-control" placeholder="Ejm: Oleo" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -338,12 +340,12 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
+                                                        <input id="btnRegistrarCC" class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
+                                                        <input id="btnEditarCC" class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
                                                     </div>
                                                 </div>
                                             </div>

@@ -54,4 +54,24 @@ public class ModelCategoriaCurso extends ConnectionDB {
         }
         return rs;
     }
+
+    public boolean Edit(ObjCategoriaCurso _objCategoriaCurso) {
+        boolean objReturn = false;
+        String sql = "call spActualizarCategoriaCurso(?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, _objCategoriaCurso.getIdCategoriaCurso());
+            pStmt.setString(2, _objCategoriaCurso.getNombreCategoriaCurso());
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
 }

@@ -3,10 +3,11 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-03-2015 a las 02:46:27
+-- Tiempo de generación: 27-03-2015 a las 07:39:05
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -18,16 +19,11 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `dbworkstationsoftware`
 --
+
 DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE spIngresarCategoriaCurso
-(IN `nombre` VARCHAR(30))
-BEGIN
-insert into tblCategoriaCurso (nombreCategoriaCurso) values (nombre);
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarArticulo`(
     in idArticu				int,
 	in idCategoriaArticu	int,
@@ -52,6 +48,12 @@ BEGIN
 	update tblCategoriaArticulo set nombreCategoriaArticulo=nombreCategoriaArticu where idCategoriaArticulo=idCategoriaArticu;
 	set msg="Categoría actualizada correctamente";
 	select msg as Respuesta; 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCategoriaCurso`(idCategoria int, nombreCategoria varchar(30))
+BEGIN
+	update tblcategoriacurso set nombreCategoriaCurso=nombreCategoria
+	where idtblCategoriaCurso=idCategoria;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCliente`(IN `idClien` VARCHAR(30), IN `tipoClien` INT, IN `tipoDocumen` VARCHAR(5), IN `numeroDocumen` VARCHAR(15), IN `fechaNacimien` DATETIME, IN `generoClien` INT, IN `nombreClien` VARCHAR(50), IN `apellidoClien` VARCHAR(50), IN `direccionClien` VARCHAR(50), IN `telefonoFi` INT, IN `telefonoMov` INT, IN `emailClien` VARCHAR(50), IN `idAcudien` INT)
@@ -273,6 +275,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCategoriaArticulo`(IN `no
     NO SQL
 insert into tblCategoriaArticulo (nombreCategoriaArticulo) values (nombre)$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCategoriaCurso`(IN `nombre` VARCHAR(30))
+BEGIN
+insert into tblCategoriaCurso (nombreCategoriaCurso) values (nombre);
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCliente`(IN `idClien` VARCHAR(30), IN `tipoClien` INT, IN `tipoDocumen` VARCHAR(5), IN `numeroDocumen` VARCHAR(15), IN `fechaNacimien` DATETIME, IN `generoClien` INT, IN `nombreClien` VARCHAR(50), IN `apellidoClien` VARCHAR(50), IN `direccionClien` VARCHAR(50), IN `telefonoFi` VARCHAR(15), IN `telefonoMov` VARCHAR(15), IN `emailClien` VARCHAR(50), IN `idAcudien` INT)
 BEGIN
 	declare msg varchar(40);    
@@ -292,7 +299,7 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCurso`(
-nombre varchar(30), duracion datetime, estado int, descripcion varchar(50), idcategoria int
+nombre varchar(30), duracion int, estado int, descripcion varchar(50), idcategoria int
 )
 BEGIN
 INSERT INTO `dbworkstationsoftware`.`tblcurso`
@@ -376,10 +383,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarFicha`(
     in precio	   int
  )
 BEGIN
-	declare msg varchar(40);    
-		insert into tblFicha(idCurso,cuposDisponibles,fechaInicio, precioFicha) Values(id,cupos,fecha, precio);
-		set msg="La ficha se ha registrado exitosamente";
-		select msg as Respuesta; 
+		insert into tblFicha(tblcurso_idCurso,cuposDisponibles,fechaInicio, precioFicha) Values(id,cupos,fecha, precio);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarMatricula`(
@@ -520,7 +524,9 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
   `descripcionArticulo` varchar(50) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `cantidadDisponible` mediumint(9) NOT NULL,
   `precioUnitario` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `tblcategoriaarticulo`
@@ -529,7 +535,14 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
 CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
 `idCategoriaArticulo` int(11) NOT NULL,
   `nombreCategoriaArticulo` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tblcategoriaarticulo`
+--
+
+INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArticulo`) VALUES
+(1, 'Vinilos');
 
 -- --------------------------------------------------------
 
@@ -538,9 +551,19 @@ CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
-  `idtblCategoriaCurso` tinyint(4) NOT NULL ,
+`idtblCategoriaCurso` tinyint(4) NOT NULL,
   `nombreCategoriaCurso` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tblcategoriacurso`
+--
+
+INSERT INTO `tblcategoriacurso` (`idtblCategoriaCurso`, `nombreCategoriaCurso`) VALUES
+(1, 'Categoria A'),
+(2, 'Categoria B'),
+(3, 'Categoria C'),
+(4, 'Categoria D');
 
 -- --------------------------------------------------------
 
@@ -606,7 +629,14 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `estadoCurso` int(11) NOT NULL,
   `descripcionCurso` varchar(45) DEFAULT NULL,
   `tblcategoriacurso_idtblCategoriaCurso` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tblcurso`
+--
+
+INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `duracionCurso`, `estadoCurso`, `descripcionCurso`, `tblcategoriacurso_idtblCategoriaCurso`) VALUES
+(1, 'Oleo', 30, 1, 'El Oleo es todo un arte, amen', 1);
 
 -- --------------------------------------------------------
 
@@ -678,6 +708,13 @@ CREATE TABLE IF NOT EXISTS `tblficha` (
   `precioFicha` int(11) NOT NULL,
   `estado` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tblficha`
+--
+
+INSERT INTO `tblficha` (`idFicha`, `cuposDisponibles`, `fechaInicio`, `tblcurso_idCurso`, `precioFicha`, `estado`) VALUES
+(0, 15, '2015-03-26 00:00:00', 1, 50000, 1);
 
 -- --------------------------------------------------------
 
@@ -992,12 +1029,6 @@ ALTER TABLE `tblventa`
 --
 
 --
--- AUTO_INCREMENT de la tabla `tblcategoriacurso`
---
-ALTER TABLE `tblcategoriacurso`
- MODIFY `idtblCategoriaCurso` tinyint(4) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `tblabono`
 --
 ALTER TABLE `tblabono`
@@ -1011,7 +1042,12 @@ MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tblcategoriaarticulo`
 --
 ALTER TABLE `tblcategoriaarticulo`
-MODIFY `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `tblcategoriacurso`
+--
+ALTER TABLE `tblcategoriacurso`
+MODIFY `idtblCategoriaCurso` tinyint(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `tblcompra`
 --
@@ -1026,7 +1062,7 @@ MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tblcurso`
 --
 ALTER TABLE `tblcurso`
-MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `tbldetallecompra`
 --
