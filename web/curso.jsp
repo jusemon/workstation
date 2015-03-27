@@ -381,23 +381,23 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtNombre">
+                                                        <label for="txtDuracion">
                                                             Duracion (En horas)
                                                         </label>
-                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                        <input name="txtDuracion" id="txtDuracion" type="text" class="form-control" placeholder="Ejm: Cinco" required>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                            <%--<div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtNombre">
+                                                        <label for="txtPrecio">
                                                             Precio
                                                         </label>
-                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                        <input name="txtPrecio" id="txtPrecio" type="text" class="form-control" placeholder="Ejm: Cinco"  required>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --%>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
