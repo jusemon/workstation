@@ -54,40 +54,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="panel-group" id="accordion">
-                                                <div class="panel panel-default">
-                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Curso" data-parent="#accodion" href="#collapseConsultaCurso"/>                                                           
-                                                </div>
-                                            </div>
-                                            <div class="panel-collapse collapse" id="collapseConsultaCurso">
-                                                <div class="panel-body">
-                                                    <form action="ControllerCurso" method="POST">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="nombreCurso">
-                                                                        Ingresa el nombre
-                                                                    </label>
-                                                                    <input name="nombreCurso" id="nombreCurso" type="text" class="form-control" placeholder="Ejm: Oleo" required>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <button type="button" class=" btn btn-default btn-block" >
-                                                                        <span class="glyphicon glyphicon-search "></span>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="panel-footer">
                                 </div>
@@ -110,40 +76,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="panel-group" id="accordion">
-                                                <div class="panel panel-default">
-                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Ficha" data-parent="#accodion" href="#collapseConsultaFicha"/>                                                           
-                                                </div>
-                                            </div>
-                                            <div class="panel-collapse collapse" id="collapseConsultaFicha">
-                                                <div class="panel-body">
-                                                    <form action="ControllerFicha" method="POST">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="numeroFicha">
-                                                                        Ingresa el numero de la ficha
-                                                                    </label>
-                                                                    <input name="numeroFicha" id="numeroFicha" type="number" class="form-control" placeholder="Ejm: 629256" required>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <button type="button" class=" btn btn-default btn-block" >
-                                                                        <span class="glyphicon glyphicon-search "></span>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -161,40 +93,6 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupSeminario" data-dismiss="modal" name="regSeminario" value="Registrar Seminario">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="panel-group" id="accordion">
-                                                <div class="panel panel-default">
-                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Seminario" data-parent="#accodion" href="#collapseConsultaSeminario"/>                                                           
-                                                </div>
-                                            </div>
-                                            <div class="panel-collapse collapse" id="collapseConsultaSeminario">
-                                                <div class="panel-body">
-                                                    <form action="ControllerSeminario" method="POST">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="nombreSeminario">
-                                                                        Ingresa el nombre
-                                                                    </label>
-                                                                    <input name="nombreSeminario" id="nombreSeminario" type="text" class="form-control" placeholder="Ejm: Seminario de Patchwork" required>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <button type="button" class=" btn btn-default btn-block" >
-                                                                        <span class="glyphicon glyphicon-search "></span>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -221,8 +119,8 @@
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane" id="cursos">
-                            <table id="example" class="table table-hover tabla" cellspacing="0" width="100%">
+                        <div class="tab-pane active" id="cursos">
+                            <table id="tblCursos" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -239,7 +137,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="categoriaCursos">
-                            <table id="example" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblCategoriaCursos" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -254,8 +152,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane active" id="fichas">
-                            <table id="example" class="table table-hover tabla" cellspacing="0" width="100%">
+                        <div class="tab-pane" id="fichas">
+                            <table id="tblFichas" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -275,7 +173,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="seminarios">
-                            <table id="tbSeminarios" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblSeminarios" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -307,6 +205,9 @@
             </div>
         </div>
 
+        <!--
+            Emergente para registrar los cursos
+        -->
         <div class="modal" id="miPopupCurso">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -325,10 +226,34 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
+                                                        <label for="ddlCategoria">
+                                                            Categoria
+                                                        </label>
+                                                        <select name="ddlCategoria" id="ddlCategoria" class="form-control" required>
+                                                            <%
+                                                                out.print(controllerCategoriaCurso.getOptionsCategorias());
+                                                            %>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
                                                         <label for="txtNombre">
                                                             Nombre Curso
                                                         </label>
                                                         <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Oleo" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtDescripcion">
+                                                            Descripcion
+                                                        </label>
+                                                        <textarea rows="2" name="txtDescripcion" id="txtDescripcion" type="text"  class="form-control" placeholder="Ejm: El oleo es un curso dedicado al..." required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -380,6 +305,9 @@
             </div>
         </div>
 
+        <!-- 
+            Emergente para registrar Categorias de Cursos
+        -->
         <div class="modal" id="miPopupCategoriaCurso">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -428,8 +356,10 @@
                 </div>
             </div>
         </div>
-        
 
+        <!-- 
+            Emergente para registrar Seminarios
+        -->
         <div class="modal" id="miPopupSeminario">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -511,6 +441,10 @@
                 </div>
             </div>
         </div>
+
+        <!-- 
+            Emergente para registrar Fichas
+        -->                                           
         <div class="modal" id="miPopupFicha">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -546,7 +480,7 @@
                                                         <label for="dateFecha">
                                                             Fecha de Inicio
                                                         </label>
-                                                        <input name="dateFecha" id="dateFecha" type="datetime" class="form-control" placeholder="Ejm: 500000" required>
+                                                        <input name="dateFecha" id="dateFecha" type="date" class="form-control" placeholder="Ejm: 500000" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -592,6 +526,7 @@
                 </div>
             </div>
         </div>        
+
         <%@include file="WEB-INF/jspf/imports.jspf" %>
     </body>
 </html>

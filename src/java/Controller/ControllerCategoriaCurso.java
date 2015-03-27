@@ -8,7 +8,6 @@ package Controller;
 import Model.DTO.ObjCategoriaCurso;
 import Model.Data.ModelCategoriaCurso;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +20,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerCategoriaCurso extends HttpServlet {
 
-    ModelCategoriaCurso daoModelCategoriaCurso = new ModelCategoriaCurso();
+    ModelCategoriaCurso daoModelCategoriaCurso;
     ObjCategoriaCurso _objCategoriaCurso = new ObjCategoriaCurso();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,23 +35,32 @@ public class ControllerCategoriaCurso extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+        if (request.getParameter("action") != null) {
+            if (request.getParameter("action").equals("Registrar")) {
+                daoModelCategoriaCurso = new ModelCategoriaCurso();
+                String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                _objCategoriaCurso.setNombreCategoriaCurso(nombre);
+                daoModelCategoriaCurso.Add(_objCategoriaCurso);
+                response.sendRedirect("curso.jsp");
+            }
+        }
+
     }
+
     public String getTableCategoriaCurso() {
 
         ResultSet result;
         String tableCategoriaarticulos = "";
-
+        daoModelCategoriaCurso = new ModelCategoriaCurso();
         try {
             result = daoModelCategoriaCurso.ListAll();
 
             while (result.next()) {
                 tableCategoriaarticulos += "<tr>";
-                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idCategoriaCurso").trim() + "</td>";
+                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idtblCategoriaCurso").trim() + "</td>";
                 tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaCurso").trim() + "</td>";
                 tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulos\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
-
+                        + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
                 tableCategoriaarticulos += "</tr>";
 
             }
@@ -66,12 +75,12 @@ public class ControllerCategoriaCurso extends HttpServlet {
     public String getOptionsCategorias() {
         ResultSet result;
         String OptionsCategorias = "";
-
+        daoModelCategoriaCurso = new ModelCategoriaCurso();
         try {
             result = daoModelCategoriaCurso.ListAll();
 
             while (result.next()) {
-                OptionsCategorias += "<option value=\"" + result.getString("idCategoriaCurso").trim() + "\">" + result.getString("nombreCategoriaCurso").trim() + "</option>";
+                OptionsCategorias += "<option value=\"" + result.getString("idtblCategoriaCurso").trim() + "\">" + result.getString("nombreCategoriaCurso").trim() + "</option>";
             }
 
         } catch (Exception e) {

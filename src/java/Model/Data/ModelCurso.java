@@ -25,7 +25,7 @@ public class ModelCurso extends ConnectionDB {
 
     public boolean Add(ObjCurso _objCurso) {
         boolean objReturn = false;
-        String sql = "call spIngresarCurso(?,?,?)";
+        String sql = "call spIngresarCurso(?,?,?,?,?)";
 
         try {
             getStmt();
@@ -33,7 +33,9 @@ public class ModelCurso extends ConnectionDB {
             pStmt.setString(1, _objCurso.getNombreCurso());
             pStmt.setInt(2, _objCurso.getDuracionCurso());
             pStmt.setInt(3, _objCurso.getEstadoCurso());
-
+            pStmt.setString(4, _objCurso.getDescripcion());
+            pStmt.setInt(5, _objCurso.getIdCategoria());
+                    
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;

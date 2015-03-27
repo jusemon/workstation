@@ -18,7 +18,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `dbworkstationsoftware`
 --
-
 DELIMITER $$
 --
 -- Procedimientos
@@ -524,25 +523,6 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `tblarticulo`
---
-
-INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioUnitario`) VALUES
-(9, 5, 'Vinilo con ñ', 30, 1200),
-(10, 5, 'Vinilo con l', 30, 1200),
-(11, 6, 'Pincel delgado', 30, 1200),
-(12, 5, 'Vinilo Azul', 30, 1200),
-(13, 5, 'Vinilo Rojo', 30, 1200),
-(14, 5, 'Vinilo Verde', 30, 1200),
-(15, 6, 'Pincel grueso', 30, 1200),
-(16, 6, 'Pincel mediano', 2000, 1150),
-(17, 5, 'Vinilo Aguamarina', 20, 1500),
-(18, 5, 'Vinilo Dorado', 15, 2000),
-(19, 5, 'Vinilo Plateado', 20, 1700);
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `tblcategoriaarticulo`
 --
 
@@ -551,14 +531,6 @@ CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
   `nombreCategoriaArticulo` varchar(50) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `tblcategoriaarticulo`
---
-
-INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArticulo`) VALUES
-(5, 'Vínilos'),
-(6, 'Pinceles');
-
 -- --------------------------------------------------------
 
 --
@@ -566,7 +538,7 @@ INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArtic
 --
 
 CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
-  `idtblCategoriaCurso` tinyint(4) NOT NULL,
+  `idtblCategoriaCurso` tinyint(4) NOT NULL ,
   `nombreCategoriaCurso` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -1020,6 +992,12 @@ ALTER TABLE `tblventa`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `tblcategoriacurso`
+--
+ALTER TABLE `tblcategoriacurso`
+ MODIFY `idtblCategoriaCurso` tinyint(4) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `tblabono`
 --
 ALTER TABLE `tblabono`
@@ -1028,12 +1006,12 @@ MODIFY `idAbono` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tblarticulo`
 --
 ALTER TABLE `tblarticulo`
-MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=20;
+MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tblcategoriaarticulo`
 --
 ALTER TABLE `tblcategoriaarticulo`
-MODIFY `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+MODIFY `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tblcompra`
 --

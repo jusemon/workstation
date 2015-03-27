@@ -41,18 +41,17 @@ public class ModelCategoriaCurso extends ConnectionDB {
         }
         return objReturn;
     }
-         public ResultSet ListAll() throws Exception {
 
+    public ResultSet ListAll() throws Exception {
         ResultSet rs = null;
-        String sql ="SELECT idCategoriaCurso, nombreCategoriaCurso FROM tblCategoriaCurso";
-           try {
+        String sql = "SELECT idtblCategoriaCurso, nombreCategoriaCurso FROM tblCategoriaCurso";
+        try {
             getStmt();
             rs = stmt.executeQuery(sql);
 
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
-
         return rs;
     }
 }

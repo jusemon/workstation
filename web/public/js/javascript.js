@@ -1,22 +1,12 @@
 
 $(document).ready(function () {
-    $('.tabla').dataTable({
-        "language": {
-            "url": "public/lang/Spanish.json"
-        }
-    });
-    $('#tblEmpresas').dataTable({
-         "scrollX": true,
-         "language": {
-            "url": "public/lang/Spanish.json"
-        }
-    });
+
     var enlace = window.location.search;
-    if (enlace.indexOf('error=1') !== -1) {
-        alert('Has ingresado un usuario o contraseña incorrectos');
+    if (enlace.indexOf('mensaje=2') !== -1) {
+        $.notify('Has ingresado un usuario o contraseña incorrectos', 'error');
     }
-    else if (enlace.indexOf('confirmacion=1') !== -1) {
-        alert('Bienvenido al Sistema WorkStation');
+    else if (enlace.indexOf('mensaje=1') !== -1) {
+        $.notify('Bienvenido al Sistema WorkStation', 'success');
     }
     var URLactual = window.location.pathname;
     if (URLactual.indexOf('index') !== -1) {
@@ -40,6 +30,17 @@ $(document).ready(function () {
     } else {
         $('#btnindex').attr('class', 'active');
     }
+    $('.tabla').dataTable({
+        "language": {
+            "url": "public/lang/Spanish.json"
+        }
+    });
+    $('#tblEmpresas').dataTable({
+        "scrollX": true,
+        "language": {
+            "url": "public/lang/Spanish.json"
+        }
+    });
 
     $('.imgIndex').on('load', function () {
         $('.imgIndex').height('80%');

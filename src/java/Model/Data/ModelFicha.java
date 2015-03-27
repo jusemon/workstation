@@ -25,7 +25,7 @@ public class ModelFicha extends ConnectionDB {
 
     public boolean Add(ObjFicha _objFicha) {
         boolean objReturn = false;
-        String sql = "call spIngresarFicha(?,?,?)";
+        String sql = "call spIngresarFicha(?,?,?,?)";
 
         try {
             getStmt();
