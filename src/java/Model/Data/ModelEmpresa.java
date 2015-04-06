@@ -64,13 +64,13 @@ public class ModelEmpresa extends ConnectionDB {
         return rs;
     }
 
-    public ResultSet buscarPorNombre(String nombreArticulo) {
+    public ResultSet buscarPorNIT(String nitEmpresa) {
         ResultSet rs = null;
-        String sql = "call spConsultarEmpresabtNIT(?)";
+        String sql = "call spConsultarEmpresabyNIT(?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setString(1, nombreArticulo);
+            pStmt.setString(1, nitEmpresa);
             rs = pStmt.executeQuery();
             
         } catch (SQLException e) {
