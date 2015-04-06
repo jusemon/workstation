@@ -5,7 +5,7 @@
  */
 package Model.Data;
 
-import Model.DTO.ObjCurso;
+import Model.DTO.ObjCategoriaCurso;
 import Model.JDBC.ConnectionDB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,27 +15,22 @@ import java.sql.SQLException;
  *
  * @author Administrador
  */
-public class ModelCurso extends ConnectionDB {
+public class ModelCategoriaCurso extends ConnectionDB {
 
     private PreparedStatement pStmt;
 
-    public ModelCurso() {
+    public ModelCategoriaCurso() {
         getConnection();
     }
 
-    public boolean Add(ObjCurso _objCurso) {
+    public boolean Add(ObjCategoriaCurso _objCategoriaCurso) {
         boolean objReturn = false;
-        String sql = "call spIngresarCurso(?,?,?,?,?)";
+        String sql = "call spIngresarCategoriaCurso(?)";
 
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setString(1, _objCurso.getNombreCurso());
-            pStmt.setInt(2, _objCurso.getDuracionCurso());
-            pStmt.setInt(3, _objCurso.getEstadoCurso());
-            pStmt.setString(4, _objCurso.getDescripcion());
-            pStmt.setInt(5, _objCurso.getIdCategoria());
-                    
+            pStmt.setString(1, _objCategoriaCurso.getNombreCategoriaCurso());
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
@@ -48,9 +43,8 @@ public class ModelCurso extends ConnectionDB {
     }
 
     public ResultSet ListAll() throws Exception {
-
         ResultSet rs = null;
-        String sql = "call spConsultarCursos()";
+        String sql = "SELECT idtblCategoriaCurso, nombreCategoriaCurso FROM tblCategoriaCurso";
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
@@ -58,22 +52,26 @@ public class ModelCurso extends ConnectionDB {
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
-
         return rs;
     }
 
-    public ResultSet buscarPorID(int ID) {
-        ResultSet rs = null;
-        String sql = "call spConsultarCursoPorID(?)";
+    public boolean Edit(ObjCategoriaCurso _objCategoriaCurso) {
+        boolean objReturn = false;
+        String sql = "call spActualizarCategoriaCurso(?,?)";
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setInt(1, ID);
-            rs = pStmt.executeQuery();
+            pStmt.setInt(1, _objCategoriaCurso.getIdCategoriaCurso());
+            pStmt.setString(2, _objCategoriaCurso.getNombreCategoriaCurso());
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
 
-        } catch (SQLException e) {
-            System.err.println("SQLException:" + e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        return rs;
+        return objReturn;
     }
 }

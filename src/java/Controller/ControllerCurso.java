@@ -8,7 +8,6 @@ package Controller;
 import Model.DTO.ObjCurso;
 import Model.Data.ModelCurso;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,11 +37,15 @@ public class ControllerCurso extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         if (request.getParameter("action") != null) {
             if (request.getParameter("action").equals("Registrar")) {
-                String nombre;
-                int estado, duracion;
+                String nombre, descripcion;
+                int estado, duracion, categoria;
                 nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                descripcion = new String(request.getParameter("txtDescripcion").getBytes("ISO-8859-1"), "UTF-8");
                 duracion = Integer.parseInt(request.getParameter("dateDuracion"));
                 estado = Integer.parseInt(request.getParameter("ddlEstado"));
+                categoria = Integer.parseInt(request.getParameter("ddlCategoria"));
+                _objCurso.setIdCategoria(categoria);
+                _objCurso.setDescripcion(descripcion);
                 _objCurso.setNombreCurso(nombre);
                 _objCurso.setDuracionCurso(duracion);
                 _objCurso.setEstadoCurso(estado);
@@ -63,8 +66,10 @@ public class ControllerCurso extends HttpServlet {
                 tableCursos += "<td class=\"text-center\">" + result.getString("idCurso").trim() + "</td>";
                 tableCursos += "<td class=\"text-center\">" + result.getString("nombreCurso").trim() + "</td>";
                 tableCursos += "<td class=\"text-center\">" + result.getString("estadoCurso").trim() + "</td>";
-                tableCursos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#curso\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
-                        + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
+                tableCursos += "<td class=\"text-center\"><a class=\"btn-sm btn-success btn-block \"  data-toggle=\"modal\"  data-target=\"#articulos\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
+                        + "<span class=\"glyphicon glyphicon-search\"></span></a>\n</td>";
+                tableCursos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulos\" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
+                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>\n</td>";
                 tableCursos += "</tr>";
             }
         } catch (Exception e) {

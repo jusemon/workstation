@@ -4,6 +4,7 @@
     Author     : Administrador
 --%>
 
+<%@page import="Controller.ControllerCategoriaCurso"%>
 <%@page import="Controller.ControllerFicha"%>
 <%@page import="Controller.ControllerCurso"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -12,6 +13,7 @@
     };
     ControllerCurso controllerCurso = new ControllerCurso();
     ControllerFicha controllerFicha = new ControllerFicha();
+    ControllerCategoriaCurso controllerCategoriaCurso = new ControllerCategoriaCurso();
 %>
 <!DOCTYPE html>
 <html>
@@ -47,35 +49,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="panel-group" id="accordion">
-                                                <div class="panel panel-default">
-                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Curso" data-parent="#accodion" href="#collapseConsultaCurso"/>                                                           
-                                                </div>
-                                            </div>
-                                            <div class="panel-collapse collapse" id="collapseConsultaCurso">
-                                                <div class="panel-body">
-                                                    <form action="ControllerCurso" method="POST">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="nombreCurso">
-                                                                        Ingresa el nombre
-                                                                    </label>
-                                                                    <input name="nombreCurso" id="nombreCurso" type="text" class="form-control" placeholder="Ejm: Oleo" required>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <button type="button" class=" btn btn-default btn-block" >
-                                                                        <span class="glyphicon glyphicon-search "></span>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                                            <div class="form-group">
+                                                <input class="btn btn-default btn-block" type="button" id="registrarCategoriaCurso" name="regCatCurso" value="Registrar Categoria">
                                             </div>
                                         </div>
                                     </div>
@@ -101,40 +76,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="panel-group" id="accordion">
-                                                <div class="panel panel-default">
-                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Ficha" data-parent="#accodion" href="#collapseConsultaFicha"/>                                                           
-                                                </div>
-                                            </div>
-                                            <div class="panel-collapse collapse" id="collapseConsultaFicha">
-                                                <div class="panel-body">
-                                                    <form action="ControllerFicha" method="POST">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="numeroFicha">
-                                                                        Ingresa el numero de la ficha
-                                                                    </label>
-                                                                    <input name="numeroFicha" id="numeroFicha" type="number" class="form-control" placeholder="Ejm: 629256" required>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <button type="button" class=" btn btn-default btn-block" >
-                                                                        <span class="glyphicon glyphicon-search "></span>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -155,40 +96,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="panel-group" id="accordion">
-                                                <div class="panel panel-default">
-                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Seminario" data-parent="#accodion" href="#collapseConsultaSeminario"/>                                                           
-                                                </div>
-                                            </div>
-                                            <div class="panel-collapse collapse" id="collapseConsultaSeminario">
-                                                <div class="panel-body">
-                                                    <form action="ControllerSeminario" method="POST">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="nombreSeminario">
-                                                                        Ingresa el nombre
-                                                                    </label>
-                                                                    <input name="nombreSeminario" id="nombreSeminario" type="text" class="form-control" placeholder="Ejm: Seminario de Patchwork" required>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <button type="button" class=" btn btn-default btn-block" >
-                                                                        <span class="glyphicon glyphicon-search "></span>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="panel-footer">
                                 </div>
@@ -201,6 +108,9 @@
                         <li class="active">
                             <a href="#cursos" role="tab" data-toggle="tab">Listado de Cursos</a>
                         </li>
+                        <li class="">
+                            <a href="#categoriaCursos" role="tab" data-toggle="tab">Categorias de los Cursos</a>
+                        </li>
                         <li>
                             <a href="#fichas" role="tab" data-toggle="tab">Listado de Fichas</a>
                         </li>
@@ -209,8 +119,8 @@
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane" id="cursos">
-                            <table id="example" class="table table-hover tabla" cellspacing="0" width="100%">
+                        <div class="tab-pane active" id="cursos">
+                            <table id="tblCursos" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -221,18 +131,34 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%                     
+                                    <%
                                         out.print(controllerCurso.getTableCursos());
                                     %>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane active" id="fichas">
-                            <table id="example" class="table table-hover tabla" cellspacing="0" width="100%">
+                        <div class="tab-pane" id="categoriaCursos">
+                            <table id="tblCategoriaCursos" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
-                                        <th class="text-center">Curso</th>
+                                        <th class="text-center">Nombre</th>
+                                        <th class="text-center">Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%
+                                        out.print(controllerCategoriaCurso.getTableCategoriaCurso());
+                                    %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="fichas">
+                            <table id="tblFichas" class="table table-hover tabla" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Código</th>
+                                        <th class="text-center">Nombre</th>
                                         <th class="text-center">Cupos Disponibles</th>
                                         <th class="text-center">Precio</th>
                                         <th class="text-center">Fecha</th>
@@ -248,7 +174,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="seminarios">
-                            <table id="tbSeminarios" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblSeminarios" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -280,6 +206,9 @@
             </div>
         </div>
 
+        <!--
+            Emergente para registrar los cursos
+        -->
         <div class="modal" id="miPopupCurso">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -298,10 +227,34 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
+                                                        <label for="ddlCategoria">
+                                                            Categoria
+                                                        </label>
+                                                        <select name="ddlCategoria" id="ddlCategoria" class="form-control" required>
+                                                            <%
+                                                                out.print(controllerCategoriaCurso.getOptionsCategorias());
+                                                            %>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
                                                         <label for="txtNombre">
                                                             Nombre Curso
                                                         </label>
                                                         <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Oleo" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtDescripcion">
+                                                            Descripcion
+                                                        </label>
+                                                        <textarea rows="2" name="txtDescripcion" id="txtDescripcion" type="text"  class="form-control" placeholder="Ejm: El oleo es un curso dedicado al..." required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -353,6 +306,62 @@
             </div>
         </div>
 
+        <!-- 
+            Emergente para registrar Categorias de Cursos
+        -->
+        <div class="modal" id="miPopupCategoriaCurso">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">                               
+                                <form id="form_Maestros" action="ControllerCategoriaCurso" method="POST">
+                                    <div class="panel">
+                                        <div class="panel-heading estilo2">
+                                            <h3 class="panel-title">
+                                                Ingresar Categoria
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                            </h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <input type="hidden" id="idCategoriaCurso" name="idCategoriaCurso"/>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNombre">
+                                                            Nombre Categoria Curso
+                                                        </label>
+                                                        <input name="txtNombre" id="txtNombreCategoriaCurso" type="text" class="form-control" placeholder="Ejm: Oleo" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input id="btnRegistrarCC" class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input id="btnEditarCC" class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 
+            Emergente para registrar Seminarios
+        -->
         <div class="modal" id="miPopupSeminario">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -435,6 +444,9 @@
             </div>
         </div>
 
+        <!-- 
+            Emergente para registrar Fichas
+        -->                                           
         <div class="modal" id="miPopupFicha">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -470,7 +482,7 @@
                                                         <label for="dateFecha">
                                                             Fecha de Inicio
                                                         </label>
-                                                        <input name="dateFecha" id="dateFecha" type="datetime" class="form-control" placeholder="Ejm: 500000" required>
+                                                        <input name="dateFecha" id="dateFecha" type="date" class="form-control" placeholder="Ejm: 500000" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -515,7 +527,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>        
+
         <%@include file="WEB-INF/jspf/imports.jspf" %>
     </body>
 </html>

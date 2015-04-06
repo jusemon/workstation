@@ -38,6 +38,7 @@ public class ConnectionDB {
 
     /**
      * Permite retornar la conexión
+     * @return 
      */
     public Connection getConnection() {
         connection = null;

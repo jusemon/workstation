@@ -59,17 +59,4 @@ public class ModelCategoriaArticulo extends ConnectionDB {
         return rs;
     }
 
-    public ResultSet Buscar (int idCategoriaArticulo) throws Exception {
-        ResultSet rs = null;
-        String sql = "SELECT `nombreCategoriaArticulo` ,"
-                + "FROM `tblcategoriaarticulo` WHERE `idCategoriaArticulo` = "+idCategoriaArticulo;
-        try {
-            getStmt();
-            rs = stmt.executeQuery(sql);
-            
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return rs;
-    }
 }

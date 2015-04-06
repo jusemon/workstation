@@ -32,6 +32,14 @@
         <servlet-name>ControllerFicha</servlet-name>
         <servlet-class>Controller.ControllerFicha</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControllerCategoriaCurso</servlet-name>
+        <servlet-class>Controller.ControllerCategoriaCurso</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControllerEmpresa</servlet-name>
+        <servlet-class>Controller.ControllerEmpresa</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControllerCliente</servlet-name>
         <url-pattern>/ControllerCliente</url-pattern>
@@ -63,6 +71,14 @@
     <servlet-mapping>
         <servlet-name>ControllerFicha</servlet-name>
         <url-pattern>/ControllerFicha</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControllerCategoriaCurso</servlet-name>
+        <url-pattern>/ControllerCategoriaCurso</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControllerEmpresa</servlet-name>
+        <url-pattern>/ControllerEmpresa</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

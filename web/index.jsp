@@ -48,21 +48,21 @@
                     <div class="carousel-inner center">
 
                         <div class="item active">
-                            <img class="imgIndex" src="public/vintage1.jpg">
+                            <img class="imgIndex" src="public/images/vintage1.jpg">
                             <div class="carousel-caption">
                                 <h3>Vintage</h3>
                                 <p>Revistero</p>
                             </div>
                         </div>
                         <div class="item text-center">
-                            <img class="imgIndex" src="public/tela1.JPG">
+                            <img class="imgIndex" src="public/images/tela1.JPG">
                             <div class="carousel-caption">
                                 <h3>Tela</h3>
                                 <p>Colcha de retazos</p>
                             </div>
                         </div>
                         <div class="item text-center">
-                            <img class="imgIndex" src="public/country2.jpg">
+                            <img class="imgIndex" src="public/images/country2.jpg">
                             <div class="carousel-caption">
                                 <h3>Country</h3>
                                 <p>Joyero</p>
@@ -82,8 +82,6 @@
         </div>
         todos los derechos reservados.
     </body>
-    <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="public/js/javascript.js"></script>
+    <%@include file="WEB-INF/jspf/imports.jspf" %>
 
 </html>

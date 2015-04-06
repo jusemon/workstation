@@ -1,22 +1,13 @@
 
+
+
 $(document).ready(function () {
-    $('.tabla').dataTable({
-        "language": {
-            "url": "public/lang/Spanish.json"
-        }
-    });
-    $('#tblEmpresas').dataTable({
-         "scrollX": true,
-         "language": {
-            "url": "public/lang/Spanish.json"
-        }
-    });
     var enlace = window.location.search;
-    if (enlace.indexOf('error=1') !== -1) {
-        alert('Has ingresado un usuario o contraseña incorrectos');
+    if (enlace.indexOf('mensaje=2') !== -1) {
+        $.notify('Has ingresado un usuario o contraseña incorrectos', 'error');
     }
-    else if (enlace.indexOf('confirmacion=1') !== -1) {
-        alert('Bienvenido al Sistema WorkStation');
+    else if (enlace.indexOf('mensaje=1') !== -1) {
+        $.notify('Bienvenido al Sistema WorkStation', 'success');
     }
     var URLactual = window.location.pathname;
     if (URLactual.indexOf('index') !== -1) {
@@ -40,7 +31,6 @@ $(document).ready(function () {
     } else {
         $('#btnindex').attr('class', 'active');
     }
-
     $('.imgIndex').on('load', function () {
         $('.imgIndex').height('80%');
     });
@@ -51,6 +41,7 @@ $(document).ready(function () {
         alert($('#fecha').attr('value'));
     });
 });
+
 $('#radioBtn2 a').on('click', function () {
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
@@ -58,6 +49,7 @@ $('#radioBtn2 a').on('click', function () {
     $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
     $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
 });
+
 $('#radioBtn a').on('click', function () {
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
@@ -65,6 +57,7 @@ $('#radioBtn a').on('click', function () {
     $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
     $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
 });
+
 $(function () {
     /* BOOTSNIPP FULLSCREEN FIX */
     $('#boton').on('click', function (event) {
@@ -76,6 +69,7 @@ $(function () {
         $('#miPopup').modal('show');
     })
 });
+
 $(function () {
     /* BOOTSNIPP FULLSCREEN FIX */
     if (window.location == window.parent.location) {
@@ -97,6 +91,45 @@ $(function () {
     })
 });
 
+$('.tabla').DataTable({
+    "language": {
+        "url": "public/lang/Spanish.json"
+    }
+});
+$('#tblEmpresas').DataTable({
+    "scrollX": true,
+    "language": {
+        "url": "public/lang/Spanish.json"
+    }
+});
+var tableCategoriaCurso = $('#tblCategoriaCursos').DataTable({
+    "language": {
+        "url": "public/lang/Spanish.json"
+    }
+});
+
+function editar() {
+    $('#tblCategoriaCursos tbody').on('click', 'tr', function () {
+        var rowData = tableCategoriaCurso.row(this).data();
+        $('#idCategoriaCurso').attr('value', rowData[0]);
+        $('#txtNombreCategoriaCurso').attr('value', rowData[1]);
+        $('#btnRegistrarCC').hide();
+        $('#btnEditarCC').show();
+        $('#miPopupCategoriaCurso').modal('show');
+        $('#tblCategoriaCursos tbody').off();
+    });
+}
+;
+
+function consultar() {
 
 
+}
+;
+
+$('#registrarCategoriaCurso').on('click', function () {
+    $('#btnRegistrarCC').show();
+    $('#btnEditarCC').hide();
+    $('#miPopupCategoriaCurso').modal('show');
+});
     

@@ -219,7 +219,7 @@
                                                         <select name="idCategoria" id="idCategoria" class="form-control" required>
                                                             <option value="">Seleccionar...</option>
                                                             <%
-                                                                out.print(controllerArticulo.getOptionsCategorias());
+                                                                out.print(controllerCategoriaArticulo.getOptionsCategorias());
                                                             %>
                                                         </select>
                                                     </div>

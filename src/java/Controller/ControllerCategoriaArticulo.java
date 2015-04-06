@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerCategoriaArticulo extends HttpServlet {
 
-    public ModelCategoriaArticulo daoModelCategoriaArticulo = new ModelCategoriaArticulo();
+    public ModelCategoriaArticulo daoModelCategoriaArticulo;
     public ObjCategoriaArticulo _objCategoriaArticulo = new ObjCategoriaArticulo();
 
     /**
@@ -38,6 +38,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         String action = request.getParameter("action");
         if (action != null) {
             try {
+                daoModelCategoriaArticulo = new ModelCategoriaArticulo();
                 String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
                 _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                 daoModelCategoriaArticulo.Add(_objCategoriaArticulo);
@@ -46,7 +47,6 @@ public class ControllerCategoriaArticulo extends HttpServlet {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-
         }
     }
 
@@ -54,7 +54,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
 
         ResultSet result;
         String tableCategoriaarticulos = "";
-
+        daoModelCategoriaArticulo = new ModelCategoriaArticulo();
         try {
             result = daoModelCategoriaArticulo.ListAll();
 
@@ -74,6 +74,26 @@ public class ControllerCategoriaArticulo extends HttpServlet {
             daoModelCategoriaArticulo.Signout();
         }
         return tableCategoriaarticulos;
+    }
+
+    public String getOptionsCategorias() {
+        ResultSet result;
+        String OptionsCategorias = "";
+        daoModelCategoriaArticulo = new ModelCategoriaArticulo();
+        try {
+            result = daoModelCategoriaArticulo.ListAll();
+
+            while (result.next()) {
+                OptionsCategorias += "<option value=\"" + result.getString("idCategoriaArticulo").trim() + "\">" + result.getString("nombreCategoriaArticulo").trim() + "</option>";
+            }
+
+        } catch (Exception e) {
+            OptionsCategorias = "Ha Ocurrido un error" + e.getMessage();
+        } finally {
+            daoModelCategoriaArticulo.Signout();
+        }
+
+        return OptionsCategorias;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

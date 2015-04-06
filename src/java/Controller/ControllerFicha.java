@@ -50,6 +50,7 @@ public class ControllerFicha extends HttpServlet {
                 _objFicha.setCuposDisponibles(cupos);
                 _objFicha.setPrecioFicha(precio);
                 daoModelFicha.Add(_objFicha);
+                response.sendRedirect("curso.jsp");
             }
         }
 

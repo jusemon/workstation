@@ -11,10 +11,10 @@ package Model.DTO;
  */
 public class ObjAbono {
     private int idAbono;
-    private int idCredito;
     private double valorAbono;
     private String fechaPago;
-
+    private int idCredito;
+    
     public int getIdAbono() {
         return idAbono;
     }

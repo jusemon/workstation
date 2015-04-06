@@ -11,6 +11,22 @@ package Model.DTO;
  */
 public class ObjCurso {
 
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
     public int getIdCurso() {
         return idCurso;
     }
@@ -46,5 +62,6 @@ public class ObjCurso {
     private String nombreCurso;
     private int duracionCurso;
     private int estadoCurso;
-    
+    private int idCategoria;
+    private String descripcion;
 }
