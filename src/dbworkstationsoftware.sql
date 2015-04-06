@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-04-2015 a las 22:23:33
+-- Tiempo de generación: 06-04-2015 a las 22:57:16
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -218,6 +218,12 @@ BEGIN
 	select * from tblDetalleCompra
 	where idCompra = idComp
 	order by idArticulo;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEmpresa`()
+BEGIN
+
+SELECT * FROM tblEmpresa;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEmpresabyNIT`(IN `nitEmpre` VARCHAR(20))
