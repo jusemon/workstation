@@ -9,7 +9,6 @@ import Model.DTO.ObjFicha;
 import Model.Data.ModelCurso;
 import Model.Data.ModelFicha;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.ResultSet;
 import javax.servlet.ServletException;
@@ -68,8 +67,13 @@ public class ControllerFicha extends HttpServlet {
                 tableFichas += "<td class=\"text-center\">" + result.getString("cuposDisponibles").trim() + "</td>";
                 tableFichas += "<td class=\"text-center\">" + result.getString("precioFicha").trim() + "</td>";
                 tableFichas += "<td class=\"text-center\">" + result.getString("fechaInicio").trim() + "</td>";
-                tableFichas += "<td class=\"text-center\"><a class=\"btn-sm btn-success btn-block \" href=\"javascript:void(0)\"  onclick=\"add(\"Estado\")\">\n" 
-                        +"<span class=\"glyphicon glyphicon-ok\"></span></a>\n" 
+                String [] estado = {"success", "ok"};
+                if (result.getInt("estado")==0) {
+                    estado[0] = "danger";
+                    estado[1] = "cancel";
+                }
+                tableFichas += "<td class=\"text-center\"><a class=\"btn-sm btn-"+estado[0]+" btn-block \" href=\"javascript:void(0)\" data-estado=\""+result.getString("estado")+"\"  onclick=\"estado()\">\n" 
+                        +"<span class=\"glyphicon glyphicon-"+estado[1]+"\"></span></a>\n" 
                         + "</td>";
                 tableFichas += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulo\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
                         + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";

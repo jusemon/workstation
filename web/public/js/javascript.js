@@ -106,8 +106,9 @@ var tableCategoriaCurso = $('#tblCategoriaCursos').DataTable({
 });
 
 function editar() {
+     var tipo;
     $('#tblCategoriaCursos tbody').on('click', 'tr', function () {
-        var tipo = $(this).data('tipo');
+        tipo = $(this).data('tipo');
         if (tipo === 'categoria curso') {
             var rowData = tableCategoriaCurso.row(this).data();
             $('#idCategoriaCurso').attr('value', rowData[0]);
@@ -116,6 +117,19 @@ function editar() {
             $('#miPopupCategoriaCurso').modal('show');
             $('#tblCategoriaCursos tbody').off();
         }
+    });
+    
+};
+
+function estado(){
+    $('#tblFichas td').on('click', 'a', function () {
+        var tipo = $(this).data('estado');
+        if (tipo===0) {
+            $(this).attr("class", "btn-sm btn-success btn-block ");
+        } else {
+            $(this).attr("class", "btn-sm btn-danger btn-block ");
+        }
+        $('#tblFichas tbody').off();
     });
 };
 
