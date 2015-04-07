@@ -62,7 +62,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                 tableCategoriaarticulos += "<tr>";
                 tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idCategoriaArticulo").trim() + "</td>";
                 tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaArticulo").trim() + "</td>";
-                tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulos\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
+                tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \">\n"
                         + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
 
                 tableCategoriaarticulos += "</tr>";
