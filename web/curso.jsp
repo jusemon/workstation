@@ -307,7 +307,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">                               
-                                <form id="form_Maestros" action="ControllerCategoriaCurso" method="POST">
+                                <form id="form_categoriaCurso" action="ControllerCategoriaCurso" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -330,14 +330,9 @@
                                         </div>
                                         <div class="panel-footer">
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input id="btnRegistrarCC" class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <input id="btnEditarCC" class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
+                                                        <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
                                                     </div>
                                                 </div>
                                             </div>

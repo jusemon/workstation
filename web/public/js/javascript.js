@@ -1,6 +1,3 @@
-
-
-
 $(document).ready(function () {
     var enlace = window.location.search;
     if (enlace.indexOf('mensaje=2') !== -1) {
@@ -72,7 +69,7 @@ $(function () {
 
 $(function () {
     /* BOOTSNIPP FULLSCREEN FIX */
-    if (window.location == window.parent.location) {
+    if (window.location === window.parent.location) {
         $('#back-to-bootsnipp').removeClass('hide');
         $('.alert').addClass('hide');
     }
@@ -110,13 +107,15 @@ var tableCategoriaCurso = $('#tblCategoriaCursos').DataTable({
 
 function editar() {
     $('#tblCategoriaCursos tbody').on('click', 'tr', function () {
-        var rowData = tableCategoriaCurso.row(this).data();
-        $('#idCategoriaCurso').attr('value', rowData[0]);
-        $('#txtNombreCategoriaCurso').attr('value', rowData[1]);
-        $('#btnRegistrarCC').hide();
-        $('#btnEditarCC').show();
-        $('#miPopupCategoriaCurso').modal('show');
-        $('#tblCategoriaCursos tbody').off();
+        var tipo = $(this).data('tipo');
+        if (tipo === 'categoria curso') {
+            var rowData = tableCategoriaCurso.row(this).data();
+            $('#idCategoriaCurso').attr('value', rowData[0]);
+            $('#txtNombreCategoriaCurso').attr('value', rowData[1]);
+            $('#btnCategoriaCurso').attr('value', 'Editar');
+            $('#miPopupCategoriaCurso').modal('show');
+            $('#tblCategoriaCursos tbody').off();
+        }
     });
 }
 ;
@@ -131,8 +130,9 @@ function consultar() {
 ;
 
 $('#registrarCategoriaCurso').on('click', function () {
-    $('#btnRegistrarCC').show();
-    $('#btnEditarCC').hide();
+    
+    $('#btnCategoriaCurso').attr('value','Registrar');
+    $('#txtNombreCategoriaCurso').attr('value', ' ');
     $('#miPopupCategoriaCurso').modal('show');
 });
     function editarSeminario(){
