@@ -8,13 +8,11 @@ package Controller;
 import Model.DTO.ObjSeminario;
 import Model.Data.ModelSeminario;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -37,41 +35,38 @@ public class ControllerSeminario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        if (request.getParameter("action") != null) {
-            switch (request.getParameter ("action")){
-                case "Añadir":
-                        {
-                            daoModelSeminario = new ModelSeminario();
-                            String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                            int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion"));
-                            int estado = Integer.parseInt(request.getParameter("ddlEstado"));
-                            _objSeminario.setNombreSeminario(nombreSeminario);
-                            _objSeminario.setDuracionSeminario(duracionSeminario);
-                            _objSeminario.setEstadoSeminario(estado);
-                            daoModelSeminario.Add(_objSeminario);
-                          
-                            break;
-                        }
-                    case "Editar":
-                        {
-                            daoModelSeminario = new ModelSeminario();
-                            int idSeminario = Integer.parseInt(request.getParameter("idSeminario"));
-                            String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                            int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion"));
-                            int estado = Integer.parseInt(request.getParameter("ddlEstado"));
-                            _objSeminario.setIdSeminario(idSeminario);
-                            _objSeminario.setNombreSeminario(nombreSeminario);
-                            _objSeminario.setDuracionSeminario(duracionSeminario);
-                            _objSeminario.setEstadoSeminario(estado);
-                            daoModelSeminario.Edit(_objSeminario);
-                            break;
-                        }
+        String action = request.getParameter("action");
+        if (action != null) {
+            switch (action) {
+                case "Registrar": {
+                    daoModelSeminario = new ModelSeminario();
+                    String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion"));
+                    int estado = Integer.parseInt(request.getParameter("ddlEstado"));
+                    _objSeminario.setNombreSeminario(nombreSeminario);
+                    _objSeminario.setDuracionSeminario(duracionSeminario);
+                    _objSeminario.setEstadoSeminario(estado);
+                    daoModelSeminario.Add(_objSeminario);
+                    break;
                 }
-          response.sendRedirect("curso.jsp");
+                case "Editar": {
+                    daoModelSeminario = new ModelSeminario();
+                    int idSeminario = Integer.parseInt(request.getParameter("idSeminario"));
+                    String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion"));
+                    int estado = Integer.parseInt(request.getParameter("ddlEstado"));
+                    _objSeminario.setIdSeminario(idSeminario);
+                    _objSeminario.setNombreSeminario(nombreSeminario);
+                    _objSeminario.setDuracionSeminario(duracionSeminario);
+                    _objSeminario.setEstadoSeminario(estado);
+                    daoModelSeminario.Edit(_objSeminario);
+                    break;
+                }
+            }
+            response.sendRedirect("curso.jsp");
         }
     }
-    
+
     public String getTableSeminario() {
 
         ResultSet result;
@@ -82,15 +77,21 @@ public class ControllerSeminario extends HttpServlet {
             result = daoModelSeminario.listAll();
 
             while (result.next()) {
-                tableSeminario += "<tr>";
+                tableSeminario += "<tr data-tipo=\"seminario\">";
                 tableSeminario += "<td class=\"text-center\">" + result.getString("idSeminario").trim() + "</td>";
                 tableSeminario += "<td class=\"text-center\">" + result.getString("nombreSeminario").trim() + "</td>";
                 tableSeminario += "<td class=\"text-center\">" + result.getString("duracionSeminario").trim() + "</td>";
-                tableSeminario += "<td class=\"text-center\">" + result.getString("estadoSeminario").trim() + "</td>";
-                tableSeminario += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editarSeminario()\">\n"
-                         + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
+                String[] estado = {"success", "ok"};
+                if (result.getInt("estadoSeminario") == 0) {
+                    estado[0] = "danger";
+                    estado[1] = "remove";
+                }
+                tableSeminario +=  "<td class=\"text-center\"><a class=\"btn-sm btn-" + estado[0] + " btn-block \" href=\"javascript:void(0)\"  onclick=\"estado()\">\n"
+                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>\n"
+                        + "</td>";
+                tableSeminario += "<td class=\"text-center\"><a  class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
+                        + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
                 tableSeminario += "</tr>";
-
             }
         } catch (Exception e) {
             tableSeminario = "Ha ocurrido un error" + e.getMessage();

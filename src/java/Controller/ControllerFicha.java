@@ -72,7 +72,7 @@ public class ControllerFicha extends HttpServlet {
                     estado[0] = "danger";
                     estado[1] = "cancel";
                 }
-                tableFichas += "<td class=\"text-center\"><a class=\"btn-sm btn-"+estado[0]+" btn-block \" href=\"javascript:void(0)\" data-estado=\""+result.getString("estado")+"\"  onclick=\"estado()\">\n" 
+                tableFichas += "<td class=\"text-center\"><a class=\"btn-sm btn-"+estado[0]+" btn-block \" href=\"javascript:void(0)\"  onclick=\"estado()\">\n" 
                         +"<span class=\"glyphicon glyphicon-"+estado[1]+"\"></span></a>\n" 
                         + "</td>";
                 tableFichas += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulo\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"

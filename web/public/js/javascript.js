@@ -88,29 +88,23 @@ $(function () {
     })
 });
 
-$('.tabla').DataTable({
+var tablas = $('.tabla').DataTable({
     "language": {
         "url": "public/lang/Spanish.json"
     }
 });
-$('#tblEmpresas').DataTable({
+var tableEmpresa = $('#tblEmpresas').DataTable({
     "scrollX": true,
     "language": {
         "url": "public/lang/Spanish.json"
     }
 });
-var tableCategoriaCurso = $('#tblCategoriaCursos').DataTable({
-    "language": {
-        "url": "public/lang/Spanish.json"
-    }
-});
-
 function editar() {
-     var tipo;
+    var tipo;
     $('#tblCategoriaCursos tbody').on('click', 'tr', function () {
         tipo = $(this).data('tipo');
         if (tipo === 'categoria curso') {
-            var rowData = tableCategoriaCurso.row(this).data();
+            var rowData = tablas.table('#tblCategoriaCursos').row(this).data();
             $('#idCategoriaCurso').attr('value', rowData[0]);
             $('#txtNombreCategoriaCurso').attr('value', rowData[1]);
             $('#btnCategoriaCurso').attr('value', 'Editar');
@@ -118,47 +112,31 @@ function editar() {
             $('#tblCategoriaCursos tbody').off();
         }
     });
-    
-};
-
-function estado(){
-    $('#tblFichas td').on('click', 'a', function () {
-        var tipo = $(this).data('estado');
-        if (tipo===0) {
-            $(this).attr("class", "btn-sm btn-success btn-block ");
-        } else {
-            $(this).attr("class", "btn-sm btn-danger btn-block ");
+    ;
+    $('#tblSeminarios tbody').on('click', 'tr', function () {
+        tipo = $(this).data('tipo');
+        if (tipo === 'seminario') {
+            var rowData = tablas.table('#tblSeminarios').row(this).data();
+            $('#idSeminario').attr('value', rowData[0]);
+            $('#txtNombreSeminario').attr('value', rowData[1]);
+            $('#txtDuracion').attr('value', rowData[2]);
+            $('#ddlEstadosemiario').attr('value', rowData[3]);
+            $('#btnSeminario').attr('value', 'Editar');
+            $('#miPopupSeminario').modal('show');
+            $('#tblSeminarios tbody').off();
         }
-        $('#tblFichas tbody').off();
     });
-};
+}
+;
 
 $('#registrarCategoriaCurso').on('click', function () {
-    
-    $('#btnCategoriaCurso').attr('value','Registrar');
+    $('#btnCategoriaCurso').attr('value', 'Registrar');
     $('#txtNombreCategoriaCurso').attr('value', ' ');
     $('#miPopupCategoriaCurso').modal('show');
 });
-    function editarSeminario(){
-    $('#tblSeminarios tbody').on ('click','tr', function(){
-        var rowData = tableSeminario.row (this).data();
-        $('#idSeminario').attr('value', rowData[0]);
-        $('#txtNombreSeminario').attr('value',rowData[1]);
-        $('#txtDuracion').attr('value',rowData[2]);
-        $('#ddlEstadosemiario').attr('value',rowData[3]);
-        $('#btnRegistrarS').hide();
-        $('#btnEditarS').show();
-        $('#miPopupSeminario').modal('show');
-        $('#tblSeminario tbody').off();
-    });
-    }
+
 $('#registrarSeminario').on('click', function () {
-    $('#btnRegistrarS').show();
-    $('#btnEditarS').hide();
-    $('#miPopupseminario').modal('show');
+    $('#btnSeminario').attr('value', 'Registrar');
+    $('#miPopupSeminario').modal('show');
 });
-    var tableSeminario = $('#tblSeminarios').DataTable({
-    "language": {
-        "url": "public/lang/Spanish.json"
-    }
-});
+

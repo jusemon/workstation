@@ -94,7 +94,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupSeminario" data-dismiss="modal" name="regSeminario" value="Registrar Seminario">
+                                                <input class="btn btn-default btn-block" type="button" id="registrarSeminario" name="regSeminario" value="Registrar Seminario">
                                             </div>
                                         </div>
                                     </div>
@@ -133,14 +133,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%
-                                        out.print(controllerCurso.getTableCursos());
+                                    <%                                        out.print(controllerCurso.getTableCursos());
                                     %>
                                 </tbody>
                             </table>
                         </div>
                         <div class="tab-pane" id="categoriaCursos">
-                            <table id="tblCategoriaCursos" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblCategoriaCursos" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -176,7 +175,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="seminarios">
-                            <table id="tblSeminarios" class="table table-hover " cellspacing="0" width="100%">
+                            <table id="tblSeminarios" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -364,11 +363,11 @@
                                             </h3>
                                         </div>
                                         <div class="panel-body">
-                                                      <input type="hidden" id="idSeminario" name="idSeminario"/>
+                                            <input type="hidden" id="idSeminario" name="idSeminario"/>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                            Nombre
+                                                        Nombre
                                                         </label>
                                                         <input name="txtNombre" id="txtNombreSeminario" type="text" class="form-control" placeholder="" required>
                                                     </div>
@@ -384,16 +383,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <%--<div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="txtPrecio">
-                                                            Precio
-                                                        </label>
-                                                        <input name="txtPrecio" id="txtPrecio" type="text" class="form-control" placeholder="Ejm: Cinco"  required>
-                                                    </div>
-                                                </div>
-                                            </div> --%>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
@@ -412,12 +401,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input  class="btn btn-default btn-block" id="btnRegistrarS" type="submit" name="action" value="Añadir">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <input class="btn btn-primary btn-block" id="btnEditarS" type="submit" name="action" value="Editar">
+                                                        <input  class="btn btn-default btn-block" id="btnSeminario" type="submit" name="action" value="Registrar">
                                                     </div>
                                                 </div>
                                             </div>
@@ -517,5 +501,11 @@
         </div>        
 
         <%@include file="WEB-INF/jspf/imports.jspf" %>
+
+        <script>
+            function estado(entrada) {
+                
+            };
+        </script>
     </body>
 </html>
