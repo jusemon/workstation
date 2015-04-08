@@ -46,11 +46,10 @@ public class ModelSeminario extends ConnectionDB {
     public ResultSet listAll() throws Exception {
 
         ResultSet rs = null;
-        String sql = "SELECT 'IdSeminario',"
-                + "'nombreSeminario',"
-                + "'duracionSeminario',"
-                + "'estadoSeminario'"
-                + "FROM 'tblSeminario'";
+        String sql = "SELECT idSeminario, "
+                + "nombreSeminario, "
+                + "duracionSeminario,"
+                + "estadoSeminario FROM tblseminario";
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
@@ -74,5 +73,28 @@ public class ModelSeminario extends ConnectionDB {
             System.out.println(e.getMessage());
         }
         return rs;
+    }
+
+    public boolean Edit(ObjSeminario _objSeminario) 
+    {
+        boolean objReturn = false;
+        String sql ="call spActualizarSeminario (?,?,?,?)";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt (1,_objSeminario.getIdSeminario());
+            pStmt.setString (2,_objSeminario.getNombreSeminario());
+            pStmt.setInt (3,_objSeminario.getDuracionSeminario());
+            pStmt.setInt (4, _objSeminario.getEstadoSeminario());
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0){
+            objReturn = true;
+        }
+            
+            
+        } catch (Exception e) {
+               System.out.println(e.getMessage());
+        }
+        return objReturn;
     }
 }

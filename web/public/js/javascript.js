@@ -139,3 +139,26 @@ $('#registrarCategoriaCurso').on('click', function () {
     $('#txtNombreCategoriaCurso').attr('value', ' ');
     $('#miPopupCategoriaCurso').modal('show');
 });
+    function editarSeminario(){
+    $('#tblSeminarios tbody').on ('click','tr', function(){
+        var rowData = tableSeminario.row (this).data();
+        $('#idSeminario').attr('value', rowData[0]);
+        $('#txtNombreSeminario').attr('value',rowData[1]);
+        $('#txtDuracion').attr('value',rowData[2]);
+        $('#ddlEstadosemiario').attr('value',rowData[3]);
+        $('#btnRegistrarS').hide();
+        $('#btnEditarS').show();
+        $('#miPopupSeminario').modal('show');
+        $('#tblSeminario tbody').off();
+    });
+    }
+$('#registrarSeminario').on('click', function () {
+    $('#btnRegistrarS').show();
+    $('#btnEditarS').hide();
+    $('#miPopupseminario').modal('show');
+});
+    var tableSeminario = $('#tblSeminarios').DataTable({
+    "language": {
+        "url": "public/lang/Spanish.json"
+    }
+});

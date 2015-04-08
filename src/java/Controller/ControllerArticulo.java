@@ -38,6 +38,7 @@ public class ControllerArticulo extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         if (request.getParameter("action") != null) {
             String action = new String(request.getParameter("action").getBytes("ISO-8859-1"), "UTF-8");
             try {

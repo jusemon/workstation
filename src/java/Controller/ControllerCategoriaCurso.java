@@ -35,6 +35,7 @@ public class ControllerCategoriaCurso extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
                 case "Registrar":
