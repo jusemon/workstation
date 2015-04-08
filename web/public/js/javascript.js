@@ -126,14 +126,17 @@ $('#registrarCategoriaCurso').on('click', function() {
     $('#miPopupCategoriaCurso').modal('show');
 });
 
-
-;
-
-function consultar() {
-
-
-}
-;
+function estado(){
+    $('#tblFichas td').on('click', 'a', function () {
+        var tipo = $(this).data('estado');
+        if (tipo===0) {
+            $(this).attr("class", "btn-sm btn-success btn-block ");
+        } else {
+            $(this).attr("class", "btn-sm btn-danger btn-block ");
+        }
+        $('#tblFichas tbody').off();
+    });
+};
 
 
 function editarSeminario() {
