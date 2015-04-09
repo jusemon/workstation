@@ -146,7 +146,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="categorias">
-                            <table id="tblCategorias" class="table table-striped table-bordered tabla" cellspacing="0" width="100%">
+                            <table id="tblCategorias" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -262,25 +262,26 @@
                                         </div>
                                         <div class="panel-body">
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                 <input type="hidden" id="idCategoriaArticulo" name="idCategoriaArticulo"/>
+                                                <div class="col-md-12">                                        
                                                     <div class="form-group">
-                                                        <label for="txtNombre">
                                                             Nombre
-                                                        </label>
-                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                        <input name="txtNombre" id="txtNombreCategoria" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="panel-footer">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input  class="btn btn-default btn-block" id="btnRegistrarC" type="submit" name="action" value="Añadir">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <input class="btn btn-primary btn-block" id="btnEditarC" type="submit" name="action" value="Editar">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

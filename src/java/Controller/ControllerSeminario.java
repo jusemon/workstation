@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ControllerSeminario extends HttpServlet {
 
     ObjSeminario _objSeminario = new ObjSeminario();
-    ModelSeminario daoModelSeminario = new ModelSeminario();
+    ModelSeminario daoModelSeminario;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,29 +37,46 @@ public class ControllerSeminario extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
-        if (action != null) {
-            try {
-                String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion"));
-                int estado = Integer.parseInt(request.getParameter("ddlEstado"));
 
-                _objSeminario.setNombreSeminario(nombreSeminario);
-                _objSeminario.setDuracionSeminario(duracionSeminario);
-                _objSeminario.setEstadoSeminario(duracionSeminario);
-                daoModelSeminario.Add(_objSeminario);
-                response.sendRedirect("curso.jsp");
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-
-            }
+        if (request.getParameter("action") != null) {
+            switch (request.getParameter ("action")){
+                case "Añadir":
+                        {
+                            daoModelSeminario = new ModelSeminario();
+                            String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                            int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion"));
+                            int estado = Integer.parseInt(request.getParameter("ddlEstado"));
+                            _objSeminario.setNombreSeminario(nombreSeminario);
+                            _objSeminario.setDuracionSeminario(duracionSeminario);
+                            _objSeminario.setEstadoSeminario(estado);
+                            daoModelSeminario.Add(_objSeminario);
+                          
+                            break;
+                        }
+                    case "Editar":
+                        {
+                            daoModelSeminario = new ModelSeminario();
+                            int idSeminario = Integer.parseInt(request.getParameter("idSeminario"));
+                            String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                            int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion"));
+                            int estado = Integer.parseInt(request.getParameter("ddlEstado"));
+                            _objSeminario.setIdSeminario(idSeminario);
+                            _objSeminario.setNombreSeminario(nombreSeminario);
+                            _objSeminario.setDuracionSeminario(duracionSeminario);
+                            _objSeminario.setEstadoSeminario(estado);
+                            daoModelSeminario.Edit(_objSeminario);
+                            break;
+                        }
+                }
+          response.sendRedirect("curso.jsp");
         }
     }
-
+    
     public String getTableSeminario() {
 
         ResultSet result;
         String tableSeminario = "";
+        daoModelSeminario = new ModelSeminario();
 
         try {
             result = daoModelSeminario.listAll();
@@ -69,9 +87,8 @@ public class ControllerSeminario extends HttpServlet {
                 tableSeminario += "<td class=\"text-center\">" + result.getString("nombreSeminario").trim() + "</td>";
                 tableSeminario += "<td class=\"text-center\">" + result.getString("duracionSeminario").trim() + "</td>";
                 tableSeminario += "<td class=\"text-center\">" + result.getString("estadoSeminario").trim() + "</td>";
-                tableSeminario += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#curso\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
-
+                tableSeminario += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editarSeminario()\">\n"
+                         + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
                 tableSeminario += "</tr>";
 
             }
@@ -84,7 +101,6 @@ public class ControllerSeminario extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

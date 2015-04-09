@@ -38,29 +38,32 @@ public class ControllerArticulo extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         if (request.getParameter("action") != null) {
             String action = new String(request.getParameter("action").getBytes("ISO-8859-1"), "UTF-8");
             try {
-                if (action.equals("Añadir")) {
-                    String descripcionArticulo = new String(request.getParameter("txtDescripcion").getBytes("ISO-8859-1"), "UTF-8");
-                    int cantidadDisponible = Integer.parseInt(request.getParameter("txtCantidad"));
-                    int precioUnitario = Integer.parseInt(request.getParameter("txtPrecio"));
-                    int idCategoriaArticulo;
-                    if (request.getParameter("idCategoria") != null) {
-                        idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
-                        _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
-                        _objArticulo.setDescripcionArticulo(descripcionArticulo);
-                        _objArticulo.setCantidadDisponible(cantidadDisponible);
-                        _objArticulo.setPrecioUnitario(precioUnitario);
-                        daoModelArticulo.Add(_objArticulo);
+                switch (action) {
+                    case "Añadir":
+                        String descripcionArticulo = new String(request.getParameter("txtDescripcion").getBytes("ISO-8859-1"), "UTF-8");
+                        int cantidadDisponible = Integer.parseInt(request.getParameter("txtCantidad"));
+                        int precioUnitario = Integer.parseInt(request.getParameter("txtPrecio"));
+                        int idCategoriaArticulo;
+                        if (request.getParameter("idCategoria") != null) {
+                            idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
+                            _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
+                            _objArticulo.setDescripcionArticulo(descripcionArticulo);
+                            _objArticulo.setCantidadDisponible(cantidadDisponible);
+                            _objArticulo.setPrecioUnitario(precioUnitario);
+                            daoModelArticulo.Add(_objArticulo);
+                            response.sendRedirect("articulo.jsp");
+                        }   break;
+                    case "Consultar":
+                        String nombreBusqueda = new String(request.getParameter("nombreBusqueda").getBytes("ISO-8859-1"), "UTF-8");
+                        HttpSession session = request.getSession();
+                        session.setAttribute("isConsulta", true);
+                        session.setAttribute("resultado", nombreBusqueda);
                         response.sendRedirect("articulo.jsp");
-                    }
-                } else if (action.equals("Consultar")) {
-                    String nombreBusqueda = new String(request.getParameter("nombreBusqueda").getBytes("ISO-8859-1"), "UTF-8");
-                    HttpSession session = request.getSession();
-                    session.setAttribute("isConsulta", true);
-                    session.setAttribute("resultado", nombreBusqueda);
-                    response.sendRedirect("articulo.jsp");
+                        break;
                 }
 
             } catch (NumberFormatException ne) {

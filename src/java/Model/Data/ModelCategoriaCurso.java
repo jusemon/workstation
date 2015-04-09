@@ -55,7 +55,8 @@ public class ModelCategoriaCurso extends ConnectionDB {
         return rs;
     }
 
-    public boolean Edit(ObjCategoriaCurso _objCategoriaCurso) {
+    public boolean Edit(ObjCategoriaCurso _objCategoriaCurso)
+    {
         boolean objReturn = false;
         String sql = "call spActualizarCategoriaCurso(?,?)";
 

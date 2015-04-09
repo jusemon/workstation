@@ -4,6 +4,7 @@
     Author     : Administrador
 --%>
 
+<%@page import="Controller.ControllerSeminario"%>
 <%@page import="Controller.ControllerCategoriaCurso"%>
 <%@page import="Controller.ControllerFicha"%>
 <%@page import="Controller.ControllerCurso"%>
@@ -14,6 +15,7 @@
     ControllerCurso controllerCurso = new ControllerCurso();
     ControllerFicha controllerFicha = new ControllerFicha();
     ControllerCategoriaCurso controllerCategoriaCurso = new ControllerCategoriaCurso();
+    ControllerSeminario controllerSeminario = new ControllerSeminario();
 %>
 <!DOCTYPE html>
 <html>
@@ -174,30 +176,20 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="seminarios">
-                            <table id="tblSeminarios" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblSeminarios" class="table table-hover " cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
                                         <th class="text-center">Nombre</th>
                                         <th class="text-center">Duración</th>
-                                        <th class="text-center">Precio</th>
                                         <th class="text-center">Estado</th>
                                         <th class="text-center">Editar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">01100</td>
-                                        <td class="text-center">Nueva tecnica de Pincel</td>
-                                        <td class="text-center">4 horas</td>
-                                        <td class="text-center">50.000</td>                                        
-                                        <td class="text-center"><a class="btn-sm btn-success btn-block " href="javascript:void(0)"  onclick="add("Estado")">
-                                                                   <span class="glyphicon glyphicon-ok"></span></a>
-                                        </td>
-                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " href="javascript:void(0)"  onclick="add("Estado")">
-                                                                   <span class="glyphicon glyphicon-pencil"></span></a>
-                                        </td>
-                                    </tr>
+                                    <%
+                                        out.print(controllerSeminario.getTableSeminario());
+                                    %>
                                 </tbody>
                             </table>
                         </div>
@@ -315,7 +307,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">                               
-                                <form id="form_Maestros" action="ControllerCategoriaCurso" method="POST">
+                                <form id="form_categoriaCurso" action="ControllerCategoriaCurso" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -338,14 +330,9 @@
                                         </div>
                                         <div class="panel-footer">
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input id="btnRegistrarCC" class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <input id="btnEditarCC" class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
+                                                        <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
                                                     </div>
                                                 </div>
                                             </div>
@@ -377,13 +364,12 @@
                                             </h3>
                                         </div>
                                         <div class="panel-body">
+                                                      <input type="hidden" id="idSeminario" name="idSeminario"/>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtNombre">
                                                             Nombre
-                                                        </label>
-                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                        <input name="txtNombre" id="txtNombreSeminario" type="text" class="form-control" placeholder="" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -393,7 +379,7 @@
                                                         <label for="txtDuracion">
                                                             Duracion (En horas)
                                                         </label>
-                                                        <input name="txtDuracion" id="txtDuracion" type="text" class="form-control" placeholder="Ejm: Cinco" required>
+                                                        <input name="txtDuracion" id="txtDuracion" type="text" class="form-control" placeholder="" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -425,12 +411,12 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                                        <input  class="btn btn-default btn-block" id="btnRegistrarS" type="submit" name="action" value="Añadir">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
+                                                        <input class="btn btn-primary btn-block" id="btnEditarS" type="submit" name="action" value="Editar">
                                                     </div>
                                                 </div>
                                             </div>

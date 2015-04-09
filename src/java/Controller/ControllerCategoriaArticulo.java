@@ -35,20 +35,32 @@ public class ControllerCategoriaArticulo extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
-        if (action != null) {
-            try {
-                daoModelCategoriaArticulo = new ModelCategoriaArticulo();
-                String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
-                daoModelCategoriaArticulo.Add(_objCategoriaArticulo);
-                response.sendRedirect("articulo.jsp");
+        
+        if (request.getParameter("action") != null) {
+            switch (request.getParameter ("action")){
+                    case "Añadir":{
+                        daoModelCategoriaArticulo = new ModelCategoriaArticulo();
+                        String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                        _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
+                        daoModelCategoriaArticulo.Add(_objCategoriaArticulo);
+                        response.sendRedirect("articulo.jsp");
+                        break;
+                    }
+                    case "Editar":{
+                        daoModelCategoriaArticulo = new ModelCategoriaArticulo();
+                        int idCategoriaArticulo =  Integer.parseInt(request.getParameter("idCategoriaArticulo"));
+                        String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                        _objCategoriaArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
+                        _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
+                        daoModelCategoriaArticulo.Add(_objCategoriaArticulo);
+                        break;
+                }
 
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+            } 
+            response.sendRedirect("articulo.jsp");
             }
         }
-    }
+    
 
     public String getTableCategoriaArticulo() {
 
@@ -62,7 +74,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                 tableCategoriaarticulos += "<tr>";
                 tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idCategoriaArticulo").trim() + "</td>";
                 tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaArticulo").trim() + "</td>";
-                tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulos\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
+                tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editarCategorias()\">\n"
                         + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
 
                 tableCategoriaarticulos += "</tr>";

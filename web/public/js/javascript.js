@@ -1,7 +1,4 @@
-
-
-
-$(document).ready(function () {
+$(document).ready(function() {
     var enlace = window.location.search;
     if (enlace.indexOf('mensaje=2') !== -1) {
         $.notify('Has ingresado un usuario o contraseña incorrectos', 'error');
@@ -31,10 +28,10 @@ $(document).ready(function () {
     } else {
         $('#btnindex').attr('class', 'active');
     }
-    $('.imgIndex').on('load', function () {
+    $('.imgIndex').on('load', function() {
         $('.imgIndex').height('80%');
     });
-    $('#fecha').on('load', function () {
+    $('#fecha').on('load', function() {
         var f = new Date();
         var x = (f.getDate() + "-" + (f.getMonth() + 1) + "-" + f.getFullYear());
         $('#fecha').attr('value', x);
@@ -42,7 +39,7 @@ $(document).ready(function () {
     });
 });
 
-$('#radioBtn2 a').on('click', function () {
+$('#radioBtn2 a').on('click', function() {
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
     $('#' + tog).prop('value', sel);
@@ -50,7 +47,7 @@ $('#radioBtn2 a').on('click', function () {
     $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
 });
 
-$('#radioBtn a').on('click', function () {
+$('#radioBtn a').on('click', function() {
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
     $('#' + tog).prop('value', sel);
@@ -58,9 +55,9 @@ $('#radioBtn a').on('click', function () {
     $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
 });
 
-$(function () {
+$(function() {
     /* BOOTSNIPP FULLSCREEN FIX */
-    $('#boton').on('click', function (event) {
+    $('#boton').on('click', function(event) {
         event.preventDefault();
         $('#miPopup').modal({
             backdrop: 'static',
@@ -70,23 +67,23 @@ $(function () {
     })
 });
 
-$(function () {
+$(function() {
     /* BOOTSNIPP FULLSCREEN FIX */
-    if (window.location == window.parent.location) {
+    if (window.location === window.parent.location) {
         $('#back-to-bootsnipp').removeClass('hide');
         $('.alert').addClass('hide');
     }
 
-    $('#fullscreen').on('click', function (event) {
+    $('#fullscreen').on('click', function(event) {
         event.preventDefault();
         window.parent.location = "http://bootsnipp.com/iframe/Q60Oj";
     });
-    $('tbody > tr').on('click', function (event) {
+    $('tbody > tr').on('click', function(event) {
         event.preventDefault();
         $('#myModal').modal('show');
     })
 
-    $('.btn-mais-info').on('click', function (event) {
+    $('.btn-mais-info').on('click', function(event) {
         $('.open_info').toggleClass("hide");
     })
 });
@@ -109,27 +106,83 @@ var tableCategoriaCurso = $('#tblCategoriaCursos').DataTable({
 });
 
 function editar() {
-    $('#tblCategoriaCursos tbody').on('click', 'tr', function () {
-        var rowData = tableCategoriaCurso.row(this).data();
-        $('#idCategoriaCurso').attr('value', rowData[0]);
-        $('#txtNombreCategoriaCurso').attr('value', rowData[1]);
-        $('#btnRegistrarCC').hide();
-        $('#btnEditarCC').show();
-        $('#miPopupCategoriaCurso').modal('show');
-        $('#tblCategoriaCursos tbody').off();
+    $('#tblCategoriaCursos tbody').on('click', 'tr', function() {
+        var tipo = $(this).data('tipo');
+        if (tipo === 'categoria curso') {
+            var rowData = tableCategoriaCurso.row(this).data();
+            $('#idCategoriaCurso').attr('value', rowData[0]);
+            $('#txtNombreCategoriaCurso').attr('value', rowData[1]);
+            $('#btnCategoriaCurso').attr('value', 'Editar');
+            $('#miPopupCategoriaCurso').modal('show');
+            $('#tblCategoriaCursos tbody').off();
+        }
     });
 }
 ;
+$('#registrarCategoriaCurso').on('click', function() {
 
-function consultar() {
-
-
-}
-;
-
-$('#registrarCategoriaCurso').on('click', function () {
-    $('#btnRegistrarCC').show();
-    $('#btnEditarCC').hide();
+    $('#btnCategoriaCurso').attr('value', 'Registrar');
+    $('#txtNombreCategoriaCurso').attr('value', ' ');
     $('#miPopupCategoriaCurso').modal('show');
 });
-    
+
+function estado(){
+    $('#tblFichas td').on('click', 'a', function () {
+        var tipo = $(this).data('estado');
+        if (tipo===0) {
+            $(this).attr("class", "btn-sm btn-success btn-block ");
+        } else {
+            $(this).attr("class", "btn-sm btn-danger btn-block ");
+        }
+        $('#tblFichas tbody').off();
+    });
+};
+
+
+function editarSeminario() {
+    $('#tblSeminarios tbody').on('click', 'tr', function() {
+        var rowData = tableSeminario.row(this).data();
+        $('#idSeminario').attr('value', rowData[0]);
+        $('#txtNombreSeminario').attr('value', rowData[1]);
+        $('#txtDuracion').attr('value', rowData[2]);
+        $('#ddlEstadosemiario').attr('value', rowData[3]);
+        $('#btnRegistrarS').hide();
+        $('#btnEditarS').show();
+        $('#miPopupSeminario').modal('show');
+        $('#tblSeminario tbody').off();
+    });
+}
+
+function editarCategorias() {
+    $('#tblCategorias tbody').on('click', 'tr', function() {
+        var rowData = tableCategoria.row(this).data();
+        $('#idCategoriaArticulo').attr('value', rowData[0]);
+        $('#txtNombreCategoria').attr('value', rowData[1]);
+        $('#btnRegistrarC').hide();
+        $('#btnEditarC').show();
+        $('#miPopupCategoria').modal('show');
+        $('#tblCategorias tbody').off();
+    });
+}
+
+$('#registrarSeminario').on('click', function() {
+    $('#btnRegistrarS').show();
+    $('#btnEditarS').hide();
+    $('#miPopupseminario').modal('show');
+});
+$('#registrarCategoriaArticulo').on('click', function() {
+    $('#btnRegistrarC').show();
+    $('#btnEditarC').hide();
+    $('#miPopupCategoria').modal('show');
+});
+var tableSeminario = $('#tblSeminarios').DataTable({
+    "language": {
+        "url": "public/lang/Spanish.json"
+    }
+});
+
+var tableCategoria = $('#tblCategorias').DataTable({
+    "language": {
+        "url": "public/lang/Spanish.json"
+    }
+});

@@ -35,6 +35,7 @@ public class ControllerCategoriaCurso extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
                 case "Registrar":
@@ -71,7 +72,7 @@ public class ControllerCategoriaCurso extends HttpServlet {
             result = daoModelCategoriaCurso.ListAll();
 
             while (result.next()) {
-                tableCategoriaarticulos += "<tr>";
+                tableCategoriaarticulos += "<tr data-tipo=\"categoria curso\" >";
                 tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idtblCategoriaCurso").trim() + "</td>";
                 tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaCurso").trim() + "</td>";
                 tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
