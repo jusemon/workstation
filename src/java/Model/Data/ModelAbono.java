@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import Model.DTO.ObjAbono;
 /**
  *
- * @author Administrador
+ * @author David
  */
 public class ModelAbono extends ConnectionDB {
     private PreparedStatement pStmt;
@@ -29,20 +29,67 @@ public class ModelAbono extends ConnectionDB {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setDouble(1, _objAbono.getValorAbono());
-            pStmt.setString(1, _objAbono.getFechaPago());
-            pStmt.setInt(1, _objAbono.getIdCredito());
+            pStmt.setString(2, _objAbono.getFechaPago());
+            pStmt.setInt(3, _objAbono.getIdCredito());
             
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;        
+    }
+    
+    public boolean Edit(ObjAbono _objAbono){
+        
+        boolean objReturn = false;
+        String sql = "call spActualizarAbono(?,?,?)";
+        
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setDouble(1, _objAbono.getValorAbono());
+            pStmt.setString(2, _objAbono.getFechaPago());
+            pStmt.setInt(3, _objAbono.getIdCredito());
+            
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+        }
+        catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return objReturn;
     }
+    public ResultSet buscarPorNIT(String idAbono) {
+        ResultSet rs = null;
+        String sql = "call spConsultarAbonoByCredito(?)";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, idAbono);
+            rs = pStmt.executeQuery();            
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }   
+    
+    public ResultSet ListAll() throws Exception {
 
-    public ResultSet ListAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ResultSet rs = null;
+        String sql ="call spListarAbonos";
+           try {
+            getStmt();
+            rs = stmt.executeQuery(sql);
+
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+
+        return rs;
     }
 }

@@ -80,7 +80,7 @@
                 </div>    
             </div>
         </div>
-        todos los derechos reservados.
+        © 2015. Todos los derechos reservados.
     </body>
     <%@include file="WEB-INF/jspf/imports.jspf" %>
 

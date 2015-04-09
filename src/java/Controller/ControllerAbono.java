@@ -60,29 +60,32 @@ public class ControllerAbono extends HttpServlet {
 
     }
 
-    public String getTableCategoriaCurso() {
+    public String getTableAbono() {
 
         ResultSet result;
-        String tableCategoriaarticulos = "";
+        String tableAbono = "";
         daoModelAbono = new ModelAbono();
         try {
             result = daoModelAbono.ListAll();
 
             while (result.next()) {
-                tableCategoriaarticulos += "<tr>";
-                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idtblCategoriaCurso").trim() + "</td>";
-                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaCurso").trim() + "</td>";
-                tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
+                tableAbono += "<tr>";
+                
+                tableAbono += "<td class=\"text-center\">" + result.getString("idAbono").trim() + "</td>";
+                tableAbono += "<td class=\"text-center\">" + result.getString("valorAbono").trim() + "</td>";
+                tableAbono += "<td class=\"text-center\">" + result.getString("fechaPago").trim() + "</td>";
+                tableAbono += "<td class=\"text-center\">" + result.getString("tblcredito_idCredito").trim() + "</td>";
+                tableAbono += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
                         + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
-                tableCategoriaarticulos += "</tr>";
+                tableAbono += "</tr>";
 
             }
         } catch (Exception e) {
-            tableCategoriaarticulos = "Ha ocurrido un error" + e.getMessage();
+            tableAbono = "Ha ocurrido un error" + e.getMessage();
         } finally {
             daoModelAbono.Signout();
         }
-        return tableCategoriaarticulos;
+        return tableAbono;
     }
 
     public String getOptionsCategorias() {

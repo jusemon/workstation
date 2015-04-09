@@ -52,7 +52,7 @@ public class ModelEmpresa extends ConnectionDB {
     public ResultSet ListAll() throws Exception {
 
         ResultSet rs = null;
-        String sql ="call spConsultarEmpresa";
+        String sql ="call spListarEmpresas";
            try {
             getStmt();
             rs = stmt.executeQuery(sql);
@@ -77,5 +77,28 @@ public class ModelEmpresa extends ConnectionDB {
             System.err.println("SQLException:" + e.getMessage());
         }
         return rs;
-    }    
+    }
+    public boolean Update(ObjEmpresa _objEmpresa){
+        boolean objReturn = false;
+        String sql = "call spActualizarEmpresa(?,?,?,?,?)";
+        
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, _objEmpresa.getNombreEmpresa());
+            pStmt.setString(2, _objEmpresa.getDireccionEmpresa());
+            pStmt.setString(3, _objEmpresa.getNombreContacto());
+            pStmt.setString(4, _objEmpresa.getTelefonoContacto());
+            pStmt.setString(5, _objEmpresa.getEmailContacto());
+            
+              int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+        } 
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
 }
