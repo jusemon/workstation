@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-04-2015 a las 22:57:16
+-- Tiempo de generación: 09-04-2015 a las 22:59:55
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -150,15 +150,14 @@ BEGIN
 	select msg as Respuesta; 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarAbonoByCredito`(IN `idCredi`     int)
+select * from tblAbono a inner join tblCredito c on(a.tblCredito_idCredito=c.idCredito) 
+where a.tblCredito_idCredito like concat('%',idCredi,'%') 
+order by (a.tblCredito_idCredito,a.FechaPago)$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarArticuloByNombre`(IN `nombre` VARCHAR(50))
     NO SQL
 select idArticulo, descripcionArticulo, precioUnitario, cantidadDisponible, nombreCategoriaArticulo from tblArticulo a inner join tblCategoriaArticulo ca on(a.idCategoriaArticulo=ca.idCategoriaArticulo) where descripcionArticulo like concat('%',nombre,'%')$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarArticulos`()
-BEGIN
-
-SELECT * FROM tblarticulo INNER JOIN tblcategoriaarticulo ON tblarticulo.idCategoriaArticulo = tblcategoriaarticulo.idCategoriaArticulo;
-END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarClientesCreditosActivos`(
  )
@@ -220,12 +219,6 @@ BEGIN
 	order by idArticulo;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEmpresa`()
-BEGIN
-
-SELECT * FROM tblEmpresa;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEmpresabyNIT`(IN `nitEmpre` VARCHAR(20))
 select * from tblEmpresa where nitEmpresa like concat('%',nitEmpre,'%')$$
 
@@ -281,6 +274,24 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarVentasDiarias`(
 BEGIN
 	select * from tblVenta
 	where fechaVenta = CURDATE();
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarAbono`(
+    in idAbo        int,
+    in valorAbo     int,
+    in fechaPago    datetime,
+    in idCredi      int
+ )
+BEGIN
+	declare msg varchar(40);    
+	if (exists(select idAbono from tblAbono where idAbono=idAbo)) then
+		set msg="Este abono ya fue registrado.";
+		select msg as Respuesta;
+	else
+		insert into tblAbono (valorAbono,fechaPago,tblCredito_idCredito) Values(valorAbo,fechaPa,idCredi);
+		set msg="La empresa se ha registrado exitosamente";
+		select msg as Respuesta; 
+	end if;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarArticulo`(IN `idCategoriaArticulo` INT, IN `descripcionArticulo` VARCHAR(50) CHARSET utf8, IN `cantidadDisponible` INT, IN `precioUnitario` INT)
@@ -393,6 +404,24 @@ BEGIN
 	end if;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarFactura`(
+    in idFactu       int,
+    in fechafactu    datetime,
+    in totalFactu    varchar(50)
+    
+ )
+BEGIN
+	declare msg varchar(40);    
+	if (exists(select idFactura from tblFactura where idFactura=idFactu)) then
+		set msg="Esta factura ya existe";
+		select msg as Respuesta;
+	else
+		insert into tblFactura (fechaFactura,totalFactura) Values(fechafactu,totalFactu);
+		set msg="La factura se ha registrado exitosamente";
+		select msg as Respuesta; 
+	end if;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarFicha`(
     in id          int,
     in cupos  int,  
@@ -401,6 +430,25 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarFicha`(
  )
 BEGIN
 		insert into tblFicha(tblcurso_idCurso,cuposDisponibles,fechaInicio, precioFicha) Values(id,cupos,fecha, precio);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarInscripcion`(
+    in idIncripci       int,
+    in idSeminar        int,
+    in precioSeminar	int,
+    in fechaAsistenc    datetime,
+    in idVen            int  
+ )
+BEGIN
+	declare msg varchar(40);    
+	if (exists(select idIncripcion from tblInscripcion where idIncripcion=idIncripci)) then
+		set msg="Esta inscripción ya existe";
+		select msg as Respuesta;
+	else
+		insert into tblInscripcion (idIncripcion,idSeminario, precioSeminario, fechaAsistencia,idVenta) Values(idIncripci,idSeminar,precioSeminar,fechaAsistenc,idVen);
+		set msg="La inscripci��n se ha registrado exitosamente";
+		select msg as Respuesta; 
+	end if;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarMatricula`(
@@ -464,41 +512,16 @@ BEGIN
 	end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spInsertarFactura`(
-    in idFactu       int,
-    in fechafactu    datetime,
-    in totalFactu    varchar(50)
-    
- )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarArticulos`()
 BEGIN
-	declare msg varchar(40);    
-	if (exists(select idFactura from tblFactura where idFactura=idFactu)) then
-		set msg="Esta factura ya existe";
-		select msg as Respuesta;
-	else
-		insert into tblFactura (fechaFactura,totalFactura) Values(fechafactu,totalFactu);
-		set msg="La factura se ha registrado exitosamente";
-		select msg as Respuesta; 
-	end if;
+
+SELECT * FROM tblarticulo INNER JOIN tblcategoriaarticulo ON tblarticulo.idCategoriaArticulo = tblcategoriaarticulo.idCategoriaArticulo;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spInsertarInscripcion`(
-    in idIncripci       int,
-    in idSeminar        int,
-	in precioSeminar	int,
-    in fechaAsistenc    datetime,
-    in idVen   int  
- )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarEmpresas`()
 BEGIN
-	declare msg varchar(40);    
-	if (exists(select idIncripcion from tblInscripcion where idIncripcion=idIncripci)) then
-		set msg="Esta inscripción ya existe";
-		select msg as Respuesta;
-	else
-		insert into tblInscripcion (idIncripcion,idSeminario, precioSeminario, fechaAsistencia,idVenta) Values(idIncripci,idSeminar,precioSeminar,fechaAsistenc,idVen);
-		set msg="La inscripción se ha registrado exitosamente";
-		select msg as Respuesta; 
-	end if;
+
+SELECT * FROM tblEmpresa;
 END$$
 
 DELIMITER ;
