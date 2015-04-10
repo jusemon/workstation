@@ -9,10 +9,14 @@ import Model.DTO.ObjCurso;
 import Model.Data.ModelCurso;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jdk.nashorn.internal.parser.TokenType;
 
 /**
  *
@@ -51,6 +55,18 @@ public class ControllerCurso extends HttpServlet {
                 _objCurso.setEstadoCurso(estado);
                 daoModelCurso.Add(_objCurso);
                 response.sendRedirect("curso.jsp");
+            } else if (request.getParameter("action").equals("Consultar")) {
+                int id = Integer.getInteger(request.getParameter("idCurso"));
+                ResultSet result;
+                ArrayList <String> respuesta = new ArrayList<String>();
+                try {
+                    result = daoModelCurso.buscarPorID(id);
+                    while (result.next()) {
+                       respuesta.add(result.getString("idCurso"));
+                        
+                    }
+                } catch (Exception e) {
+                }
             }
         }
 
@@ -62,11 +78,12 @@ public class ControllerCurso extends HttpServlet {
         try {
             result = daoModelCurso.ListAll();
             while (result.next()) {
+                tableCursos += "<input type=\"hidden\" name=\"idCurso\" id=\"idCurso\" value=\"" + result.getString("idCurso") + "\">";
                 tableCursos += "<tr>";
                 tableCursos += "<td class=\"text-center\">" + result.getString("idCurso").trim() + "</td>";
                 tableCursos += "<td class=\"text-center\">" + result.getString("nombreCurso").trim() + "</td>";
                 tableCursos += "<td class=\"text-center\">" + result.getString("estadoCurso").trim() + "</td>";
-                tableCursos += "<td class=\"text-center\"><a class=\"btn-sm btn-success btn-block \"  data-toggle=\"modal\"  data-target=\"#articulos\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
+                tableCursos += "<td class=\"text-center\"><a class=\"btn-sm btn-success btn-block \" onclick=\"consultar(" + result.getString("idCurso").trim() + ")\">\n"
                         + "<span class=\"glyphicon glyphicon-search\"></span></a>\n</td>";
                 tableCursos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulos\" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
                         + "<span class=\"glyphicon glyphicon-edit\"></span></a>\n</td>";
