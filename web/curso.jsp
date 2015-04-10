@@ -367,7 +367,8 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        Nombre
+                                                        <label>
+                                                            Nombre
                                                         </label>
                                                         <input name="txtNombre" id="txtNombreSeminario" type="text" class="form-control" placeholder="" required>
                                                     </div>
@@ -504,8 +505,9 @@
 
         <script>
             function estado(entrada) {
-                
-            };
+
+            }
+            ;
         </script>
     </body>
 </html>

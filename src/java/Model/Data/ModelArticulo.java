@@ -49,8 +49,7 @@ public class ModelArticulo extends ConnectionDB {
      public ResultSet ListAll() throws Exception {
 
         ResultSet rs = null;
-        String sql ="SELECT * FROM tblarticulo INNER JOIN tblcategoriaarticulo "
-                + "ON tblarticulo.idCategoriaArticulo = tblcategoriaarticulo.idCategoriaArticulo";
+        String sql ="call spConsultarArticulos";
            try {
             getStmt();
             rs = stmt.executeQuery(sql);

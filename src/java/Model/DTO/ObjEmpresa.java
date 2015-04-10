@@ -13,9 +13,9 @@ public class ObjEmpresa {
     private String nitEmpresa;
     private String nombreEmpresa;
     private String direccionEmpresa;
-    private String contactoEmpresa;
-    private String telefonoEmpresa;
-    private String emailContacot;
+    private String nombreContacto;
+    private String telefonoContacto;
+    private String emailContacto;
 
     public String getNitEmpresa() {
         return nitEmpresa;
@@ -41,28 +41,28 @@ public class ObjEmpresa {
         this.direccionEmpresa = direccionEmpresa;
     }
 
-    public String getContactoEmpresa() {
-        return contactoEmpresa;
+    public String getNombreContacto() {
+        return nombreContacto;
     }
 
-    public void setContactoEmpresa(String contactoEmpresa) {
-        this.contactoEmpresa = contactoEmpresa;
+    public void setNombreContacto(String nombreContacto) {
+        this.nombreContacto = nombreContacto;
     }
 
-    public String getTelefonoEmpresa() {
-        return telefonoEmpresa;
+    public String getTelefonoContacto() {
+        return telefonoContacto;
     }
 
-    public void setTelefonoEmpresa(String telefonoEmpresa) {
-        this.telefonoEmpresa = telefonoEmpresa;
+    public void setTelefonoContacto(String telefonoContacto) {
+        this.telefonoContacto = telefonoContacto;
     }
 
-    public String getEmailContacot() {
-        return emailContacot;
+    public String getEmailContacto() {
+        return emailContacto;
     }
 
-    public void setEmailContacot(String emailContacot) {
-        this.emailContacot = emailContacot;
+    public void setEmailContacot(String emailContacto) {
+        this.emailContacto = emailContacto;
     }
     
 }

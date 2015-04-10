@@ -1,9 +1,9 @@
 <%-- 
     Document   : empresa
     Created on : 31-oct-2014, 12:04:18
-    Author     : Sebastian
+    Author     : David
 --%>
-
+<%@page import="Controller.ControllerEmpresa"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% if (session.getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
@@ -19,6 +19,12 @@
     </head>
     <body>
         <%@include file="WEB-INF/jspf/superior.jspf" %>
+        
+        
+        <%
+            Controller.ControllerEmpresa controllerEmpresa = new ControllerEmpresa();
+        %>
+        
 
         <div class="container-fluid">
             <div class="row">
@@ -91,31 +97,19 @@
                             <table id="tblEmpresas" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Nit</th>
-                                        <th class="text-center">Razón Social</th>
-                                        <th class="text-center">Contacto</th>
-                                        <th class="text-center">Telefono Contacto</th>
-                                        <th class="text-center">Celular</th>
-                                        <th class="text-center">Email</th>
+                                        <th class="text-center">NIT</th>
+                                        <th class="text-center">Nombre</th>
                                         <th class="text-center">Dirección</th>
+                                        <th class="text-center">Nombre contacto</th>
+                                        <th class="text-center">Teléfono contacto</th>
+                                        <th class="text-center">Correo electrónico</th>
                                         <th class="text-center">Editar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">98524567</td>
-                                        <td class="text-center">Une</td>
-                                        <td class="text-center">Margarita de la Rosa</td>
-                                        <td class="text-center">5861528</td>
-                                        <td class="text-center">3136943958</td>
-                                        <td class="text-center">comunicaciones@une.com</td>                                        
-                                        <td class="text-center">Calle 25 # 65 a 28</td>
-                                        <td class="text-center">
-                                            <a class="btn-sm btn-primary btn-block " href="javascript:void(0)"  onclick="add("Estado")">
-                                               <span class="glyphicon glyphicon-pencil"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    <%
+                                        out.print(controllerEmpresa.getTableEmpresa());                                        
+                                    %>
                                 </tbody>
                             </table>
                         </div>
@@ -134,7 +128,7 @@
 
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Gestion de Empresa
+                                                Gestión de Empresas
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>
                                         </div>
@@ -143,79 +137,68 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtNit">
-                                                            Nit
+                                                        <label for="txtNitEmpresa">
+                                                            NIT
                                                         </label>
-                                                        <input name="txtNit" id="txtNombre" type="number" class="form-control" placeholder="Ejm: 98524567" required>
+                                                        <input name="txtNitEmpresa" id="txtNombre" type="number" class="form-control" placeholder="Ej: 123.456.789-0" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtNombre">
-                                                            Razón Social
+                                                        <label for="txtNombreEmpresa">
+                                                            Nombre
                                                         </label>
-                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: UNE S.A" required>
+                                                        <input name="txtNombreEmpresa" id="txtNombreEmpresa" type="text" class="form-control" placeholder="Ej: UNE S.A" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtApellido">
-                                                            Nombre de Contacto
+                                                        <label for="txtDireccionEmpresa">
+                                                            Dirección
                                                         </label>
-                                                        <input name="txtApellido" id="txtApellido" type="text" class="form-control" placeholder="Ejm: Juan Montoya Montoya" required>
+                                                        <input name="txtDireccionEmpresa" id="txtDireccionEmpresa" type="text" class="form-control" placeholder="Ej: Calle 1 # 2-34" required>
                                                     </div>
                                                 </div>
                                             </div>                                
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtSeguridadSocial">
-                                                            Telefono de Contacto
+                                                        <label for="txtNombreContacto">
+                                                            Responsable
                                                         </label>
-                                                        <input name="txtEPS" id="txtDSeguridadSocial" type="text" class="form-control" placeholder="Ejm: 2145632" required>
+                                                        <input name="txtNombreContacto" id="txtNombreContacto" type="text" class="form-control" placeholder="Ej: David Cano Arango" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtCelular">
-                                                            Celular Contacto
+                                                        <label for="txtTelefonoContacto">
+                                                            Teléfono
                                                         </label>
-                                                        <input name="txtCelular" id="txtCelular" type="text" class="form-control" placeholder="Ejm: 321 801 62 37">
+                                                        <input name="txtTelefonoContacto" id="txtTelefonoContacto" type="text" class="form-control" placeholder="Ejm: 3218016237">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtDireccion">
+                                                        <label for="txtEmailContacto">
                                                             Email Contacto
                                                         </label>
-                                                        <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: comunicaciones@une.com" required>
+                                                        <input name="txtEmailContacto" id="txtEmailContacto" type="text" class="form-control" placeholder="Ejm: direccion@correo.com" required>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="txtTelefono">
-                                                            Direccion Empresa
-                                                        </label>
-                                                        <input name="txtTelefono" id="txtTelefono" type="text" class="form-control" placeholder="Ejm: Cll 24 # 65 a 28" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </div>
                                         <div class="panel-footer">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Guardar">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
