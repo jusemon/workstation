@@ -23,6 +23,10 @@ import javax.servlet.http.HttpSession;
  */
 public class ControllerLogin extends HttpServlet {
 
+    ObjUsuario _objUsuario = new ObjUsuario();
+    ModelUsuario _modelUsuario = new ModelUsuario();
+    ModelModulo _modelModulo = new ModelModulo();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -30,12 +34,9 @@ public class ControllerLogin extends HttpServlet {
      * @param request servlet request
      * @param response servlet response // * @throws ServletException if a
      * servlet-specific error occurs
+     * @throws javax.servlet.ServletException
      * @throws IOException if an I/O error occurs
      */
-    ObjUsuario _objUsuario = new ObjUsuario();
-    ModelUsuario _modelUsuario = new ModelUsuario();
-    ModelModulo _modelModulo = new ModelModulo();
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -43,8 +44,8 @@ public class ControllerLogin extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             if (request.getParameter("Action").equals("Iniciar Sesion")) {
                 HttpSession session = request.getSession();
-                String nombre = new String(request.getParameter("nom").getBytes("ISO-8859-1"),"UTF-8");
-                String pass = new String(request.getParameter("pass").getBytes("ISO-8859-1"),"UTF-8");
+                String nombre = new String(request.getParameter("nom").getBytes("ISO-8859-1"), "UTF-8");
+                String pass = new String(request.getParameter("pass").getBytes("ISO-8859-1"), "UTF-8");
 
                 if (comprobarUsuario(nombre, pass)) {
                     session.setAttribute("usuario", nombre);
@@ -58,12 +59,12 @@ public class ControllerLogin extends HttpServlet {
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
-                    
+
                     response.sendRedirect("index.jsp?mensaje=1");
 
                 } else {
                     response.sendRedirect("index.jsp?mensaje=2");
-                    
+
                 }
             } else if (request.getParameter("Action").equals("Cerrar Sesion")) {
                 HttpSession session = request.getSession();

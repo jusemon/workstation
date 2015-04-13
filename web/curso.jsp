@@ -504,14 +504,5 @@
         </div>        
 
         <%@include file="WEB-INF/jspf/imports.jspf" %>
-
-        <script>
-            function consultar(id) {
-                var form = $('<form method="post" action="ControllerCurso">' +
-                        '<input type="hidden" name="idCurso" value="' + id + '"><input type="hidden" name="action" value="Consultar"></form>');
-                $(form).submit();
-            }
-            ;
-        </script>
     </body>
 </html>

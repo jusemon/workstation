@@ -84,7 +84,7 @@ public class ControllerArticulo extends HttpServlet {
             while (result.next()) {
                 tableArticulos += "<tr>";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("idArticulo").trim() + "</td>";
-                tableArticulos += "<td class=\"text-center\">" + result.getString("tblcategoriaarticulo.nombreCategoriaArticulo").trim() + "</td>";
+                tableArticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaArticulo").trim() + "</td>";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("descripcionArticulo").trim() + "</td>";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("cantidadDisponible").trim() + "</td>";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("precioUnitario").trim() + "</td>";

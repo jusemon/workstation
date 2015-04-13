@@ -3,7 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+var tablas = $('.tabla').DataTable({
+    "language": {
+        "url": "public/lang/Spanish.json"
+    }
+});
+var tableEmpresa = $('#tblEmpresas').DataTable({
+    "scrollX": true,
+    "language": {
+        "url": "public/lang/Spanish.json"
+    }
+});
 
 function editar() {
     var tipo;
@@ -18,7 +28,7 @@ function editar() {
             $('#tblCategoriaCursos tbody').off();
         }
     });
-    ;
+
     $('#tblSeminarios tbody').on('click', 'tr', function () {
         tipo = $(this).data('tipo');
         if (tipo === 'seminario') {
@@ -49,3 +59,10 @@ $('#registrarSeminario').on('click', function () {
     $('#miPopupSeminario').modal('show');
 });
 
+function consultar(id) {
+    var form = $('<form method="post" action="ControllerCurso">' +
+            '<input type="hidden" name="idCurso" value="' + id + '">\n\
+             <input type="hidden" name="action" value="Consultar"></form>');
+    $(form).submit();
+}
+;

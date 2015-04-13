@@ -9,14 +9,11 @@ import Model.DTO.ObjCurso;
 import Model.Data.ModelCurso;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jdk.nashorn.internal.parser.TokenType;
 
 /**
  *
@@ -58,13 +55,19 @@ public class ControllerCurso extends HttpServlet {
             } else if (request.getParameter("action").equals("Consultar")) {
                 int id = Integer.getInteger(request.getParameter("idCurso"));
                 ResultSet result;
-                ArrayList <String> respuesta = new ArrayList<String>();
                 try {
                     result = daoModelCurso.buscarPorID(id);
+                    ArrayList<String> respuesta = new ArrayList();
                     while (result.next()) {
-                       respuesta.add(result.getString("idCurso"));
-                        
+                        respuesta.add(result.getString("idCurso"));
+                        respuesta.add(result.getString("nombreCurso"));
+                        respuesta.add(result.getString("duracionCurso"));
+                        respuesta.add(result.getString("estadoCurso"));
+                        respuesta.add(result.getString("descripcionCurso"));
+                        respuesta.add(result.getString("nombreCategoriaCurso"));
                     }
+                    
+
                 } catch (Exception e) {
                 }
             }
@@ -96,6 +99,10 @@ public class ControllerCurso extends HttpServlet {
             daoModelCurso.Signout();
         }
         return tableCursos;
+    }
+
+    public ArrayList ConsultarCurso(ArrayList lista) {
+        return lista;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
