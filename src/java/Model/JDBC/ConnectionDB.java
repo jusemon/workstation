@@ -18,11 +18,11 @@ public class ConnectionDB {
 
     protected Connection connection;
     protected Statement stmt;
-    private String login = "root";
-    private String password = "";
-    private String database = "dbworkstationsoftware";
-    private String port = "3306";
-    private String url = "jdbc:mysql://127.0.0.1:" + port + "/" + database;
+    private final String login = "root";
+    private final String password = "";
+    private final String database = "dbworkstationsoftware";
+    private final String port = "3306";
+    private final String url = "jdbc:mysql://127.0.0.1:" + port + "/" + database;
     private String errorString;
 
     /**

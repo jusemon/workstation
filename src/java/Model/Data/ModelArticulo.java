@@ -40,7 +40,7 @@ public class ModelArticulo extends ConnectionDB {
             }
             
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return objReturn;

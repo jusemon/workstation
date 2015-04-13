@@ -18,8 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Model.DTO.ObjEmpresa;
 import Model.Data.ModelEmpresa;
-import javax.servlet.http.HttpSession;
-
 
 public class ControllerEmpresa extends HttpServlet {
     

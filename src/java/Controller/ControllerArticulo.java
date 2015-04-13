@@ -67,7 +67,7 @@ public class ControllerArticulo extends HttpServlet {
                 }
 
             } catch (NumberFormatException ne) {
-
+                System.err.println(ne.getMessage());
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
