@@ -71,10 +71,10 @@ public class ControllerCategoriaArticulo extends HttpServlet {
             result = daoModelCategoriaArticulo.ListAll();
 
             while (result.next()) {
-                tableCategoriaarticulos += "<tr>";
+                tableCategoriaarticulos += "<tr data-tipo=\"categoria articulo\" >";
                 tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idCategoriaArticulo").trim() + "</td>";
                 tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaArticulo").trim() + "</td>";
-                tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editarCategorias()\">\n"
+                tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
                         + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
 
                 tableCategoriaarticulos += "</tr>";

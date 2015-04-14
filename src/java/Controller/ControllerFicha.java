@@ -62,7 +62,7 @@ public class ControllerFicha extends HttpServlet {
         try {
             result = daoModelFicha.ListAll();
             while (result.next()) {
-                tableFichas += "<tr>";
+                tableFichas += "<tr data-tipo=\"ficha\" >";
                 tableFichas += "<td class=\"text-center\">" + result.getString("idFicha").trim() + "</td>";
                 tableFichas += "<td class=\"text-center\">" + result.getString("nombreCurso").trim() + "</td>";
                 tableFichas += "<td class=\"text-center\">" + result.getString("cuposDisponibles").trim() + "</td>";
@@ -76,7 +76,7 @@ public class ControllerFicha extends HttpServlet {
                 tableFichas += "<td class=\"text-center\"><a class=\"btn-sm btn-"+estado[0]+" btn-block \" href=\"javascript:void(0)\"  onclick=\"estado()\">\n" 
                         +"<span class=\"glyphicon glyphicon-"+estado[1]+"\"></span></a>\n" 
                         + "</td>";
-                tableFichas += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulo\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
+                tableFichas += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
                         + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
                 tableFichas += "</tr>";
             }

@@ -95,7 +95,7 @@ public class ControllerLogin extends HttpServlet {
                 }
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
         return false;

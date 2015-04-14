@@ -17,7 +17,7 @@ var tableEmpresa = $('#tblEmpresas').DataTable({
 
 function editar() {
     var tipo;
-    $('#tblCategoriaCursos tbody').on('click', 'tr', function () {
+    $('.table tbody').on('click', 'tr', function () {
         tipo = $(this).data('tipo');
         if (tipo === 'categoria curso') {
             var rowData = tablas.table('#tblCategoriaCursos').row(this).data();
@@ -27,11 +27,15 @@ function editar() {
             $('#miPopupCategoriaCurso').modal('show');
             $('#tblCategoriaCursos tbody').off();
         }
-    });
-
-    $('#tblSeminarios tbody').on('click', 'tr', function () {
-        tipo = $(this).data('tipo');
-        if (tipo === 'seminario') {
+        else if (tipo === 'categoria articulo') {
+            var rowData = tablas.table('#tblCategoriaArticulos').row(this).data();
+            $('#idCategoriaArticulo').attr('value', rowData[0]);
+            $('#txtNombreCategoriaArticulo').attr('value', rowData[1]);
+            $('#btnCategoriaArticulo').attr('value', 'Editar');
+            $('#miPopupCategoriaArticulo').modal('show');
+            $('#tblCategoriaArticulos tbody').off();
+        }
+        else if (tipo === 'seminario') {
             var rowData = tablas.table('#tblSeminarios').row(this).data();
             $('#idSeminario').attr('value', rowData[0]);
             $('#txtNombreSeminario').attr('value', rowData[1]);
@@ -40,6 +44,29 @@ function editar() {
             $('#btnSeminario').attr('value', 'Editar');
             $('#miPopupSeminario').modal('show');
             $('#tblSeminarios tbody').off();
+        }
+        else if (tipo === 'articulo') {
+            var rowData = tablas.table('#tblArticulos').row(this).data();
+            $('#idArticulo').attr('value', rowData[0]);
+            $('#txtNombreArticulo').attr('value', rowData[1]);
+            $('#txtPrecioArticulo').attr('value', rowData[2]);
+            $('#txtCantidadArticulo').attr('value', rowData[3]);
+            $('#idCategoriaArticulo').attr('value', rowData[4]);
+            $('#btnArticulo').attr('value', 'Editar');
+            $('#miPopupArticulo').modal('show');
+            $('#tblArticulos tbody').off();
+        }
+        else if (tipo === 'ficha') {
+            alert(tipo);
+            var rowData = tablas.table('#tblFichas').row(this).data();
+            $('#idFicha').attr('value', rowData[0]);
+            $('#idCursoFicha').attr('value', rowData[1]);
+            $('#txtCupos').attr('value', rowData[2]);
+            $('#txtPrecioFicha').attr('value', rowData[3]);
+            $('#dateFechaFicha').attr('value', rowData[4]);
+            $('#btnFicha').attr('value', 'Editar');
+            $('#miPopupFicha').modal('show');
+            $('#tblFichas tbody').off();
         }
     });
 }

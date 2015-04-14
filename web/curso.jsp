@@ -402,7 +402,7 @@
                                         </div>
                                         <div class="panel-footer">
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
                                                         <input  class="btn btn-default btn-block" id="btnSeminario" type="submit" name="action" value="Registrar">
                                                     </div>
@@ -437,12 +437,13 @@
                                         </div>
                                         <div class="panel-body">
                                             <div class="row">
+                                                <input type="hidden" id="idFicha" name="idFicha"/>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="idCurso">
+                                                        <label for="idCursoFicha">
                                                             Curso
                                                         </label>
-                                                        <select name="idCurso" id="ddlEstado" class="form-control" required>
+                                                        <select name="idCurso" id="idCursoFicha" class="form-control" required>
                                                             <%
                                                                 out.print(controllerFicha.getOptionsCursos());
                                                             %>
@@ -453,10 +454,10 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="dateFecha">
+                                                        <label for="dateFechaFicha">
                                                             Fecha de Inicio
                                                         </label>
-                                                        <input name="dateFecha" id="dateFecha" type="date" class="form-control" placeholder="Ejm: 500000" required>
+                                                        <input name="dateFecha" id="dateFechaFicha" type="date" class="form-control" placeholder="Ejm: 500000" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -473,24 +474,19 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtPrecio">
+                                                        <label for="txtPrecioFicha">
                                                             Precio
                                                         </label>
-                                                        <input name="txtPrecio" id="txtPrecio" type="number" class="form-control" placeholder="Ejm: 500000" required>
+                                                        <input name="txtPrecio" id="txtPrecioFicha" type="number" class="form-control" placeholder="Ejm: 500000" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <input type="hidden" value="" id="fecha" name="fecha">
                                         </div>
                                         <div class="panel-footer">
-                                            <div class="col-md-6">
+                                            <div class="col-md-offset-3 col-md-6">
                                                 <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
+                                                    <input id="btnFicha"  class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
                                                 </div>
                                             </div>
                                         </div>

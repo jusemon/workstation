@@ -43,7 +43,7 @@ public class ControllerArticulo extends HttpServlet {
             String action = new String(request.getParameter("action").getBytes("ISO-8859-1"), "UTF-8");
             try {
                 switch (action) {
-                    case "Añadir":
+                    case "Registrar":
                         String descripcionArticulo = new String(request.getParameter("txtDescripcion").getBytes("ISO-8859-1"), "UTF-8");
                         int cantidadDisponible = Integer.parseInt(request.getParameter("txtCantidad"));
                         int precioUnitario = Integer.parseInt(request.getParameter("txtPrecio"));
@@ -82,13 +82,13 @@ public class ControllerArticulo extends HttpServlet {
         try {
             result = daoModelArticulo.ListAll();
             while (result.next()) {
-                tableArticulos += "<tr>";
+                tableArticulos += "<tr data-tipo=\"articulo\" >";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("idArticulo").trim() + "</td>";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaArticulo").trim() + "</td>";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("descripcionArticulo").trim() + "</td>";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("cantidadDisponible").trim() + "</td>";
                 tableArticulos += "<td class=\"text-center\">" + result.getString("precioUnitario").trim() + "</td>";
-                tableArticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulo\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
+                tableArticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
                         + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
                 tableArticulos += "</tr>";
             }

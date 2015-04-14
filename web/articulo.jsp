@@ -146,7 +146,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="categorias">
-                            <table id="tblCategorias" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                            <table id="tblCategoriaArticulos" class="table table-striped table-bordered tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -165,6 +165,7 @@
                 </div>
             </div>
         </div>
+                                
         <div class="modal" id="miPopupArticulo">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -180,13 +181,14 @@
                                             </h3>
                                         </div>
                                         <div class="panel-body">
+                                            <input type="hidden" name="idArticulo" id="idArticulo"/>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtDescripcion">
+                                                        <label for="txtNombreArticulo">
                                                             Descripcion Articulo:
                                                         </label>
-                                                        <input name="txtDescripcion" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>
+                                                        <input name="txtDescripcion" id="txtNombreArticulo" type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -196,7 +198,7 @@
                                                         <label for="txtPrecio">
                                                             Precio:
                                                         </label>
-                                                        <input name="txtPrecio" id="txtPrecio" type="number" class="form-control" placeholder="Ejm: 10000" required>
+                                                        <input name="txtPrecio" id="txtPrecioArticulo" type="number" class="form-control" placeholder="Ejm: 10000" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -206,7 +208,7 @@
                                                         <label for="txtCantidad">
                                                             Cantidad disponible:
                                                         </label>
-                                                        <input name="txtCantidad" id="txtCantidad" type="text" class="form-control" placeholder="Ejm: 30" required>
+                                                        <input name="txtCantidad" id="txtCantidadArticulo" type="text" class="form-control" placeholder="Ejm: 30" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -216,7 +218,7 @@
                                                         <label for="idCategoria">
                                                             Categoria:
                                                         </label>
-                                                        <select name="idCategoria" id="idCategoria" class="form-control" required>
+                                                        <select name="idCategoria" id="idCategoriaArticulo" class="form-control" required>
                                                             <option value="">Seleccionar...</option>
                                                             <%
                                                                 out.print(controllerCategoriaArticulo.getOptionsCategorias());
@@ -227,14 +229,9 @@
                                             </div>
                                         </div>
                                         <div class="panel-footer">
-                                            <div class="col-md-6">
+                                            <div class="col-md-offset-3 col-md-6">
                                                 <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
+                                                    <input id="btnArticulo"  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
                                                 </div>
                                             </div>
                                         </div>
@@ -246,7 +243,8 @@
                 </div>
             </div>
         </div>
-        <div class="modal" id="miPopupCategoria">
+                                                        
+        <div class="modal" id="miPopupCategoriaArticulo">
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -266,21 +264,16 @@
                                                 <div class="col-md-12">                                        
                                                     <div class="form-group">
                                                             Nombre
-                                                        <input name="txtNombre" id="txtNombreCategoria" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                        <input name="txtNombre" id="txtNombreCategoriaArticulo" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="panel-footer">
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input  class="btn btn-default btn-block" id="btnRegistrarC" type="submit" name="action" value="Añadir">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <input class="btn btn-primary btn-block" id="btnEditarC" type="submit" name="action" value="Editar">
+                                                        <input  class="btn btn-default btn-block" id="btnCategoriaArticulo" type="submit" name="action" value="Registrar">
                                                     </div>
                                                 </div>
                                             </div>
