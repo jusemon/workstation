@@ -122,21 +122,23 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="cursos">
-                            <table id="tblCursos" class="table table-hover tabla" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">Código</th>
-                                        <th class="text-center">Nombre</th>
-                                        <th class="text-center">Estado</th>
-                                        <th class="text-center">Consultar</th>
-                                        <th class="text-center">Editar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <%                                        out.print(controllerCurso.getTableCursos());
-                                    %>
-                                </tbody>
-                            </table>
+                            <form id="formTblCurso" action="ControllerCurso" method="POST">
+                                <table id="tblCursos" class="table table-hover tabla" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Código</th>
+                                            <th class="text-center">Nombre</th>
+                                            <th class="text-center">Estado</th>
+                                            <th class="text-center">Consultar</th>
+                                            <th class="text-center">Editar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%                                        out.print(controllerCurso.getTableCursos());
+                                        %>
+                                    </tbody>
+                                </table>
+                            </form>
                         </div>
                         <div class="tab-pane" id="categoriaCursos">
                             <table id="tblCategoriaCursos" class="table table-hover tabla" cellspacing="0" width="100%">
@@ -354,7 +356,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">                               
-                                <form id="form_Maestros" action="ControllerSeminario" method="POST">
+                                <form id="formSeminario" action="ControllerSeminario" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -502,12 +504,5 @@
         </div>        
 
         <%@include file="WEB-INF/jspf/imports.jspf" %>
-
-        <script>
-            function estado(entrada) {
-
-            }
-            ;
-        </script>
     </body>
 </html>

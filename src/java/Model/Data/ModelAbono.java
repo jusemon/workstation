@@ -59,8 +59,8 @@ public class ModelAbono extends ConnectionDB {
                 objReturn = true;
             }
         }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
+        catch (SQLException e) {
+            System.out.println("Error de SQL: "+e.getMessage());
         }
         return objReturn;
     }

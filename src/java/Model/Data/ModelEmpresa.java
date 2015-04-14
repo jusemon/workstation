@@ -41,7 +41,7 @@ public class ModelEmpresa extends ConnectionDB {
             if (updateCount > 0) {
                 objReturn = true;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return objReturn;
@@ -96,7 +96,7 @@ public class ModelEmpresa extends ConnectionDB {
                 objReturn = true;
             }
         } 
-        catch (Exception e) {
+        catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return objReturn;

@@ -40,7 +40,7 @@ public class ModelArticulo extends ConnectionDB {
             }
             
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return objReturn;
@@ -49,7 +49,7 @@ public class ModelArticulo extends ConnectionDB {
      public ResultSet ListAll() throws Exception {
 
         ResultSet rs = null;
-        String sql ="call spConsultarArticulos";
+        String sql ="call spConsultarArticulos()";
            try {
             getStmt();
             rs = stmt.executeQuery(sql);

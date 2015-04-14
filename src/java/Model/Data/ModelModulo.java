@@ -8,12 +8,9 @@ package Model.Data;
 import Model.JDBC.ConnectionDB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Vector;
 
 /**
  *
@@ -35,7 +32,7 @@ public class ModelModulo extends ConnectionDB {
             getStmt();
             pStmt.setInt(1, user);
             rs = pStmt.executeQuery();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
         }
         return rs;
@@ -47,7 +44,7 @@ public class ModelModulo extends ConnectionDB {
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
         }
         return rs;
@@ -65,7 +62,7 @@ public class ModelModulo extends ConnectionDB {
             for (int i = 0; i < salida.length; i++) {
                 salida[i] = (String) aux.get(i);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return salida;

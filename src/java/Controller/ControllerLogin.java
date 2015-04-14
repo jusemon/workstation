@@ -9,8 +9,8 @@ import Model.DTO.ObjUsuario;
 import Model.Data.ModelModulo;
 import Model.Data.ModelUsuario;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +23,10 @@ import javax.servlet.http.HttpSession;
  */
 public class ControllerLogin extends HttpServlet {
 
+    ObjUsuario _objUsuario = new ObjUsuario();
+    ModelUsuario _modelUsuario = new ModelUsuario();
+    ModelModulo _modelModulo = new ModelModulo();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -30,51 +34,55 @@ public class ControllerLogin extends HttpServlet {
      * @param request servlet request
      * @param response servlet response // * @throws ServletException if a
      * servlet-specific error occurs
+     * @throws javax.servlet.ServletException
      * @throws IOException if an I/O error occurs
      */
-    ObjUsuario _objUsuario = new ObjUsuario();
-    ModelUsuario _modelUsuario = new ModelUsuario();
-    ModelModulo _modelModulo = new ModelModulo();
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            if (request.getParameter("Action").equals("Iniciar Sesion")) {
-                HttpSession session = request.getSession();
-                String nombre = new String(request.getParameter("nom").getBytes("ISO-8859-1"),"UTF-8");
-                String pass = new String(request.getParameter("pass").getBytes("ISO-8859-1"),"UTF-8");
-
-                if (comprobarUsuario(nombre, pass)) {
-                    session.setAttribute("usuario", nombre);
-                    session.setAttribute("pass", pass);
-                    session.setAttribute("correo", _objUsuario.getEmail());
-                    try {
-                        String[] aux = _modelModulo.convertirRSaArray(_modelModulo.ListByUser(_objUsuario.getId()));
-                        session.setAttribute("derechos", aux);
-                        session.setAttribute("isConsulta", false);
-                        session.setAttribute("resultado", null);
-                    } catch (Exception e) {
-                        System.err.println(e.getMessage());
+        try {
+            switch (request.getParameter("Action")) {
+                case "Iniciar Sesion":
+                    {
+                        HttpSession session = request.getSession();
+                        String nombre = new String(request.getParameter("nom").getBytes("ISO-8859-1"), "UTF-8");
+                        String pass = new String(request.getParameter("pass").getBytes("ISO-8859-1"), "UTF-8");
+                        if (comprobarUsuario(nombre, pass)) {
+                            session.setAttribute("usuario", nombre);
+                            session.setAttribute("pass", pass);
+                            session.setAttribute("correo", _objUsuario.getEmail());
+                            try {
+                                String[] aux = _modelModulo.convertirRSaArray(_modelModulo.ListByUser(_objUsuario.getId()));
+                                session.setAttribute("derechos", aux);
+                                session.setAttribute("isConsulta", false);
+                                session.setAttribute("resultado", null);
+                            } catch (Exception e) {
+                                System.err.println(e.getMessage());
+                            }
+                            
+                            response.sendRedirect("index.jsp?mensaje=1");
+                            
+                        } else {
+                            response.sendRedirect("index.jsp?mensaje=2");
+                            
+                        }       break;
                     }
-                    
-                    response.sendRedirect("index.jsp?mensaje=1");
-
-                } else {
-                    response.sendRedirect("index.jsp?mensaje=2");
-                    
-                }
-            } else if (request.getParameter("Action").equals("Cerrar Sesion")) {
-                HttpSession session = request.getSession();
-                session.invalidate();
-                response.sendRedirect("index.jsp");
+                case "Cerrar Sesion":
+                    {
+                        HttpSession session = request.getSession();
+                        session.invalidate();
+                        response.sendRedirect("index.jsp");
+                        break;
+                    }
             }
+        } catch(IOException e){
+            System.err.println(e.getMessage());
         }
     }
 
     public boolean comprobarUsuario(String nombre, String pass) {
-        ResultSet rs = null;
+        ResultSet rs;
         _objUsuario.setNombre(nombre);
         _objUsuario.setPassword(pass);
         try {
@@ -87,7 +95,7 @@ public class ControllerLogin extends HttpServlet {
                 }
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
         return false;
@@ -95,7 +103,7 @@ public class ControllerLogin extends HttpServlet {
 
     //Este metodo imprime la barra superior segun los privilegios del usuario logueado
     public String imprimirBarra(String nombre, String pass) {
-        ResultSet result = null;
+        ResultSet result;
         String barraModulos = "";
         if (!comprobarUsuario(nombre, pass)) {
             barraModulos += "            <li id=\"btnnuestro\" class=\"\"><a href=\"nuestro.jsp\">Nuestros Cursos</a></li>\n"
@@ -105,7 +113,7 @@ public class ControllerLogin extends HttpServlet {
         try {
             comprobarUsuario(nombre, pass);
             result = _modelModulo.ListByUser(_objUsuario.getId());
-            String btn = null;
+            String btn;
             while (result.next()) {
                 btn = "btn" + result.getString("enlace");
                 btn = btn.replace(".jsp", "");
@@ -130,8 +138,8 @@ public class ControllerLogin extends HttpServlet {
             }
             if (derechos instanceof String[]) {
                 String[] result = (String[]) derechos;
-                for (int i = 0; i < result.length; i++) {
-                    if (urlActual.endsWith(result[i])) {
+                for (String result1 : result) {
+                    if (urlActual.endsWith(result1)) {
                         return true;
                     }
                 }

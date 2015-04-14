@@ -41,7 +41,7 @@ public class ModelCurso extends ConnectionDB {
                 objReturn = true;
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return objReturn;

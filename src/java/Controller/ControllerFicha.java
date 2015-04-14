@@ -11,6 +11,7 @@ import Model.Data.ModelFicha;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -79,8 +80,8 @@ public class ControllerFicha extends HttpServlet {
                         + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
                 tableFichas += "</tr>";
             }
-        } catch (Exception e) {
-            tableFichas = "Ha Ocurrido un error" + e.getMessage();
+        } catch (SQLException e) {
+            tableFichas = "Ha Ocurrido un error de SQL" + e.getMessage();
         } finally {
             daoModelFicha.Signout();
         }

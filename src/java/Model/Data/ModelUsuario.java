@@ -9,6 +9,7 @@ import Model.DTO.ObjUsuario;
 import Model.JDBC.ConnectionDB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -37,7 +38,7 @@ public class ModelUsuario extends ConnectionDB {
             if (updateCount>0) {
                 objReturn= true;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return objReturn;
@@ -49,7 +50,7 @@ public class ModelUsuario extends ConnectionDB {
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println("SQLException: "+e.getMessage());
         }
         return rs;
@@ -63,7 +64,7 @@ public class ModelUsuario extends ConnectionDB {
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println("SQLException: "+e.getMessage());
         }
         return  rs;
