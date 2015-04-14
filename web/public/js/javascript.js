@@ -93,12 +93,7 @@ var tablas = $('.tabla').DataTable({
         "url": "public/lang/Spanish.json"
     }
 });
-var tableEmpresa = $('#tblEmpresas').DataTable({
-    "scrollX": true,
-    "language": {
-        "url": "public/lang/Spanish.json"
-    }
-});
+
 function editar() {
     var tipo;
     $('#tblCategoriaCursos tbody').on('click', 'tr', function () {
@@ -140,3 +135,30 @@ $('#registrarSeminario').on('click', function () {
     $('#miPopupSeminario').modal('show');
 });
 
+//Empresa
+
+var tableEmpresa = $('#tblEmpresa').DataTable({
+    "scrollX": true,
+    "language": {
+        "url": "public/lang/Spanish.json"
+    }
+});
+
+function editarEmpresa() {
+    $('#tblEmpresa tbody').on('click', 'tr', function() {
+        var tipo = $(this).data('tipo');
+        if (tipo === 'Nombre Empresa') {
+            var rowData = tableEmpresa.row(this).data();
+            $('#txtNitEmpresa').attr('value', rowData[0]);
+            $('#txtNombreEmpresa').attr('value', rowData[1]);
+            $('#txtDireccionEmpresa').attr('value', rowData[2]);
+            $('#txtNombreContacto').attr('value', rowData[3]);
+            $('#txtTelefonoContacto').attr('value', rowData[4]);
+            $('#txtEmailContacto').attr('value', rowData[5]);
+            
+            $('#btnEmpresa').attr('value', 'Editar');
+            $('#miPopupEmpresa').modal('show');
+            $('#tblEmpresa tbody').off();
+        }
+    });
+};
