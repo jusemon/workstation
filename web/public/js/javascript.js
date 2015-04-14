@@ -55,3 +55,30 @@ $('#radioBtn a').on('click', function () {
     $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
 });
 
+//Empresa
+
+var tableEmpresa = $('#tblEmpresa').DataTable({
+    "scrollX": true,
+    "language": {
+        "url": "public/lang/Spanish.json"
+    }
+});
+
+function editarEmpresa() {
+    $('#tblEmpresa tbody').on('click', 'tr', function() {
+        var tipo = $(this).data('tipo');
+        if (tipo === 'Nombre Empresa') {
+            var rowData = tableEmpresa.row(this).data();
+            $('#txtNitEmpresa').attr('value', rowData[0]);
+            $('#txtNombreEmpresa').attr('value', rowData[1]);
+            $('#txtDireccionEmpresa').attr('value', rowData[2]);
+            $('#txtNombreContacto').attr('value', rowData[3]);
+            $('#txtTelefonoContacto').attr('value', rowData[4]);
+            $('#txtEmailContacto').attr('value', rowData[5]);
+            
+            $('#btnEmpresa').attr('value', 'Editar');
+            $('#miPopupEmpresa').modal('show');
+            $('#tblEmpresa tbody').off();
+        }
+    });
+};

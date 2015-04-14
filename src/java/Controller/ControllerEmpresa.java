@@ -76,8 +76,8 @@ public class ControllerEmpresa extends HttpServlet {
             }
             response.sendRedirect("empresa.jsp");
         }
-    }
-
+    }   
+    
     public String getTableEmpresa() {
         ResultSet result;
         String tableEmpresa = "";
@@ -92,8 +92,8 @@ public class ControllerEmpresa extends HttpServlet {
                 tableEmpresa += "<td class=\"text-center\">" + result.getString("nombreContacto").trim() + "</td>";
                 tableEmpresa += "<td class=\"text-center\">" + result.getString("telefonoContacto").trim() + "</td>";
                 tableEmpresa += "<td class=\"text-center\">" + result.getString("emailContacto").trim() + "</td>";
-                tableEmpresa += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulo\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
+                tableEmpresa += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#empresa\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
+                        + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
                 tableEmpresa += "</tr>";
             }
         } catch (Exception e) {

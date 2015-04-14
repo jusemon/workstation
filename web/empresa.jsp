@@ -3,7 +3,9 @@
     Created on : 31-oct-2014, 12:04:18
     Author     : David
 --%>
+
 <%@page import="Controller.ControllerEmpresa"%>
+<%@page import="Controller.ControllerLogin"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% if (session.getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
@@ -19,12 +21,6 @@
     </head>
     <body>
         <%@include file="WEB-INF/jspf/superior.jspf" %>
-        
-        
-        <%
-            Controller.ControllerEmpresa controllerEmpresa = new ControllerEmpresa();
-        %>
-        
 
         <div class="container-fluid">
             <div class="row">
@@ -40,7 +36,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupEmpresa" data-dismiss="modal" name="regEmpresa" value="Registrar Empresa">
+                                            <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupEmpresa" data-dismiss="modal" name="registrarEmpresa" value="Registrar empresa">
                                         </div>
                                     </div>
                                 </div>
@@ -48,17 +44,17 @@
                                     <div class="col-md-12">
                                         <div class="panel-group" id="accordion">
                                             <div class="panel panel-default">
-                                                <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Empresa" data-parent="#accodion" href="#collapseConsultaEmpresa"/>                                                           
+                                                <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Empresa" data-parent="#accodion" href="#collapseConsultarEmpresa"/>                                                           
                                             </div>
                                         </div>
-                                        <div class="panel-collapse collapse" id="collapseConsultaEmpresa">
+                                        <div class="panel-collapse collapse" id="collapseConsultarEmpresa">
                                             <div class="panel-body">
                                                 <form action="ControllerEmpresa" method="POST">
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label for="nombreEmpresa">
-                                                                    Ingresa el nombre
+                                                                    Nombre de la empresa 
                                                                 </label>
                                                                 <input name="nombreEmpresa" id="nombreEmpresa" type="text" class="form-control" placeholder="Ejm: EPM" required>
                                                             </div>
@@ -89,12 +85,12 @@
                 <div class="col-md-8">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="active">
-                            <a href="#empresas" role="tab" data-toggle="tab">Listado de Empresas</a>
+                            <a href="#empresa" role="tab" data-toggle="tab">Listado de Empresas</a>
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="empresas">
-                            <table id="tblEmpresas" class="table table-hover" cellspacing="0" width="100%">
+                        <div class="tab-pane active" id="empresa">
+                            <table id="tblEmpresa" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">NIT</th>
@@ -108,6 +104,7 @@
                                 </thead>
                                 <tbody>
                                     <%
+                                        Controller.ControllerEmpresa controllerEmpresa = new ControllerEmpresa();
                                         out.print(controllerEmpresa.getTableEmpresa());                                        
                                     %>
                                 </tbody>

@@ -87,7 +87,7 @@ public class ModelAbono extends ConnectionDB {
             rs = stmt.executeQuery(sql);
 
         } catch (SQLException e) {
-            System.err.println("SQLException:" + e.getMessage());
+            System.err.println("SQLException: " + e.getMessage());
         }
 
         return rs;
