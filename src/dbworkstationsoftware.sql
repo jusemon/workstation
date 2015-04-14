@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-04-2015 a las 21:31:13
+-- Tiempo de generación: 14-04-2015 a las 23:02:59
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -471,13 +471,9 @@ BEGIN
 	end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSeminario`(
-    in nombreSeminar    varchar(50),
-    in duracionSeminar  int,
-    in estadoSeminar    int
- )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSeminario`(IN `nombreSeminar` VARCHAR(50), IN `duracionSeminar` INT, IN `estadoSeminar` INT)
 BEGIN
-        insert into tblSeminario (nombreSeminar,duracionSeminar,estadoSeminar) Values(nombreSeminar,duracionSeminar,estadoSeminar);
+        insert into tblSeminario (nombreSeminario,duracionSeminario,estadoSeminario) Values(nombreSeminar,duracionSeminar,estadoSeminar);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSubsidio`(IN `idSubsid` INT, IN `nitEmpre` INT, IN `idClien` VARCHAR(30), IN `fechaAsignaci` DATETIME, IN `valorSubsid` int)
@@ -569,7 +565,14 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
   `precioUnitario` int(11) NOT NULL,
   PRIMARY KEY (`idArticulo`),
   KEY `FK_tblArticulo_idCategoriaArticulo` (`idCategoriaArticulo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Volcado de datos para la tabla `tblarticulo`
+--
+
+INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioUnitario`) VALUES
+(1, 1, 'Vinilo Rojo', 10, 41);
 
 -- --------------------------------------------------------
 
@@ -607,7 +610,7 @@ CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
 --
 
 INSERT INTO `tblcategoriacurso` (`idtblCategoriaCurso`, `nombreCategoriaCurso`) VALUES
-(1, 'Categoria A'),
+(1, 'Categoria K'),
 (2, 'Categoria B'),
 (3, 'Categoria C'),
 (4, 'Categoria D');
@@ -685,14 +688,15 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `tblcategoriacurso_idtblCategoriaCurso` tinyint(4) NOT NULL,
   PRIMARY KEY (`idCurso`),
   KEY `fk_tblcurso_tblcategoriacurso1_idx` (`tblcategoriacurso_idtblCategoriaCurso`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Volcado de datos para la tabla `tblcurso`
 --
 
 INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `duracionCurso`, `estadoCurso`, `descripcionCurso`, `tblcategoriacurso_idtblCategoriaCurso`) VALUES
-(1, 'Oleo', 30, 1, 'El Oleo es todo un arte, amen', 1);
+(1, 'Oleo', 30, 1, 'El Oleo es todo un arte, amen', 1),
+(2, 'PatchWork', 10, 0, 'asdasdasdasdasdasd', 1);
 
 -- --------------------------------------------------------
 
@@ -745,6 +749,13 @@ CREATE TABLE IF NOT EXISTS `tblempresa` (
   PRIMARY KEY (`nitEmpresa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `tblempresa`
+--
+
+INSERT INTO `tblempresa` (`nitEmpresa`, `nombreEmpresa`, `direccionEmpresa`, `nombreContacto`, `telefonoContacto`, `emailContacto`) VALUES
+('14', 'Une', 'Calle falsa', 'David', '3213512312', 'direccion@misco.e');
+
 -- --------------------------------------------------------
 
 --
@@ -765,7 +776,7 @@ CREATE TABLE IF NOT EXISTS `tblfactura` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblficha` (
-  `idFicha` int(11) NOT NULL DEFAULT '0',
+  `idFicha` int(11) NOT NULL AUTO_INCREMENT,
   `cuposDisponibles` int(11) NOT NULL,
   `fechaInicio` datetime NOT NULL,
   `tblcurso_idCurso` int(11) NOT NULL,
@@ -773,14 +784,15 @@ CREATE TABLE IF NOT EXISTS `tblficha` (
   `estado` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idFicha`),
   KEY `fk_tblficha_tblcurso1_idx` (`tblcurso_idCurso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Volcado de datos para la tabla `tblficha`
 --
 
 INSERT INTO `tblficha` (`idFicha`, `cuposDisponibles`, `fechaInicio`, `tblcurso_idCurso`, `precioFicha`, `estado`) VALUES
-(0, 15, '2015-03-26 00:00:00', 1, 50000, 1);
+(1, 15, '2015-03-26 00:00:00', 1, 50000, 1),
+(2, 15, '2015-04-17 00:00:00', 1, 10000, 1);
 
 -- --------------------------------------------------------
 
@@ -903,7 +915,15 @@ CREATE TABLE IF NOT EXISTS `tblseminario` (
   `duracionSeminario` int(11) NOT NULL,
   `estadoSeminario` int(11) NOT NULL,
   PRIMARY KEY (`idSeminario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Volcado de datos para la tabla `tblseminario`
+--
+
+INSERT INTO `tblseminario` (`idSeminario`, `nombreSeminario`, `duracionSeminario`, `estadoSeminario`) VALUES
+(1, 'asdasdasd', 10, 1),
+(2, 'asd', 10, 0);
 
 -- --------------------------------------------------------
 
@@ -1034,7 +1054,7 @@ ALTER TABLE `tblinscripcion`
 -- Filtros para la tabla `tblmatricula`
 --
 ALTER TABLE `tblmatricula`
-  ADD CONSTRAINT `fk_tblmatricula_tblficha1` FOREIGN KEY (`idFicha`) REFERENCES `tblficha` (`idFicha`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `tblmatricula_ibfk_1` FOREIGN KEY (`idFicha`) REFERENCES `tblficha` (`idFicha`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_tblmatricula_tblventa1` FOREIGN KEY (`idVenta`) REFERENCES `tblventa` (`idVenta`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --

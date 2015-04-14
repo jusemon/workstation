@@ -68,6 +68,21 @@ function editar() {
             $('#miPopupFicha').modal('show');
             $('#tblFichas tbody').off();
         }
+        if (tipo === 'Nombre Empresa') {
+            $('#tblEmpresa tbody').on('click', 'tr', function () {
+                var rowData = tableEmpresa.row(this).data();
+                $('#txtNitEmpresa').attr('value', rowData[0]);
+                $('#txtNombreEmpresa').attr('value', rowData[1]);
+                $('#txtDireccionEmpresa').attr('value', rowData[2]);
+                $('#txtNombreContacto').attr('value', rowData[3]);
+                $('#txtTelefonoContacto').attr('value', rowData[4]);
+                $('#txtEmailContacto').attr('value', rowData[5]);
+
+                $('#btnEmpresa').attr('value', 'Editar');
+                $('#miPopupEmpresa').modal('show');
+                $('#tblEmpresa tbody').off();
+            });
+        }
     });
 }
 ;
@@ -85,6 +100,17 @@ $('#registrarSeminario').on('click', function () {
     $('#ddlEstadosemiario').attr('value', ' ');
     $('#miPopupSeminario').modal('show');
 });
+
+$('#registrarCurso').on('click', function () {
+    $('#btnCurso').attr('value', 'Registrar');
+    $('#miPopupCurso').modal('show');
+});
+
+function editarEmpresa() {
+
+}
+;
+
 
 function consultar(id) {
     var form = $('<form method="post" action="ControllerCurso">' +

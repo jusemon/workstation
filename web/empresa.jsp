@@ -122,7 +122,6 @@
                             <div class="col-md-12">                               
                                 <form method="POST" action="ControllerEmpresa">
                                     <div class="panel">
-
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
                                                 Gestión de Empresas
@@ -193,14 +192,9 @@
                                             </div>
                                         </div>
                                         <div class="panel-footer">
-                                            <div class="col-md-6">
+                                            <div class="col-md-offset-3 col-md-6">
                                                 <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Guardar">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
+                                                    <input  class="btn btn-default btn-block" id="btnEmpresa" type="submit" name="action" value="Registrar">
                                                 </div>
                                             </div>
                                         </div>

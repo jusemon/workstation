@@ -45,7 +45,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupCurso" data-dismiss="modal" name="regCurso" value="Registrar Curso">
+                                                <input data-toggle="modal" class="btn btn-default btn-block" id="registrarCurso" type="button" name="regCurso" value="Registrar Curso">
                                             </div>
                                         </div>
                                     </div>
@@ -278,14 +278,9 @@
 
                                         <div class="panel-footer">
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <input class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
+                                                        <input class="btn btn-default btn-block" id="btnCurso" type="submit" name="action" value="Registrar">
                                                     </div>
                                                 </div>
                                             </div>

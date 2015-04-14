@@ -38,7 +38,7 @@ public class ControllerArticulo extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         if (request.getParameter("action") != null) {
             String action = new String(request.getParameter("action").getBytes("ISO-8859-1"), "UTF-8");
             try {
@@ -55,17 +55,16 @@ public class ControllerArticulo extends HttpServlet {
                             _objArticulo.setCantidadDisponible(cantidadDisponible);
                             _objArticulo.setPrecioUnitario(precioUnitario);
                             daoModelArticulo.Add(_objArticulo);
-                            response.sendRedirect("articulo.jsp");
-                        }   break;
+                        }
+                        break;
                     case "Consultar":
                         String nombreBusqueda = new String(request.getParameter("nombreBusqueda").getBytes("ISO-8859-1"), "UTF-8");
                         HttpSession session = request.getSession();
                         session.setAttribute("isConsulta", true);
                         session.setAttribute("resultado", nombreBusqueda);
-                        response.sendRedirect("articulo.jsp");
                         break;
                 }
-
+                response.sendRedirect("articulo.jsp");
             } catch (NumberFormatException ne) {
                 System.err.println(ne.getMessage());
             } catch (IOException e) {
@@ -100,7 +99,9 @@ public class ControllerArticulo extends HttpServlet {
 
         return tableArticulos;
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *

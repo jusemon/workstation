@@ -61,7 +61,7 @@ public class ObjEmpresa {
         return emailContacto;
     }
 
-    public void setEmailContacot(String emailContacto) {
+    public void setEmailContacto(String emailContacto) {
         this.emailContacto = emailContacto;
     }
     

@@ -40,9 +40,9 @@ public class ControllerSeminario extends HttpServlet {
             switch (action) {
                 case "Registrar": {
                     daoModelSeminario = new ModelSeminario();
-                    String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                    int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion"));
-                    int estado = Integer.parseInt(request.getParameter("ddlEstado"));
+                    String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8").trim();
+                    int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion").trim());
+                    int estado = Integer.parseInt(request.getParameter("ddlEstado").trim());
                     _objSeminario.setNombreSeminario(nombreSeminario);
                     _objSeminario.setDuracionSeminario(duracionSeminario);
                     _objSeminario.setEstadoSeminario(estado);

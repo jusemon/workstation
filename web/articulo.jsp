@@ -231,7 +231,7 @@
                                         <div class="panel-footer">
                                             <div class="col-md-offset-3 col-md-6">
                                                 <div class="form-group">
-                                                    <input id="btnArticulo"  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                                    <input id="btnArticulo"  class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
                                                 </div>
                                             </div>
                                         </div>

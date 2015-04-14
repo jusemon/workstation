@@ -41,17 +41,17 @@ public class ControllerEmpresa extends HttpServlet {
                 case "Registrar": {
                     daoModelEmpresa = new ModelEmpresa();
                     String nitEmpresa = new String(request.getParameter("txtNitEmpresa").getBytes("ISO-8859-1"), "UTF-8");
-                    _objEmpresa.setNombreEmpresa(nitEmpresa);
+                    _objEmpresa.setNitEmpresa(nitEmpresa);
                     String nombreEmpresa = new String(request.getParameter("txtNombreEmpresa").getBytes("ISO-8859-1"), "UTF-8");
                     _objEmpresa.setNombreEmpresa(nombreEmpresa);
                     String direccionEmpresa = new String(request.getParameter("txtDireccionEmpresa").getBytes("ISO-8859-1"), "UTF-8");
-                    _objEmpresa.setNombreEmpresa(direccionEmpresa);
+                    _objEmpresa.setDireccionEmpresa(direccionEmpresa);
                     String nombreContacto = new String(request.getParameter("txtNombreContacto").getBytes("ISO-8859-1"), "UTF-8");
-                    _objEmpresa.setNombreEmpresa(nombreContacto);
+                    _objEmpresa.setNombreContacto(nombreContacto);
                     String telefonoContacto = new String(request.getParameter("txtTelefonoContacto").getBytes("ISO-8859-1"), "UTF-8");
-                    _objEmpresa.setNombreEmpresa(telefonoContacto);
+                    _objEmpresa.setTelefonoContacto(telefonoContacto);
                     String emailContacto = new String(request.getParameter("txtEmailContacto").getBytes("ISO-8859-1"), "UTF-8");
-                    _objEmpresa.setNombreEmpresa(emailContacto);
+                    _objEmpresa.setEmailContacto(emailContacto);
                     daoModelEmpresa.Add(_objEmpresa);
 
                     break;
@@ -59,25 +59,25 @@ public class ControllerEmpresa extends HttpServlet {
                 case "Editar": {
                     daoModelEmpresa = new ModelEmpresa();
                     String nitEmpresa = new String(request.getParameter("txtNitEmpresa").getBytes("ISO-8859-1"), "UTF-8");
-                    _objEmpresa.setNombreEmpresa(nitEmpresa);
+                    _objEmpresa.setNitEmpresa(nitEmpresa);
                     String nombreEmpresa = new String(request.getParameter("txtNombreEmpresa").getBytes("ISO-8859-1"), "UTF-8");
                     _objEmpresa.setNombreEmpresa(nombreEmpresa);
                     String direccionEmpresa = new String(request.getParameter("txtDireccionEmpresa").getBytes("ISO-8859-1"), "UTF-8");
-                    _objEmpresa.setNombreEmpresa(direccionEmpresa);
+                    _objEmpresa.setDireccionEmpresa(direccionEmpresa);
                     String nombreContacto = new String(request.getParameter("txtNombreContacto").getBytes("ISO-8859-1"), "UTF-8");
-                    _objEmpresa.setNombreEmpresa(nombreContacto);
+                    _objEmpresa.setNombreContacto(nombreContacto);
                     String telefonoContacto = new String(request.getParameter("txtTelefonoContacto").getBytes("ISO-8859-1"), "UTF-8");
-                    _objEmpresa.setNombreEmpresa(telefonoContacto);
+                    _objEmpresa.setTelefonoContacto(telefonoContacto);
                     String emailContacto = new String(request.getParameter("txtEmailContacto").getBytes("ISO-8859-1"), "UTF-8");
-                    _objEmpresa.setNombreEmpresa(emailContacto);
+                    _objEmpresa.setEmailContacto(emailContacto);
                     daoModelEmpresa.Update(_objEmpresa);
                     break;
                 }
             }
             response.sendRedirect("empresa.jsp");
         }
-    }   
-    
+    }
+
     public String getTableEmpresa() {
         ResultSet result;
         String tableEmpresa = "";
@@ -92,7 +92,7 @@ public class ControllerEmpresa extends HttpServlet {
                 tableEmpresa += "<td class=\"text-center\">" + result.getString("nombreContacto").trim() + "</td>";
                 tableEmpresa += "<td class=\"text-center\">" + result.getString("telefonoContacto").trim() + "</td>";
                 tableEmpresa += "<td class=\"text-center\">" + result.getString("emailContacto").trim() + "</td>";
-                tableEmpresa += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#empresa\" href=\"javascript:void(0)\"  onclick=\"consultar()\">\n"
+                tableEmpresa += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editarEmpresa()\">\n"
                         + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
                 tableEmpresa += "</tr>";
             }
@@ -105,4 +105,43 @@ public class ControllerEmpresa extends HttpServlet {
         return tableEmpresa;
     }
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
 }
