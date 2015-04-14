@@ -11,7 +11,7 @@ package Model.DTO;
  */
 public class ObjCompra {
     private int idCompra;
-    private String fechaCompram;
+    private String fechaCompra;
     private double totalCompra;
 
     public int getIdCompra() {
@@ -22,12 +22,12 @@ public class ObjCompra {
         this.idCompra = idCompra;
     }
 
-    public String getFechaCompram() {
-        return fechaCompram;
+    public String getFechaCompra() {
+        return fechaCompra;
     }
 
-    public void setFechaCompram(String fechaCompram) {
-        this.fechaCompram = fechaCompram;
+    public void setFechaCompra(String fechaCompra) {
+        this.fechaCompra = fechaCompra;
     }
 
     public double getTotalCompra() {
