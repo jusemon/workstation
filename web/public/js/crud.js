@@ -8,12 +8,6 @@ var tablas = $('.tabla').DataTable({
         "url": "public/lang/Spanish.json"
     }
 });
-var tableEmpresa = $('#tblEmpresas').DataTable({
-    "scrollX": true,
-    "language": {
-        "url": "public/lang/Spanish.json"
-    }
-});
 
 function editar() {
     var tipo;
@@ -29,9 +23,9 @@ function editar() {
         }
         else if (tipo === 'categoria articulo') {
             var rowData = tablas.table('#tblCategoriaArticulos').row(this).data();
-            $('#idCategoriaArticulo').attr('value', rowData[0]);
-            $('#txtNombreCategoriaArticulo').attr('value', rowData[1]);
-            $('#btnCategoriaArticulo').attr('value', 'Editar');
+            $('#miPopupCategoriaArticulo').find('#idCategoriaArticulo').attr('value', rowData[0]);
+            $('#miPopupCategoriaArticulo').find('#txtNombreCategoriaArticulo').attr('value', rowData[1]);
+            $('#miPopupCategoriaArticulo').find('#btnCategoriaArticulo').attr('value', 'Editar');
             $('#miPopupCategoriaArticulo').modal('show');
             $('#tblCategoriaArticulos tbody').off();
         }
@@ -57,7 +51,6 @@ function editar() {
             $('#tblArticulos tbody').off();
         }
         else if (tipo === 'ficha') {
-            alert(tipo);
             var rowData = tablas.table('#tblFichas').row(this).data();
             $('#idFicha').attr('value', rowData[0]);
             $('#idCursoFicha').attr('value', rowData[1]);
@@ -68,24 +61,27 @@ function editar() {
             $('#miPopupFicha').modal('show');
             $('#tblFichas tbody').off();
         }
-        if (tipo === 'Nombre Empresa') {
-            $('#tblEmpresa tbody').on('click', 'tr', function () {
-                var rowData = tableEmpresa.row(this).data();
-                $('#txtNitEmpresa').attr('value', rowData[0]);
-                $('#txtNombreEmpresa').attr('value', rowData[1]);
-                $('#txtDireccionEmpresa').attr('value', rowData[2]);
-                $('#txtNombreContacto').attr('value', rowData[3]);
-                $('#txtTelefonoContacto').attr('value', rowData[4]);
-                $('#txtEmailContacto').attr('value', rowData[5]);
-
-                $('#btnEmpresa').attr('value', 'Editar');
-                $('#miPopupEmpresa').modal('show');
-                $('#tblEmpresa tbody').off();
-            });
+        if (tipo === 'empresa') {
+            var rowData = tablas.table('#tblEmpresas').row(this).data();
+            $('#txtNitEmpresa').attr('value', rowData[0]);
+            $('#txtNombreEmpresa').attr('value', rowData[1]);
+            $('#txtDireccionEmpresa').attr('value', rowData[2]);
+            $('#txtNombreContacto').attr('value', rowData[3]);
+            $('#txtTelefonoContacto').attr('value', rowData[4]);
+            $('#txtEmailContacto').attr('value', rowData[5]);
+            $('#btnEmpresa').attr('value', 'Editar');
+            $('#miPopupEmpresa').modal('show');
+            $('#tblEmpresa tbody').off();
         }
     });
 }
 ;
+
+$('#registrarCategoriaArticulo').on('click', function () {
+    $('#btnCategoriaArticulo').attr('value', 'Registrar');
+    $('#txtNombreCategoriaArticulo').attr('value', ' ');
+    $('#miPopupCategoriaArticulo').modal('show');
+});
 
 $('#registrarCategoriaCurso').on('click', function () {
     $('#btnCategoriaCurso').attr('value', 'Registrar');
@@ -105,12 +101,6 @@ $('#registrarCurso').on('click', function () {
     $('#btnCurso').attr('value', 'Registrar');
     $('#miPopupCurso').modal('show');
 });
-
-function editarEmpresa() {
-
-}
-;
-
 
 function consultar(id) {
     var form = $('<form method="post" action="ControllerCurso">' +

@@ -92,7 +92,7 @@ public class ControllerEmpresa extends HttpServlet {
                 tableEmpresa += "<td class=\"text-center\">" + result.getString("nombreContacto").trim() + "</td>";
                 tableEmpresa += "<td class=\"text-center\">" + result.getString("telefonoContacto").trim() + "</td>";
                 tableEmpresa += "<td class=\"text-center\">" + result.getString("emailContacto").trim() + "</td>";
-                tableEmpresa += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editarEmpresa()\">\n"
+                tableEmpresa += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
                         + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
                 tableEmpresa += "</tr>";
             }

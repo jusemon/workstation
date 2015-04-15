@@ -104,7 +104,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupCategoria" data-dismiss="modal" name="regCategoria" value="Registrar Categoria">
+                                                    <input data-toggle="modal" class="btn btn-default btn-block" type="button" id="registrarCategoriaArticulo" name="regCategoria" value="Registrar">
                                                 </div>
                                             </div>
                                         </div>

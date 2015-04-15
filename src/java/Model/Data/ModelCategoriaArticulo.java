@@ -59,4 +59,24 @@ public class ModelCategoriaArticulo extends ConnectionDB {
         return rs;
     }
 
+    public boolean Edit(ObjCategoriaArticulo _objCategoriaArticulo) {
+        boolean objReturn = false;
+        String sql = "call spActualizarCategoriaArticulo(?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, _objCategoriaArticulo.getIdCategoriaArticulo());
+            pStmt.setString(2, _objCategoriaArticulo.getNombreCategoriaArticulo());
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
+
 }

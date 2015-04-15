@@ -38,7 +38,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         
         if (request.getParameter("action") != null) {
             switch (request.getParameter ("action")){
-                    case "Añadir":{
+                    case "Registrar":{
                         daoModelCategoriaArticulo = new ModelCategoriaArticulo();
                         String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
                         _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
@@ -52,7 +52,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                         String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
                         _objCategoriaArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
                         _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
-                        daoModelCategoriaArticulo.Add(_objCategoriaArticulo);
+                        daoModelCategoriaArticulo.Edit(_objCategoriaArticulo);
                         break;
                 }
 
