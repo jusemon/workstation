@@ -40,43 +40,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="panel-group" id="accordion">
-                                            <div class="panel panel-default">
-                                                <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Empresa" data-parent="#accodion" href="#collapseConsultarEmpresa"/>                                                           
-                                            </div>
-                                        </div>
-                                        <div class="panel-collapse collapse" id="collapseConsultarEmpresa">
-                                            <div class="panel-body">
-                                                <form action="ControllerEmpresa" method="POST">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label for="nombreEmpresa">
-                                                                    Nombre de la empresa 
-                                                                </label>
-                                                                <input name="nombreEmpresa" id="nombreEmpresa" type="text" class="form-control" placeholder="Ejm: EPM" required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <button type="button" class=" btn btn-default btn-block" >
-                                                                    <span class="glyphicon glyphicon-search "></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="panel-footer">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -90,7 +53,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="empresa">
-                            <table id="tblEmpresa" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblEmpresas" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">NIT</th>
@@ -136,7 +99,7 @@
                                                         <label for="txtNitEmpresa">
                                                             NIT
                                                         </label>
-                                                        <input name="txtNitEmpresa" id="txtNombre" type="number" class="form-control" placeholder="Ej: 123.456.789-0" required>
+                                                        <input name="txtNitEmpresa" id="txtNitEmpresa" type="text" class="form-control" placeholder="Ej: 123.456.789-0" required>
                                                     </div>
                                                 </div>
                                             </div>

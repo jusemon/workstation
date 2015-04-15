@@ -80,16 +80,17 @@ public class ModelEmpresa extends ConnectionDB {
     }
     public boolean Update(ObjEmpresa _objEmpresa){
         boolean objReturn = false;
-        String sql = "call spActualizarEmpresa(?,?,?,?,?)";
+        String sql = "call spActualizarEmpresa(?,?,?,?,?,?)";
         
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setString(1, _objEmpresa.getNombreEmpresa());
-            pStmt.setString(2, _objEmpresa.getDireccionEmpresa());
-            pStmt.setString(3, _objEmpresa.getNombreContacto());
-            pStmt.setString(4, _objEmpresa.getTelefonoContacto());
-            pStmt.setString(5, _objEmpresa.getEmailContacto());
+            pStmt.setString(1, _objEmpresa.getNitEmpresa());
+            pStmt.setString(2, _objEmpresa.getNombreEmpresa());
+            pStmt.setString(3, _objEmpresa.getDireccionEmpresa());
+            pStmt.setString(4, _objEmpresa.getNombreContacto());
+            pStmt.setString(5, _objEmpresa.getTelefonoContacto());
+            pStmt.setString(6, _objEmpresa.getEmailContacto());
             
               int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
