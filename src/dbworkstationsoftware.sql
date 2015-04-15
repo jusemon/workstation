@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-04-2015 a las 23:02:59
+-- Tiempo de generación: 15-04-2015 a las 23:08:12
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -195,7 +195,7 @@ SELECT idCurso,
     estadoCurso,
     descripcionCurso,
     nombreCategoriaCurso
-FROM tblcurso c inner join categoriaCurso cc on(c.idtblCategoriaCurso=cc.idtblCategoriaCurso) where idCurso =id;
+FROM tblcurso c inner join tblcategoriacurso cc on(c.`tblcategoriacurso_idtblCategoriaCurso`=cc.`idtblCategoriaCurso`) where idCurso =id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursos`()
@@ -584,14 +584,15 @@ CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
   `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,
   `nombreCategoriaArticulo` varchar(50) NOT NULL,
   PRIMARY KEY (`idCategoriaArticulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Volcado de datos para la tabla `tblcategoriaarticulo`
 --
 
 INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArticulo`) VALUES
-(1, 'Vinilos');
+(1, 'Vinilos'),
+(2, 'Pinceles');
 
 -- --------------------------------------------------------
 
@@ -754,7 +755,7 @@ CREATE TABLE IF NOT EXISTS `tblempresa` (
 --
 
 INSERT INTO `tblempresa` (`nitEmpresa`, `nombreEmpresa`, `direccionEmpresa`, `nombreContacto`, `telefonoContacto`, `emailContacto`) VALUES
-('14', 'Une', 'Calle falsa', 'David', '3213512312', 'direccion@misco.e');
+('14', 'EPM', 'Calle falsa', 'David Cano', '3213512312', 'direccion@misco.edu.co');
 
 -- --------------------------------------------------------
 
@@ -1054,8 +1055,8 @@ ALTER TABLE `tblinscripcion`
 -- Filtros para la tabla `tblmatricula`
 --
 ALTER TABLE `tblmatricula`
-  ADD CONSTRAINT `tblmatricula_ibfk_1` FOREIGN KEY (`idFicha`) REFERENCES `tblficha` (`idFicha`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tblmatricula_tblventa1` FOREIGN KEY (`idVenta`) REFERENCES `tblventa` (`idVenta`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_tblmatricula_tblventa1` FOREIGN KEY (`idVenta`) REFERENCES `tblventa` (`idVenta`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `tblmatricula_ibfk_1` FOREIGN KEY (`idFicha`) REFERENCES `tblficha` (`idFicha`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tblmodulorol`
