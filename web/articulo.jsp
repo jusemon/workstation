@@ -52,38 +52,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="panel-group" id="accordion">
-                                                    <div class="panel panel-default">
-                                                        <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Articulo" data-parent="#accodion" href="#collapseConsultaArticulo"/>                                                           
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="panel-collapse collapse" id="collapseConsultaArticulo">
-                                                <div class="panel-body">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label for="nombreBusqueda">
-                                                                    Ingresa el nombre
-                                                                </label>
-                                                                <input name="nombreBusqueda" id="nombreArticulo" type="text" class="form-control" placeholder="Ejm: Pincel" required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <button type="submit" name="action" value="Consultar" class=" btn btn-default btn-block" >
-                                                                    <span class="glyphicon glyphicon-search "></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="panel-footer">
                                     </div>

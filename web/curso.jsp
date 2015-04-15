@@ -217,6 +217,7 @@
                                             </h3>
                                         </div>
                                         <div class="panel-body">
+                                            <input type="hidden" name="idCurso" id="idCurso"/>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
@@ -247,7 +248,7 @@
                                                         <label for="txtDescripcion">
                                                             Descripcion
                                                         </label>
-                                                        <textarea rows="2" name="txtDescripcion" id="txtDescripcion" type="text"  class="form-control" placeholder="Ejm: El oleo es un curso dedicado al..." required></textarea>
+                                                        <textarea rows="2" name="txtDescripcion" id="txtDescripcionCurso" type="text"  class="form-control" placeholder="Ejm: El oleo es un curso dedicado al..." required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -341,7 +342,6 @@
                 </div>
             </div>
         </div>
-
         <!-- 
             Emergente para registrar Seminarios
         -->
@@ -412,7 +412,6 @@
                 </div>
             </div>
         </div>
-
         <!-- 
             Emergente para registrar Fichas
         -->                                           
@@ -492,8 +491,7 @@
                     </div>
                 </div>
             </div>
-        </div>        
-
+        </div>
         <%@include file="WEB-INF/jspf/imports.jspf" %>
     </body>
 </html>
