@@ -30,12 +30,12 @@
         <%@include file="WEB-INF/jspf/superior.jspf" %>
         <!--
         Aquí se encuentra la barra superior, lo que se le llama navbar que es barra de navegación, 
-        en ella esta el login y los botones para navegar a traves del aplicativo.
+        en ella esta el login y los botones para navegar a través del aplicativo.
         -->
 
         <!--
-        Este contenedor tiene el contenido de la pagina, en este caso un accordion que contendra 
-        un par de panel uno para la gestion de Compras, otro para la gestion de Ventas.
+        Este contenedor tiene el contenido de la pagina, en este caso un accordion que contendrá 
+        un par de paneles, uno para la gestión de Compras, otro para la gestion de Ventas.
         -->
 
         <div class="container-fluid">
@@ -45,7 +45,7 @@
                         <!--Gestión de Compras-->
                         <div class="panel panel-default">
                             <!--
-                            Aqui el boton que desplegara la gestion de Compras
+                            Aqui el botón que desplegara la gestion de Compras
                             -->
                             <div class="panel-heading">
                                 <h4 class="panel-title">
@@ -69,9 +69,9 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="panel-group" id="accordion">
+                                            <div class="panel-group" id="accordion2">
                                                 <div class="panel panel-default">
-                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Compra" data-parent="#accodion" href="#collapseConsultaCompra"/>                                                           
+                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Compra" data-parent="#accordion2" href="#collapseConsultaCompra"/>                                                           
                                                 </div>
                                             </div>
                                             <div class="panel-collapse collapse" id="collapseConsultaCompra">
@@ -109,6 +109,7 @@
                                                     </form>
                                                 </div>
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +123,7 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                        Gestion de Ventas
+                                        Gestión de Ventas
                                     </a>
                                 </h4>
                             </div>
@@ -141,9 +142,71 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="panel-group" id="accordion">
+                                            <div class="panel-group" id="accordion2">
                                                 <div class="panel panel-default">
-                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Venta" data-parent="#accodion" href="#collapseConsultaVenta"/>                                                           
+                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Venta" data-parent="#accordion2" href="#collapseConsultaVenta"/>                                                           
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Gestión de Abonos-->
+                        <div class="panel panel-default">
+                            <!--
+                            Aquí el botón que desplegará la gestión de Abonos
+                            -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                        Gestión de Abonos
+                                    </a>
+                                </h4>
+                            </div>
+                            <!--
+                            Aquí el contenido de la gestión de abonos, en este caso habrá un botónn para registrar un abono
+                            y otro para consultar abonos por crédito
+                            -->                              
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupAbono" data-dismiss="modal" name="regAbono" value="Registrar Abono">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="panel-group" id="accordion2">
+                                                <div class="panel panel-default">
+                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Abono" data-parent="#accordion2" href="#collapseConsultaAbono"/>                                                           
+                                                </div>
+                                            </div>
+                                            <div class="panel-collapse collapse" id="collapseConsultaAbono">
+                                                <div class="panel-body">
+                                                    <form action="ControllerAbono" method="POST">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="txtIdCredito">
+                                                                        Id. del Crédito
+                                                                    </label>
+                                                                    <input name="txtIdCredito" id="txtidCredito" type="text" class="form-control" placeholder="Ej: 12345" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <button type="button" class=" btn btn-default btn-block" >
+                                                                        <span class="glyphicon glyphicon-search "></span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -157,11 +220,14 @@
                 <div class="col-md-9">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="active">
-                            <a href="#compra" role="tab" data-toggle="tab">Listado de Compra</a>
+                            <a href="#compra" role="tab" data-toggle="tab">Listado de Compras</a>
                         </li>
                         <li>
                             <a href="#ventas" role="tab" data-toggle="tab">Listado de Ventas</a>
                         </li>
+                        <li>
+                            <a href="#abonos" role="tab" data-toggle="tab">Listado de Abonos</a>                            
+                        </li>                            
                         <li>
                             <a href="#diario" role="tab" data-toggle="tab">Caja del día</a>
                         </li>
@@ -204,8 +270,34 @@
                                         <td class="text-center">0001</td>
                                         <td class="text-center">21/11/2014</td>
                                         <td class="text-center">56000</td>
-                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)">                                                <span class="glyphicon glyphicon-search"></span></a>
+                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)"> <span class="glyphicon glyphicon-search"></span></a>
                                         </td>  
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="abonos">
+                            <table id="tblAbono" class="table table-hover tabla" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Id. Abono</th>
+                                        <th class="text-center">Id. Crédito</th>
+                                        <th class="text-center">Valor Abono ($)</th>                                
+                                        <th class="text-center">Fecha Pago</th>                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">0001</td>
+                                        <td class="text-center">0001</td>
+                                        <td class="text-center">56000</td>
+                                        <td class="text-center">21/11/2014</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">0002</td>
+                                        <td class="text-center">0002</td>
+                                        <td class="text-center">12000</td>
+                                        <td class="text-center">22/11/2014</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -593,6 +685,83 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                 </div>
             </div>
         </div>
+        
+        <!--
+        Popup Abono
+        -->
+        <div class="modal" id="miPopupAbono">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">                               
+                                <form>
+                                    <div class="panel">
+                                        <div class="panel-heading estilo2">
+                                            <h3 class="panel-title">
+                                                Registrar abono
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                            </h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-12 col-xs-12">
+                                                    <div class="form-group form-inline pull-right">
+                                                        <label for="txtNombre">
+                                                            Ingrese los detalles correspondientes:
+                                                        </label>
+                                                        <input type="button" class="form-control btn-default" value="Agregar"/>
+                                                    </div>
+                                                </div>
+                                                
+                                                
+                                            </div>
+                                            <table id="tblRegAbono" class="table table-hover" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">Id. Abono</th>
+                                                        <th class="text-center">Id. Crédito</th>
+                                                        <th class="text-center">Valor Abono ($)</th>                                
+                                                        <th class="text-center">Fecha Pago</th>                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center">00001</td>
+                                                        <td class="text-center">Vinilo Azul Mediano</td>
+                                                        <td class="text-center">15</td>
+                                                        <td class="text-center">1200</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="col-md-12">
+                                                <div class="col-sm-4 pull-right">
+                                                    Total: 1200
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-footer">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input  class="btn btn-default btn-block" id="boton1" onclick="imprimir()" type="button" name="action" value="Añadir">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </body>
     <%@include file="WEB-INF/jspf/imports.jspf" %>
 </html>
