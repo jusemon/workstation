@@ -7,7 +7,7 @@ package Model.DTO;
 
 /**
  *
- * @author Administrador
+ * @author David
  */
 public class ObjAbono {
     private int idAbono;
