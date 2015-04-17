@@ -136,6 +136,7 @@ public class ControllerCurso extends HttpServlet {
                     _objCurso.setNombreCurso(nombre);
                     _objCurso.setDuracionCurso(duracion);
                     _objCurso.setEstadoCurso(estado);
+                    daoModelCurso.Edit(_objCurso);
                     response.sendRedirect("curso.jsp");
                     break;
                 case "Enlistar":
