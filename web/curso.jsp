@@ -12,7 +12,7 @@
 <%     if (session.getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
     };
-    ControllerCurso controllerCurso = new ControllerCurso();
+
     ControllerFicha controllerFicha = new ControllerFicha();
     ControllerCategoriaCurso controllerCategoriaCurso = new ControllerCategoriaCurso();
     ControllerSeminario controllerSeminario = new ControllerSeminario();
@@ -52,7 +52,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" id="registrarCategoriaCurso" name="regCatCurso" value="Registrar Categoria">
+                                                <input class="btn btn-default btn-block" type="button" onclick="categoriaCurso.registrar()" name="regCatCurso" value="Registrar Categoria">
                                             </div>
                                         </div>
                                     </div>
@@ -122,25 +122,22 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="cursos">
-                            <form id="formTblCurso" action="ControllerCurso" method="POST">
-                                <table id="tblCursos" class="table table-hover tabla" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center">Código</th>
-                                            <th class="text-center">Nombre</th>
-                                            <th class="text-center">Estado</th>
-                                            <th class="text-center">Consultar</th>
-                                            <th class="text-center">Editar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
-                            </form>
+                            <table id="tblCursos" class="table table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Código</th>
+                                        <th class="text-center">Nombre</th>
+                                        <th class="text-center">Estado</th>
+                                        <th class="text-center">Consultar</th>
+                                        <th class="text-center">Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="tab-pane" id="categoriaCursos">
-                            <table id="tblCategoriaCursos" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblCategoriaCursos" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -149,8 +146,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%                                        out.print(controllerCategoriaCurso.getTableCategoriaCurso());
-                                    %>
                                 </tbody>
                             </table>
                         </div>

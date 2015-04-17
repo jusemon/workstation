@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+var tablaCurso, tablaCategoriaCurso;
 var tablas = $('.tabla').DataTable({
     "language": {
         "url": "public/lang/Spanish.json"
@@ -10,18 +11,17 @@ var tablas = $('.tabla').DataTable({
 });
 
 $(function () {
-    myAjax(null, 'ControllerCurso', 'POST', 'Enlistar', null);
+    myAjax(null, 'ControllerCurso', 'POST', 'Enlistar', 'Cargar');
+    //myAjax(null, 'ControllerCategoriaCurso', 'POST', 'Enlistar', 'Cargar');
 });
+
 function editar() {
     var tipo;
     $('.table tbody').on('click', 'tr', function () {
         tipo = $(this).data('tipo');
         if (tipo === 'categoria curso') {
-            var rowData = tablas.table('#tblCategoriaCursos').row(this).data();
-            $('#miPopupCategoriaCurso').find('#idCategoriaCurso').attr('value', rowData[0]);
-            $('#miPopupCategoriaCurso').find('#txtNombreCategoriaCurso').attr('value', rowData[1]);
-            $('#miPopupCategoriaCurso').find('#btnCategoriaCurso').attr('value', 'Editar');
-            $('#miPopupCategoriaCurso').modal('show');
+            var rowData = tablaCategoriaCurso.row(this).data();
+            categoriaCurso.editar(rowData);
             $('#tblCategoriaCursos tbody').off();
         }
         else if (tipo === 'categoria articulo') {
@@ -87,9 +87,7 @@ $('#registrarCategoriaArticulo').on('click', function () {
     $('#miPopupCategoriaArticulo').modal('show');
 });
 $('#registrarCategoriaCurso').on('click', function () {
-    $('#btnCategoriaCurso').attr('value', 'Registrar');
-    $('#txtNombreCategoriaCurso').attr('value', ' ');
-    $('#miPopupCategoriaCurso').modal('show');
+
 });
 $('#registrarSeminario').on('click', function () {
     $('#btnSeminario').attr('value', 'Registrar');
@@ -123,7 +121,21 @@ function myAjax(id, controller, method, action, aux) {
                     } else if (action === 'Editar') {
                         myAjax(null, 'ControllerCurso', 'POST', 'Enlistar', null);
                     } else if (action === 'Enlistar') {
-                        curso.actualizarTabla(data);
+                        if (aux === 'Cargar') {
+                            curso.cargar(JSON.parse(data));
+                        }
+                        else {
+                            curso.actualizarTabla(JSON.parse(data));
+                        }
+                    }
+                }
+                else if (controller === 'ControllerCategoriaCurso') {
+                    if (action === 'Editar') {
+
+                    } else if (action === 'Enlistar') {
+                        if (aux === 'Cargar') {
+                            categoriaCurso.cargar(data);
+                        }
                     }
                 }
             }
@@ -162,14 +174,53 @@ var curso = {
     cambiarEstado: function (data) {
         $.notify(data['mensaje'], data['tipo']);
     },
+    cargar: function (data) {
+        tablaCurso = $('#tblCursos').DataTable({
+            "data": data,
+            "language": {
+                "url": "public/lang/Spanish.json"
+            }
+        });
+    },
     actualizarTabla: function (data) {
-        tablas.tables().destroy();
-        $('#tblCursos').find("tbody").empty();
-        $('#tblCursos').find("tbody").append(data);
-        tablas = $('.tabla').DataTable({
+        tablaCurso.destroy();
+        tablaCurso = $('#tblCursos').DataTable({
+            "data": data,
             "language": {
                 "url": "public/lang/Spanish.json"
             }
         });
     }
+};
+
+var categoriaCurso = {
+    registrar: function () {
+        $('#miPopupCategoriaCurso').find('#btnCategoriaCurso').attr('value', 'Registrar');
+        $('#miPopupCategoriaCurso').find('#txtNombreCategoriaCurso').attr('value', ' ');
+        $('#miPopupCategoriaCurso').modal('show');
+    },
+    editar: function (data) {
+        $('#miPopupCategoriaCurso').find('#idCategoriaCurso').attr('value', data[0]);
+        $('#miPopupCategoriaCurso').find('#txtNombreCategoriaCurso').attr('value', data[1]);
+        $('#miPopupCategoriaCurso').find('#btnCategoriaCurso').attr('value', 'Editar');
+        $('#miPopupCategoriaCurso').modal('show');
+    },
+    cargar: function (data) {
+        tablaCategoriaCurso = $('#tblCategoriaCursos').DataTable({
+            "data": data,
+            "language": {
+                "url": "public/lang/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function (data) {
+        tablaCategoriaCurso.destroy();
+        tablaCategoriaCurso = $('#tblCategoriaCursos').DataTable({
+            "data": data,
+            "language": {
+                "url": "public/lang/Spanish.json"
+            }
+        });
+    }
+
 };

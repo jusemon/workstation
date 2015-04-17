@@ -7,8 +7,11 @@ package Controller;
 
 import Model.DTO.ObjCategoriaArticulo;
 import Model.Data.ModelCategoriaArticulo;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,57 +38,58 @@ public class ControllerCategoriaArticulo extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        if (request.getParameter("action") != null) {
-            switch (request.getParameter ("action")){
-                    case "Registrar":{
-                        daoModelCategoriaArticulo = new ModelCategoriaArticulo();
-                        String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                        _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
-                        daoModelCategoriaArticulo.Add(_objCategoriaArticulo);
-                        response.sendRedirect("articulo.jsp");
-                        break;
-                    }
-                    case "Editar":{
-                        daoModelCategoriaArticulo = new ModelCategoriaArticulo();
-                        int idCategoriaArticulo =  Integer.parseInt(request.getParameter("idCategoriaArticulo"));
-                        String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                        _objCategoriaArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
-                        _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
-                        daoModelCategoriaArticulo.Edit(_objCategoriaArticulo);
-                        break;
-                }
 
-            } 
-            response.sendRedirect("articulo.jsp");
+        if (request.getParameter("action") != null) {
+            switch (request.getParameter("action")) {
+                case "Registrar": {
+                    daoModelCategoriaArticulo = new ModelCategoriaArticulo();
+                    String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
+                    daoModelCategoriaArticulo.Add(_objCategoriaArticulo);
+                    response.sendRedirect("articulo.jsp");
+                    break;
+                }
+                case "Editar": {
+                    daoModelCategoriaArticulo = new ModelCategoriaArticulo();
+                    int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoriaArticulo"));
+                    String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    _objCategoriaArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
+                    _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
+                    daoModelCategoriaArticulo.Edit(_objCategoriaArticulo);
+                    break;
+                }
+                case "Enlistar": {
+                    response.setContentType("application/text");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getTableCategoriaArticulo());
+                    break;
+                }
             }
+            response.sendRedirect("articulo.jsp");
         }
-    
+    }
 
     public String getTableCategoriaArticulo() {
-
         ResultSet result;
-        String tableCategoriaarticulos = "";
+        List<String[]> lista = new ArrayList<>();
         daoModelCategoriaArticulo = new ModelCategoriaArticulo();
         try {
             result = daoModelCategoriaArticulo.ListAll();
 
             while (result.next()) {
-                tableCategoriaarticulos += "<tr data-tipo=\"categoria articulo\" >";
-                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idCategoriaArticulo").trim() + "</td>";
-                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaArticulo").trim() + "</td>";
-                tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
-
-                tableCategoriaarticulos += "</tr>";
-
+                String[]arreglo = new String[3];
+                arreglo[0] = result.getString("idCategoriaArticulo").trim();
+                arreglo[1] = result.getString("nombreCategoriaArticulo").trim();
+                arreglo[2] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\"><span class=\"glyphicon glyphicon-pencil\"></span></a>";
+                lista.add(arreglo);
             }
         } catch (Exception e) {
-            tableCategoriaarticulos = "Ha ocurrido un error" + e.getMessage();
+            System.err.println("Ha ocurrido un error" + e.getMessage());
         } finally {
             daoModelCategoriaArticulo.Signout();
         }
-        return tableCategoriaarticulos;
+        String salida = new Gson().toJson(lista);
+        return salida;
     }
 
     public String getOptionsCategorias() {
