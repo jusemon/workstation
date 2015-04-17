@@ -10,7 +10,6 @@ import Model.DTO.ObjCurso;
 import Model.Data.ModelCurso;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -39,14 +38,15 @@ public class ControllerCurso extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
         if (request.getParameter("action") != null) {
+            String nombre, descripcion, aux, salida;
+            int estado = 0, duracion, categoria, id;
+            Map<String, String> respuesta;
+            ResultSet result;
             switch (request.getParameter("action")) {
                 case "Registrar":
-                    String nombre,
-                     descripcion;
-                    int estado,
-                     duracion,
-                     categoria;
+                    daoModelCurso = new ModelCurso();
                     nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
                     descripcion = new String(request.getParameter("txtDescripcion").getBytes("ISO-8859-1"), "UTF-8");
                     duracion = Integer.parseInt(request.getParameter("dateDuracion"));
@@ -59,8 +59,90 @@ public class ControllerCurso extends HttpServlet {
                     _objCurso.setEstadoCurso(estado);
                     daoModelCurso.Add(_objCurso);
                     response.sendRedirect("curso.jsp");
-                    break;
 
+                    break;
+                case "Consultar":
+                    daoModelCurso = new ModelCurso();
+                    aux = request.getParameter("id");
+                    id = Integer.parseInt(aux.trim());
+                    try {
+                        respuesta = new LinkedHashMap<>();
+                        result = daoModelCurso.buscarPorID(id);
+                        while (result.next()) {
+                            respuesta.put("idCurso", result.getString("idCurso"));
+                            respuesta.put("nombreCurso", result.getString("nombreCurso"));
+                            respuesta.put("duracionCurso", result.getString("duracionCurso"));
+                            respuesta.put("estadoCurso", result.getString("estadoCurso"));
+                            respuesta.put("descripcionCurso", result.getString("descripcionCurso"));
+                            respuesta.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
+                        }
+                        salida = new Gson().toJson(respuesta);
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write(salida);
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
+                    break;
+                case "Estado":
+                    daoModelCurso = new ModelCurso();
+                    aux = request.getParameter("id");
+                    id = Integer.parseInt(aux.trim());
+                    try {
+                        result = daoModelCurso.buscarPorID(id);
+                        while (result.next()) {
+                            estado = Integer.parseInt(result.getString("estadoCurso"));
+                        }
+                        estado = estado > 0 ? 0 : 1;
+                        _objCurso = new ObjCurso();
+                        _objCurso.setIdCurso(id);
+                        _objCurso.setEstadoCurso(estado);
+                        boolean resultado = daoModelCurso.cambiarEstado(_objCurso);
+                        respuesta = new LinkedHashMap<>();
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        if (resultado) {
+                            respuesta.put("clase", "success");
+                            respuesta.put("icono", "ok");
+                            if (estado == 0) {
+                                respuesta.put("clase", "danger");
+                                respuesta.put("icono", "remove");
+                            }
+                            respuesta.put("mensaje", "El estado ha sido actualizado");
+                            respuesta.put("tipo", "success");
+                            salida = new Gson().toJson(respuesta);
+                            response.getWriter().write(salida);
+                        } else {
+                            respuesta.put("mensaje", "El estado no ha sido actualizado");
+                            respuesta.put("tipo", "error");
+                            salida = new Gson().toJson(respuesta);
+                            response.getWriter().write(salida);
+                        }
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
+                    break;
+                case "Editar":
+                    aux = request.getParameter("idCurso");
+                    id = Integer.parseInt(aux.trim());
+                    nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    descripcion = new String(request.getParameter("txtDescripcion").getBytes("ISO-8859-1"), "UTF-8");
+                    duracion = Integer.parseInt(request.getParameter("dateDuracion"));
+                    estado = Integer.parseInt(request.getParameter("ddlEstado"));
+                    categoria = Integer.parseInt(request.getParameter("ddlCategoria"));
+                    _objCurso.setIdCurso(id);
+                    _objCurso.setIdCategoria(categoria);
+                    _objCurso.setDescripcion(descripcion);
+                    _objCurso.setNombreCurso(nombre);
+                    _objCurso.setDuracionCurso(duracion);
+                    _objCurso.setEstadoCurso(estado);
+                    response.sendRedirect("curso.jsp");
+                    break;
+                case "Enlistar":
+                    response.setContentType("application/text");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getTableCursos());
+                    break;
             }
         }
 
@@ -68,33 +150,38 @@ public class ControllerCurso extends HttpServlet {
 
     public String getTableCursos() {
         ResultSet result;
+        Map<String, String> respuesta = new LinkedHashMap<>();;
         String tableCursos = "";
         try {
+            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListAll();
             while (result.next()) {
-                String consulta = result.getString("idCurso") + ",'ControllerCurso','POST'";
-                tableCursos += "<input type=\"hidden\" name=\"idCurso\" id=\"idCurso\" value=\"" + result.getString("idCurso") + "\">";
+                String consulta = result.getString("idCurso") + ",'ControllerCurso','POST', 'Consultar', null";
+                String edita = result.getString("idCurso") + ",'ControllerCurso','POST', 'Consultar', 'Editar'";
+                String estadoCurso = result.getString("idCurso") + ",'ControllerCurso','POST', 'Estado',this";
                 tableCursos += "<tr>";
                 tableCursos += "<td class=\"text-center\">" + result.getString("idCurso").trim() + "</td>";
                 tableCursos += "<td class=\"text-center\">" + result.getString("nombreCurso").trim() + "</td>";
-                tableCursos += "<td class=\"text-center\">" + result.getString("estadoCurso").trim() + "</td>";
-                tableCursos += "<td class=\"text-center\"><a class=\"btn-sm btn-success btn-block \" onclick=\"consultar(" + consulta + ")\">\n"
+                String[] estado = {"success", "ok"};
+                if (result.getInt("estadoCurso") == 0) {
+                    estado[0] = "danger";
+                    estado[1] = "remove";
+                }
+                tableCursos += "<td class=\"text-center\"><a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"myAjax(" + estadoCurso + ")\">\n"
+                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>\n"
+                        + "</td>";
+                tableCursos += "<td class=\"text-center\"><a class=\"btn-sm btn-success btn-block\" onclick=\"myAjax(" + consulta + ")\">\n"
                         + "<span class=\"glyphicon glyphicon-search\"></span></a>\n</td>";
-                tableCursos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#articulos\" href=\"javascript:void(0)\"  onclick=\"editar(" + result.getString("idCurso") + ")\">\n"
+                tableCursos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"myAjax(" + edita + ")\">\n"
                         + "<span class=\"glyphicon glyphicon-edit\"></span></a>\n</td>";
                 tableCursos += "</tr>";
             }
         } catch (Exception e) {
-            tableCursos = "Ha Ocurrido un error" + e.getMessage();
-
+            respuesta.put("0", "Ha Ocurrido un error" + e.getMessage());
         } finally {
             daoModelCurso.Signout();
         }
         return tableCursos;
-    }
-
-    public ArrayList ConsultarCurso(ArrayList lista) {
-        return lista;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -123,33 +210,33 @@ public class ControllerCurso extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("action") != null) {
-            if (request.getParameter("action").equals("Consultar")) {
-                String aux = request.getParameter("id");
-                int id = Integer.parseInt(aux.trim());
-                ResultSet result;
-                try {
-                    result = daoModelCurso.buscarPorID(id);
-                    Map<String, String> respuesta = new LinkedHashMap<>();
-                    while (result.next()) {
-                        respuesta.put("idCurso", result.getString("idCurso"));
-                        respuesta.put("nombreCurso", result.getString("nombreCurso"));
-                        respuesta.put("duracionCurso", result.getString("duracionCurso"));
-                        respuesta.put("estadoCurso", result.getString("estadoCurso"));
-                        respuesta.put("descripcionCurso", result.getString("descripcionCurso"));
-                        respuesta.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
-                    }
-                    String salida = new Gson().toJson(respuesta);
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write(salida);
-                } catch (Exception e) {
-                    System.err.println(e.getMessage());
-                }
-            } else {
-                processRequest(request, response);
-            }
-        }
+//        if (request.getParameter("action") != null) {
+//            if (request.getParameter("action").equals("Consultar")) {
+//                String aux = request.getParameter("id");
+//                int id = Integer.parseInt(aux.trim());
+//                ResultSet result;
+//                try {
+//                    result = daoModelCurso.buscarPorID(id);
+//                    Map<String, String> respuesta = new LinkedHashMap<>();
+//                    while (result.next()) {
+//                        respuesta.put("idCurso", result.getString("idCurso"));
+//                        respuesta.put("nombreCurso", result.getString("nombreCurso"));
+//                        respuesta.put("duracionCurso", result.getString("duracionCurso"));
+//                        respuesta.put("estadoCurso", result.getString("estadoCurso"));
+//                        respuesta.put("descripcionCurso", result.getString("descripcionCurso"));
+//                        respuesta.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
+//                    }
+//                    String salida = new Gson().toJson(respuesta);
+//                    response.setContentType("application/json");
+//                    response.setCharacterEncoding("UTF-8");
+//                    response.getWriter().write(salida);
+//                } catch (Exception e) {
+//                    System.err.println(e.getMessage());
+//                }
+//            } else {
+        processRequest(request, response);
+//            }
+//        }
 
     }
 

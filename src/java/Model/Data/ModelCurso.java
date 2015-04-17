@@ -35,7 +35,7 @@ public class ModelCurso extends ConnectionDB {
             pStmt.setInt(3, _objCurso.getEstadoCurso());
             pStmt.setString(4, _objCurso.getDescripcion());
             pStmt.setInt(5, _objCurso.getIdCategoria());
-                    
+
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
@@ -48,7 +48,6 @@ public class ModelCurso extends ConnectionDB {
     }
 
     public ResultSet ListAll() throws Exception {
-
         ResultSet rs = null;
         String sql = "call spConsultarCursos()";
         try {
@@ -58,7 +57,6 @@ public class ModelCurso extends ConnectionDB {
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
-
         return rs;
     }
 
@@ -75,5 +73,52 @@ public class ModelCurso extends ConnectionDB {
             System.err.println("SQLException:" + e.getMessage());
         }
         return rs;
+    }
+    
+    
+    public boolean Edit(ObjCurso _objCurso) {
+        boolean objReturn = false;
+        String sql = "call spActualizarCurso(?,?,?,?,?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, _objCurso.getIdCurso());
+            pStmt.setString(2, _objCurso.getNombreCurso());
+            pStmt.setInt(3, _objCurso.getDuracionCurso());
+            pStmt.setInt(4, _objCurso.getEstadoCurso());
+            pStmt.setString(5, _objCurso.getDescripcion());
+            pStmt.setInt(6, _objCurso.getIdCategoria());
+            
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
+
+    public boolean cambiarEstado(ObjCurso _objCurso) {
+        boolean objReturn = false;
+        String sql = "call spActualizarEstadoCurso(?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, _objCurso.getIdCurso());
+            pStmt.setInt(2, _objCurso.getEstadoCurso());
+
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
     }
 }

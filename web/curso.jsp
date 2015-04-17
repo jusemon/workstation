@@ -45,7 +45,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input data-toggle="modal" class="btn btn-default btn-block" id="registrarCurso" type="button" name="regCurso" value="Registrar Curso">
+                                                <input class="btn btn-default btn-block" id="registrarCurso" type="button" onclick="curso.registrar()" name="regCurso" value="Registrar Curso">
                                             </div>
                                         </div>
                                     </div>
@@ -134,8 +134,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <%                                        out.print(controllerCurso.getTableCursos());
-                                        %>
+
                                     </tbody>
                                 </table>
                             </form>
@@ -150,8 +149,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%
-                                        out.print(controllerCategoriaCurso.getTableCategoriaCurso());
+                                    <%                                        out.print(controllerCategoriaCurso.getTableCategoriaCurso());
                                     %>
                                 </tbody>
                             </table>
@@ -208,7 +206,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">                               
-                                <form id="form_Maestros" action="ControllerCurso" method="POST">
+                                <form id="formCurso" action="ControllerCurso" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -276,12 +274,11 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="panel-footer">
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input class="btn btn-default btn-block" id="btnCurso" type="submit" name="action" value="Registrar">
+                                                        <input class="btn btn-default btn-block" id="btnCurso" type="submit" name="action"  value="Registrar">
                                                     </div>
                                                 </div>
                                             </div>
