@@ -96,6 +96,13 @@ $('#registrarSeminario').on('click', function () {
     $('#ddlEstadosemiario').attr('value', ' ');
     $('#miPopupSeminario').modal('show');
 });
+$('#registrarAbono').on('click', function () {
+    $('#btnAbono').attr('value', 'Registrar');
+    $('#txtIdCredito').attr('value', ' ');
+    $('#txtValorAbono').attr('value', ' ');
+    $('#dateFechaPago').attr('value', ' ');
+    $('#miPopupAbono').modal('show');
+});
 
 function myAjax(id, controller, method, action, aux) {
     var form = $('<form method="' + method + '" action="' + controller + '">' +

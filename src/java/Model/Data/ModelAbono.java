@@ -28,9 +28,9 @@ public class ModelAbono extends ConnectionDB {
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setDouble(1, _objAbono.getValorAbono());
-            pStmt.setString(2, _objAbono.getFechaPago());
-            pStmt.setInt(3, _objAbono.getIdCredito());
+            pStmt.setInt(1, _objAbono.getIdCredito());
+            pStmt.setDouble(2, _objAbono.getValorAbono());
+            pStmt.setString(3, _objAbono.getFechaPago());
             
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
@@ -50,10 +50,10 @@ public class ModelAbono extends ConnectionDB {
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setDouble(1, _objAbono.getValorAbono());
-            pStmt.setString(2, _objAbono.getFechaPago());
-            pStmt.setInt(3, _objAbono.getIdCredito());
-            
+            pStmt.setInt(1, _objAbono.getIdCredito());
+            pStmt.setDouble(2, _objAbono.getValorAbono());
+            pStmt.setString(3, _objAbono.getFechaPago());
+                        
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;

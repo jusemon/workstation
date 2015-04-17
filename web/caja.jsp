@@ -4,6 +4,7 @@
     Author     : Sebastian
 --%>
 
+<%@page import="Controller.ControllerAbono"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% if (session.getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
@@ -181,7 +182,7 @@
                                         <div class="col-md-12">
                                             <div class="panel-group" id="accordion2">
                                                 <div class="panel panel-default">
-                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Abono" data-parent="#accordion2" href="#collapseConsultaAbono"/>                                                           
+                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Abono por crédito" data-parent="#accordion2" href="#collapseConsultaAbono"/>                                                           
                                                 </div>
                                             </div>
                                             <div class="panel-collapse collapse" id="collapseConsultaAbono">
@@ -193,7 +194,7 @@
                                                                     <label for="txtIdCredito">
                                                                         Id. del Crédito
                                                                     </label>
-                                                                    <input name="txtIdCredito" id="txtidCredito" type="text" class="form-control" placeholder="Ej: 12345" required>
+                                                                    <input name="txtIdCredito" id="txtIdCredito" type="text" class="form-control" placeholder="Ej: 12345" required>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -287,18 +288,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">0001</td>
-                                        <td class="text-center">0001</td>
-                                        <td class="text-center">56000</td>
-                                        <td class="text-center">21/11/2014</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">0002</td>
-                                        <td class="text-center">0002</td>
-                                        <td class="text-center">12000</td>
-                                        <td class="text-center">22/11/2014</td>
-                                    </tr>
+                                    <%
+                                        Controller.ControllerAbono controllerAbono = new ControllerAbono();
+                                        out.print(controllerAbono.getTableAbono());                                        
+                                    %>
                                 </tbody>
                             </table>
                         </div>
@@ -695,61 +688,51 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">                               
-                                <form>
+                                <form method="POST" action="ControllerAbono">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
                                                 Registrar abono
-                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>
                                         </div>
                                         <div class="panel-body">
+
                                             <div class="row">
-                                                <div class="col-md-12 col-xs-12">
-                                                    <div class="form-group form-inline pull-right">
-                                                        <label for="txtNombre">
-                                                            Ingrese los detalles correspondientes:
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtIdCredito">
+                                                            Id. del crédito
                                                         </label>
-                                                        <input type="button" class="form-control btn-default" value="Agregar"/>
+                                                        <input name="txtIdCredito" id="txtIdCredito" type="text" class="form-control" placeholder="Ej: 0001" required>
                                                     </div>
                                                 </div>
-                                                
-                                                
                                             </div>
-                                            <table id="tblRegAbono" class="table table-hover" cellspacing="0" width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center">Id. Abono</th>
-                                                        <th class="text-center">Id. Crédito</th>
-                                                        <th class="text-center">Valor Abono ($)</th>                                
-                                                        <th class="text-center">Fecha Pago</th>                                        
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-center">00001</td>
-                                                        <td class="text-center">Vinilo Azul Mediano</td>
-                                                        <td class="text-center">15</td>
-                                                        <td class="text-center">1200</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="col-md-12">
-                                                <div class="col-sm-4 pull-right">
-                                                    Total: 1200
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtValorAbono">
+                                                            Valor abono ($)
+                                                        </label>
+                                                        <input name="txtValorAbono" id="txtValorAbono" type="number" class="form-control" placeholder="Ej: 25000" required>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="dateFechaPago">
+                                                            Fecha de pago
+                                                        </label>
+                                                        <input name="dateFechaPago" id="dateFechaPago" type="date" class="form-control" placeholder="" required>
+                                                    </div>
+                                                </div>
+                                            </div>                                
                                         </div>
-
                                         <div class="panel-footer">
-                                            <div class="col-md-6">
+                                            <div class="col-md-offset-3 col-md-6">
                                                 <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" id="boton1" onclick="imprimir()" type="button" name="action" value="Añadir">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
+                                                    <input  class="btn btn-default btn-block" id="btnAbono" type="submit" name="action" value="Registrar">
                                                 </div>
                                             </div>
                                         </div>
