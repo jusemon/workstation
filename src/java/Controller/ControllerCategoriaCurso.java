@@ -46,7 +46,6 @@ public class ControllerCategoriaCurso extends HttpServlet {
                     String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
                     _objCategoriaCurso.setNombreCategoriaCurso(nombre);
                     daoModelCategoriaCurso.Add(_objCategoriaCurso);
-                    response.sendRedirect("curso.jsp");
                     break;
                 }
                 case "Editar": {

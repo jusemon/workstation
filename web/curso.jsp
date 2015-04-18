@@ -12,7 +12,6 @@
 <%     if (session.getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
     };
-
     ControllerFicha controllerFicha = new ControllerFicha();
     ControllerCategoriaCurso controllerCategoriaCurso = new ControllerCategoriaCurso();
     ControllerSeminario controllerSeminario = new ControllerSeminario();
@@ -163,9 +162,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%
-                                        out.print(controllerFicha.getTableFichas());
-                                    %>
                                 </tbody>
                             </table>
                         </div>
@@ -181,9 +177,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%
-                                        out.print(controllerSeminario.getTableSeminario());
-                                    %>
                                 </tbody>
                             </table>
                         </div>
@@ -270,7 +263,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input class="btn btn-default btn-block" id="btnCurso" type="submit" name="action"  value="Registrar" onclick="myAjax(null, null, null,  $('#btnCurso').val(), $('#formCurso'))">
+                                                        <input class="btn btn-default btn-block" id="btnCurso" type="submit" name="action"  value="Registrar" onclick="curso.myAjax($('#btnCurso').val())">
                                                     </div>
                                                 </div>
                                             </div>
@@ -318,7 +311,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="submit" name="action" value="Registrar" onclick="myAjax(null, null, null, $('#btnCategoriaCurso').val(), $('#form_categoriaCurso'))">
+                                                        <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="submit" name="action" value="Registrar" onclick="categoriaCurso.myAjax($('#btnCategoriaCurso').val())">
                                                     </div>
                                                 </div>
                                             </div>
