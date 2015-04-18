@@ -218,9 +218,6 @@
                                                             Categoria
                                                         </label>
                                                         <select name="ddlCategoria" id="ddlCategoria" class="form-control" required>
-                                                            <%
-                                                                out.print(controllerCategoriaCurso.getOptionsCategorias());
-                                                            %>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -231,7 +228,7 @@
                                                         <label for="txtNombre">
                                                             Nombre Curso
                                                         </label>
-                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Oleo" required>
+                                                        <input name="txtNombre" id="txtNombreCurso" type="text" class="form-control" placeholder="Ejm: Oleo" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -273,7 +270,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input class="btn btn-default btn-block" id="btnCurso" type="submit" name="action"  value="Registrar">
+                                                        <input class="btn btn-default btn-block" id="btnCurso" type="submit" name="action"  value="Registrar" onclick="myAjax(null, null, null,  $('#btnCurso').val(), $('#formCurso'))">
                                                     </div>
                                                 </div>
                                             </div>
@@ -321,7 +318,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
+                                                        <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="submit" name="action" value="Registrar" onclick="myAjax(null, null, null, $('#btnCategoriaCurso').val(), $('#form_categoriaCurso'))">
                                                     </div>
                                                 </div>
                                             </div>
@@ -391,7 +388,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input  class="btn btn-default btn-block" id="btnSeminario" type="submit" name="action" value="Registrar">
+                                                        <input  class="btn btn-default btn-block" id="btnSeminario" type="button" name="action" value="Registrar">
                                                     </div>
                                                 </div>
                                             </div>

@@ -189,6 +189,7 @@ public class ControllerCurso extends HttpServlet {
             daoModelCurso.Signout();
         }
         String salida = new Gson().toJson(lista);
+        salida = "{\"aaData\":" + salida + "}";
         return salida;
     }
 

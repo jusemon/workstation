@@ -7,8 +7,11 @@ package Controller;
 
 import Model.DTO.ObjCategoriaCurso;
 import Model.Data.ModelCategoriaCurso;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,30 +38,39 @@ public class ControllerCategoriaCurso extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
-                case "Registrar":
-                    {
-                        daoModelCategoriaCurso = new ModelCategoriaCurso();
-                        String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                        _objCategoriaCurso.setNombreCategoriaCurso(nombre);
-                        daoModelCategoriaCurso.Add(_objCategoriaCurso);
-                        
-                        break;
-                    }
-                case "Editar":
-                    {
-                        daoModelCategoriaCurso = new ModelCategoriaCurso();
-                        int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoriaCurso"));
-                        String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                        _objCategoriaCurso.setIdCategoriaCurso(idCategoriaArticulo);
-                        _objCategoriaCurso.setNombreCategoriaCurso(nombre);
-                        daoModelCategoriaCurso.Edit(_objCategoriaCurso);
-                        break;
-                    }
+                case "Registrar": {
+                    daoModelCategoriaCurso = new ModelCategoriaCurso();
+                    String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    _objCategoriaCurso.setNombreCategoriaCurso(nombre);
+                    daoModelCategoriaCurso.Add(_objCategoriaCurso);
+                    response.sendRedirect("curso.jsp");
+                    break;
+                }
+                case "Editar": {
+                    daoModelCategoriaCurso = new ModelCategoriaCurso();
+                    int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoriaCurso"));
+                    String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    _objCategoriaCurso.setIdCategoriaCurso(idCategoriaArticulo);
+                    _objCategoriaCurso.setNombreCategoriaCurso(nombre);
+                    daoModelCategoriaCurso.Edit(_objCategoriaCurso);
+                    break;
+                }
+                case "Enlistar": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getTableCategoriaCurso());
+                    break;
+                }
+                case "getOptionsCategorias": {
+                    response.setContentType("application/text");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getOptionsCategorias());
+                    break;
+                }
             }
-            response.sendRedirect("curso.jsp");
         }
 
     }
@@ -66,46 +78,45 @@ public class ControllerCategoriaCurso extends HttpServlet {
     public String getTableCategoriaCurso() {
 
         ResultSet result;
-        String tableCategoriaarticulos = "";
+        List<String[]> lista = new ArrayList<>();
         daoModelCategoriaCurso = new ModelCategoriaCurso();
         try {
             result = daoModelCategoriaCurso.ListAll();
-
+            int contador = 0;
             while (result.next()) {
-                tableCategoriaarticulos += "<tr data-tipo=\"categoria curso\" >";
-                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("idtblCategoriaCurso").trim() + "</td>";
-                tableCategoriaarticulos += "<td class=\"text-center\">" + result.getString("nombreCategoriaCurso").trim() + "</td>";
-                tableCategoriaarticulos += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
-                        + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
-                tableCategoriaarticulos += "</tr>";
-
+                String[] arreglo = new String[3];
+                arreglo[0] = result.getString("idtblCategoriaCurso").trim();
+                arreglo[1] = result.getString("nombreCategoriaCurso").trim();
+                arreglo[2] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"categoriaCurso.editar(" + contador + ")\"><span class=\"glyphicon glyphicon-pencil\"></span></a>";
+                lista.add(arreglo);
+                contador++;
             }
         } catch (Exception e) {
-            tableCategoriaarticulos = "Ha ocurrido un error" + e.getMessage();
+            System.err.println("Ha ocurrido un error" + e.getMessage());
         } finally {
             daoModelCategoriaCurso.Signout();
         }
-        return tableCategoriaarticulos;
+        String salida = new Gson().toJson(lista);
+        salida = "{\"data\":" + salida + "}";
+        return salida;
     }
 
     public String getOptionsCategorias() {
         ResultSet result;
-        String OptionsCategorias = "";
+        String lista = "";
         daoModelCategoriaCurso = new ModelCategoriaCurso();
         try {
             result = daoModelCategoriaCurso.ListAll();
-
             while (result.next()) {
-                OptionsCategorias += "<option value=\"" + result.getString("idtblCategoriaCurso").trim() + "\">" + result.getString("nombreCategoriaCurso").trim() + "</option>";
+                lista+=("<option value=\"" + result.getString("idtblCategoriaCurso").trim() + "\">" + result.getString("nombreCategoriaCurso").trim() + "</option>");
             }
 
         } catch (Exception e) {
-            OptionsCategorias = "Ha Ocurrido un error" + e.getMessage();
+            lista=("Ha Ocurrido un error" + e.getMessage());
         } finally {
             daoModelCategoriaCurso.Signout();
         }
-
-        return OptionsCategorias;
+        return lista;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

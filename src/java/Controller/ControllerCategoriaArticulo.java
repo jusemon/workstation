@@ -11,7 +11,9 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -71,17 +73,18 @@ public class ControllerCategoriaArticulo extends HttpServlet {
 
     public String getTableCategoriaArticulo() {
         ResultSet result;
-        List<String[]> lista = new ArrayList<>();
+        List<Map<String, String>> lista = new ArrayList<>();
+        Map<String, String> respuesta;
         daoModelCategoriaArticulo = new ModelCategoriaArticulo();
         try {
             result = daoModelCategoriaArticulo.ListAll();
 
             while (result.next()) {
-                String[]arreglo = new String[3];
-                arreglo[0] = result.getString("idCategoriaArticulo").trim();
-                arreglo[1] = result.getString("nombreCategoriaArticulo").trim();
-                arreglo[2] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\"><span class=\"glyphicon glyphicon-pencil\"></span></a>";
-                lista.add(arreglo);
+                respuesta = new LinkedHashMap<>();
+                respuesta.put("idCategoria",result.getString("idCategoriaArticulo").trim());
+                respuesta.put("nombreCategoria",result.getString("nombreCategoriaArticulo").trim());
+                respuesta.put("botonEstado","<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\"><span class=\"glyphicon glyphicon-pencil\"></span></a>");
+                lista.add(respuesta);
             }
         } catch (Exception e) {
             System.err.println("Ha ocurrido un error" + e.getMessage());
