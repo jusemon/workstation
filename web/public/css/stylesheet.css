@@ -118,10 +118,11 @@ tbody > tr {
     position: relative;
 }
 
-th, td { white-space: nowrap; }
-    div.dataTables_wrapper {
-        margin: 0 auto;
+th, td { white-space: nowrap;  text-align: center;}
+
+div.dataTables_wrapper {
+    margin: 0 auto;
 }
 .tab-content{
-      margin-top: 1%;
+    margin-top: 1%;
 }

@@ -3,25 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+var tablaCurso, tablaCategoriaCurso;
 var tablas = $('.tabla').DataTable({
     "language": {
         "url": "public/lang/Spanish.json"
     }
 });
 
-$(function () {
-    myAjax(null, 'ControllerCurso', 'POST', 'Enlistar', null);
-});
 function editar() {
     var tipo;
     $('.table tbody').on('click', 'tr', function () {
         tipo = $(this).data('tipo');
         if (tipo === 'categoria curso') {
-            var rowData = tablas.table('#tblCategoriaCursos').row(this).data();
-            $('#miPopupCategoriaCurso').find('#idCategoriaCurso').attr('value', rowData[0]);
-            $('#miPopupCategoriaCurso').find('#txtNombreCategoriaCurso').attr('value', rowData[1]);
-            $('#miPopupCategoriaCurso').find('#btnCategoriaCurso').attr('value', 'Editar');
-            $('#miPopupCategoriaCurso').modal('show');
+            var rowData = tablaCategoriaCurso.row(this).data();
+            categoriaCurso.editar(rowData);
             $('#tblCategoriaCursos tbody').off();
         }
         else if (tipo === 'categoria articulo') {
@@ -79,17 +74,13 @@ function editar() {
     });
 }
 ;
-
-
 $('#registrarCategoriaArticulo').on('click', function () {
     $('#btnCategoriaArticulo').attr('value', 'Registrar');
     $('#txtNombreCategoriaArticulo').attr('value', ' ');
     $('#miPopupCategoriaArticulo').modal('show');
 });
 $('#registrarCategoriaCurso').on('click', function () {
-    $('#btnCategoriaCurso').attr('value', 'Registrar');
-    $('#txtNombreCategoriaCurso').attr('value', ' ');
-    $('#miPopupCategoriaCurso').modal('show');
+
 });
 $('#registrarSeminario').on('click', function () {
     $('#btnSeminario').attr('value', 'Registrar');
@@ -98,78 +89,165 @@ $('#registrarSeminario').on('click', function () {
     $('#ddlEstadosemiario').attr('value', ' ');
     $('#miPopupSeminario').modal('show');
 });
-
-function myAjax(id, controller, method, action, aux) {
-    var form = $('<form method="' + method + '" action="' + controller + '">' +
-            '<input type="hidden" name="id" value="' + id + '">\n\
-            <input type="hidden" id="action" name="action" value="' + action + '"></form>');
-    $(form).submit(function () {
-        $.ajax({
-            type: $(form).attr('method'),
-            url: $(form).attr('action'),
-            data: $(form).serialize(),
-            success: function (data) {
-                if (controller === 'ControllerCurso') {
-                    if (action === 'Consultar') {
-                        if (aux === 'Editar') {
-                            curso.editar(data);
-                        }
-                        else {
-                            curso.consultar(data);
-                        }
-                    } else if (action === 'Estado') {
-                        curso.cambiarEstado(data);
-                        myAjax(null, 'ControllerCurso', 'POST', 'Enlistar', null);
-                    } else if (action === 'Editar') {
-                        myAjax(null, 'ControllerCurso', 'POST', 'Enlistar', null);
-                    } else if (action === 'Enlistar') {
-                        curso.actualizarTabla(data);
-                    }
-                }
-            }
-        });
-        return false;
-    });
-    $(form).submit();
-}
-;
+$('#registrarAbono').on('click', function () {
+    $('#btnAbono').attr('value', 'Registrar');
+    $('#txtIdCredito').attr('value', ' ');
+    $('#txtValorAbono').attr('value', ' ');
+    $('#dateFechaPago').attr('value', ' ');
+    $('#miPopupAbono').modal('show');
+});
 
 var curso = {
+    myAjax: function (accion, id, aux) {
+        var form = $('#formCurso');
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id,
+                success: function (data) {
+                    if (accion == 'Consultar') {
+                        if (aux == 'Editar') {
+                            curso.editar(data);
+                        } else
+                            curso.consultar(data);
+                    }
+                    else if (accion == 'Registrar' || accion == 'Editar') {
+                        $('#miPopupCurso').modal('hide');
+                        curso.mensaje(data);
+                        curso.actualizarTabla();
+                    }
+                    else if (accion == 'Estado') {
+                        curso.mensaje(data);
+                        curso.actualizarTabla();
+                    }
+
+                }
+            });
+            $(form).off();
+            return false;
+        });
+        if (accion === 'Estado' || accion === 'Consultar') {
+            $(form).submit();
+        }
+    },
     consultar: function (data) {
-        $('#miPopupCurso').find('#idCurso').attr('value', data['idCurso']);
-        $('#miPopupCurso').find('#ddlCategoria').attr('value', data['nombreCategoriaCurso']);
-        $('#miPopupCurso').find('#txtNombre').attr('value', data['nombreCurso']);
-        $('#miPopupCurso').find('#dateDuracion').attr('value', data['duracionCurso']);
+        limpiar("#formCurso");
+        $('#miPopupCurso').find('#idCurso').val(data['idCurso']);
+        $('#miPopupCurso').find('#ddlCategoria option').prop('selected', false).filter('[value="' + data['idtblCategoriaCurso'] + '"]').prop('selected', true);
+        $('#miPopupCurso').find('#txtNombreCurso').val(data['nombreCurso']);
+        $('#miPopupCurso').find('#dateDuracion').val(data['duracionCurso']);
         $('#miPopupCurso').find('#txtDescripcionCurso').val(data['descripcionCurso']);
         $('#miPopupCurso').find('#ddlEstado option').prop('selected', false).filter('[value="' + data['estadoCurso'] + '"]').prop('selected', true);
-        $('#miPopupCurso').find('#btnCurso').attr('type', 'hidden');
+        $('#miPopupCurso').find('#btnCurso').attr('type', 'hidden').attr('disabled', true);
         $('#miPopupCurso').modal('show');
     },
     registrar: function () {
-        $('#miPopupCurso').find('#idCurso').attr('value', null);
-        $('#miPopupCurso').find('#ddlCategoria').attr('value', null);
-        $('#miPopupCurso').find('#txtNombre').attr('value', null);
-        $('#miPopupCurso').find('#dateDuracion').attr('value', null);
-        $('#miPopupCurso').find('#txtDescripcionCurso').val(null);
-        $('#miPopupCurso').find('#ddlEstado option').prop('selected', false);
-        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Registrar');
+        limpiar("#formCurso");
+        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupCurso').modal('show');
     },
     editar: function (data) {
         curso.consultar(data);
-        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar');
+        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
-    cambiarEstado: function (data) {
+    mensaje: function (data) {
         $.notify(data['mensaje'], data['tipo']);
     },
-    actualizarTabla: function (data) {
-        tablas.tables().destroy();
-        $('#tblCursos').find("tbody").empty();
-        $('#tblCursos').find("tbody").append(data);
-        tablas = $('.tabla').DataTable({
+    cargar: function () {
+        tablaCurso = $('#tblCursos').DataTable({
+            "ajax": {
+                "url": "ControllerCurso",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            }, "language": {
+                "url": "public/lang/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaCurso.ajax.reload();
+    }
+};
+
+var categoriaCurso = {
+    myAjax: function (accion) {
+        var form = $('#form_categoriaCurso');
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize() + '&action=' + accion,
+                success: function (data) {
+                    if (accion === 'getOptionsCategorias') {
+                        categoriaCurso.cargarOpcionesCategorias(data);
+                    } else if (accion !== 'getOptionsCategorias') {
+                        categoriaCurso.actualizarTabla();
+                    }
+                    $('#miPopupCategoriaCurso').modal('hide');
+                }
+            });
+            $(form).off();
+            return false;
+        });
+        if (accion === 'getOptionsCategorias') {
+            $(form).submit();
+        }
+    },
+    registrar: function () {
+        limpiar('#form_categoriaCurso');
+        $('#miPopupCategoriaCurso').find('#btnCategoriaCurso').attr('value', 'Registrar');
+        $('#miPopupCategoriaCurso').modal('show');
+    },
+    editar: function (tr) {
+        var data = tablaCategoriaCurso.row(tr).data();
+        $('#miPopupCategoriaCurso').find('#idCategoriaCurso').val(data[0]);
+        $('#miPopupCategoriaCurso').find('#txtNombreCategoriaCurso').val(data[1]);
+        $('#miPopupCategoriaCurso').find('#btnCategoriaCurso').val('Editar');
+        $('#miPopupCategoriaCurso').modal('show');
+    },
+    cargar: function () {
+        categoriaCurso.myAjax('getOptionsCategorias');
+        tablaCategoriaCurso = $('#tblCategoriaCursos').DataTable({
+            "ajax": {
+                "url": "ControllerCategoriaCurso",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            },
             "language": {
                 "url": "public/lang/Spanish.json"
             }
         });
+    },
+    actualizarTabla: function () {
+        categoriaCurso.myAjax('getOptionsCategorias');
+        tablaCategoriaCurso.ajax.reload();
+    },
+    cargarOpcionesCategorias: function (data) {
+        $('#miPopupCurso').find('#ddlCategoria').empty();
+        $('#miPopupCurso').find('#ddlCategoria').append(data);
     }
+
 };
+
+function limpiar(miForm) {
+    $(':input', miForm).each(function () {
+        var type = this.type;
+        var tag = this.tagName.toLowerCase();
+        if (type == 'text' || type == 'password' || tag == 'textarea' || type == 'number' || type == 'hidden')
+            this.value = "";
+        else if (type == 'checkbox' || type == 'radio')
+            this.checked = false;
+        else if (tag == 'select')
+            this.selectedIndex = -1;
+        else if (false)
+            this.value = 0;
+    });
+}
+
+categoriaCurso.cargar();
+curso.cargar();

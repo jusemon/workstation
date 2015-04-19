@@ -3,8 +3,7 @@
         <%
             ControllerLogin controllerLogin = new ControllerLogin();
             if (!controllerLogin.comprobarEntrada(session.getAttribute("derechos"), request.getRequestURI())) {
-                
-                response.sendRedirect("index.jsp");
+               response.sendRedirect("index.jsp");
             }
         %>
 

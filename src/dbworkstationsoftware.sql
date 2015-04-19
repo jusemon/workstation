@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-04-2015 a las 18:12:17
+-- Tiempo de generación: 19-04-2015 a las 01:19:40
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -86,14 +86,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCurso`(
 	in nombreCur		varchar(50),
 	in duracionCur		int,
 	in estadoCur		int,
-        in descripcionCur       varchar(50),
-        in idCategoriaCurso     tinyint
- )
+	in descripcionCur	varchar(100),
+in categoriaCur tinyint
+)
 BEGIN
-	declare msg varchar(40);    
-	update tblCurso set nombreCurso=nombreCur,duracionCurso=duracionCur, estadoCurso=estadoCur, `descripcionCurso`= descripcionCur, `tblcategoriacurso_idtblCategoriaCurso`=idCategoriaCurso where idCurso=idCur;
-	set msg="Curso editado correctamente";
-	select msg as Respuesta; 
+	update tblCurso set nombreCurso=nombreCur,duracionCurso=duracionCur, `descripcionCurso`=descripcionCur, estadoCurso=estadoCur, `tblcategoriacurso_idtblCategoriaCurso`=categoriaCur where idCurso=idCur;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEmpresa`(
@@ -160,9 +157,9 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarAbonoByCredito`(IN `idCredi`     int)
-select * from tblAbono a inner join tblCredito c on(a.tblCredito_idCredito=c.idCredito) 
-where a.tblCredito_idCredito like concat('%',idCredi,'%') 
-order by (a.tblCredito_idCredito,a.FechaPago)$$
+select (a.idAbono, a.idCredito, a.valorAbono, a.fechaPago) from tblAbono a inner join tblCredito c on(a.idCredito=c.idCredito) 
+where a.idCredito like concat('%',idCredi,'%') 
+order by (a.idCredito,a.FechaPago)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarArticuloByNombre`(IN `nombre` VARCHAR(50))
     NO SQL
@@ -203,6 +200,7 @@ SELECT idCurso,
     duracionCurso,
     estadoCurso,
     descripcionCurso,
+idtblCategoriaCurso,
     nombreCategoriaCurso
 FROM tblcurso c inner join tblcategoriacurso cc on(c.`tblcategoriacurso_idtblCategoriaCurso`=cc.`idtblCategoriaCurso`) where idCurso =id;
 END$$
@@ -216,7 +214,7 @@ SELECT idCurso,
     estadoCurso,
     descripcionCurso,
     nombreCategoriaCurso
-FROM tblcurso c inner join tblCategoriaCurso cc on(c.tblcategoriacurso_idtblCategoriaCurso=cc.idtblCategoriaCurso);
+FROM tblcurso c inner join tblcategoriacurso cc on(c.`tblcategoriacurso_idtblCategoriaCurso`=cc.`idtblCategoriaCurso`);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarDetallesCompra`(
@@ -288,7 +286,7 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarAbono`(
     in idAbo        int,
     in valorAbo     int,
-    in fechaPago    datetime,
+    in fechaPa    datetime,
     in idCredi      int
  )
 BEGIN
@@ -297,8 +295,8 @@ BEGIN
 		set msg="Este abono ya fue registrado.";
 		select msg as Respuesta;
 	else
-		insert into tblAbono (valorAbono,fechaPago,tblCredito_idCredito) Values(valorAbo,fechaPa,idCredi);
-		set msg="La empresa se ha registrado exitosamente";
+		insert into tblAbono (idCredito,valorAbono,fechaPago) Values(idCredi,valorAbo,fechaPa);
+		set msg="El abono se ha registrado correctamente.";
 		select msg as Respuesta; 
 	end if;
 END$$
@@ -335,7 +333,7 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCurso`(
-nombre varchar(30), duracion int, estado int, descripcion varchar(50), idcategoria int
+nombre varchar(30), duracion int, estado int, descripcion varchar(100), idcategoria int
 )
 BEGIN
 INSERT INTO `dbworkstationsoftware`.`tblcurso`
@@ -517,6 +515,10 @@ BEGIN
 	end if;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarAbonos`()
+select * from tblAbono a inner join tblCredito c on(a.idCredito=c.idCredito) 
+order by (a.idCredito,a.fechaPago)$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarArticulos`()
 BEGIN
 
@@ -541,7 +543,7 @@ CREATE TABLE IF NOT EXISTS `tblabono` (
 `idAbono` int(11) NOT NULL,
   `valorAbono` int(11) NOT NULL DEFAULT '0',
   `fechaPago` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tblcredito_idCredito` int(11) NOT NULL
+  `idCredito` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -587,15 +589,14 @@ INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArti
 CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
 `idCategoriaArticulo` int(11) NOT NULL,
   `nombreCategoriaArticulo` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblcategoriaarticulo`
 --
 
 INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArticulo`) VALUES
-(1, 'Vinilos'),
-(2, 'Pinceles');
+(1, 'Vinilos');
 
 -- --------------------------------------------------------
 
@@ -606,17 +607,18 @@ INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArtic
 CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
 `idtblCategoriaCurso` tinyint(4) NOT NULL,
   `nombreCategoriaCurso` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblcategoriacurso`
 --
 
 INSERT INTO `tblcategoriacurso` (`idtblCategoriaCurso`, `nombreCategoriaCurso`) VALUES
-(1, 'Categoria K'),
+(1, 'Categoria A'),
 (2, 'Categoria B'),
 (3, 'Categoria C'),
-(4, 'Categoria D');
+(4, 'Categoria D'),
+(5, 'Categoria E');
 
 -- --------------------------------------------------------
 
@@ -665,8 +667,8 @@ CREATE TABLE IF NOT EXISTS `tblcredito` (
   `saldoInicial` int(11) NOT NULL DEFAULT '0',
   `saldoActual` int(11) NOT NULL DEFAULT '0',
   `estadoCredito` tinyint(4) NOT NULL,
-  `tblcliente_tipoDocumento` varchar(5) NOT NULL,
-  `tblcliente_numeroDocumento` varchar(15) NOT NULL
+  `tipoDocumento` varchar(5) NOT NULL,
+  `numeroDocumento` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -680,19 +682,17 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `nombreCurso` varchar(50) NOT NULL,
   `duracionCurso` int(11) NOT NULL,
   `estadoCurso` int(11) NOT NULL,
-  `descripcionCurso` varchar(45) DEFAULT NULL,
+  `descripcionCurso` varchar(100) DEFAULT NULL,
   `tblcategoriacurso_idtblCategoriaCurso` tinyint(4) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblcurso`
 --
 
 INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `duracionCurso`, `estadoCurso`, `descripcionCurso`, `tblcategoriacurso_idtblCategoriaCurso`) VALUES
-(1, 'Nuevo Oleo', 40, 1, 'El Oleo es todo un arte, amen', 1),
-(2, 'PatchWork', 10, 1, 'asdasdasdasdasdasd', 1),
-(3, 'Pintura', 5, 1, 'Un Curso dediucao a la pintura', 1),
-(4, 'Nueva Pintura', 10, 1, 'asdasdasd', 1);
+(1, 'Oleo', 30, 1, 'El Oleo es todo un arte, amen', 3),
+(2, 'PatchWork', 10, 1, 'asdasdasdasdasdasd', 1);
 
 -- --------------------------------------------------------
 
@@ -743,7 +743,7 @@ CREATE TABLE IF NOT EXISTS `tblempresa` (
 --
 
 INSERT INTO `tblempresa` (`nitEmpresa`, `nombreEmpresa`, `direccionEmpresa`, `nombreContacto`, `telefonoContacto`, `emailContacto`) VALUES
-('14', 'EPM', 'Calle falsa', 'David Cano', '3213512312', 'direccion@misco.edu.co');
+('14', 'Une', 'Calle falsa', 'David', '3213512312', 'direccion@misco.e');
 
 -- --------------------------------------------------------
 
@@ -962,7 +962,7 @@ CREATE TABLE IF NOT EXISTS `tblventa` (
 -- Indices de la tabla `tblabono`
 --
 ALTER TABLE `tblabono`
- ADD PRIMARY KEY (`idAbono`), ADD KEY `fk_tblabono_tblcredito1_idx` (`tblcredito_idCredito`);
+ ADD PRIMARY KEY (`idAbono`), ADD KEY `fk_tblabono_tblcredito1_idx` (`idCredito`);
 
 --
 -- Indices de la tabla `tblacudiente`
@@ -1004,7 +1004,7 @@ ALTER TABLE `tblcompra`
 -- Indices de la tabla `tblcredito`
 --
 ALTER TABLE `tblcredito`
- ADD PRIMARY KEY (`idCredito`), ADD KEY `fk_tblcredito_tblcliente1_idx` (`tblcliente_tipoDocumento`,`tblcliente_numeroDocumento`);
+ ADD PRIMARY KEY (`idCredito`), ADD KEY `fk_tblcredito_tblcliente1_idx` (`tipoDocumento`,`numeroDocumento`);
 
 --
 -- Indices de la tabla `tblcurso`
@@ -1114,12 +1114,12 @@ MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- AUTO_INCREMENT de la tabla `tblcategoriaarticulo`
 --
 ALTER TABLE `tblcategoriaarticulo`
-MODIFY `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `tblcategoriacurso`
 --
 ALTER TABLE `tblcategoriacurso`
-MODIFY `idtblCategoriaCurso` tinyint(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `idtblCategoriaCurso` tinyint(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `tblcompra`
 --
@@ -1134,7 +1134,7 @@ MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tblcurso`
 --
 ALTER TABLE `tblcurso`
-MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `tbldetallecompra`
 --
@@ -1198,7 +1198,7 @@ MODIFY `idVenta` int(11) NOT NULL AUTO_INCREMENT;
 -- Filtros para la tabla `tblabono`
 --
 ALTER TABLE `tblabono`
-ADD CONSTRAINT `fk_tblabono_tblcredito1` FOREIGN KEY (`tblcredito_idCredito`) REFERENCES `tblcredito` (`idCredito`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `tblabono_ibfk_1` FOREIGN KEY (`idCredito`) REFERENCES `tblcredito` (`idCredito`);
 
 --
 -- Filtros para la tabla `tblarticulo`
@@ -1217,7 +1217,7 @@ ADD CONSTRAINT `tblcliente_ibfk_1` FOREIGN KEY (`tblacudiente_tipoDocumento`) RE
 -- Filtros para la tabla `tblcredito`
 --
 ALTER TABLE `tblcredito`
-ADD CONSTRAINT `fk_tblcredito_tblcliente1` FOREIGN KEY (`tblcliente_tipoDocumento`, `tblcliente_numeroDocumento`) REFERENCES `tblcliente` (`tipoDocumento`, `numeroDocumento`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `fk_tblcredito_tblcliente1` FOREIGN KEY (`tipoDocumento`, `numeroDocumento`) REFERENCES `tblcliente` (`tipoDocumento`, `numeroDocumento`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `tblcurso`

@@ -36,15 +36,25 @@ public class ControllerAbono extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
-                case "Registrar":
-                    {
-                        daoModelAbono = new ModelAbono();
+                case "Registrar":{
+                    
+                    int idCredito = Integer.parseInt(request.getParameter("txtIdCredito"));
+                    double valorAbono = Double.parseDouble(request.getParameter("txtValorAbono"));
+                    String fechaPago = new String(request.getParameter("dateFechaPago").getBytes("ISO-8859-1"), "UTF-8");
+                    if (request.getParameter("txtIdCredito") != null) {
+                        idCredito = Integer.parseInt(request.getParameter("txtIdCredito"));
+                        _objAbono.setIdCredito(idCredito);
+                        _objAbono.setValorAbono(valorAbono);
+                        _objAbono.setFechaPago(fechaPago);
+                        
+                        daoModelAbono.Add(_objAbono);                        
+                    }
+                         /*   daoModelAbono = new ModelAbono();
                         Double abono = Double.parseDouble(request.getParameter("txtAbono"));
                         _objAbono.setValorAbono(abono);
-                        daoModelAbono.Add(_objAbono);
-                        
+                        daoModelAbono.Add(_objAbono); */
                         break;
-                    }
+                }
                 case "Editar":
                     {
                         daoModelAbono = new ModelAbono();
@@ -55,9 +65,8 @@ public class ControllerAbono extends HttpServlet {
                         break;
                     }
             }
-            response.sendRedirect("curso.jsp");
+            response.sendRedirect("caja.jsp");
         }
-
     }
 
     public String getTableAbono() {
@@ -72,13 +81,12 @@ public class ControllerAbono extends HttpServlet {
                 tableAbono += "<tr>";
                 
                 tableAbono += "<td class=\"text-center\">" + result.getString("idAbono").trim() + "</td>";
+                tableAbono += "<td class=\"text-center\">" + result.getString("idCredito").trim() + "</td>";
                 tableAbono += "<td class=\"text-center\">" + result.getString("valorAbono").trim() + "</td>";
                 tableAbono += "<td class=\"text-center\">" + result.getString("fechaPago").trim() + "</td>";
-                tableAbono += "<td class=\"text-center\">" + result.getString("tblcredito_idCredito").trim() + "</td>";
-                tableAbono += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
+                                tableAbono += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
                         + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
                 tableAbono += "</tr>";
-
             }
         } catch (Exception e) {
             tableAbono = "Ha ocurrido un error" + e.getMessage();
@@ -88,25 +96,6 @@ public class ControllerAbono extends HttpServlet {
         return tableAbono;
     }
 
-    public String getOptionsCategorias() {
-        ResultSet result;
-        String OptionsCategorias = "";
-        daoModelAbono = new ModelAbono();
-        try {
-            result = daoModelAbono.ListAll();
-
-            while (result.next()) {
-                OptionsCategorias += "<option value=\"" + result.getString("idtblCategoriaCurso").trim() + "\">" + result.getString("nombreCategoriaCurso").trim() + "</option>";
-            }
-
-        } catch (Exception e) {
-            OptionsCategorias = "Ha Ocurrido un error" + e.getMessage();
-        } finally {
-            daoModelAbono.Signout();
-        }
-
-        return OptionsCategorias;
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

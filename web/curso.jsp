@@ -12,7 +12,6 @@
 <%     if (session.getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
     };
-    ControllerCurso controllerCurso = new ControllerCurso();
     ControllerFicha controllerFicha = new ControllerFicha();
     ControllerCategoriaCurso controllerCategoriaCurso = new ControllerCategoriaCurso();
     ControllerSeminario controllerSeminario = new ControllerSeminario();
@@ -52,7 +51,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" id="registrarCategoriaCurso" name="regCatCurso" value="Registrar Categoria">
+                                                <input class="btn btn-default btn-block" type="button" onclick="categoriaCurso.registrar()" name="regCatCurso" value="Registrar Categoria">
                                             </div>
                                         </div>
                                     </div>
@@ -122,25 +121,22 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="cursos">
-                            <form id="formTblCurso" action="ControllerCurso" method="POST">
-                                <table id="tblCursos" class="table table-hover tabla" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center">Código</th>
-                                            <th class="text-center">Nombre</th>
-                                            <th class="text-center">Estado</th>
-                                            <th class="text-center">Consultar</th>
-                                            <th class="text-center">Editar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
-                            </form>
+                            <table id="tblCursos" class="table table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Código</th>
+                                        <th class="text-center">Nombre</th>
+                                        <th class="text-center">Estado</th>
+                                        <th class="text-center">Consultar</th>
+                                        <th class="text-center">Editar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="tab-pane" id="categoriaCursos">
-                            <table id="tblCategoriaCursos" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblCategoriaCursos" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -149,8 +145,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%                                        out.print(controllerCategoriaCurso.getTableCategoriaCurso());
-                                    %>
                                 </tbody>
                             </table>
                         </div>
@@ -168,9 +162,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%
-                                        out.print(controllerFicha.getTableFichas());
-                                    %>
                                 </tbody>
                             </table>
                         </div>
@@ -186,9 +177,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%
-                                        out.print(controllerSeminario.getTableSeminario());
-                                    %>
                                 </tbody>
                             </table>
                         </div>
@@ -223,9 +211,6 @@
                                                             Categoria
                                                         </label>
                                                         <select name="ddlCategoria" id="ddlCategoria" class="form-control" required>
-                                                            <%
-                                                                out.print(controllerCategoriaCurso.getOptionsCategorias());
-                                                            %>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -236,7 +221,7 @@
                                                         <label for="txtNombre">
                                                             Nombre Curso
                                                         </label>
-                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Oleo" required>
+                                                        <input name="txtNombre" id="txtNombreCurso" type="text" class="form-control" placeholder="Ejm: Oleo" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -278,7 +263,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input class="btn btn-default btn-block" id="btnCurso" type="submit" name="action"  value="Registrar">
+                                                        <input class="btn btn-default btn-block" id="btnCurso" type="submit" name="action"  value="Registrar" onclick="curso.myAjax($('#btnCurso').val())">
                                                     </div>
                                                 </div>
                                             </div>
@@ -326,7 +311,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
+                                                        <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="submit" name="action" value="Registrar" onclick="categoriaCurso.myAjax($('#btnCategoriaCurso').val())">
                                                     </div>
                                                 </div>
                                             </div>
@@ -396,7 +381,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input  class="btn btn-default btn-block" id="btnSeminario" type="submit" name="action" value="Registrar">
+                                                        <input  class="btn btn-default btn-block" id="btnSeminario" type="button" name="action" value="Registrar">
                                                     </div>
                                                 </div>
                                             </div>
