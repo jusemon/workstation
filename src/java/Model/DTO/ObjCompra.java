@@ -10,18 +10,26 @@ package Model.DTO;
  * @author Administrador
  */
 public class ObjCompra {
-    private int idCompra;
+    private String facturaProveedor;
+    private String nombreProveedor;
     private String fechaCompra;
     private double totalCompra;
 
-    public int getIdCompra() {
-        return idCompra;
+    public String getFacturaProveedor() {
+        return facturaProveedor;
     }
 
-    public void setIdCompra(int idCompra) {
-        this.idCompra = idCompra;
+    public void setFacturaProveedor(String facturaProveedor) {
+        this.facturaProveedor = facturaProveedor;
+    }
+     public String getNombreProveedor() {
+        return nombreProveedor;
     }
 
+    public void setNombreProveedor(String nombreProveedor) {
+        this.nombreProveedor = nombreProveedor;
+    }
+    
     public String getFechaCompra() {
         return fechaCompra;
     }

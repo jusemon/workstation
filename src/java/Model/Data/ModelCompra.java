@@ -6,11 +6,20 @@
 package Model.Data;
 
 import Model.JDBC.ConnectionDB;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import Model.DTO.ObjArticulo;
 
 /**
  *
- * @author Administrador
+ * @author Lorenzo
  */
-public class ModelCompra extends ConnectionDB {
+public class ModelCompra extends ConnectionDB { 
+    private PreparedStatement pStmt;
+    
+    public ModelCompra(){
+        getConnection();
+    }
     
 }
