@@ -48,17 +48,6 @@ function editar() {
             $('#miPopupArticulo').modal('show');
             $('#tblArticulos tbody').off();
         }
-        else if (tipo === 'ficha') {
-            var rowData = tablas.table('#tblFichas').row(this).data();
-            $('#miPopupFicha').find('#idFicha').attr('value', rowData[0]);
-            $('#miPopupFicha').find('#idCursoFicha').attr('value', rowData[1]);
-            $('#miPopupFicha').find('#txtCupos').attr('value', rowData[2]);
-            $('#miPopupFicha').find('#txtPrecioFicha').attr('value', rowData[3]);
-            $('#miPopupFicha').find('#dateFechaFicha').attr('value', rowData[4]);
-            $('#miPopupFicha').find('#btnFicha').attr('value', 'Editar');
-            $('#miPopupFicha').modal('show');
-            $('#tblFichas tbody').off();
-        }
         if (tipo === 'empresa') {
             var rowData = tablas.table('#tblEmpresas').row(this).data();
             $('#miPopupEmpresa').find('#txtNitEmpresa').attr('value', rowData[0]).attr('readonly', true);
@@ -297,58 +286,20 @@ var ficha = {
 };
 
 var seminario = {
-    myAjax: function (accion, id) {
-        var form = $('#formSeminario');
-        $(form).off();
-        $(form).on('submit', function () {
-            $.ajax({
-                type: $(form).attr('method'),
-                url: $(form).attr('action'),
-                data: $(form).serialize() + '&action=' + accion + '&id=' + id,
-                success: function (data) {
-                    seminario.actualizarTabla();
-                    $('#miPopupSeminario').modal('hide');
-                    if (accion == 'Estado' || accion == 'Editar') {
-                        mensaje(data);
-                    }
-                }
-            });
-            $(form).off();
-            return false;
-        });
-        if (accion === 'Estado') {
-            $(form).submit();
-        }
-    },
-    registrar: function () {
-        limpiar('#formSeminario');
-        $('#miPopupSeminario').find('#btnSeminario').attr('value', 'Registrar');
-        $('#miPopupSeminario').modal('show');
-    },
-    editar: function (tr, estado) {
-        var data = tablaSeminario.row(tr).data();
-        $('#miPopupSeminario').find('#idSeminario').val(data[0]);
-        $('#miPopupSeminario').find('#txtNombreSeminario').val(data[1]);
-        $('#miPopupSeminario').find('#txtDuracion').val(data[2]);
-        $('#miPopupSeminario').find('#ddlEstadosemiario option').prop('selected', false).filter('[value="' + estado + '"]').prop('selected', true);
-        $('#miPopupSeminario').find('#btnSeminario').val('Editar');
-        $('#miPopupSeminario').modal('show');
-    },
     cargar: function () {
         tablaSeminario = $('#tblSeminarios').DataTable({
-            "ajax": {
+            "ajax":{
                 "url": "ControllerSeminario",
                 "type": "POST",
-                "data": {
-                    action: 'Enlistar'
-                }
+                "data":{
+                    action: "Enlistar"
+                }   
             },
-            "language": {
-                "url": "public/lang/Spanish.json"
-            }
-        });
-    },
-    actualizarTabla: function () {
+                "language": {
+                    "url": "public/lang/Spanish.json"
+                }
+            });
+    }, actualizarTabla: function () {
         tablaSeminario.ajax.reload();
     }
 };
@@ -373,3 +324,4 @@ function mensaje(data) {
 ficha.cargar();
 categoriaCurso.cargar();
 curso.cargar();
+seminario.cargar();

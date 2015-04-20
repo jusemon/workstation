@@ -7,8 +7,12 @@ package Controller;
 
 import Model.DTO.ObjSeminario;
 import Model.Data.ModelSeminario;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -62,43 +66,47 @@ public class ControllerSeminario extends HttpServlet {
                     daoModelSeminario.Edit(_objSeminario);
                     break;
                 }
+                case "Enlistar": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("utf-8");
+                    response.getWriter().write(getTableSeminario());
+                    break;
+                }
             }
-            response.sendRedirect("curso.jsp");
         }
     }
 
     public String getTableSeminario() {
-
         ResultSet result;
-        String tableSeminario = "";
+        String[] arreglo;
+        List<String[]> lista = new ArrayList<>();
         daoModelSeminario = new ModelSeminario();
-
         try {
             result = daoModelSeminario.listAll();
-
             while (result.next()) {
-                tableSeminario += "<tr data-tipo=\"seminario\">";
-                tableSeminario += "<td class=\"text-center\">" + result.getString("idSeminario").trim() + "</td>";
-                tableSeminario += "<td class=\"text-center\">" + result.getString("nombreSeminario").trim() + "</td>";
-                tableSeminario += "<td class=\"text-center\">" + result.getString("duracionSeminario").trim() + "</td>";
+                arreglo = new String[5];
+                arreglo[0] = result.getString("idSeminario").trim();
+                arreglo[1] = result.getString("nombreSeminario").trim();
+                arreglo[2] = result.getString("duracionSeminario").trim();
                 String[] estado = {"success", "ok"};
                 if (result.getInt("estadoSeminario") == 0) {
                     estado[0] = "danger";
                     estado[1] = "remove";
                 }
-                tableSeminario +=  "<td class=\"text-center\"><a class=\"btn-sm btn-" + estado[0] + " btn-block \" href=\"javascript:void(0)\"  onclick=\"estado()\">\n"
-                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>\n"
-                        + "</td>";
-                tableSeminario += "<td class=\"text-center\"><a  class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
-                        + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
-                tableSeminario += "</tr>";
+                arreglo[3] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block \" href=\"javascript:void(0)\"  onclick=\"estado()\">\n"
+                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
+                arreglo[4] = "<a  class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
+                        + "<span class=\"glyphicon glyphicon-pencil\"></span></a>";
+                lista.add(arreglo);
             }
         } catch (Exception e) {
-            tableSeminario = "Ha ocurrido un error" + e.getMessage();
+            System.err.println("Ha ocurrido un error" + e.getMessage());
         } finally {
             daoModelSeminario.Signout();
         }
-        return tableSeminario;
+        String salida = new Gson().toJson(lista);
+        salida = "{\"data\":" + salida + "}";
+        return salida;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
