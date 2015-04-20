@@ -48,7 +48,6 @@ public class ControllerCurso extends HttpServlet {
             switch (request.getParameter("action")) {
                 // <editor-fold defaultstate="collapsed" desc="Registrar un Curso">
                 case "Registrar": {
-                    daoModelCurso = new ModelCurso();
                     nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
                     descripcion = new String(request.getParameter("txtDescripcion").getBytes("ISO-8859-1"), "UTF-8");
                     duracion = Integer.parseInt(request.getParameter("dateDuracion"));
@@ -62,7 +61,6 @@ public class ControllerCurso extends HttpServlet {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     salida = Mensaje(daoModelCurso.Add(_objCurso), "El Curso ha sido registrado", "Ha ocurrido un error al intentar registrar el Curso");
-                    daoModelCurso.Signout();
                     response.getWriter().write(salida);
                     break;
                 }
@@ -70,7 +68,6 @@ public class ControllerCurso extends HttpServlet {
 
                 // <editor-fold defaultstate="collapsed" desc="Consultar un Curso">
                 case "Consultar": {
-                    daoModelCurso = new ModelCurso();
                     aux = request.getParameter("id");
                     id = Integer.parseInt(aux.trim());
                     try {
@@ -97,7 +94,6 @@ public class ControllerCurso extends HttpServlet {
                 //</editor-fold>
 
                 case "Estado": {
-                    daoModelCurso = new ModelCurso();
                     aux = request.getParameter("id");
                     id = Integer.parseInt(aux.trim());
                     try {
@@ -118,7 +114,8 @@ public class ControllerCurso extends HttpServlet {
                     }
                     break;
                 }
-                case "Editar":
+
+                case "Editar": {
                     aux = request.getParameter("idCurso");
                     id = Integer.parseInt(aux.trim());
                     nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
@@ -132,28 +129,32 @@ public class ControllerCurso extends HttpServlet {
                     _objCurso.setNombreCurso(nombre);
                     _objCurso.setDuracionCurso(duracion);
                     _objCurso.setEstadoCurso(estado);
-                    daoModelCurso = new ModelCurso();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     salida = Mensaje(daoModelCurso.Edit(_objCurso), "El Curso ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Curso");
-                    daoModelCurso.Signout();
                     response.getWriter().write(salida);
                     break;
-                case "Enlistar":
+                }
+                case "Enlistar": {
                     response.setContentType("application/text");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableCursos());
                     break;
+                }
+                case "getOptionsCursos": {
+                    response.setContentType("application/text");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getOptionsCursos());
+                    break;
+                }
             }
         }
-
     }
 
     public String getTableCursos() {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
         try {
-            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListAll();
             while (result.next()) {
                 String[] estado = {"success", "ok"};
@@ -170,13 +171,27 @@ public class ControllerCurso extends HttpServlet {
                 lista.add(arreglo);
             }
         } catch (Exception e) {
-            System.err.println("Ha Ocurrido un error" + e.getMessage());
-        } finally {
-            daoModelCurso.Signout();
+            System.err.println("Ha Ocurrido un error en el controller " + e.toString());
         }
         String salida = new Gson().toJson(lista);
-        salida = "{\"aaData\":" + salida + "}";
+        salida = "{\"data\":" + salida + "}";
         return salida;
+    }
+
+    public String getOptionsCursos() {
+        ResultSet result;
+        String OptionsCursos = "";
+        try {
+            result = daoModelCurso.ListAll();
+            while (result.next()) {
+                OptionsCursos += "<option value=\"" + result.getString("idCurso").trim() + "\">" + result.getString("nombreCurso").trim() + "</option>";
+            }
+
+        } catch (Exception e) {
+            OptionsCursos = "Ha Ocurrido un error 2" + e.getMessage();
+        }
+
+        return OptionsCursos;
     }
 
     public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
@@ -219,9 +234,7 @@ public class ControllerCurso extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         processRequest(request, response);
-
     }
 
     /**

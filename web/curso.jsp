@@ -73,7 +73,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupFicha" data-dismiss="modal" name="regCurso" value="Registrar Ficha">
+                                                <input  class="btn btn-default btn-block" type="button"  name="regCurso" value="Registrar Ficha" onclick="ficha.registrar()">
                                             </div>
                                         </div>
                                     </div>
@@ -149,7 +149,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="fichas">
-                            <table id="tblFichas" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblFichas" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -166,7 +166,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="seminarios">
-                            <table id="tblSeminarios" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblSeminarios" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -231,7 +231,7 @@
                                                         <label for="txtDescripcion">
                                                             Descripcion
                                                         </label>
-                                                        <textarea rows="2" name="txtDescripcion" id="txtDescripcionCurso" type="text"  class="form-control" placeholder="Ejm: El oleo es un curso dedicado al..." required></textarea>
+                                                        <textarea rows="2" name="txtDescripcion" id="txtDescripcionCurso"  class="form-control" placeholder="Ejm: El oleo es un curso dedicado al..." required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -403,7 +403,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="ControllerFicha" method="POST">
+                                <form id="formFicha" action="ControllerFicha" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -420,9 +420,6 @@
                                                             Curso
                                                         </label>
                                                         <select name="idCurso" id="idCursoFicha" class="form-control" required>
-                                                            <%
-                                                                out.print(controllerFicha.getOptionsCursos());
-                                                            %>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -457,13 +454,25 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input type="hidden" value="" id="fecha" name="fecha">
-                                        </div>
-                                        <div class="panel-footer">
-                                            <div class="col-md-offset-3 col-md-6">
+                                            <input type="hidden" id="idFicha" name="idFicha"/>
+                                            <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <input id="btnFicha"  class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
+                                                    <label for="idCursoFicha">
+                                                        Estado
+                                                    </label>
+                                                    <select name="estadoFicha" id="estadoFicha" class="form-control" required>
+                                                        <option value="1">Activo</option>
+                                                        <option value="0">Inactivo</option>                                                   
+                                                    </select>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" value="" id="fecha" name="fecha">
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="col-md-offset-3 col-md-6">
+                                            <div class="form-group">
+                                                <input id="btnFicha"  class="btn btn-default btn-block" type="submit" name="action" value="Registrar" onclick="ficha.myAjax($('#btnFicha').val())">
                                             </div>
                                         </div>
                                     </div>
@@ -474,6 +483,7 @@
                 </div>
             </div>
         </div>
-        <%@include file="WEB-INF/jspf/imports.jspf" %>
-    </body>
+    </div>
+    <%@include file="WEB-INF/jspf/imports.jspf" %>
+</body>
 </html>

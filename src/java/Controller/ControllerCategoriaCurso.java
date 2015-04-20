@@ -11,7 +11,9 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -107,15 +109,29 @@ public class ControllerCategoriaCurso extends HttpServlet {
         try {
             result = daoModelCategoriaCurso.ListAll();
             while (result.next()) {
-                lista+=("<option value=\"" + result.getString("idtblCategoriaCurso").trim() + "\">" + result.getString("nombreCategoriaCurso").trim() + "</option>");
+                lista += ("<option value=\"" + result.getString("idtblCategoriaCurso").trim() + "\">" + result.getString("nombreCategoriaCurso").trim() + "</option>");
             }
 
         } catch (Exception e) {
-            lista=("Ha Ocurrido un error" + e.getMessage());
+            lista = ("Ha Ocurrido un error" + e.getMessage());
         } finally {
             daoModelCategoriaCurso.Signout();
         }
         return lista;
+    }
+
+    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
+        Map<String, String> mensaje = new LinkedHashMap<>();
+        if (entrada) {
+            mensaje.put("mensaje", mensajeSuccess);
+            mensaje.put("tipo", "success");
+
+        } else {
+            mensaje.put("mensaje", mensajeError);
+            mensaje.put("tipo", "error");
+        }
+        String salida = new Gson().toJson(mensaje);
+        return salida;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

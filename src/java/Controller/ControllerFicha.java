@@ -8,10 +8,15 @@ package Controller;
 import Model.DTO.ObjFicha;
 import Model.Data.ModelCurso;
 import Model.Data.ModelFicha;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,73 +45,124 @@ public class ControllerFicha extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         if (request.getParameter("action") != null) {
-            if (request.getParameter("action").equals("Registrar")) {
-                int idCurso = Integer.parseInt(request.getParameter("idCurso"));
-                Date fecha = Date.valueOf(request.getParameter("dateFecha"));
-                int cupos = Integer.parseInt(request.getParameter("txtCupos"));
-                int precio = Integer.parseInt(request.getParameter("txtPrecio"));
-                _objFicha.setIdCurso(idCurso);
-                _objFicha.setFechaInicio(fecha);
-                _objFicha.setCuposDisponibles(cupos);
-                _objFicha.setPrecioFicha(precio);
-                daoModelFicha.Add(_objFicha);
-                response.sendRedirect("curso.jsp");
+            int estado = 0;
+            switch (request.getParameter("action")) {
+                case "Registrar": {
+                    int idCurso = Integer.parseInt(request.getParameter("idCurso"));
+                    Date fecha = Date.valueOf(request.getParameter("dateFecha"));
+                    int cupos = Integer.parseInt(request.getParameter("txtCupos"));
+                    int precio = Integer.parseInt(request.getParameter("txtPrecio"));
+                    estado = Integer.parseInt(request.getParameter("estadoFicha"));
+                    _objFicha.setIdCurso(idCurso);
+                    _objFicha.setFechaInicio(fecha);
+                    _objFicha.setCuposDisponibles(cupos);
+                    _objFicha.setPrecioFicha(precio);
+                    _objFicha.setEstado(estado);
+                    daoModelFicha = new ModelFicha();
+                    daoModelFicha.Add(_objFicha);
+                    daoModelFicha.Signout();
+                    break;
+                }
+                case "Editar": {
+                    int idFicha = Integer.parseInt(request.getParameter("idFicha"));
+                    int idCurso = Integer.parseInt(request.getParameter("idCurso"));
+                    Date fecha = Date.valueOf(request.getParameter("dateFecha"));
+                    int cupos = Integer.parseInt(request.getParameter("txtCupos"));
+                    int precio = Integer.parseInt(request.getParameter("txtPrecio"));
+                    estado = Integer.parseInt(request.getParameter("estadoFicha"));
+                    _objFicha.setIdficha(idFicha);
+                    _objFicha.setIdCurso(idCurso);
+                    _objFicha.setFechaInicio(fecha);
+                    _objFicha.setCuposDisponibles(cupos);
+                    _objFicha.setPrecioFicha(precio);
+                    _objFicha.setEstado(estado);
+                    daoModelFicha = new ModelFicha();
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    String salida = Mensaje(daoModelFicha.Edit(_objFicha), "La Ficha ha sido actualizada", "Ha ocurrido un error al intentar actualizar la ficha");
+                    response.getWriter().write(salida);
+                    daoModelFicha.Signout();
+                    break;
+                }
+                case "Estado": {
+                    daoModelFicha = new ModelFicha();
+                    String aux = request.getParameter("id");
+                    int id = Integer.parseInt(aux.trim());
+                    try {
+                        ResultSet result = daoModelFicha.buscarPorID(id);
+                        while (result.next()) {
+                            estado = Integer.parseInt(result.getString("estado"));
+                        }
+                        estado = estado > 0 ? 0 : 1;
+                        _objFicha = new ObjFicha();
+                        _objFicha.setIdficha(id);
+                        _objFicha.setEstado(estado);
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        String salida = Mensaje(daoModelFicha.cambiarEstado(_objFicha), "El estado ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
+                        daoModelFicha.Signout();
+                        response.getWriter().write(salida);
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
+                    break;
+                }
+                case "Enlistar": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getTableFichas());
+                    break;
+                }
             }
         }
-
     }
 
     public String getTableFichas() {
         ResultSet result;
-        String tableFichas = "";
+        List<String[]> lista = new ArrayList<>();
         try {
+            int contador = 0;
+            daoModelFicha = new ModelFicha();
             result = daoModelFicha.ListAll();
             while (result.next()) {
-                tableFichas += "<tr data-tipo=\"ficha\" >";
-                tableFichas += "<td class=\"text-center\">" + result.getString("idFicha").trim() + "</td>";
-                tableFichas += "<td class=\"text-center\">" + result.getString("nombreCurso").trim() + "</td>";
-                tableFichas += "<td class=\"text-center\">" + result.getString("cuposDisponibles").trim() + "</td>";
-                tableFichas += "<td class=\"text-center\">" + result.getString("precioFicha").trim() + "</td>";
-                tableFichas += "<td class=\"text-center\">" + result.getString("fechaInicio").trim() + "</td>";
-                String [] estado = {"success", "ok"};
-                if (result.getInt("estado")==0) {
+                String[] estado = {"success", "ok"};
+                if (result.getInt("estado") == 0) {
                     estado[0] = "danger";
-                    estado[1] = "cancel";
+                    estado[1] = "remove";
                 }
-                tableFichas += "<td class=\"text-center\"><a class=\"btn-sm btn-"+estado[0]+" btn-block \" href=\"javascript:void(0)\"  onclick=\"estado()\">\n" 
-                        +"<span class=\"glyphicon glyphicon-"+estado[1]+"\"></span></a>\n" 
-                        + "</td>";
-                tableFichas += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
-                tableFichas += "</tr>";
+                String[] arreglo = new String[7];
+                arreglo[0] = result.getString("idFicha").trim();
+                arreglo[1] = result.getString("nombreCurso").trim();
+                arreglo[2] = result.getString("cuposDisponibles").trim();
+                arreglo[3] = result.getString("precioFicha").trim();
+                arreglo[4] = result.getString("fechaInicio").trim();
+                arreglo[5] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"ficha.myAjax('Estado'," + arreglo[0] + ")\"><span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
+                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"ficha.editar(" + contador + "," + result.getInt("estado") + ", " + result.getInt("idCurso") + ")\"><span class=\"glyphicon glyphicon-pencil\"></span></a>";
+                lista.add(arreglo);
+                contador++;
             }
         } catch (SQLException e) {
-            tableFichas = "Ha Ocurrido un error de SQL" + e.getMessage();
+            System.err.println("Ha Ocurrido un error de SQL " + e.getMessage());
         } finally {
             daoModelFicha.Signout();
         }
-
-        return tableFichas;
+        String salida = new Gson().toJson(lista);
+        salida = "{\"data\":" + salida + "}";
+        return salida;
     }
 
-    public String getOptionsCursos() {
-        ResultSet result;
-        String OptionsCursos = "";
+    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
+        Map<String, String> mensaje = new LinkedHashMap<>();
+        if (entrada) {
+            mensaje.put("mensaje", mensajeSuccess);
+            mensaje.put("tipo", "success");
 
-        try {
-            result = daoModelCurso.ListAll();
-
-            while (result.next()) {
-                OptionsCursos += "<option value=\"" + result.getString("idCurso").trim() + "\">" + result.getString("nombreCurso").trim() + "</option>";
-            }
-
-        } catch (Exception e) {
-            OptionsCursos = "Ha Ocurrido un error" + e.getMessage();
-        } finally {
-            daoModelCurso.Signout();
+        } else {
+            mensaje.put("mensaje", mensajeError);
+            mensaje.put("tipo", "error");
         }
-
-        return OptionsCursos;
+        String salida = new Gson().toJson(mensaje);
+        return salida;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

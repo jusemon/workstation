@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var tablaCurso, tablaCategoriaCurso;
+var tablaCurso, tablaCategoriaCurso, tablaFicha, tablaSeminario;
 var tablas = $('.tabla').DataTable({
     "language": {
         "url": "public/lang/Spanish.json"
@@ -79,9 +79,6 @@ $('#registrarCategoriaArticulo').on('click', function () {
     $('#txtNombreCategoriaArticulo').attr('value', ' ');
     $('#miPopupCategoriaArticulo').modal('show');
 });
-$('#registrarCategoriaCurso').on('click', function () {
-
-});
 $('#registrarSeminario').on('click', function () {
     $('#btnSeminario').attr('value', 'Registrar');
     $('#txtNombreSeminario').attr('value', ' ');
@@ -100,6 +97,7 @@ $('#registrarAbono').on('click', function () {
 var curso = {
     myAjax: function (accion, id, aux) {
         var form = $('#formCurso');
+        $(form).off();
         $(form).on('submit', function () {
             $.ajax({
                 type: $(form).attr('method'),
@@ -114,20 +112,22 @@ var curso = {
                     }
                     else if (accion == 'Registrar' || accion == 'Editar') {
                         $('#miPopupCurso').modal('hide');
-                        curso.mensaje(data);
+                        mensaje(data);
                         curso.actualizarTabla();
                     }
                     else if (accion == 'Estado') {
-                        curso.mensaje(data);
+                        mensaje(data);
                         curso.actualizarTabla();
                     }
-
+                    if (accion === 'getOptionsCursos') {
+                        curso.cargarOpciones(data);
+                    }
                 }
             });
             $(form).off();
             return false;
         });
-        if (accion === 'Estado' || accion === 'Consultar') {
+        if (accion === 'Estado' || accion === 'Consultar' || accion === 'getOptionsCursos') {
             $(form).submit();
         }
     },
@@ -151,10 +151,8 @@ var curso = {
         curso.consultar(data);
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
-    mensaje: function (data) {
-        $.notify(data['mensaje'], data['tipo']);
-    },
     cargar: function () {
+        curso.myAjax('getOptionsCursos');
         tablaCurso = $('#tblCursos').DataTable({
             "ajax": {
                 "url": "ControllerCurso",
@@ -168,13 +166,19 @@ var curso = {
         });
     },
     actualizarTabla: function () {
+        curso.myAjax('getOptionsCursos');
         tablaCurso.ajax.reload();
+    },
+    cargarOpciones: function (data) {
+        $('#miPopupFicha').find('#idCursoFicha').empty();
+        $('#miPopupFicha').find('#idCursoFicha').append(data);
     }
 };
 
 var categoriaCurso = {
     myAjax: function (accion) {
         var form = $('#form_categoriaCurso');
+        $(form).off();
         $(form).on('submit', function () {
             $.ajax({
                 type: $(form).attr('method'),
@@ -182,7 +186,7 @@ var categoriaCurso = {
                 data: $(form).serialize() + '&action=' + accion,
                 success: function (data) {
                     if (accion === 'getOptionsCategorias') {
-                        categoriaCurso.cargarOpcionesCategorias(data);
+                        categoriaCurso.cargarOpciones(data);
                     } else if (accion !== 'getOptionsCategorias') {
                         categoriaCurso.actualizarTabla();
                     }
@@ -227,18 +231,133 @@ var categoriaCurso = {
         categoriaCurso.myAjax('getOptionsCategorias');
         tablaCategoriaCurso.ajax.reload();
     },
-    cargarOpcionesCategorias: function (data) {
+    cargarOpciones: function (data) {
         $('#miPopupCurso').find('#ddlCategoria').empty();
         $('#miPopupCurso').find('#ddlCategoria').append(data);
     }
+};
 
+var ficha = {
+    myAjax: function (accion, id) {
+        var form = $('#formFicha');
+        $(form).off();
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id,
+                success: function (data) {
+                    ficha.actualizarTabla();
+                    $('#miPopupFicha').modal('hide');
+                    if (accion == 'Estado' || accion == 'Editar') {
+                        mensaje(data);
+                    }
+                }
+            });
+            $(form).off();
+            return false;
+        });
+        if (accion === 'Estado') {
+            $(form).submit();
+        }
+    },
+    registrar: function () {
+        limpiar('#formFicha');
+        $('#miPopupFicha').find('#btnFicha').attr('value', 'Registrar');
+        $('#miPopupFicha').modal('show');
+    },
+    editar: function (tr, estado, id) {
+        var data = tablaFicha.row(tr).data();
+        $('#miPopupFicha').find('#idFicha').val(data[0]);
+        $('#miPopupFicha').find('#idCursoFicha option').prop('selected', false).filter('[value="' + id + '"]').prop('selected', true);
+        $('#miPopupFicha').find('#txtCupos').val(data[2]);
+        $('#miPopupFicha').find('#txtPrecioFicha').val(data[3]);
+        $('#miPopupFicha').find('#dateFechaFicha').val(data[4]);
+        $('#miPopupFicha').find('#estadoFicha option').prop('selected', false).filter('[value="' + estado + '"]').prop('selected', true);
+        $('#miPopupFicha').find('#btnFicha').val('Editar');
+        $('#miPopupFicha').modal('show');
+    },
+    cargar: function () {
+        tablaFicha = $('#tblFichas').DataTable({
+            "ajax": {
+                "url": "ControllerFicha",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            },
+            "language": {
+                "url": "public/lang/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaFicha.ajax.reload();
+    }
+};
+
+var seminario = {
+    myAjax: function (accion, id) {
+        var form = $('#formSeminario');
+        $(form).off();
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id,
+                success: function (data) {
+                    seminario.actualizarTabla();
+                    $('#miPopupSeminario').modal('hide');
+                    if (accion == 'Estado' || accion == 'Editar') {
+                        mensaje(data);
+                    }
+                }
+            });
+            $(form).off();
+            return false;
+        });
+        if (accion === 'Estado') {
+            $(form).submit();
+        }
+    },
+    registrar: function () {
+        limpiar('#formSeminario');
+        $('#miPopupSeminario').find('#btnSeminario').attr('value', 'Registrar');
+        $('#miPopupSeminario').modal('show');
+    },
+    editar: function (tr, estado) {
+        var data = tablaSeminario.row(tr).data();
+        $('#miPopupSeminario').find('#idSeminario').val(data[0]);
+        $('#miPopupSeminario').find('#txtNombreSeminario').val(data[1]);
+        $('#miPopupSeminario').find('#txtDuracion').val(data[2]);
+        $('#miPopupSeminario').find('#ddlEstadosemiario option').prop('selected', false).filter('[value="' + estado + '"]').prop('selected', true);
+        $('#miPopupSeminario').find('#btnSeminario').val('Editar');
+        $('#miPopupSeminario').modal('show');
+    },
+    cargar: function () {
+        tablaSeminario = $('#tblSeminarios').DataTable({
+            "ajax": {
+                "url": "ControllerSeminario",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            },
+            "language": {
+                "url": "public/lang/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaSeminario.ajax.reload();
+    }
 };
 
 function limpiar(miForm) {
     $(':input', miForm).each(function () {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
-        if (type == 'text' || type == 'password' || tag == 'textarea' || type == 'number' || type == 'hidden')
+        if (type == 'text' || type == 'password' || tag == 'textarea' || type == 'number' || type == 'hidden' || type == 'date')
             this.value = "";
         else if (type == 'checkbox' || type == 'radio')
             this.checked = false;
@@ -248,6 +367,9 @@ function limpiar(miForm) {
             this.value = 0;
     });
 }
-
+function mensaje(data) {
+    $.notify(data['mensaje'], data['tipo']);
+}
+ficha.cargar();
 categoriaCurso.cargar();
 curso.cargar();
