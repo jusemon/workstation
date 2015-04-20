@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var tablaCurso, tablaCategoriaCurso;
+var tablaCurso, tablaCategoriaCurso, abono;
 var tablas = $('.tabla').DataTable({
     "language": {
         "url": "public/lang/Spanish.json"
@@ -234,6 +234,78 @@ var categoriaCurso = {
 
 };
 
+var abono = {
+    myAjax: function (accion, id, aux) {
+        var form = $('#formAbono');
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id,
+                success: function (data) {
+                    if (accion == 'Consultar') {
+                        if (aux == 'Editar') {
+                            abono.editar(data);
+                        } else
+                            abono.consultar(data);
+                    }
+                    else if (accion == 'Registrar' || accion == 'Editar') {
+                        $('#miPopupAbono').modal('hide');
+                        abono.mensaje(data);
+                        abono.actualizarTabla();
+                    }
+                    else if (accion == 'Estado') {
+                        abono.mensaje(data);
+                        abono.actualizarTabla();
+                    }
+                }
+            });
+            $(form).off();
+            return false;
+        });
+        if (accion === 'Estado' || accion === 'Consultar') {
+            $(form).submit();
+        }
+    },
+    consultar: function (data) {
+        limpiar("#formAbono");
+        $('#miPopupAbono').find('#idAbono').val(data['idAbono']);
+        $('#miPopupAbono').find('#txtIdCredito').val(data['idCredito']);
+        $('#miPopupAbono').find('#txtValorAbono').val(data['valorAbono']);
+        $('#miPopupAbono').find('#dateFechaPago').val(data['fechaPago']);
+        $('#miPopupAbono').find('#btnAbono').attr('type', 'hidden').attr('disabled', true);
+        $('#miPopupAbono').modal('show');
+    },
+    registrar: function () {
+        limpiar("#formAbono");
+        $('#miPopupAbono').find('#btnAbono').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
+        $('#miPopupAbono').modal('show');
+    },
+    editar: function (data) {
+        abono.consultar(data);
+        $('#miPopupAbono').find('#btnAbono').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
+    },
+    mensaje: function (data) {
+        $.notify(data['mensaje'], data['tipo']);
+    },
+    cargar: function () {
+        tablaAbono = $('#tblAbono').DataTable({
+            "ajax": {
+                "url": "ControllerAbono",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            }, "language": {
+                "url": "public/lang/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaAbono.ajax.reload();
+    }
+};
+
 function limpiar(miForm) {
     $(':input', miForm).each(function () {
         var type = this.type;
@@ -251,3 +323,5 @@ function limpiar(miForm) {
 
 categoriaCurso.cargar();
 curso.cargar();
+abono.cargar();
+//credito.cargar()
