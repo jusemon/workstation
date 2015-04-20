@@ -64,13 +64,13 @@ public class ModelAbono extends ConnectionDB {
         }
         return objReturn;
     }
-    public ResultSet buscarPorNIT(String idAbono) {
+    public ResultSet buscarPorCredito(int idCredito) {
         ResultSet rs = null;
         String sql = "call spConsultarAbonoByCredito(?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setString(1, idAbono);
+            pStmt.setInt(1, idCredito);
             rs = pStmt.executeQuery();            
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
