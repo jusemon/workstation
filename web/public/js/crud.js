@@ -48,17 +48,6 @@ function editar() {
             $('#miPopupArticulo').modal('show');
             $('#tblArticulos tbody').off();
         }
-        else if (tipo === 'ficha') {
-            var rowData = tablas.table('#tblFichas').row(this).data();
-            $('#miPopupFicha').find('#idFicha').attr('value', rowData[0]);
-            $('#miPopupFicha').find('#idCursoFicha').attr('value', rowData[1]);
-            $('#miPopupFicha').find('#txtCupos').attr('value', rowData[2]);
-            $('#miPopupFicha').find('#txtPrecioFicha').attr('value', rowData[3]);
-            $('#miPopupFicha').find('#dateFechaFicha').attr('value', rowData[4]);
-            $('#miPopupFicha').find('#btnFicha').attr('value', 'Editar');
-            $('#miPopupFicha').modal('show');
-            $('#tblFichas tbody').off();
-        }
         if (tipo === 'empresa') {
             var rowData = tablas.table('#tblEmpresas').row(this).data();
             $('#miPopupEmpresa').find('#txtNitEmpresa').attr('value', rowData[0]).attr('readonly', true);

@@ -68,6 +68,20 @@ BEGIN
     select msg as Respuesta; 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCompra`(
+        in numeroFactu varchar(50),
+	in nombreProveed varchar(50),
+	in fechaComp	date,
+	in totalComp int
+)
+BEGIN
+	declare msg varchar(40);   
+	update tblCompra set numeroFactura=numeroFactu,nombreProveerdor=nombreProveed,fechaCompra=fechaComp,totalCompra=totalCopm
+		where numeroFactura=numeroFactu;
+	set msg="Compra actualizado exitosamente";	
+    select msg as Respuesta;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCredito`(
     in idCredi		int,
     in idSaldoActu	int,
@@ -190,14 +204,14 @@ BEGIN
 	order by tblCliente.apellidoCliente;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarComprasRangoFecha`(
-	in	fechaInici	datetime,
-	in	fechaFin	datetime
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarComprasRangoFecha`(       in      numeroFactu   varchar(50), 
+        in      nombreProveed   varchar(50),
+	in	fechaInic	datetime,
+	in	fechaF  	datetime
 )
 BEGIN
-	select * from tblCompra
-	where fechaCompra BETWEEN fechaInici AND fechaFin;
-	
+	select numeroFactura,nombreProveedor,fechaCompra from tblCompra
+	where  numeroFactura = numeroFactu and  nombreProveedor = nombreProveed and fechaCompra BETWEEN fechaInic AND fechaF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursoPorID`(id int)
@@ -339,6 +353,24 @@ BEGIN
 		set msg="Cliente registrado exitosamente";
 		select msg as Respuesta; 
 	end if;
+END$$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCompra`(
+facturaProveedor varchar(50), nombreProveedor varchar(50), fechaCompra date, totalCompra int
+)
+BEGIN
+INSERT INTO `dbworkstationsoftware`.`tblcompra`
+(`facturaProveedor`,
+`nombreProveedor`,
+`fechaCompra`,
+`totalCompra`)
+VALUES
+(facturaProveedor,
+nombreProveedor,
+fechaCompra,
+totalCompra);
+
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCurso`(
@@ -671,11 +703,12 @@ CREATE TABLE IF NOT EXISTS `tblcliente` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblcompra` (
-  `idCompra` int(11) NOT NULL AUTO_INCREMENT,
+  `facturaProveedor` varchar(50) NOT NULL,
+  `nombreProveedor` varchar(50) NOT NULL,
   `fechaCompra` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `totalCompra` int(11) NOT NULL,
-  PRIMARY KEY (`idCompra`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`facturaProveedor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -729,13 +762,13 @@ INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `duracionCurso`, `estadoCurso`
 
 CREATE TABLE IF NOT EXISTS `tbldetallecompra` (
   `idDetalleCompra` int(11) NOT NULL AUTO_INCREMENT,
-  `idCompra` int(11) NOT NULL,
+  `facturaProveedor` varchar(50) NOT NULL,
   `idArticulo` int(11) NOT NULL,
   `cantidadComprada` int(11) NOT NULL,
   `valorUnitario` int(11) NOT NULL,
   PRIMARY KEY (`idDetalleCompra`),
   KEY `FK_tblDetalleCompra_idArticulo` (`idArticulo`),
-  KEY `FK_tblDetalleCompra_idCompra` (`idCompra`)
+  KEY `FK_tblDetalleCompra_idCompra` (`facturaProveedor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -1052,7 +1085,7 @@ ALTER TABLE `tblcurso`
 --
 ALTER TABLE `tbldetallecompra`
   ADD CONSTRAINT `FK_tblDetalleCompra_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`),
-  ADD CONSTRAINT `FK_tblDetalleCompra_idCompra` FOREIGN KEY (`idCompra`) REFERENCES `tblcompra` (`idCompra`);
+  ADD CONSTRAINT `tbldetallecompra_ibfk_1` FOREIGN KEY (`facturaProveedor`) REFERENCES `tblcompra` (`facturaProveedor`);
 
 --
 -- Filtros para la tabla `tbldetalleventa`
