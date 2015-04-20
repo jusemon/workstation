@@ -337,8 +337,8 @@ El panel que se encuentra en el Popup Detalle compra, esta dividido en cabeza cu
 dentro del cuerpo del panel se encuentra el formulario para agregar elementos y una tabla que muestra todos los articulos a comprar,
 finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         -->
-
-        <div class="modal" id="miPopupCompra">
+        <%--popup de compra--%>
+    <%--     <div class="modal" id="miPopupCompra">
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -388,18 +388,18 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                             <table id="tblArticulosCompra" class="table table-hover" cellspacing="0" width="100%">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-center">Codigo</th>
-                                                        <th class="text-center">Nombre</th>
-                                                        <td class="text-center">Cantidad</td>
-                                                        <th class="text-center">Precio</th>
+                                                        <th class="text-center">Nº Factura Proveedor</th>
+                                                        <th class="text-center">Nombre Proveedor</th>
+                                                        <th class="text-center">Fecha Compra</th>
+                                                        <th class="text-center">Total Compra</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
                                                         <td class="text-center">00001</td>
-                                                        <td class="text-center">Vinilo Azul Mediano</td>
-                                                        <td class="text-center">15</td>
-                                                        <td class="text-center">1200</td>
+                                                        <td class="text-center">Pinturas Arcoiris</td>
+                                                        <td class="text-center">15/04/2015</td>
+                                                        <td class="text-center">12000</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -427,7 +427,81 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         </div>
         <!--
         Popup Venta
-        -->
+      --%> 
+        <div class="modal" id="miPopupCompra">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form action="ControllerCompra" method="POST">
+                                    <div class="panel">
+                                        <div class="panel-heading estilo2">
+                                            <h3 class="panel-title">
+                                             Ingresar Compra:
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                            </h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <input type="hidden" name="facturaProveedor" id="idArticulo"/>
+                                                 <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtFacturaProveedor">
+                                                            Nº Factura Proveedor:
+                                                        </label>
+                                                        <input name="txtFacturaProvedor" id="txtFacturaProveedor" type="text" class="form-control" placeholder="P23455" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNombreProveedor">
+                                                            Nombre Proveedor:
+                                                        </label>
+                                                        <input name="txtNombreProvedor" id="txtNombreProveedor" type="text" class="form-control" placeholder="Ejm: Pinturas Arcoíris" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtPrecio">
+                                                            Fecha Compra:
+                                                        </label>
+                                                        <input name="txtFecha" id="txtPrecioArticulo" type="number" class="form-control" placeholder="Ejm: 10000" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtTotalCompra">
+                                                            Total Compra:
+                                                        </label>
+                                                        <input name="txtTotalCompra" id="txtTotalCompra" type="number" class="form-control" placeholder="Ejm: 30000" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+           
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="col-md-offset-3 col-md-6">
+                                                <div class="form-group">
+                                                    <input id="btnCompra"  class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      <!--popup de Venta -->
         <div class="modal" id="miPopupVenta">
             <div class="modal-dialog ">
                 <div class="modal-content">

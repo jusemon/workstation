@@ -11,7 +11,7 @@ package Model.DTO;
  */
 public class ObjDetalleCompra {
     private int idDetalleCompra;
-    private int idcompra;
+    private String facturaProveedor;
     private int idArticulo;
     private int cantidaComprada;
     private double valorUnitario;
@@ -24,14 +24,13 @@ public class ObjDetalleCompra {
         this.idDetalleCompra = idDetalleCompra;
     }
 
-    public int getIdcompra() {
-        return idcompra;
+  public String getFacturaProveedor() {
+        return facturaProveedor;
     }
 
-    public void setIdcompra(int idcompra) {
-        this.idcompra = idcompra;
+    public void setFacturaProveedor(String facturaProveedor) {
+        this.facturaProveedor = facturaProveedor;
     }
-
     public int getIdArticulo() {
         return idArticulo;
     }
