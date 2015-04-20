@@ -25,7 +25,7 @@ public class ModelFicha extends ConnectionDB {
 
     public boolean Add(ObjFicha _objFicha) {
         boolean objReturn = false;
-        String sql = "call spIngresarFicha(?,?,?,?)";
+        String sql = "call spIngresarFicha(?,?,?,?,?)";
 
         try {
             getStmt();
@@ -34,7 +34,31 @@ public class ModelFicha extends ConnectionDB {
             pStmt.setInt(2, _objFicha.getCuposDisponibles());
             pStmt.setDate(3, _objFicha.getFechaInicio());
             pStmt.setInt(4, _objFicha.getPrecioFicha());
+            pStmt.setInt(5, _objFicha.getEstado());
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
 
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
+
+    public boolean Edit(ObjFicha _objFicha) {
+        boolean objReturn = false;
+        String sql = "call spActualizarFicha(?,?,?,?,?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, _objFicha.getIdficha());
+            pStmt.setInt(2, _objFicha.getIdCurso());
+            pStmt.setInt(3, _objFicha.getCuposDisponibles());
+            pStmt.setDate(4, _objFicha.getFechaInicio());
+            pStmt.setInt(5, _objFicha.getPrecioFicha());
+            pStmt.setInt(6, _objFicha.getEstado());
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
@@ -61,4 +85,39 @@ public class ModelFicha extends ConnectionDB {
         return rs;
     }
 
+    public boolean cambiarEstado(ObjFicha _objFicha) {
+        boolean objReturn = false;
+        String sql = "call spActualizarEstadoFicha(?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, _objFicha.getIdficha());
+            pStmt.setInt(2, _objFicha.getEstado());
+
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
+
+    public ResultSet buscarPorID(int ID) {
+        ResultSet rs = null;
+        String sql = "call spConsultarFichaPorID(?)";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, ID);
+            rs = pStmt.executeQuery();
+
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }
 }

@@ -12,11 +12,21 @@ import java.sql.Date;
  * @author Administrador
  */
 public class ObjFicha {
+
     private int idficha;
     private int idCurso;
     private int cuposDisponibles;
     private int precioFicha;
     private Date fechaInicio;
+    private int estado;
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
 
     public int getPrecioFicha() {
         return precioFicha;
@@ -25,7 +35,7 @@ public class ObjFicha {
     public void setPrecioFicha(int precioFicha) {
         this.precioFicha = precioFicha;
     }
-    
+
     public int getIdficha() {
         return idficha;
     }
@@ -57,5 +67,5 @@ public class ObjFicha {
     public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
-    
+
 }
