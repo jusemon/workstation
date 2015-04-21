@@ -297,7 +297,7 @@ var seminario = {
                 success: function (data) {
                     seminario.actualizarTabla();
                     $('#miPopupSeminario').modal('hide');
-                    if (accion == 'Estado' || accion == 'Editar') {
+                    if (accion == 'Estado' || accion == 'Editar' || accion == 'Registrar') {
                         mensaje(data);
                     }
                 }
@@ -319,7 +319,7 @@ var seminario = {
         $('#miPopupSeminario').find('#idSeminario').val(data[0]);
         $('#miPopupSeminario').find('#txtNombreSeminario').val(data[1]);
         $('#miPopupSeminario').find('#txtDuracion').val(data[2]);
-        $('#miPopupSeminario').find('#ddlEstadosemiario option').prop('selected', false).filter('[value="' + estado + '"]').prop('selected', true);
+        $('#miPopupSeminario').find('#ddlEstado option').prop('selected', false).filter('[value="' + estado + '"]').prop('selected', true);
         $('#miPopupSeminario').find('#btnSeminario').val('Editar');
         $('#miPopupSeminario').modal('show');
     },
@@ -434,5 +434,6 @@ function mensaje(data) {
 ficha.cargar();
 categoriaCurso.cargar();
 curso.cargar();
+seminario.cargar();
 abono.cargar();
 //credito.cargar()

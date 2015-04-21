@@ -5,6 +5,7 @@
  */
 package Model.Data;
 
+import Model.DTO.ObjFicha;
 import Model.DTO.ObjSeminario;
 import Model.JDBC.ConnectionDB;
 import java.sql.PreparedStatement;
@@ -46,10 +47,7 @@ public class ModelSeminario extends ConnectionDB {
     public ResultSet listAll() throws Exception {
 
         ResultSet rs = null;
-        String sql = "SELECT idSeminario, "
-                + "nombreSeminario, "
-                + "duracionSeminario,"
-                + "estadoSeminario FROM tblseminario";
+        String sql = "call spConsultarSeminarios()";
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
@@ -61,40 +59,60 @@ public class ModelSeminario extends ConnectionDB {
 
     }
 
-    public ResultSet Buscar(int idSeminario) throws Exception {
-        ResultSet rs = null;
-        String sql = "SELECT 'IdSeminario', `nombreSeminario`"
-                + "FROM `tblseminario` WHERE `idSeminario` = " + idSeminario;
+    public boolean Edit(ObjSeminario _objSeminario) {
+        boolean objReturn = false;
+        String sql = "call spActualizarSeminario (?,?,?,?)";
         try {
             getStmt();
-            rs = stmt.executeQuery(sql);
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, _objSeminario.getIdSeminario());
+            pStmt.setString(2, _objSeminario.getNombreSeminario());
+            pStmt.setInt(3, _objSeminario.getDuracionSeminario());
+            pStmt.setInt(4, _objSeminario.getEstadoSeminario());
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return rs;
+        return objReturn;
     }
 
-    public boolean Edit(ObjSeminario _objSeminario) 
-    {
+    public boolean cambiarEstado(ObjSeminario _objSeminario) {
         boolean objReturn = false;
-        String sql ="call spActualizarSeminario (?,?,?,?)";
+        String sql = "call spActualizarEstadoSeminario(?,?)";
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setInt (1,_objSeminario.getIdSeminario());
-            pStmt.setString (2,_objSeminario.getNombreSeminario());
-            pStmt.setInt (3,_objSeminario.getDuracionSeminario());
-            pStmt.setInt (4, _objSeminario.getEstadoSeminario());
+            pStmt.setInt(1, _objSeminario.getIdSeminario());
+            pStmt.setInt(2, _objSeminario.getEstadoSeminario());
+
             int updateCount = pStmt.executeUpdate();
-            if (updateCount > 0){
-            objReturn = true;
-        }
-            
-            
-        } catch (Exception e) {
-               System.out.println(e.getMessage());
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
         return objReturn;
+    }
+
+    public ResultSet buscarPorID(int ID) {
+        ResultSet rs = null;
+        String sql = "call spConsultarSeminarioPorID(?)";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, ID);
+            rs = pStmt.executeQuery();
+
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
     }
 }

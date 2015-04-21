@@ -12,9 +12,6 @@
 <%     if (session.getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
     };
-    ControllerFicha controllerFicha = new ControllerFicha();
-    ControllerCategoriaCurso controllerCategoriaCurso = new ControllerCategoriaCurso();
-    ControllerSeminario controllerSeminario = new ControllerSeminario();
 %>
 <!DOCTYPE html>
 <html>
@@ -93,7 +90,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" id="registrarSeminario" name="regSeminario" value="Registrar Seminario">
+                                                <input class="btn btn-default btn-block" type="button" id="registrarSeminario" name="regSeminario" value="Registrar Seminario" onclick="seminario.registrar()">
                                             </div>
                                         </div>
                                     </div>
@@ -381,7 +378,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input  class="btn btn-default btn-block" id="btnSeminario" type="button" name="action" value="Registrar">
+                                                        <input  class="btn btn-default btn-block" id="btnSeminario" type="submit" name="action" value="Registrar" onclick="seminario.myAjax($('#btnSeminario').val())">
                                                     </div>
                                                 </div>
                                             </div>

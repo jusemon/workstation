@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-04-2015 a las 22:11:53
+-- Tiempo de generación: 21-04-2015 a las 22:53:56
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -68,20 +68,6 @@ BEGIN
     select msg as Respuesta; 
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCompra`(
-        in numeroFactu varchar(50),
-	in nombreProveed varchar(50),
-	in fechaComp	date,
-	in totalComp int
-)
-BEGIN
-	declare msg varchar(40);   
-	update tblCompra set numeroFactura=numeroFactu,nombreProveerdor=nombreProveed,fechaCompra=fechaComp,totalCompra=totalCopm
-		where numeroFactura=numeroFactu;
-	set msg="Compra actualizado exitosamente";	
-    select msg as Respuesta;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCredito`(
     in idCredi		int,
     in idSaldoActu	int,
@@ -139,6 +125,14 @@ BEGIN
 	update tblficha set estado = estadoFich where `idFicha`=idFich;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstadoSeminario`(
+    in idSem			int,
+    in estado   		int
+)
+BEGIN
+	update tblseminario set `estadoSeminario` = estado where `idSeminario`=idSem;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarFicha`(
     in idFic			int,
 	in idCurs			int,
@@ -170,11 +164,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarSeminario`(
 	in estadoSeminar		int
 )
 BEGIN
-	declare msg varchar(40);    
 	update tblSeminario set nombreSeminario=nombreSeminar,duracionSeminario=duracionSeminar,estadoSeminario=estadoSeminar
 	 where idSeminario=idSeminar;
-	set msg="Seminario editado correctamente";
-	select msg as Respuesta; 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarAbonoByCredito`(IN `idCredi`     int)
@@ -204,14 +195,14 @@ BEGIN
 	order by tblCliente.apellidoCliente;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarComprasRangoFecha`(       in      numeroFactu   varchar(50), 
-        in      nombreProveed   varchar(50),
-	in	fechaInic	datetime,
-	in	fechaF  	datetime
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarComprasRangoFecha`(
+	in	fechaInici	datetime,
+	in	fechaFin	datetime
 )
 BEGIN
-	select numeroFactura,nombreProveedor,fechaCompra from tblCompra
-	where  numeroFactura = numeroFactu and  nombreProveedor = nombreProveed and fechaCompra BETWEEN fechaInic AND fechaF;
+	select * from tblCompra
+	where fechaCompra BETWEEN fechaInici AND fechaFin;
+	
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursoPorID`(id int)
@@ -279,6 +270,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarInscritosSeminario`(
 BEGIN
 	declare msg varchar(40);    
 	select count(*) as Inscritos from tblInscripcion where idSeminario = idSeminar;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarSeminarioPorID`(id int)
+BEGIN
+SELECT 
+         `idSeminario`
+        ,`nombreSeminario`
+        ,`duracionSeminario`
+        ,`estadoSeminario`
+FROM tblseminario where `idSeminario` = id; 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarSeminarios`()
+BEGIN
+SELECT 
+          `idSeminario`
+        , `nombreSeminario`
+        , `duracionSeminario`
+        , `estadoSeminario` 
+FROM tblseminario;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarSubsidiosEmpresa`(
@@ -353,24 +364,6 @@ BEGIN
 		set msg="Cliente registrado exitosamente";
 		select msg as Respuesta; 
 	end if;
-END$$
-
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCompra`(
-facturaProveedor varchar(50), nombreProveedor varchar(50), fechaCompra date, totalCompra int
-)
-BEGIN
-INSERT INTO `dbworkstationsoftware`.`tblcompra`
-(`facturaProveedor`,
-`nombreProveedor`,
-`fechaCompra`,
-`totalCompra`)
-VALUES
-(facturaProveedor,
-nombreProveedor,
-fechaCompra,
-totalCompra);
-
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCurso`(
@@ -475,7 +468,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarFicha`(
     in cupos  int,  
     in fecha       datetime,
     in precio	   int,
-    in estadoFich int
+in estadoFich int
  )
 BEGIN
 		insert into tblFicha(tblcurso_idCurso,cuposDisponibles,fechaInicio, precioFicha,estado) Values(id,cupos,fecha, precio, estadoFich);
@@ -703,12 +696,11 @@ CREATE TABLE IF NOT EXISTS `tblcliente` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblcompra` (
-  `facturaProveedor` varchar(50) NOT NULL,
-  `nombreProveedor` varchar(50) NOT NULL,
+  `idCompra` int(11) NOT NULL AUTO_INCREMENT,
   `fechaCompra` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `totalCompra` int(11) NOT NULL,
-  PRIMARY KEY (`facturaProveedor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`idCompra`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -750,7 +742,7 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
 --
 
 INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `duracionCurso`, `estadoCurso`, `descripcionCurso`, `tblcategoriacurso_idtblCategoriaCurso`) VALUES
-(1, 'Oleo', 30, 1, 'El Oleo es todo un arte, amen', 4),
+(1, 'Oleo', 30, 0, 'El Oleo es todo un arte, amen', 4),
 (2, 'PatchWork', 10, 1, 'asdasdasdasdasdasd', 1),
 (3, 'Vinilos', 10, 1, 'Es un curso sobre los vinilos', 4);
 
@@ -762,13 +754,13 @@ INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `duracionCurso`, `estadoCurso`
 
 CREATE TABLE IF NOT EXISTS `tbldetallecompra` (
   `idDetalleCompra` int(11) NOT NULL AUTO_INCREMENT,
-  `facturaProveedor` varchar(50) NOT NULL,
+  `idCompra` int(11) NOT NULL,
   `idArticulo` int(11) NOT NULL,
   `cantidadComprada` int(11) NOT NULL,
   `valorUnitario` int(11) NOT NULL,
   PRIMARY KEY (`idDetalleCompra`),
   KEY `FK_tblDetalleCompra_idArticulo` (`idArticulo`),
-  KEY `FK_tblDetalleCompra_idCompra` (`facturaProveedor`)
+  KEY `FK_tblDetalleCompra_idCompra` (`idCompra`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -847,9 +839,9 @@ CREATE TABLE IF NOT EXISTS `tblficha` (
 --
 
 INSERT INTO `tblficha` (`idFicha`, `cuposDisponibles`, `fechaInicio`, `tblcurso_idCurso`, `precioFicha`, `estado`) VALUES
-(1, 15, '2015-04-20 00:00:00', 1, 50000, 1),
+(1, 15, '2015-04-08 00:00:00', 1, 50000, 1),
 (2, 15, '2015-04-17 00:00:00', 1, 10000, 1),
-(3, 15, '2015-04-30 00:00:00', 3, 50000, 1);
+(3, 15, '2015-04-30 00:00:00', 3, 50000, 0);
 
 -- --------------------------------------------------------
 
@@ -972,15 +964,16 @@ CREATE TABLE IF NOT EXISTS `tblseminario` (
   `duracionSeminario` int(11) NOT NULL,
   `estadoSeminario` int(11) NOT NULL,
   PRIMARY KEY (`idSeminario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Volcado de datos para la tabla `tblseminario`
 --
 
 INSERT INTO `tblseminario` (`idSeminario`, `nombreSeminario`, `duracionSeminario`, `estadoSeminario`) VALUES
-(1, 'asdasdasd', 10, 1),
-(2, 'asd', 10, 0);
+(1, 'Seminario de PatchWork', 10, 1),
+(2, 'Seminario de Pintura', 10, 1),
+(3, 'Seminario de Oleo', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -1085,7 +1078,7 @@ ALTER TABLE `tblcurso`
 --
 ALTER TABLE `tbldetallecompra`
   ADD CONSTRAINT `FK_tblDetalleCompra_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`),
-  ADD CONSTRAINT `tbldetallecompra_ibfk_1` FOREIGN KEY (`facturaProveedor`) REFERENCES `tblcompra` (`facturaProveedor`);
+  ADD CONSTRAINT `FK_tblDetalleCompra_idCompra` FOREIGN KEY (`idCompra`) REFERENCES `tblcompra` (`idCompra`);
 
 --
 -- Filtros para la tabla `tbldetalleventa`
