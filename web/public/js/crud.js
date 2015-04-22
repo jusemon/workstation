@@ -99,16 +99,14 @@ var curso = {
                         } else
                             curso.consultar(data);
                     }
-                    else if (accion == 'Registrar' || accion == 'Editar') {
-                        $('#miPopupCurso').modal('hide');
+                    else if (accion == 'Registrar' || accion == 'Editar' || accion == 'Estado') {
+                        if (accion != 'Estado') {
+                            $('#miPopupCurso').modal('hide');
+                        }
                         mensaje(data);
                         curso.actualizarTabla();
                     }
-                    else if (accion == 'Estado') {
-                        mensaje(data);
-                        curso.actualizarTabla();
-                    }
-                    if (accion === 'getOptionsCursos') {
+                    else if (accion === 'getOptionsCursos') {
                         curso.cargarOpciones(data);
                     }
                 }
@@ -178,10 +176,14 @@ var categoriaCurso = {
                         categoriaCurso.cargarOpciones(data);
                     } else if (accion !== 'getOptionsCategorias') {
                         categoriaCurso.actualizarTabla();
+                        if (accion === 'Editar' || accion === 'Registrar') {
+                            $('#miPopupCategoriaCurso').modal('hide');
+                            mensaje(data);
+                        }
                     }
-                    $('#miPopupCategoriaCurso').modal('hide');
                 }
-            });
+            }
+            );
             $(form).off();
             return false;
         });
@@ -238,7 +240,7 @@ var ficha = {
                 success: function (data) {
                     ficha.actualizarTabla();
                     $('#miPopupFicha').modal('hide');
-                    if (accion == 'Estado' || accion == 'Editar') {
+                    if (accion == 'Estado' || accion == 'Editar' || accion == 'Registrar') {
                         mensaje(data);
                     }
                 }

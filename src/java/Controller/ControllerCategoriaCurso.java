@@ -39,15 +39,16 @@ public class ControllerCategoriaCurso extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-
+        response.setCharacterEncoding("UTF-8");
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
                 case "Registrar": {
                     daoModelCategoriaCurso = new ModelCategoriaCurso();
                     String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
                     _objCategoriaCurso.setNombreCategoriaCurso(nombre);
-                    daoModelCategoriaCurso.Add(_objCategoriaCurso);
+                    String salida = Mensaje(daoModelCategoriaCurso.Add(_objCategoriaCurso), "La categoria ha sido registrada", "Ha ocurrido un error al intentar registrar la categoria");
+                    response.setContentType("application/json");
+                    response.getWriter().write(salida);
                     break;
                 }
                 case "Editar": {
@@ -55,19 +56,19 @@ public class ControllerCategoriaCurso extends HttpServlet {
                     int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoriaCurso"));
                     String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
                     _objCategoriaCurso.setIdCategoriaCurso(idCategoriaArticulo);
-                    _objCategoriaCurso.setNombreCategoriaCurso(nombre);
-                    daoModelCategoriaCurso.Edit(_objCategoriaCurso);
+                    _objCategoriaCurso.setNombreCategoriaCurso(nombre);;
+                    String salida = Mensaje(daoModelCategoriaCurso.Edit(_objCategoriaCurso), "La categoria ha sido actualizada", "Ha ocurrido un error al intentar actualizar la categoria");
+                    response.setContentType("application/json");
+                    response.getWriter().write(salida);
                     break;
                 }
                 case "Enlistar": {
                     response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableCategoriaCurso());
                     break;
                 }
                 case "getOptionsCategorias": {
                     response.setContentType("application/text");
-                    response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getOptionsCategorias());
                     break;
                 }
