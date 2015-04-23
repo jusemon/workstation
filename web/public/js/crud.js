@@ -486,6 +486,7 @@ function limpiar(miForm) {
             this.value = 0;
     });
 }
+
 function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }

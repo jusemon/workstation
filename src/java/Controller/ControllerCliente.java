@@ -25,8 +25,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerCliente extends HttpServlet {
 
-    public ModelCliente daoModelCliente = new ModelCliente();
-    public ObjCliente _objCliente = new ObjCliente();
+    public ModelEstudiante daoModelCliente = new ModelEstudiante();
+    public ObjEstudiante _objCliente = new ObjEstudiante();
     public ModelAcudiente daoModelAcudiente = new ModelAcudiente();
     public ObjAcudiente _objAcudiente = new ObjAcudiente();
 

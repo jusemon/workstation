@@ -9,7 +9,7 @@ package Model.DTO;
  *
  * @author Administrador
  */
-public class ObjCliente {
+public class ObjEstudiante {
 
     private int tipoDocumentoAcudiente;
     private String numeroDocumentoAcudiente;

@@ -5,7 +5,7 @@
  */
 package Model.Data;
 
-import Model.DTO.ObjCliente;
+import Model.DTO.ObjEstudiante;
 import Model.JDBC.ConnectionDB;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -18,15 +18,15 @@ import java.util.List;
  *
  * @author Administrador
  */
-public class ModelCliente extends ConnectionDB {
+public class ModelEstudiante extends ConnectionDB {
 
     private PreparedStatement pStmt;
 
-    public ModelCliente() {
+    public ModelEstudiante() {
         getConnection();
     }
 
-    public boolean Add(ObjCliente _objCliente) {
+    public boolean Add(ObjEstudiante _objCliente) {
         boolean objReturn = false;
         String sql = "call spIngresarCliente (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
@@ -87,7 +87,7 @@ public class ModelCliente extends ConnectionDB {
         return rs;
     }
 
-    public boolean Edit(ObjCliente _objCliente) {
+    public boolean Edit(ObjEstudiante _objCliente) {
         boolean objReturn = false;
         String sql = "call spActualizarCliente(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
