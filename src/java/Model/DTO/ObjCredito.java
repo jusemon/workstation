@@ -7,22 +7,22 @@ package Model.DTO;
 
 /**
  *
- * @author Administrador
+ * @author David
  */
 public class ObjCredito {
-    private int idCledito;
+    private int idCredito;
     private int idCliente;
     private String fechaInicio;
     private double saldoInicial;
     private double saldoActual;
     private int estadoCredito;
 
-    public int getIdCledito() {
-        return idCledito;
+    public int getIdCredito() {
+        return idCredito;
     }
 
-    public void setIdCledito(int idCledito) {
-        this.idCledito = idCledito;
+    public void setIdCredito(int idCredito) {
+        this.idCredito = idCredito;
     }
 
     public int getIdCliente() {

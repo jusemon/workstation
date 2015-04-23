@@ -6,11 +6,44 @@
 package Model.Data;
 
 import Model.JDBC.ConnectionDB;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import Model.DTO.ObjCredito;
 
 /**
  *
- * @author Administrador
+ * @author David
  */
 public class ModelCredito  extends ConnectionDB{
+    
+    private PreparedStatement pStmt;
+    
+    public ModelCredito(){
+        getConnection();
+    }
+    
+    public boolean Add(ObjCredito _objCredito){
+        boolean objReturn = false;
+        String sql = "call spIngresarCredito(?,?,?,?,?)";
+        
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, _objCredito.getIdCliente());            
+            pStmt.setString(2, _objCredito.getFechaInicio());
+            pStmt.setDouble(3, _objCredito.getSaldoInicial());
+            pStmt.setDouble(4, _objCredito.getSaldoActual());
+            pStmt.setInt(5, _objCredito.getEstadoCredito());
+            
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;        
+    }
     
 }
