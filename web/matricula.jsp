@@ -42,7 +42,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupEstudiante" data-dismiss="modal" name="regEstudiante" value="Registrar Estudiante">
+                                            <input class="btn btn-default btn-block" type="button" onclick="estudiante.registrar()" name="regEstudiante" value="Registrar Estudiante">
                                         </div>
                                     </div>
                                 </div>
@@ -518,7 +518,9 @@
                 </div>
             </div>
         </div>
+
         <!--Emergete de Estudiante -->
+
         <div class="modal" id="miPopupEstudiante">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -586,8 +588,8 @@
                                                         <label for="radioGenero">
                                                             Genero: 
                                                         </label>
-                                                            <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGenero" class="radio-inline" value="0">Femenino</label>
-                                                            <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGenero" class="radio-inline" value="1">Masculino</label>
+                                                        <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroFemenino" class="radio-inline" value="0">Femenino</label>
+                                                        <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroMasculino" class="radio-inline" value="1">Masculino</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -648,27 +650,22 @@
                                                         <label for="radioBeneficiario">
                                                             Beneficiario: 
                                                         </label>
-                                                        <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioBeneficiario" class="radio-inline" value="1">Si</label>
-                                                        <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioBeneficiario" class="radio-inline" value="0">No</label>
+                                                        <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioSiBeneficiario" class="radio-inline" value="1">Si</label>
+                                                        <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioNoBeneficiario" class="radio-inline" value="0">No</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-offset-3 col-md-6">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
+                                                <input class="btn btn-default btn-block" type="submit" id="btnEstudiante" name="action" value="Registrar" onclick="estudiante.myAjax($('#btnEstudiante').val())">
                                             </div>
                                         </div>
                                     </div>
+                                </form>
                             </div>
-                            </form>
                         </div>
                     </div>
                 </div>

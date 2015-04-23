@@ -124,7 +124,7 @@ public class ControllerSeminario extends HttpServlet {
                 arreglo[3] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block \" href=\"javascript:void(0)\"  onclick=\"seminario.myAjax('Estado'," + arreglo[0] + ")\">\n"
                         + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
                 arreglo[4] = "<a  class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"seminario.editar(" + contador + "," + result.getInt("estadoSeminario") + ")\">\n"
-                        + "<span class=\"glyphicon glyphicon-pencil\"></span></a>";
+                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
                 lista.add(arreglo);
                 contador++;
             }

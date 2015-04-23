@@ -11,27 +11,25 @@ package Model.DTO;
  */
 public class ObjEstudiante {
 
-    private int tipoDocumentoAcudiente;
-    private String numeroDocumentoAcudiente;
-    private String idCliente;
-    private int tipoCliente;
+    private String tipoDocumentoAcudiente;
+    private String numeroDocumentoAcudiente = "null";
     private String tipoDocumento;
     private int numeroDocumento;
     private String fechaNacimiento;
-    private int generoCliente;
-    private String nombreCliente;
-    private String apellidoCliente;
-    private String direccionCliente;
+    private int generoEstudiante;
+    private String nombreEstudiante;
+    private String apellidoEstudiente;
+    private String direccionEstudiante;
     private String telefonoFijo;
     private String telefonoMovil;
-    private String emailCliente;
-    private int estadoCliente;
+    private String emailEstudiante;
+    private int estadoEstudiante;
 
-    public int getTipoDocumentoAcudiente() {
+    public String getTipoDocumentoAcudiente() {
         return tipoDocumentoAcudiente;
     }
 
-    public void setTipoDocumentoAcudiente(int tipoDocumentoAcudiente) {
+    public void setTipoDocumentoAcudiente(String tipoDocumentoAcudiente) {
         this.tipoDocumentoAcudiente = tipoDocumentoAcudiente;
     }
 
@@ -41,18 +39,6 @@ public class ObjEstudiante {
 
     public void setNumeroDocumentoAcudiente(String numeroDocumentoAcudiente) {
         this.numeroDocumentoAcudiente = numeroDocumentoAcudiente;
-    }
-
-    public String getIdCliente() {
-        return idCliente;
-    }
-
-    public int getTipoCliente() {
-        return tipoCliente;
-    }
-
-    public void setTipoCliente(int tipoCliente) {
-        this.tipoCliente = tipoCliente;
     }
 
     public String getTipoDocumento() {
@@ -67,12 +53,12 @@ public class ObjEstudiante {
         return numeroDocumento;
     }
 
-    public int getGeneroCliente() {
-        return generoCliente;
+    public int getGeneroEstudiante() {
+        return generoEstudiante;
     }
 
-    public void setGeneroCliente(int generoCliente) {
-        this.generoCliente = generoCliente;
+    public void setGeneroEstudiante(int generoEstudiante) {
+        this.generoEstudiante = generoEstudiante;
     }
 
     public void setNumeroDocumento(int numeroDocumento) {
@@ -87,28 +73,28 @@ public class ObjEstudiante {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getNombreCliente() {
-        return nombreCliente;
+    public String getNombreEstudiante() {
+        return nombreEstudiante;
     }
 
-    public void setNombreCliente(String nombreCliente) {
-        this.nombreCliente = nombreCliente;
+    public void setNombreEstudiante(String nombreEstudiante) {
+        this.nombreEstudiante = nombreEstudiante;
     }
 
-    public String getApellidoCliente() {
-        return apellidoCliente;
+    public String getApellidoEstudiente() {
+        return apellidoEstudiente;
     }
 
-    public void setApellidoCliente(String apellidoCliente) {
-        this.apellidoCliente = apellidoCliente;
+    public void setApellidoEstudiente(String apellidoEstudiente) {
+        this.apellidoEstudiente = apellidoEstudiente;
     }
 
-    public String getDireccionCliente() {
-        return direccionCliente;
+    public String getDireccionEstudiante() {
+        return direccionEstudiante;
     }
 
-    public void setDireccionCliente(String direccionCliente) {
-        this.direccionCliente = direccionCliente;
+    public void setDireccionEstudiante(String direccionEstudiante) {
+        this.direccionEstudiante = direccionEstudiante;
     }
 
     public String getTelefonoFijo() {
@@ -127,20 +113,20 @@ public class ObjEstudiante {
         this.telefonoMovil = telefonoMovil;
     }
     
-    public String getEmailCliente() {
-        return emailCliente;
+    public String getEmailEstudiante() {
+        return emailEstudiante;
     }
 
-    public void setEmailCliente(String emailCliente) {
-        this.emailCliente = emailCliente;
+    public void setEmailEstudiante(String emailEstudiante) {
+        this.emailEstudiante = emailEstudiante;
     }
 
-    public int getEstadoCliente() {
-        return estadoCliente;
+    public int getEstadoEstudiante() {
+        return estadoEstudiante;
     }
 
-    public void setEstadoCliente(int estadoCliente) {
-        this.estadoCliente = estadoCliente;
+    public void setEstadoEstudiante(int estadoEstudiante) {
+        this.estadoEstudiante = estadoEstudiante;
     }
 
 }

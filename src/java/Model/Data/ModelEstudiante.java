@@ -11,9 +11,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author Administrador
@@ -28,22 +25,22 @@ public class ModelEstudiante extends ConnectionDB {
 
     public boolean Add(ObjEstudiante _objCliente) {
         boolean objReturn = false;
-        String sql = "call spIngresarCliente (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "call spIngresarEstudiante (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objCliente.getTipoDocumento());
             pStmt.setInt(2, _objCliente.getNumeroDocumento());
             pStmt.setDate(3, Date.valueOf(_objCliente.getFechaNacimiento()));
-            pStmt.setInt(4, _objCliente.getGeneroCliente());
-            pStmt.setString(5, _objCliente.getNombreCliente());
-            pStmt.setString(6, _objCliente.getApellidoCliente());
-            pStmt.setString(7, _objCliente.getDireccionCliente());
+            pStmt.setInt(4, _objCliente.getGeneroEstudiante());
+            pStmt.setString(5, _objCliente.getNombreEstudiante());
+            pStmt.setString(6, _objCliente.getApellidoEstudiente());
+            pStmt.setString(7, _objCliente.getDireccionEstudiante());
             pStmt.setString(8, _objCliente.getTelefonoFijo());
             pStmt.setString(9, _objCliente.getTelefonoMovil());
-            pStmt.setString(10, _objCliente.getEmailCliente());
-            pStmt.setInt(11, _objCliente.getEstadoCliente());
-            pStmt.setInt(12, _objCliente.getTipoDocumentoAcudiente());
+            pStmt.setString(10, _objCliente.getEmailEstudiante());
+            pStmt.setInt(11, _objCliente.getEstadoEstudiante());
+            pStmt.setString(12, _objCliente.getTipoDocumentoAcudiente());
             pStmt.setString(13, _objCliente.getNumeroDocumentoAcudiente());
 
             int updateCount = pStmt.executeUpdate();
@@ -60,7 +57,7 @@ public class ModelEstudiante extends ConnectionDB {
 
     public ResultSet ListAll() throws Exception {
         ResultSet rs = null;
-        String sql = "call spConsultarClientes()";
+        String sql = "call spConsultarEstudiantes()";
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
@@ -73,7 +70,7 @@ public class ModelEstudiante extends ConnectionDB {
 
     public ResultSet buscarPorID(int ID, String tipo) {
         ResultSet rs = null;
-        String sql = "call spConsultarClientePorID(?, ?)";
+        String sql = "call spConsultarEstudiantePorID(?, ?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
@@ -89,22 +86,22 @@ public class ModelEstudiante extends ConnectionDB {
 
     public boolean Edit(ObjEstudiante _objCliente) {
         boolean objReturn = false;
-        String sql = "call spActualizarCliente(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "call spActualizarEstudiante(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objCliente.getTipoDocumento());
             pStmt.setInt(2, _objCliente.getNumeroDocumento());
             pStmt.setDate(3, Date.valueOf(_objCliente.getFechaNacimiento()));
-            pStmt.setInt(4, _objCliente.getGeneroCliente());
-            pStmt.setString(5, _objCliente.getNombreCliente());
-            pStmt.setString(6, _objCliente.getApellidoCliente());
-            pStmt.setString(7, _objCliente.getDireccionCliente());
+            pStmt.setInt(4, _objCliente.getGeneroEstudiante());
+            pStmt.setString(5, _objCliente.getNombreEstudiante());
+            pStmt.setString(6, _objCliente.getApellidoEstudiente());
+            pStmt.setString(7, _objCliente.getDireccionEstudiante());
             pStmt.setString(8, _objCliente.getTelefonoFijo());
             pStmt.setString(9, _objCliente.getTelefonoMovil());
-            pStmt.setString(10, _objCliente.getEmailCliente());
-            pStmt.setInt(11, _objCliente.getEstadoCliente());
-            pStmt.setInt(12, _objCliente.getTipoDocumentoAcudiente());
+            pStmt.setString(10, _objCliente.getEmailEstudiante());
+            pStmt.setInt(11, _objCliente.getEstadoEstudiante());
+            pStmt.setString(12, _objCliente.getTipoDocumentoAcudiente());
             pStmt.setString(13, _objCliente.getNumeroDocumentoAcudiente());
             pStmt = connection.prepareCall(sql);
 
