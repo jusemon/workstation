@@ -32,17 +32,17 @@ public class ModelCliente extends ConnectionDB {
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setInt(1, _objCliente.getTipoCliente());
-            pStmt.setString(2, _objCliente.getTipoDocumento());
-            pStmt.setInt(3, _objCliente.getNumeroDocumento());
-            pStmt.setDate(4, Date.valueOf(_objCliente.getFechaNacimiento()));
-            pStmt.setInt(5, _objCliente.getGeneroCliente());
-            pStmt.setString(6, _objCliente.getNombreCliente());
-            pStmt.setString(7, _objCliente.getApellidoCliente());
-            pStmt.setString(8, _objCliente.getDireccionCliente());
-            pStmt.setString(9, _objCliente.getTelefonoFijo());
-            pStmt.setString(10, _objCliente.getTelefonoMovil());
-            pStmt.setString(11, _objCliente.getEmailCliente());
+            pStmt.setString(1, _objCliente.getTipoDocumento());
+            pStmt.setInt(2, _objCliente.getNumeroDocumento());
+            pStmt.setDate(3, Date.valueOf(_objCliente.getFechaNacimiento()));
+            pStmt.setInt(4, _objCliente.getGeneroCliente());
+            pStmt.setString(5, _objCliente.getNombreCliente());
+            pStmt.setString(6, _objCliente.getApellidoCliente());
+            pStmt.setString(7, _objCliente.getDireccionCliente());
+            pStmt.setString(8, _objCliente.getTelefonoFijo());
+            pStmt.setString(9, _objCliente.getTelefonoMovil());
+            pStmt.setString(10, _objCliente.getEmailCliente());
+            pStmt.setInt(11, _objCliente.getEstadoCliente());
             pStmt.setInt(12, _objCliente.getTipoDocumentoAcudiente());
             pStmt.setString(13, _objCliente.getNumeroDocumentoAcudiente());
 
@@ -57,20 +57,10 @@ public class ModelCliente extends ConnectionDB {
 
         return objReturn;
     }
-    
-    
 
     public ResultSet ListAll() throws Exception {
-
         ResultSet rs = null;
-        String sql = "SELECT `tipoCliente`,"
-                + " `tipoDocumento`, `numeroDocumento`,"
-                + " `fechaNacimiento`, `nombreCliente`,"
-                + " `apellidoCliente`, `direccionCliente`,"
-                + " `telefonoFijo`, `telefonoMovil`,"
-                + " `emailCliente`, `estadoEstudiante`,"
-                + "`tblacudiente_tipoDocumento`, `tblacudiente_numeroDocumento`, `generoCliente` "
-                + "FROM `tblcliente`";
+        String sql = "call spConsultarClientes()";
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
@@ -78,49 +68,54 @@ public class ModelCliente extends ConnectionDB {
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
-
         return rs;
     }
 
-    public ResultSet Find(ObjCliente _objCliente) throws Exception {
-
+    public ResultSet buscarPorID(int ID, String tipo) {
         ResultSet rs = null;
-        String query = "SELECT\n"
-                + "IdArea,\n"
-                + "Descripcion,\n"
-                + "case Estado when 1 then 'Activo' when 0 then 'Inactivo' end as Estado\n"
-                + "FROM tbl_area"
-                + "WHERE IdArea = %s"
-                + "AND Descripcion = '%s'";
-        String sql = String.format(query, _objCliente.getIdCliente(), _objCliente.getTipoDocumento());
+        String sql = "call spConsultarClientePorID(?, ?)";
         try {
             getStmt();
-            rs = stmt.executeQuery(sql);
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, ID);
+            pStmt.setString(2, tipo);
+            rs = pStmt.executeQuery();
 
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
-
         return rs;
     }
 
-    public List<ObjCliente> getListAll() throws Exception {
-        List<ObjCliente> clientes = new ArrayList<ObjCliente>();
-
-        String sql = "SELECT * FROM tbl_area";
+    public boolean Edit(ObjCliente _objCliente) {
+        boolean objReturn = false;
+        String sql = "call spActualizarCliente(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             getStmt();
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                ObjCliente cliente = new ObjCliente();
-                cliente.setTipoDocumento(rs.getString("Descripcion"));
-                cliente.setNumeroDocumento(rs.getInt("numeroDocumento"));
-                clientes.add(cliente);
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, _objCliente.getTipoDocumento());
+            pStmt.setInt(2, _objCliente.getNumeroDocumento());
+            pStmt.setDate(3, Date.valueOf(_objCliente.getFechaNacimiento()));
+            pStmt.setInt(4, _objCliente.getGeneroCliente());
+            pStmt.setString(5, _objCliente.getNombreCliente());
+            pStmt.setString(6, _objCliente.getApellidoCliente());
+            pStmt.setString(7, _objCliente.getDireccionCliente());
+            pStmt.setString(8, _objCliente.getTelefonoFijo());
+            pStmt.setString(9, _objCliente.getTelefonoMovil());
+            pStmt.setString(10, _objCliente.getEmailCliente());
+            pStmt.setInt(11, _objCliente.getEstadoCliente());
+            pStmt.setInt(12, _objCliente.getTipoDocumentoAcudiente());
+            pStmt.setString(13, _objCliente.getNumeroDocumentoAcudiente());
+            pStmt = connection.prepareCall(sql);
+
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
             }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
 
-        return clientes;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
     }
 }

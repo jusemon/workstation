@@ -115,7 +115,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="estudiantes">
-                            <table id="tblEstudiantes" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblEstudiantes" class="table table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Tipo Documento</th>
@@ -124,22 +124,10 @@
                                         <th class="text-center">Genero</th>
                                         <th class="text-center">Beneficiario</th>
                                         <th class="text-center">Consultar</th>
+                                        <th class="text-center">Editar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">CC</td>
-                                        <td class="text-center">1017225673</td>
-                                        <td class="text-center">Juan Sebastian Montoya</td>
-                                        <td class="text-center">Masculino</td>
-                                        <td class="text-center">Si</td>
-                                        <td class="text-center"><a class="btn-sm btn-primary btn-block "  data-toggle="modal"  data-target="#matricular" href="javascript:void(0)"  onclick="consultar()">
-                                                <span class="glyphicon glyphicon-search"></span></a>
-                                        </td>
-                                    </tr>
-                                    <%                                        Controller.ControllerCliente controllerCliente = new ControllerCliente();
-                                        out.print(controllerCliente.getTableClientes());
-                                    %>
                                 </tbody>
                             </table>
                         </div>
@@ -157,7 +145,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <!--tr>
                                         <td class="text-center">0001</td>
                                         <td class="text-center">1017225673</td>
                                         <td class="text-center">Oleo</td>
@@ -169,7 +157,7 @@
                                         <td class="text-center"><a class="btn-sm btn-primary btn-block " href="javascript:void(0)"  onclick="add("Estado")>
                                                                    <span class="glyphicon glyphicon-pencil"></span></a>
                                         </td>
-                                    </tr>
+                                    </tr-->
                                 </tbody>
                             </table>
                         </div>
@@ -530,6 +518,7 @@
                 </div>
             </div>
         </div>
+        <!--Emergete de Estudiante -->
         <div class="modal" id="miPopupEstudiante">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -594,16 +583,11 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="radioBtn2">
-                                                            Genero
+                                                        <label for="radioGenero">
+                                                            Genero: 
                                                         </label>
-                                                        <div class="input-group">
-                                                            <div id="radioBtn2" class="btn-group">
-                                                                <a id="radio2" class="btn btn-success btn-sm active" data-toggle="radioGenero" data-title="1">Femenino</a>
-                                                                <a id="radio2" class="btn btn-danger btn-sm notActive" data-toggle="radioGenero" data-title="2">Masculino</a>
-                                                            </div>
-                                                            <input type="hidden" name="radioGenero" id="radioGenero" value="0">
-                                                        </div>
+                                                            <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGenero" class="radio-inline" value="0">Femenino</label>
+                                                            <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGenero" class="radio-inline" value="1">Masculino</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -661,41 +645,37 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="radioBtn">
-                                                            Beneficiario
+                                                        <label for="radioBeneficiario">
+                                                            Beneficiario: 
                                                         </label>
-                                                        <div class="input-group">
-                                                            <div id="radioBtn" class="btn-group">
-                                                                <a id="radio1" class="btn btn-primary btn-sm active" data-toggle="radioEstado" data-title="1">Si</a>
-                                                                <a id="radio1" class="btn btn-primary btn-sm notActive" data-toggle="radioEstado" data-title="0">NO</a>
-                                                            </div>
-                                                            <input type="hidden" name="radioEstado" id="radioEstado" value="0">
-                                                        </div>
+                                                        <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioBeneficiario" class="radio-inline" value="1">Si</label>
+                                                        <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioBeneficiario" class="radio-inline" value="0">No</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
-                                                </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
-                                                </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
                                             </div>
                                         </div>
                                     </div>
-                                </form>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </body>
-    <%@include file="WEB-INF/jspf/imports.jspf" %>
+    </div>
+</body>
+<%@include file="WEB-INF/jspf/imports.jspf" %>
 </html>
 

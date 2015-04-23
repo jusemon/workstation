@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var tablaCurso, tablaCategoriaCurso, tablaFicha, tablaSeminario;
+var tablaCurso, tablaCategoriaCurso, tablaFicha, tablaSeminario, tablaEstudiante;
 var tablas = $('.tabla').DataTable({
     "language": {
         "url": "public/lang/Spanish.json"
@@ -14,28 +14,13 @@ function editar() {
     var tipo;
     $('.table tbody').on('click', 'tr', function () {
         tipo = $(this).data('tipo');
-        if (tipo === 'categoria curso') {
-            var rowData = tablaCategoriaCurso.row(this).data();
-            categoriaCurso.editar(rowData);
-            $('#tblCategoriaCursos tbody').off();
-        }
-        else if (tipo === 'categoria articulo') {
+        if (tipo === 'categoria articulo') {
             var rowData = tablas.table('#tblCategoriaArticulos').row(this).data();
             $('#miPopupCategoriaArticulo').find('#idCategoriaArticulo').attr('value', rowData[0]);
             $('#miPopupCategoriaArticulo').find('#txtNombreCategoriaArticulo').attr('value', rowData[1]);
             $('#miPopupCategoriaArticulo').find('#btnCategoriaArticulo').attr('value', 'Editar');
             $('#miPopupCategoriaArticulo').modal('show');
             $('#tblCategoriaArticulos tbody').off();
-        }
-        else if (tipo === 'seminario') {
-            var rowData = tablas.table('#tblSeminarios').row(this).data();
-            $('#miPopupSeminario').find('#idSeminario').attr('value', rowData[0]);
-            $('#miPopupSeminario').find('#txtNombreSeminario').attr('value', rowData[1]);
-            $('#miPopupSeminario').find('#txtDuracion').attr('value', rowData[2]);
-            $('#miPopupSeminario').find('#ddlEstadosemiario').attr('value', rowData[3]);
-            $('#miPopupSeminario').find('#btnSeminario').attr('value', 'Editar');
-            $('#miPopupSeminario').modal('show');
-            $('#tblSeminarios tbody').off();
         }
         else if (tipo === 'articulo') {
             var rowData = tablas.table('#tblArticulos').row(this).data();
@@ -67,13 +52,6 @@ $('#registrarCategoriaArticulo').on('click', function () {
     $('#btnCategoriaArticulo').attr('value', 'Registrar');
     $('#txtNombreCategoriaArticulo').attr('value', ' ');
     $('#miPopupCategoriaArticulo').modal('show');
-});
-$('#registrarSeminario').on('click', function () {
-    $('#btnSeminario').attr('value', 'Registrar');
-    $('#txtNombreSeminario').attr('value', ' ');
-    $('#txtDuracion').attr('value', ' ');
-    $('#ddlEstadosemiario').attr('value', ' ');
-    $('#miPopupSeminario').modal('show');
 });
 $('#registrarAbono').on('click', function () {
     $('#btnAbono').attr('value', 'Registrar');
@@ -416,6 +394,84 @@ var abono = {
     }
 };
 
+var cliente = {
+    myAjax: function (accion, id, aux) {
+        var form = $('#form_estudiante');
+        $(form).off();
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id,
+                success: function (data) {
+                    if (accion == 'Consultar') {
+                        if (aux == 'Editar') {
+                            cliente.editar(data);
+                        } else
+                            cliente.consultar(data);
+                    }
+                    else if (accion == 'Registrar' || accion == 'Editar' || accion == 'Estado') {
+                        if (accion != 'Estado') {
+                            $('#miPopupEstudiante').modal('hide');
+                        }
+                        mensaje(data);
+                        cliente.actualizarTabla();
+                    }
+                    else if (accion === 'getOptionsCursos') {
+                        cliente.cargarOpciones(data);
+                    }
+                }
+            });
+            $(form).off();
+            return false;
+        });
+        if (accion === 'Estado' || accion === 'Consultar' || accion === 'getOptionsCursos') {
+            $(form).submit();
+        }
+    },
+    consultar: function (data) {
+        limpiar("#form_estudiante");
+        $('#miPopupEstudiante').find('#txtIdentificacion').val(data['idCurso']);
+        $('#miPopupEstudiante').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + data['tipoIdentificacion'] + '"]').prop('selected', true);
+        $('#miPopupEstudiante').find('#txtNombre').val(data['nombreCurso']);
+        $('#miPopupEstudiante').find('#txtApellido').val(data['duracionCurso']);
+        $('#miPopupEstudiante').find('#dateFechaNacimiento').val(data['descripcionCurso']);
+        $('#miPopupEstudiante').find('#ddlEstado option').prop('selected', false).filter('[value="' + data['estadoCurso'] + '"]').prop('selected', true);
+        $('#miPopupEstudiante').find('#btnCliente').attr('type', 'hidden').attr('disabled', true);
+        $('#miPopupEstudiante').modal('show');
+    },
+    registrar: function () {
+        limpiar("#formCurso");
+        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
+        $('#miPopupCurso').modal('show');
+    },
+    editar: function (data) {
+        curso.consultar(data);
+        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
+    },
+    cargar: function () {
+        tablaEstudiante = $('#tblEstudiantes').DataTable({
+            "ajax": {
+                "url": "ControllerCliente",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            }, "language": {
+                "url": "public/lang/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaEstudiante.ajax.reload();
+    },
+    cargarOpciones: function (data) {
+        $('#miPopupFicha').find('#idCursoFicha').empty();
+        $('#miPopupFicha').find('#idCursoFicha').append(data);
+    }
+
+};
+
 function limpiar(miForm) {
     $(':input', miForm).each(function () {
         var type = this.type;
@@ -433,9 +489,11 @@ function limpiar(miForm) {
 function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
+
 ficha.cargar();
 categoriaCurso.cargar();
 curso.cargar();
 seminario.cargar();
 abono.cargar();
+cliente.cargar();
 //credito.cargar()
