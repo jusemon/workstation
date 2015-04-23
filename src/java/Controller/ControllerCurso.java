@@ -165,9 +165,12 @@ public class ControllerCurso extends HttpServlet {
                 String[] arreglo = new String[5];
                 arreglo[0] = result.getString("idCurso").trim();
                 arreglo[1] = result.getString("nombreCurso").trim();
-                arreglo[2] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"curso.myAjax('Estado'," + arreglo[0] + ")\"><span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
-                arreglo[3] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ")\"><span class=\"glyphicon glyphicon-search\"></span></a>";
-                arreglo[4] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ",'Editar')\"><span class=\"glyphicon glyphicon-edit\"></span></a>";
+                arreglo[2] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"curso.myAjax('Estado'," + arreglo[0] + ")\">"
+                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
+                arreglo[3] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ")\">"
+                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
+                arreglo[4] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ",'Editar')\">"
+                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
                 lista.add(arreglo);
             }
         } catch (Exception e) {

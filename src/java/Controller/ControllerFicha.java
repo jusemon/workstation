@@ -136,8 +136,10 @@ public class ControllerFicha extends HttpServlet {
                 arreglo[2] = result.getString("cuposDisponibles").trim();
                 arreglo[3] = result.getString("precioFicha").trim();
                 arreglo[4] = result.getString("fechaInicio").trim();
-                arreglo[5] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"ficha.myAjax('Estado'," + arreglo[0] + ")\"><span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
-                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"ficha.editar(" + contador + "," + result.getInt("estado") + ", " + result.getInt("idCurso") + ")\"><span class=\"glyphicon glyphicon-pencil\"></span></a>";
+                arreglo[5] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"ficha.myAjax('Estado'," + arreglo[0] + ")\">"
+                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
+                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"ficha.editar(" + contador + "," + result.getInt("estado") + ", " + result.getInt("idCurso") + ")\">"
+                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
                 lista.add(arreglo);
                 contador++;
             }
