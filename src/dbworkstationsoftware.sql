@@ -56,36 +56,6 @@ BEGIN
 	where idtblCategoriaCurso=idCategoria;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCliente`(IN `tipoDocumen` VARCHAR(5),
- IN `numeroDocumen` VARCHAR(15),
- IN `fechaNacimien` DATETIME,
- IN `generoClien` INT,
- IN `nombreClien` VARCHAR(50),
- IN `apellidoClien` VARCHAR(50),
- IN `direccionClien` VARCHAR(50),
- IN `telefonoFi` VARCHAR(15),
- IN `telefonoMov` VARCHAR(15),
- IN `emailClien` VARCHAR(50),
- IN `estado` INT,
- IN `tipoDocAcudien` varchar(10),
- IN `numDocAcudien` INT
-)
-BEGIN
-    UPDATE tblcliente 
-    SET `fechaNacimiento` = `fechaNacimien`,
-        `generoCliente` = `generoClien`,
-        `nombreCliente` = `nombreClien`,
-        `apellidoCliente` = `apellidoClien`,
-        `direccionCliente` = `direccionClien`,
-        `telefonoFijo` =  `telefonoFi`,
-        `telefonoMovil` = `telefonoMov`,
-        `emailCliente` = `emailClien`,
-        `estadoEstudiante` = `estado`,
-        `tblacudiente_tipoDocumento` = `tipoDocAcudien`,
-        `tblacudiente_numeroDocumento` = `numDocAcudien`
-    WHERE `tipoDocumento`=`tipoDocumen` AND `numeroDocumento`=`numeroDocumen`;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCredito`(
     in idCredi		int,
     in idSaldoActu	int,
@@ -151,6 +121,36 @@ BEGIN
 	update tblseminario set `estadoSeminario` = estado where `idSeminario`=idSem;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstudiante`(IN `tipoDocumen` VARCHAR(5),
+ IN `numeroDocumen` VARCHAR(15),
+ IN `fechaNacimien` DATETIME,
+ IN `generoClien` INT,
+ IN `nombreClien` VARCHAR(50),
+ IN `apellidoClien` VARCHAR(50),
+ IN `direccionClien` VARCHAR(50),
+ IN `telefonoFi` VARCHAR(15),
+ IN `telefonoMov` VARCHAR(15),
+ IN `emailClien` VARCHAR(50),
+ IN `estado` INT,
+ IN `tipoDocAcudien` varchar(10),
+ IN `numDocAcudien` INT
+)
+BEGIN
+    UPDATE tblestudiante 
+    SET `fechaNacimiento` = `fechaNacimien`,
+        `generoCliente` = `generoClien`,
+        `nombreCliente` = `nombreClien`,
+        `apellidoCliente` = `apellidoClien`,
+        `direccionCliente` = `direccionClien`,
+        `telefonoFijo` =  `telefonoFi`,
+        `telefonoMovil` = `telefonoMov`,
+        `emailCliente` = `emailClien`,
+        `estadoEstudiante` = `estado`,
+        `tblacudiente_tipoDocumento` = `tipoDocAcudien`,
+        `tblacudiente_numeroDocumento` = `numDocAcudien`
+    WHERE `tipoDocumento`=`tipoDocumen` AND `numeroDocumento`=`numeroDocumen`;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarFicha`(
     in idFic			int,
 	in idCurs			int,
@@ -194,52 +194,6 @@ order by (a.idCredito,a.FechaPago)$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarArticuloByNombre`(IN `nombre` VARCHAR(50))
     NO SQL
 select idArticulo, descripcionArticulo, precioUnitario, cantidadDisponible, nombreCategoriaArticulo from tblArticulo a inner join tblCategoriaArticulo ca on(a.idCategoriaArticulo=ca.idCategoriaArticulo) where descripcionArticulo like concat('%',nombre,'%')$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarClientePorID`(id int, tipo varchar(5))
-BEGIN
-SELECT 
-    `tipoDocumento`,
-    `numeroDocumento`,
-    `fechaNacimiento`,
-    `generoCliente`,
-    `nombreCliente`,
-    `apellidoCliente`,
-    `direccionCliente`,
-    `telefonoFijo`,
-    `telefonoMovil`,
-    `emailCliente`, 
-    `estadoEstudiante`,
-    `tblacudiente_tipoDocumento`, 
-    `tblacudiente_numeroDocumento`
-FROM tblcliente WHERE `tipoDocumento` = tipo AND `numeroDocumento`= id;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarClientes`()
-BEGIN
-SELECT 
-    `tipoDocumento`,
-    `numeroDocumento`,
-    `fechaNacimiento`,
-    `generoCliente`,
-    `nombreCliente`,
-    `apellidoCliente`,
-    `direccionCliente`,
-    `telefonoFijo`,
-    `telefonoMovil`,
-    `emailCliente`, 
-    `estadoEstudiante`,
-    `tblacudiente_tipoDocumento`, 
-    `tblacudiente_numeroDocumento`
-FROM tblcliente;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarClientesCreditosActivos`(
- )
-BEGIN
-	
-	select tblCliente.nombreCliente, tblCliente.apellidoCliente, tblCliente.telefonoFijo, tblCliente.telefonomovil, tblCliente.emailCliente, tblCredito.saldoActual 
-	from tblCliente inner join tblCredito on tblCliente.idCliente = tblCredito.idCliente;
-END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarClientesCurso`(
 
@@ -307,6 +261,52 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEmpresabyNIT`(IN `nitEmpre` VARCHAR(20))
 select * from tblEmpresa where nitEmpresa like concat('%',nitEmpre,'%')$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudianteCreditosActivos`(
+ )
+BEGIN
+	
+	select tblCliente.nombreCliente, tblCliente.apellidoCliente, tblCliente.telefonoFijo, tblCliente.telefonomovil, tblCliente.emailCliente, tblCredito.saldoActual 
+	from tblestudiante inner join tblCredito on tblestudiante.`tipoDocumento` = tblCredito.`tipoDocumento` AND tblestudiante.`numeroDocumento` = tblCredito.`numeroDocumento`;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudiantePorID`(id int, tipo varchar(5))
+BEGIN
+SELECT 
+    `tipoDocumento`,
+    `numeroDocumento`,
+    `fechaNacimiento`,
+    `generoCliente`,
+    `nombreCliente`,
+    `apellidoCliente`,
+    `direccionCliente`,
+    `telefonoFijo`,
+    `telefonoMovil`,
+    `emailCliente`, 
+    `estadoEstudiante`,
+    `tblacudiente_tipoDocumento`, 
+    `tblacudiente_numeroDocumento`
+FROM tblestudiante WHERE `tipoDocumento` = tipo AND `numeroDocumento`= id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudiantes`()
+BEGIN
+SELECT 
+    `tipoDocumento`,
+    `numeroDocumento`,
+    `fechaNacimiento`,
+    `generoCliente`,
+    `nombreCliente`,
+    `apellidoCliente`,
+    `direccionCliente`,
+    `telefonoFijo`,
+    `telefonoMovil`,
+    `emailCliente`, 
+    `estadoEstudiante`,
+    `tblacudiente_tipoDocumento`, 
+    `tblacudiente_numeroDocumento`
+FROM tblestudiante;
+END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarFichaPorID`(id int)
 BEGIN
@@ -533,6 +533,26 @@ BEGIN
 		set msg="La empresa se ha registrado exitosamente";
 		select msg as Respuesta; 
 	end if;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarEstudiante`(IN `tipoDocumen` VARCHAR(5),
+ IN `numeroDocumen` VARCHAR(15),
+ IN `fechaNacimien` DATETIME,
+ IN `generoClien` INT,
+ IN `nombreClien` VARCHAR(50),
+ IN `apellidoClien` VARCHAR(50),
+ IN `direccionClien` VARCHAR(50),
+ IN `telefonoFi` VARCHAR(15),
+ IN `telefonoMov` VARCHAR(15),
+ IN `emailClien` VARCHAR(50),
+ IN `estado` INT,
+ IN `tipoDocAcudien` varchar(10),
+ IN `numDocAcudien` INT
+)
+BEGIN
+INSERT INTO `tblestudiante`
+    (`tipoDocumento`, `numeroDocumento`, `fechaNacimiento`, `nombreCliente`, `apellidoCliente`, `direccionCliente`, `telefonoFijo`, `telefonoMovil`, `emailCliente`, `estadoEstudiante`, `generoCliente`, `tblacudiente_tipoDocumento`, `tblacudiente_numeroDocumento`)
+VALUES (tipoDocumen,numeroDocumen,fechaNacimien,nombreClien,apellidoClien,direccionClien,telefonoFi,telefonoMov,emailClien,estado,generoClien,tipoDocAcudien,numDocAcudien);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarFactura`(

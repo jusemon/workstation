@@ -149,7 +149,7 @@
                                                         <label for="txtEmailContacto">
                                                             Email Contacto
                                                         </label>
-                                                        <input name="txtEmailContacto" id="txtEmailContacto" type="text" class="form-control" placeholder="Ejm: direccion@correo.com" required>
+                                                        <input name="txtEmailContacto" id="txtEmailContacto" type="email" class="form-control" placeholder="Ejm: direccion@correo.com" required>
                                                     </div>
                                                 </div>
                                             </div>
