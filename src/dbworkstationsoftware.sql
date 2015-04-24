@@ -38,15 +38,14 @@ BEGIN
 	set msg="Artículo actualizado exitosamente";	
     select msg as Respuesta;
 END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCompra`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
     NO SQL
 BEGIN
-	declare msg varchar(40);   
 	update tblCompra set numeroFactura=numeroFactu,nombreProveedor=nombreProveed,fechaCompra=fechaComp,totalCompra=totalComp
 		where numeroFactura=numeroFactu;
-	set msg="Compra actualizada exitosamente";	
-    select msg as Respuesta;
-END
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarCompras`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
     NO SQL
 BEGIN
@@ -240,17 +239,6 @@ BEGIN
 	select * from tblCompra
 	where fechaCompra BETWEEN fechaInici AND fechaFin;
 	
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByDocumento`(numeroDocumen int)
-BEGIN
-SELECT cr.`idCliente`,cl.`tipoDocumento`,cl.`numeroDocumento`, cr.`idCredito`,cr.`fechaInicio`,cr.`saldoInicial`,cr.`saldoActual`,cr.`estadoCredito`
-FROM tblCredito cr inner join tblestudiante cl on (cr.`tipoDocumento`=cl.`tipoDocummento`) and on(cr.numeroDocumento=cr.numeroDocumento) where cl.`numeroDocumento` = numeroDocumen; 
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByIdCredito`(idCredi int)
-BEGIN
-SELECT * FROM tblCredito where idCredito = idCredi; 
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursoPorID`(id int)
