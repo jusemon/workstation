@@ -38,7 +38,34 @@ BEGIN
 	set msg="Artículo actualizado exitosamente";	
     select msg as Respuesta;
 END$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCompra`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
+    NO SQL
+BEGIN
+	declare msg varchar(40);   
+	update tblCompra set numeroFactura=numeroFactu,nombreProveedor=nombreProveed,fechaCompra=fechaComp,totalCompra=totalComp
+		where numeroFactura=numeroFactu;
+	set msg="Compra actualizada exitosamente";	
+    select msg as Respuesta;
+END
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarCompras`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
+    NO SQL
+BEGIN
 
+SELECT * FROM tblCompra;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCompra`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
+    NO SQL
+BEGIN
+	declare msg varchar(40);    
+	if (exists(select numeroFactura from tblCompra where numeroFactura=numeroFactura)) then
+		set msg="Esta compra ya fue registrada.";
+		select msg as Respuesta;
+	else
+		insert into tblCompra (numeroFactura,nombreProveedor,fechaCompra,totalCompra) Values(numeroFactu,nombreProveed,fechaComp,totalComp);
+		set msg="La compra se ha registrado correctamente.";
+		select msg as Respuesta; 
+	end if;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCategoriaArticulo`(
     in idCategoriaArticu			int,
 	in nombreCategoriaArticu	varchar(50)
@@ -215,6 +242,17 @@ BEGIN
 	
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByDocumento`(numeroDocumen int)
+BEGIN
+SELECT cr.`idCliente`,cl.`tipoDocumento`,cl.`numeroDocumento`, cr.`idCredito`,cr.`fechaInicio`,cr.`saldoInicial`,cr.`saldoActual`,cr.`estadoCredito`
+FROM tblCredito cr inner join tblestudiante cl on (cr.`tipoDocumento`=cl.`tipoDocummento`) and on(cr.numeroDocumento=cr.numeroDocumento) where cl.`numeroDocumento` = numeroDocumen; 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByIdCredito`(idCredi int)
+BEGIN
+SELECT * FROM tblCredito where idCredito = idCredi; 
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursoPorID`(id int)
 BEGIN
 SELECT idCurso,
@@ -255,7 +293,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudianteCreditosActivo
  )
 BEGIN
 	
-	select tblCliente.nombreCliente, tblCliente.apellidoCliente, tblCliente.telefonoFijo, tblCliente.telefonomovil, tblCliente.emailCliente, tblCredito.saldoActual 
+	select tblestudiante.nombreCliente, tblestudiante.apellidoCliente, tblestudiante.telefonoFijo, tblestudiante.telefonomovil, tblestudiante.emailCliente, tblestudiante.saldoActual 
 	from tblestudiante inner join tblCredito on tblestudiante.`tipoDocumento` = tblCredito.`tipoDocumento` AND tblestudiante.`numeroDocumento` = tblCredito.`numeroDocumento`;
 END$$
 
@@ -402,6 +440,27 @@ insert into tblCategoriaArticulo (nombreCategoriaArticulo) values (nombre)$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCategoriaCurso`(IN `nombre` VARCHAR(30))
 BEGIN
 insert into tblCategoriaCurso (nombreCategoriaCurso) values (nombre);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCredito`(
+    in idCredi      int,
+    in idClien      int,
+    in fechaInic    datetime,
+    in saldoInici   double,
+    in saldoActu    double,
+    in estadoCredi  tinyint
+ )
+BEGIN
+	declare msg varchar(40);    
+	if (exists(select idCliente from tblCredito where idCliente=idClien and saldoActual>0)) then
+		set msg="Este cliente ya tiene un credito activo.";
+		select msg as Respuesta;
+       	else
+		insert into tblCredito (idCliente,fechaInicio,saldoInicial,saldoActual,estadoCredito) 
+                Values(idClien,fechaInic,saldoInic,saldoActu,estadoCredi);
+		set msg="El credito ha sido registrado correctamente.";
+		select msg as Respuesta; 
+	end if;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCurso`(
@@ -713,11 +772,12 @@ INSERT INTO `tblcategoriacurso` (`idtblCategoriaCurso`, `nombreCategoriaCurso`) 
 --
 
 CREATE TABLE IF NOT EXISTS `tblcompra` (
-  `idCompra` int(11) NOT NULL AUTO_INCREMENT,
+  `numeroFactura` varchar(50) NOT NULL,
+  `nombreProveedor` varchar (50) NOT NULL,
   `fechaCompra` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `totalCompra` int(11) NOT NULL,
-  PRIMARY KEY (`idCompra`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`numeroFactura`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
@@ -772,13 +832,13 @@ INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `duracionCurso`, `estadoCurso`
 
 CREATE TABLE IF NOT EXISTS `tbldetallecompra` (
   `idDetalleCompra` int(11) NOT NULL AUTO_INCREMENT,
-  `idCompra` int(11) NOT NULL,
+  `numeroFactura` varchar(50) NOT NULL,
   `idArticulo` int(11) NOT NULL,
   `cantidadComprada` int(11) NOT NULL,
   `valorUnitario` int(11) NOT NULL,
   PRIMARY KEY (`idDetalleCompra`),
   KEY `FK_tblDetalleCompra_idArticulo` (`idArticulo`),
-  KEY `FK_tblDetalleCompra_idCompra` (`idCompra`)
+  KEY `FK_tblDetalleCompra_numeroFactura` (`numeroFactura`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -1119,7 +1179,7 @@ ALTER TABLE `tblcurso`
 --
 ALTER TABLE `tbldetallecompra`
   ADD CONSTRAINT `FK_tblDetalleCompra_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`),
-  ADD CONSTRAINT `FK_tblDetalleCompra_idCompra` FOREIGN KEY (`idCompra`) REFERENCES `tblcompra` (`idCompra`);
+  ADD CONSTRAINT `FK_tblDetalleCompra_numeroFactura` FOREIGN KEY (`numeroFactura`) REFERENCES `numeroFactura` (`numeroFactura`);
 
 --
 -- Filtros para la tabla `tbldetalleventa`

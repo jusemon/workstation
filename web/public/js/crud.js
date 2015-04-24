@@ -105,15 +105,18 @@ var curso = {
         $('#miPopupCurso').find('#txtDescripcionCurso').val(data['descripcionCurso']);
         $('#miPopupCurso').find('#ddlEstado option').prop('selected', false).filter('[value="' + data['estadoCurso'] + '"]').prop('selected', true);
         $('#miPopupCurso').find('#btnCurso').attr('type', 'hidden').attr('disabled', true);
+        desabilitar('#formCurso');
         $('#miPopupCurso').modal('show');
     },
     registrar: function () {
         limpiar("#formCurso");
+        habilitar('#formCurso');
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupCurso').modal('show');
     },
     editar: function (data) {
         curso.consultar(data);
+        habilitar('#formCurso');
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
     cargar: function () {
@@ -455,8 +458,8 @@ var estudiante = {
         $('#miPopupEstudiante').modal('show');
     },
     registrar: function () {
-        limpiar("#formCurso");
         habilitar('#form_estudiante');
+        limpiar("#form_estudiante");
         $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupEstudiante').modal('show');
     },
