@@ -47,7 +47,8 @@ public class ControllerAcudiente extends HttpServlet {
                     try {
                         //Beneficiario 0->No Subvencionado 1->Subvencionado?
                         response.setContentType("application/json");
-                        String salida = Mensaje(daoModelAcudiente.Add(_objAcudiente), "El cliente ha sido registrado", "A ocurrido un error al intentar registrar al cliente");
+                        
+                        String salida = Mensaje(daoModelAcudiente.Add(_objAcudiente), "El acudiente ha sido registrado", "A ocurrido un error al intentar registrar al acudiente");
                         response.getWriter().write(salida);
 
                     } catch (NumberFormatException | IOException e) {

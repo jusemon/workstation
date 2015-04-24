@@ -177,7 +177,7 @@ public class ControllerEstudiante extends HttpServlet {
             result = daoModelEstudiante.ListAll();
             String[] arreglo;
             while (result.next()) {
-                arreglo = new String[7];
+                arreglo = new String[8];
                 arreglo[0] = result.getString("tipoDocumento").trim();
                 arreglo[1] = result.getString("numeroDocumento").trim();
                 arreglo[2] = result.getString("nombreCliente").trim();
@@ -187,6 +187,8 @@ public class ControllerEstudiante extends HttpServlet {
                         + "                                                <span class=\"glyphicon glyphicon-search\"></span></a>";
                 arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ", 'Editar')\">\n"
                         + "                                                <span class=\"glyphicon glyphicon-edit\"></span></a>";
+                arreglo[7] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"matricula.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ", 'Matricular')\">\n"
+                        + "                                                <span class=\"glyphicon glyphicon-bookmark\"></span></a>";
                 lista.add(arreglo);
             }
 

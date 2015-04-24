@@ -67,7 +67,7 @@ public class ControllerCliente extends HttpServlet {
                 arreglo[5] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"cliente.myAjax('Consultar'," + result.getString("tipoDocumento") + ", " + result.getInt("numeroDocumento") + " )\">\n"
                         + "                                                <span class=\"glyphicon glyphicon-search\"></span></a>";
                 arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"cliente.myAjax('Editar'," + result.getString("tipoDocumento") + ", " + result.getInt("numeroDocumento") + " )\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-search\"></span></a>";
+                        + "                                                <span class=\"glyphicon glyphicon-search\"></span></a>";                
                 lista.add(arreglo);
             }
         } catch (Exception e) {

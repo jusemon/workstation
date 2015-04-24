@@ -223,13 +223,15 @@ var ficha = {
                     $('#miPopupFicha').modal('hide');
                     if (accion == 'Estado' || accion == 'Editar' || accion == 'Registrar') {
                         mensaje(data);
+                    } else if (accion === 'getOptionsFichas') {
+                        ficha.cargarOpciones(data);
                     }
                 }
             });
             $(form).off();
             return false;
         });
-        if (accion === 'Estado') {
+        if (accion === 'Estado' || accion === 'getOptionsFichas') {
             $(form).submit();
         }
     },
@@ -265,6 +267,10 @@ var ficha = {
     },
     actualizarTabla: function () {
         tablaFicha.ajax.reload();
+    },
+    cargarOpciones: function (data) {
+        $('#miPopupMatricula').find('#idCursoFicha').empty();
+        $('#miPopupMatricula').find('#idCursoFicha').append(data);
     }
 };
 
@@ -492,7 +498,58 @@ var estudiante = {
 
 };
 
-
+var matricula = {
+    myAjax: function (accion, id, tipo) {
+        var form = $('#');
+        $(form).off();
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
+                success: function (data) {
+                    if (accion == 'Consultar') {
+                        if (aux == 'Editar') {
+                            estudiante.editar(data);
+                        } else
+                            estudiante.consultar(data);
+                    }
+                    else if (accion == 'Registrar' || accion == 'Editar' || accion == 'Estado') {
+                        if (accion != 'Estado') {
+                            $('#miPopupEstudiante').modal('hide');
+                        }
+                        mensaje(data);
+                        estudiante.actualizarTabla();
+                    }
+                    else if (accion === 'getOptionsCursos') {
+                        estudiante.cargarOpciones(data);
+                    }
+                }
+            });
+            $(form).off();
+            return false;
+        });
+        if (accion === 'Estado' || accion === 'Consultar' || accion === 'getOptionsCursos') {
+            $(form).submit();
+        }
+    },
+    cargar: function () {
+        tablaEstudiante = $('#tblEstudiantes').DataTable({
+            "ajax": {
+                "url": "ControllerEstudiante",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            }, "language": {
+                "url": "public/lang/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaEstudiante.ajax.reload();
+    }
+};
 
 function limpiar(miForm) {
     $(':input', miForm).each(function () {

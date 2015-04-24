@@ -113,6 +113,12 @@ public class ControllerFicha extends HttpServlet {
                     response.getWriter().write(getTableFichas());
                     break;
                 }
+                case "getOptionsCursos": {
+                    response.setContentType("application/text");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getOptionsFichas());
+                    break;
+                }
             }
         }
     }
@@ -205,5 +211,21 @@ public class ControllerFicha extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String getOptionsFichas() {
+        ResultSet result;
+        String OptionsCursos = "";
+        try {
+            result = daoModelFicha.ListAll();
+            while (result.next()) {
+                OptionsCursos += "<option value=\"" + result.getString("idFicha").trim() + "\">" + result.getString("nombreCurso").trim() +" Ficha: "+ result.getString("idFicha").trim() + "</option>";
+            }
+
+        } catch (Exception e) {
+            OptionsCursos = "Ha Ocurrido un error 2" + e.getMessage();
+        }
+
+        return OptionsCursos;
+    }
 
 }
