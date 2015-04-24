@@ -416,6 +416,9 @@ var estudiante = {
                     if (accion == 'Consultar') {
                         if (aux == 'Editar') {
                             estudiante.editar(data);
+
+                        } else if (aux == 'Matricular') {
+
                         } else
                             estudiante.consultar(data);
                     }
@@ -437,6 +440,13 @@ var estudiante = {
         if (accion === 'Estado' || accion === 'Consultar' || accion === 'getOptionsCursos') {
             $(form).submit();
         }
+    },
+    matricular: function (data) {
+        limpiar("#formMatricula");
+        $('#miPopupMatricula').find('#idEstudiante').val(data['numeroDocumento']);
+        $('#miPopupMatricula').find('#dateInicio').val(data['dateInicioFicha']);
+        $('#miPopupMatricula').find('#').val(data['']);
+        $('#miPopupMatricula').find('#').val(data['']);
     },
     consultar: function (data) {
         limpiar("#form_estudiante");
