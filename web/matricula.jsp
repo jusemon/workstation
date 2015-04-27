@@ -314,6 +314,13 @@
                                                             Estudiante:
                                                         </label>
                                                         <label id="txtIdentificacion"></label>
+                                                        <div id="nombres">
+                                                            <label for="nombres">
+                                                                Nombres:
+                                                            </label>
+                                                            <label id="txtNombre"></label>
+                                                            <label id="txtApellido"></label>
+                                                        </div>
                                                         <input type="hidden" name="txtIdentificacion" id="idEstudiante"/>
                                                     </div>
                                                 </div>

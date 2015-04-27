@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
@@ -179,7 +180,7 @@ public class ControllerEstudiante extends HttpServlet {
                             respuesta.put("fechaInicio", result.getString("fechaInicio"));
                             respuesta.put("precioFicha", result.getString("precioFicha"));
                             respuesta.put("tblcurso_idCurso", result.getString("tblcurso_idCurso"));
-                            Date fechaFinal = Date.valueOf(result.getString("fechaInicio"));
+                            Date fechaFinal = result.getDate("fechaInicio");
                             respuesta.put("fechaFinal", String.valueOf(sumarRestarDiasFecha(fechaFinal, 30)));
                         }
                         response.setContentType("application/json");
@@ -187,8 +188,8 @@ public class ControllerEstudiante extends HttpServlet {
                         String salida = new Gson().toJson(respuesta);
                         daoModelFicha.Signout();
                         response.getWriter().write(salida);
-                    } catch (Exception e) {
-                        System.err.println(e.getMessage());
+                    } catch (SQLException | IOException e) {
+                        System.err.println("Ha ocurrido un error "+e.toString());
                     }
                     break;
                 }
@@ -256,7 +257,8 @@ public class ControllerEstudiante extends HttpServlet {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(fecha);
         calendar.add(Calendar.DAY_OF_YEAR, dias);
-        return (Date) calendar.getTime();
+        Date salida = new Date(calendar.getTime().getTime());
+        return salida;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
