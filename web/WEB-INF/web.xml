@@ -40,6 +40,10 @@
         <servlet-name>ControllerEmpresa</servlet-name>
         <servlet-class>Controller.ControllerEmpresa</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControllerCompra</servlet-name>
+        <servlet-class>Controller.ControllerCompra</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControllerCliente</servlet-name>
         <url-pattern>/ControllerCliente</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>ControllerEmpresa</servlet-name>
         <url-pattern>/ControllerEmpresa</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControllerCompra</servlet-name>
+        <url-pattern>/ControllerCompra</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

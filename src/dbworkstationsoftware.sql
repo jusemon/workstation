@@ -38,7 +38,34 @@ BEGIN
 	set msg="Artículo actualizado exitosamente";	
     select msg as Respuesta;
 END$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCompra`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
+    NO SQL
+BEGIN
+	declare msg varchar(40);   
+	update tblCompra set numeroFactura=numeroFactu,nombreProveedor=nombreProveed,fechaCompra=fechaComp,totalCompra=totalComp
+		where numeroFactura=numeroFactu;
+	set msg="Compra actualizada exitosamente";	
+    select msg as Respuesta;
+END
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarCompras`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
+    NO SQL
+BEGIN
 
+SELECT * FROM tblCompra;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCompra`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
+    NO SQL
+BEGIN
+	declare msg varchar(40);    
+	if (exists(select numeroFactura from tblCompra where numeroFactura=numeroFactura)) then
+		set msg="Esta compra ya fue registrada.";
+		select msg as Respuesta;
+	else
+		insert into tblCompra (numeroFactura,nombreProveedor,fechaCompra,totalCompra) Values(numeroFactu,nombreProveed,fechaComp,totalComp);
+		set msg="La compra se ha registrado correctamente.";
+		select msg as Respuesta; 
+	end if;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCategoriaArticulo`(
     in idCategoriaArticu			int,
 	in nombreCategoriaArticu	varchar(50)
@@ -713,11 +740,12 @@ INSERT INTO `tblcategoriacurso` (`idtblCategoriaCurso`, `nombreCategoriaCurso`) 
 --
 
 CREATE TABLE IF NOT EXISTS `tblcompra` (
-  `idCompra` int(11) NOT NULL AUTO_INCREMENT,
+  `numeroFactura` varchar(50) NOT NULL,
+  `nombreProveedor` varchar (50) NOT NULL,
   `fechaCompra` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `totalCompra` int(11) NOT NULL,
-  PRIMARY KEY (`idCompra`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`numeroFactura`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
@@ -772,13 +800,13 @@ INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `duracionCurso`, `estadoCurso`
 
 CREATE TABLE IF NOT EXISTS `tbldetallecompra` (
   `idDetalleCompra` int(11) NOT NULL AUTO_INCREMENT,
-  `idCompra` int(11) NOT NULL,
+  `numeroFactura` varchar(50) NOT NULL,
   `idArticulo` int(11) NOT NULL,
   `cantidadComprada` int(11) NOT NULL,
   `valorUnitario` int(11) NOT NULL,
   PRIMARY KEY (`idDetalleCompra`),
   KEY `FK_tblDetalleCompra_idArticulo` (`idArticulo`),
-  KEY `FK_tblDetalleCompra_idCompra` (`idCompra`)
+  KEY `FK_tblDetalleCompra_numeroFactura` (`numeroFactura`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -1119,7 +1147,7 @@ ALTER TABLE `tblcurso`
 --
 ALTER TABLE `tbldetallecompra`
   ADD CONSTRAINT `FK_tblDetalleCompra_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`),
-  ADD CONSTRAINT `FK_tblDetalleCompra_idCompra` FOREIGN KEY (`idCompra`) REFERENCES `tblcompra` (`idCompra`);
+  ADD CONSTRAINT `FK_tblDetalleCompra_numeroFactura` FOREIGN KEY (`numeroFactura`) REFERENCES `numeroFactura` (`numeroFactura`);
 
 --
 -- Filtros para la tabla `tbldetalleventa`

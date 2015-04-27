@@ -81,6 +81,16 @@
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
+                                                                    <label for="txtNombreProveedor">
+                                                                        Nombre Proveedor:
+                                                                    </label>
+                                                                    <input name="txtNombreProvedor" id="txtNombreProveedor" type="text" class="form-control" placeholder="Ejm: Pinturas Arcoíris" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
                                                                     <label for="dateFechaInicio">
                                                                         Fecha de Inicio 
                                                                     </label>
@@ -110,7 +120,7 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -290,7 +300,7 @@
                                 <tbody>
                                     <%
                                         Controller.ControllerAbono controllerAbono = new ControllerAbono();
-                                        out.print(controllerAbono.getTableAbono());                                        
+                                        out.print(controllerAbono.getTableAbono());
                                     %>
                                 </tbody>
                             </table>
@@ -338,14 +348,14 @@ dentro del cuerpo del panel se encuentra el formulario para agregar elementos y 
 finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         -->
         <%--popup de compra--%>
-    <%--     <div class="modal" id="miPopupCompra">
-            <div class="modal-dialog ">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">                               
-                                <form>
-                                    <div class="panel">
+        <%--     <div class="modal" id="miPopupCompra">
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">                               
+                                    <form>
+                                        <div class="panel">
 
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -427,7 +437,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         </div>
         <!--
         Popup Venta
-      --%> 
+        --%> 
         <div class="modal" id="miPopupCompra">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -438,13 +448,13 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                             Ingresar Compra:
+                                                Ingresar Compra:
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>
                                         </div>
                                         <div class="panel-body">
                                             <input type="hidden" name="facturaProveedor" id="idArticulo"/>
-                                                 <div class="row">
+                                            <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtFacturaProveedor">
@@ -484,7 +494,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                     </div>
                                                 </div>
                                             </div>
-           
+
                                         </div>
                                         <div class="panel-footer">
                                             <div class="col-md-offset-3 col-md-6">
@@ -501,7 +511,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                 </div>
             </div>
         </div>
-      <!--popup de Venta -->
+        <!--popup de Venta -->
         <div class="modal" id="miPopupVenta">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -752,7 +762,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                 </div>
             </div>
         </div>
-        
+
         <!--
         Popup Abono
         -->
@@ -818,7 +828,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                 </div>
             </div>
         </div>
-        
+
     </body>
     <%@include file="WEB-INF/jspf/imports.jspf" %>
 </html>

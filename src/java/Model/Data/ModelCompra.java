@@ -9,17 +9,76 @@ import Model.JDBC.ConnectionDB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import Model.DTO.ObjArticulo;
+import Model.DTO.ObjCompra;
 
 /**
  *
  * @author Lorenzo
  */
-public class ModelCompra extends ConnectionDB { 
+public class ModelCompra extends ConnectionDB {
+
     private PreparedStatement pStmt;
-    
-    public ModelCompra(){
+
+    public ModelCompra() {
         getConnection();
     }
+
+    public boolean Add(ObjCompra _objCompra) {
+        boolean objReturn = false;
+        String sql = "call spIngresarCompra (?,?,?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, _objCompra.getFacturaProveedor());
+            pStmt.setString(2, _objCompra.getNombreProveedor());
+            pStmt.setString(3, _objCompra.getFechaCompra());
+            pStmt.setDouble(4, _objCompra.getTotalCompra());
+
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
+
+    public ResultSet ListAll() throws Exception {
+        ResultSet rs = null;
+        String sql = " call spConsultarCompra()";
+        try {
+            getStmt();
+            rs = stmt.executeQuery(sql);
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+
+    }
     
+    public boolean Edit (ObjCompra _objCompra) {
+        boolean objReturn = false;
+        String sql = " call spActualizarCompra(?,?,?,?)";
+        
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+                pStmt.setString(1, _objCompra.getFacturaProveedor());
+            pStmt.setString(2, _objCompra.getNombreProveedor());
+            pStmt.setString(3, _objCompra.getFechaCompra());
+            pStmt.setDouble(4, _objCompra.getTotalCompra());
+
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
+    
+
 }
