@@ -311,7 +311,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtIdentificacion">
-                                                            Estudiante
+                                                            Estudiante:
                                                         </label>
                                                         <label id="txtIdentificacion"></label>
                                                         <input type="hidden" name="txtIdentificacion" id="idEstudiante"/>
@@ -324,7 +324,7 @@
                                                         <label for="idCursoFicha">
                                                             Ficha:
                                                         </label>
-                                                        <select name="idCursoFicha" id="idCursoFicha" class="form-control" required>
+                                                        <select name="idCursoFicha" id="idCursoFicha" class="form-control" onchange="estudiante.myAjax('Seleccion', $('#idCursoFicha').val())" required>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -333,7 +333,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="dateInicioFicha">
-                                                            Fecha de Inicio;
+                                                            Fecha de Inicio:
                                                         </label>
                                                         <label id="dateInicioFicha"></label>
                                                         <input type="hidden" name="dateInicio" id="dateInicio"/>

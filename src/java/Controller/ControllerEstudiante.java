@@ -9,10 +9,13 @@ import Model.DTO.ObjAcudiente;
 import Model.DTO.ObjEstudiante;
 import Model.Data.ModelAcudiente;
 import Model.Data.ModelEstudiante;
+import Model.Data.ModelFicha;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +34,8 @@ public class ControllerEstudiante extends HttpServlet {
     public ObjEstudiante _objEstudiente = new ObjEstudiante();
     public ModelAcudiente daoModelAcudiente = new ModelAcudiente();
     public ObjAcudiente _objAcudiente = new ObjAcudiente();
-
+    ModelFicha daoModelFicha = new ModelFicha();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -161,9 +165,42 @@ public class ControllerEstudiante extends HttpServlet {
                     }
                     break;
                 }
+                case "Seleccion": {
+                    daoModelFicha = new ModelFicha();
+                    String aux = request.getParameter("id");
+                    int id = Integer.parseInt(aux.trim());
+                    try {
+                        respuesta = new LinkedHashMap<>();
+                        ResultSet result = daoModelFicha.buscarPorID(id);
+                        while (result.next()) {
+                            respuesta.put("idFicha", result.getString("idFicha"));
+                            respuesta.put("estado", result.getString("estado"));
+                            respuesta.put("cuposDisponibles", result.getString("cuposDisponibles"));
+                            respuesta.put("fechaInicio", result.getString("fechaInicio"));
+                            respuesta.put("precioFicha", result.getString("precioFicha"));
+                            respuesta.put("tblcurso_idCurso", result.getString("tblcurso_idCurso"));
+                            Date fechaFinal = Date.valueOf(result.getString("fechaInicio"));
+                            respuesta.put("fechaFinal", String.valueOf(sumarRestarDiasFecha(fechaFinal, 30)));
+                        }
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        String salida = new Gson().toJson(respuesta);
+                        daoModelFicha.Signout();
+                        response.getWriter().write(salida);
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
+                    break;
+                }
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.getWriter().write(getTableEstudiantes());
+                    break;
+                }
+                case "getOptionsFichas": {
+                    ControllerFicha controllerFicha = new ControllerFicha();
+                    response.setContentType("application/text");
+                    response.getWriter().write(controllerFicha.getOptionsFichas());
                     break;
                 }
             }
@@ -213,6 +250,13 @@ public class ControllerEstudiante extends HttpServlet {
         }
         String salida = new Gson().toJson(mensaje);
         return salida;
+    }
+
+    public Date sumarRestarDiasFecha(Date fecha, int dias) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+        calendar.add(Calendar.DAY_OF_YEAR, dias);
+        return (Date) calendar.getTime();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

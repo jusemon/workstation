@@ -14,6 +14,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,6 @@ public class ControllerFicha extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         if (request.getParameter("action") != null) {
             int estado = 0;
             switch (request.getParameter("action")) {
@@ -113,7 +113,7 @@ public class ControllerFicha extends HttpServlet {
                     response.getWriter().write(getTableFichas());
                     break;
                 }
-                case "getOptionsCursos": {
+                case "getOptionsFichas": {
                     response.setContentType("application/text");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getOptionsFichas());
@@ -173,6 +173,23 @@ public class ControllerFicha extends HttpServlet {
         return salida;
     }
 
+    public String getOptionsFichas() {
+        ResultSet result;
+        String OptionsCursos = "";
+        try {
+            result = daoModelFicha.ListAll();
+            while (result.next()) {
+                OptionsCursos += "<option value=\"" + result.getString("idFicha").trim() + "\">" + result.getString("nombreCurso").trim() + " Ficha: " + result.getString("idFicha").trim() + "</option>";
+            }
+        } catch (Exception e) {
+            OptionsCursos = "Ha Ocurrido un error 2" + e.getMessage();
+        }
+
+        return OptionsCursos;
+    }
+
+
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -211,21 +228,4 @@ public class ControllerFicha extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private String getOptionsFichas() {
-        ResultSet result;
-        String OptionsCursos = "";
-        try {
-            result = daoModelFicha.ListAll();
-            while (result.next()) {
-                OptionsCursos += "<option value=\"" + result.getString("idFicha").trim() + "\">" + result.getString("nombreCurso").trim() +" Ficha: "+ result.getString("idFicha").trim() + "</option>";
-            }
-
-        } catch (Exception e) {
-            OptionsCursos = "Ha Ocurrido un error 2" + e.getMessage();
-        }
-
-        return OptionsCursos;
-    }
-
 }
