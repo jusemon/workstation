@@ -36,7 +36,7 @@ public class ControllerEstudiante extends HttpServlet {
     public ModelAcudiente daoModelAcudiente = new ModelAcudiente();
     public ObjAcudiente _objAcudiente = new ObjAcudiente();
     ModelFicha daoModelFicha = new ModelFicha();
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -88,7 +88,6 @@ public class ControllerEstudiante extends HttpServlet {
                         daoModelEstudiante = new ModelEstudiante();
                         String salida = Mensaje(daoModelEstudiante.Add(_objEstudiente), "El estudiante ha sido registrado", "A ocurrido un error al intentar registrar al estudiante");
                         response.getWriter().write(salida);
-
                     } catch (NumberFormatException | IOException e) {
                         System.out.println(e.getMessage());
                     }
@@ -189,7 +188,7 @@ public class ControllerEstudiante extends HttpServlet {
                         daoModelFicha.Signout();
                         response.getWriter().write(salida);
                     } catch (SQLException | IOException e) {
-                        System.err.println("Ha ocurrido un error "+e.toString());
+                        System.err.println("Ha ocurrido un error " + e.toString());
                     }
                     break;
                 }
@@ -222,11 +221,11 @@ public class ControllerEstudiante extends HttpServlet {
                 arreglo[3] = result.getString("generoCliente").trim();
                 arreglo[4] = result.getString("estadoEstudiante").trim();
                 arreglo[5] = "<a class=\"btn-sm btn-success btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ")\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-search\"></span></a>";
+                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
                 arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ", 'Editar')\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-edit\"></span></a>";
+                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
                 arreglo[7] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ", 'Matricular')\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-bookmark\"></span></a>";
+                        + "<span class=\"glyphicon glyphicon-bookmark\"></span></a>";
                 lista.add(arreglo);
             }
 
