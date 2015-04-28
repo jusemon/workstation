@@ -142,7 +142,7 @@ public class ControllerCurso extends HttpServlet {
                     break;
                 }
                 case "getOptionsCursos": {
-                    response.setContentType("application/text");
+                    response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getOptionsCursos());
                     break;

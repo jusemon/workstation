@@ -6,11 +6,16 @@
 package Model.Data;
 
 import Model.JDBC.ConnectionDB;
+import java.sql.ResultSet;
 
 /**
  *
  * @author Administrador
  */
 public class ModelMatricula extends ConnectionDB{
+
+    public ResultSet ListAll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

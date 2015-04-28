@@ -28,7 +28,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">
-                                Formulario de Empresa
+                                Gestion de Empresa
                             </h3>
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse in">
@@ -36,7 +36,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupEmpresa" data-dismiss="modal" name="registrarEmpresa" value="Registrar empresa">
+                                            <input class="btn btn-default btn-block" type="button" name="registrarEmpresa" value="Registrar empresa" onclick="empresa.registrar()">
                                         </div>
                                     </div>
                                 </div>
@@ -66,10 +66,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%
-                                        Controller.ControllerEmpresa controllerEmpresa = new ControllerEmpresa();
-                                        out.print(controllerEmpresa.getTableEmpresa());                                        
-                                    %>
                                 </tbody>
                             </table>
                         </div>
@@ -83,7 +79,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">                               
-                                <form method="POST" action="ControllerEmpresa">
+                                <form id="formEmpresa" method="POST" action="ControllerEmpresa">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -157,7 +153,7 @@
                                         <div class="panel-footer">
                                             <div class="col-md-offset-3 col-md-6">
                                                 <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" id="btnEmpresa" type="submit" name="action" value="Registrar">
+                                                    <input  class="btn btn-default btn-block" id="btnEmpresa" type="submit" onclick="empresa.myAjax($('#btnEmpresa').val())" name="action" value="Registrar">
                                                 </div>
                                             </div>
                                         </div>

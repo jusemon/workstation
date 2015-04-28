@@ -3,58 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var tablaCurso, tablaCategoriaCurso, tablaFicha, tablaSeminario, tablaEstudiante, tablaArticulo, tablaCategoriaArticulo;
-
-function editar() {
-    var tipo;
-    $('.table tbody').on('click', 'tr', function () {
-        tipo = $(this).data('tipo');
-        if (tipo === 'categoria articulo') {
-            var rowData = tablas.table('#tblCategoriaArticulos').row(this).data();
-            $('#miPopupCategoriaArticulo').find('#idCategoriaArticulo').attr('value', rowData[0]);
-            $('#miPopupCategoriaArticulo').find('#txtNombreCategoriaArticulo').attr('value', rowData[1]);
-            $('#miPopupCategoriaArticulo').find('#btnCategoriaArticulo').attr('value', 'Editar');
-            $('#miPopupCategoriaArticulo').modal('show');
-            $('#tblCategoriaArticulos tbody').off();
-        }
-        else if (tipo === 'articulo') {
-            var rowData = tablas.table('#tblArticulos').row(this).data();
-            $('#miPopupArticulo').find('#idArticulo').attr('value', rowData[0]);
-            $('#miPopupArticulo').find('#txtNombreArticulo').attr('value', rowData[1]);
-            $('#miPopupArticulo').find('#txtPrecioArticulo').attr('value', rowData[2]);
-            $('#miPopupArticulo').find('#txtCantidadArticulo').attr('value', rowData[3]);
-            $('#miPopupArticulo').find('#idCategoriaArticulo').attr('value', rowData[4]);
-            $('#miPopupArticulo').find('#btnArticulo').attr('value', 'Editar');
-            $('#miPopupArticulo').modal('show');
-            $('#tblArticulos tbody').off();
-        }
-        if (tipo === 'empresa') {
-            var rowData = tablas.table('#tblEmpresas').row(this).data();
-            $('#miPopupEmpresa').find('#txtNitEmpresa').attr('value', rowData[0]).attr('readonly', true);
-            $('#miPopupEmpresa').find('#txtNombreEmpresa').attr('value', rowData[1]);
-            $('#miPopupEmpresa').find('#txtDireccionEmpresa').attr('value', rowData[2]);
-            $('#miPopupEmpresa').find('#txtNombreContacto').attr('value', rowData[3]);
-            $('#miPopupEmpresa').find('#txtTelefonoContacto').attr('value', rowData[4]);
-            $('#miPopupEmpresa').find('#txtEmailContacto').attr('value', rowData[5]);
-            $('#miPopupEmpresa').find('#btnEmpresa').attr('value', 'Editar');
-            $('#miPopupEmpresa').modal('show');
-            $('#tblEmpresa tbody').off();
-        }
-    });
-}
-;
-$('#registrarCategoriaArticulo').on('click', function () {
-    $('#btnCategoriaArticulo').attr('value', 'Registrar');
-    $('#txtNombreCategoriaArticulo').attr('value', ' ');
-    $('#miPopupCategoriaArticulo').modal('show');
-});
-$('#registrarAbono').on('click', function () {
-    $('#btnAbono').attr('value', 'Registrar');
-    $('#txtIdCredito').attr('value', ' ');
-    $('#txtValorAbono').attr('value', ' ');
-    $('#dateFechaPago').attr('value', ' ');
-    $('#miPopupAbono').modal('show');
-});
+var tablaCurso, tablaCategoriaCurso, tablaFicha, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa;
 
 var curso = {
     myAjax: function (accion, id, aux) {
@@ -547,9 +496,9 @@ var matricula = {
         }
     },
     cargar: function () {
-        tablaEstudiante = $('#tblEstudiantes').DataTable({
+        tablaMatricula = $('#tblMatriculas').DataTable({
             "ajax": {
-                "url": "ControllerEstudiante",
+                "url": "ControllerMatricula",
                 "type": "POST",
                 "data": {
                     action: 'Enlistar'
@@ -560,7 +509,7 @@ var matricula = {
         });
     },
     actualizarTabla: function () {
-        tablaEstudiante.ajax.reload();
+        tablaMatricula.ajax.reload();
     }
 };
 
@@ -694,46 +643,70 @@ var articulo = {
     }
 };
 
-function limpiar(miForm) {
-    $(':input', miForm).each(function () {
-        var type = this.type;
-        var tag = this.tagName.toLowerCase();
-        if (type == 'text' || type == 'password' || tag == 'textarea' || type == 'number' || type == 'hidden' || type == 'date')
-            this.value = "";
-        else if (type == 'checkbox' || type == 'radio')
-            this.checked = false;
-        else if (tag == 'select')
-            this.selectedIndex = -1;
-        else if (false)
-            this.value = 0;
-    });
-}
-
-function habilitar(miForm) {
-    $(':input', miForm).each(function () {
-        var type = this.type;
-        var tag = this.tagName.toLowerCase();
-        if (type == 'checkbox' || type == 'radio' || tag == 'select')
-            this.disabled = false;
-        else
-            this.readOnly = false;
-    });
-}
-
-function desabilitar(miForm) {
-    $(':input', miForm).each(function () {
-        var type = this.type;
-        var tag = this.tagName.toLowerCase();
-        if (type == 'checkbox' || type == 'radio' || tag == 'select')
-            this.disabled = true;
-        else
-            this.readOnly = true;
-    });
-}
-
-function mensaje(data) {
-    $.notify(data['mensaje'], data['tipo']);
-}
+var empresa = {
+    myAjax: function (accion, id) {
+        var form = $('#formEmpresa');
+        $(form).off();
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id,
+                success: function (data) {
+                    if (accion == 'Editar' || accion == 'Registrar') {
+                        $('#miPopupEmpresa').modal('hide');
+                        empresa.actualizarTabla();
+                        mensaje(data);
+                    } else if (accion == 'getOptionsEmpresas') {
+                        empresa.cargarOpciones(data);
+                    }
+                }
+            });
+            $(form).off();
+            return false;
+        });
+        if (accion === 'Estado' || accion === 'Consultar' || accion === 'getOptionsEmpresas') {
+            $(form).submit();
+        }
+    },
+    registrar: function () {
+        limpiar('#formEmpresa');
+        $('#miPopupEmpresa').find('#btnEmpresa').attr('value', 'Registrar');
+        $('#miPopupEmpresa').modal('show');
+    },
+    editar: function (tr) {
+        var data = tablaEmpresa.row(tr).data();
+        $('#miPopupEmpresa').find('#txtNitEmpresa').val(data[0]);
+        $('#miPopupEmpresa').find('#txtNombreEmpresa').val(data[1]);
+        $('#miPopupEmpresa').find('#txtDireccionEmpresa').val(data[2]);
+        $('#miPopupEmpresa').find('#txtNombreContacto').val(data[3]);
+        $('#miPopupEmpresa').find('#txtTelefonoContacto').val(data[4]);
+        $('#miPopupEmpresa').find('#txtEmailContacto').val(data[5]);
+        $('#miPopupEmpresa').find('#btnEmpresa').val('Editar');
+        $('#miPopupEmpresa').modal('show');
+    },
+    cargar: function () {
+        tablaEmpresa = $('#tblEmpresas').DataTable({
+            "ajax": {
+                "url": "ControllerEmpresa",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            },
+            "language": {
+                "url": "public/lang/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaEmpresa.ajax.reload();
+    },
+    cargarOpciones: function (data) {
+        $('#form_estudiante').find('#idEmpresa').empty();
+        $('#form_estudiante').find('#idEmpresa').append(data);
+    }
+};
 
 ficha.cargar();
 categoriaCurso.cargar();
@@ -743,4 +716,6 @@ abono.cargar();
 estudiante.cargar();
 categoriaArticulo.cargar();
 articulo.cargar();
+matricula.cargar();
+empresa.cargar();
 //credito.cargar()
