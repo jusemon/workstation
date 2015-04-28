@@ -53,7 +53,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="empresa">
-                            <table id="tblEmpresas" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblEmpresas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">NIT</th>

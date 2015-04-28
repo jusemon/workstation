@@ -118,7 +118,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="cursos">
-                            <table id="tblCursos" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblCursos" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -133,7 +133,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="categoriaCursos">
-                            <table id="tblCategoriaCursos" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblCategoriaCursos" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -146,7 +146,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="fichas">
-                            <table id="tblFichas" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblFichas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -163,7 +163,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="seminarios">
-                            <table id="tblSeminarios" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblSeminarios" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>

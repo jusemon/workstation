@@ -115,7 +115,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="estudiantes">
-                            <table id="tblEstudiantes" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblEstudiantes" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Tipo Documento</th>
@@ -133,7 +133,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="matriculas">
-                            <table id="tblMatriculas" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblMatriculas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
