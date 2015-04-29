@@ -10,16 +10,16 @@ package Model.DTO;
  * @author Administrador
  */
 public class ObjAcudiente {
-    private int tipoDocumento;
+    private String tipoDocumento;
     private String numeroDocumento;
     private String nombreAcudiente;
     private String telefonoAcudiante;
 
-    public int getTipoDocumento() {
+    public String getTipoDocumento() {
         return tipoDocumento;
     }
 
-    public void setTipoDocumento(int tipoDocumento) {
+    public void setTipoDocumento(String tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
     }
 

@@ -83,7 +83,7 @@ public class ModelFicha extends ConnectionDB {
         }
 
         return rs;
-    }
+    }   
 
     public boolean cambiarEstado(ObjFicha _objFicha) {
         boolean objReturn = false;

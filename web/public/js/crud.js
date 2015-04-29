@@ -105,15 +105,18 @@ var curso = {
         $('#miPopupCurso').find('#txtDescripcionCurso').val(data['descripcionCurso']);
         $('#miPopupCurso').find('#ddlEstado option').prop('selected', false).filter('[value="' + data['estadoCurso'] + '"]').prop('selected', true);
         $('#miPopupCurso').find('#btnCurso').attr('type', 'hidden').attr('disabled', true);
+        desabilitar('#formCurso');
         $('#miPopupCurso').modal('show');
     },
     registrar: function () {
         limpiar("#formCurso");
+        habilitar('#formCurso');
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupCurso').modal('show');
     },
     editar: function (data) {
         curso.consultar(data);
+        habilitar('#formCurso');
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
     cargar: function () {
@@ -220,13 +223,15 @@ var ficha = {
                     $('#miPopupFicha').modal('hide');
                     if (accion == 'Estado' || accion == 'Editar' || accion == 'Registrar') {
                         mensaje(data);
+                    } else if (accion === 'getOptionsFichas') {
+                        ficha.cargarOpciones(data);
                     }
                 }
             });
             $(form).off();
             return false;
         });
-        if (accion === 'Estado') {
+        if (accion === 'Estado' || accion === 'getOptionsFichas') {
             $(form).submit();
         }
     },
@@ -262,6 +267,10 @@ var ficha = {
     },
     actualizarTabla: function () {
         tablaFicha.ajax.reload();
+    },
+    cargarOpciones: function (data) {
+        $('#miPopupMatricula').find('#idCursoFicha').empty();
+        $('#miPopupMatricula').find('#idCursoFicha').append(data);
     }
 };
 
@@ -394,31 +403,34 @@ var abono = {
     }
 };
 
-var cliente = {
-    myAjax: function (accion, id, aux) {
+var estudiante = {
+    myAjax: function (accion, id, tipo, aux) {
         var form = $('#form_estudiante');
         $(form).off();
         $(form).on('submit', function () {
             $.ajax({
                 type: $(form).attr('method'),
                 url: $(form).attr('action'),
-                data: $(form).serialize() + '&action=' + accion + '&id=' + id,
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
                 success: function (data) {
                     if (accion == 'Consultar') {
                         if (aux == 'Editar') {
-                            cliente.editar(data);
+                            estudiante.editar(data);
+
+                        } else if (aux == 'Matricular') {
+
                         } else
-                            cliente.consultar(data);
+                            estudiante.consultar(data);
                     }
                     else if (accion == 'Registrar' || accion == 'Editar' || accion == 'Estado') {
                         if (accion != 'Estado') {
                             $('#miPopupEstudiante').modal('hide');
                         }
                         mensaje(data);
-                        cliente.actualizarTabla();
+                        estudiante.actualizarTabla();
                     }
                     else if (accion === 'getOptionsCursos') {
-                        cliente.cargarOpciones(data);
+                        estudiante.cargarOpciones(data);
                     }
                 }
             });
@@ -429,30 +441,54 @@ var cliente = {
             $(form).submit();
         }
     },
+    matricular: function (data) {
+        limpiar("#formMatricula");
+        $('#miPopupMatricula').find('#idEstudiante').val(data['numeroDocumento']);
+        $('#miPopupMatricula').find('#dateInicio').val(data['dateInicioFicha']);
+        $('#miPopupMatricula').find('#').val(data['']);
+        $('#miPopupMatricula').find('#').val(data['']);
+    },
     consultar: function (data) {
         limpiar("#form_estudiante");
-        $('#miPopupEstudiante').find('#txtIdentificacion').val(data['idCurso']);
-        $('#miPopupEstudiante').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + data['tipoIdentificacion'] + '"]').prop('selected', true);
-        $('#miPopupEstudiante').find('#txtNombre').val(data['nombreCurso']);
-        $('#miPopupEstudiante').find('#txtApellido').val(data['duracionCurso']);
-        $('#miPopupEstudiante').find('#dateFechaNacimiento').val(data['descripcionCurso']);
-        $('#miPopupEstudiante').find('#ddlEstado option').prop('selected', false).filter('[value="' + data['estadoCurso'] + '"]').prop('selected', true);
-        $('#miPopupEstudiante').find('#btnCliente').attr('type', 'hidden').attr('disabled', true);
+        $('#miPopupEstudiante').find('#txtIdentificacion').val(data['numeroDocumento']);
+        $('#miPopupEstudiante').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + data['tipoDocumento'] + '"]').prop('selected', true);
+        $('#miPopupEstudiante').find('#txtNombre').val(data['nombreCliente']);
+        $('#miPopupEstudiante').find('#txtApellido').val(data['apellidoCliente']);
+        $('#miPopupEstudiante').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
+        $('#miPopupEstudiante').find('#txtDireccion').val(data['nombreCliente']);
+        $('#miPopupEstudiante').find('#txtTelefono').val(data['telefonoFijo']);
+        $('#miPopupEstudiante').find('#txtCelular').val(data['telefonoMovil']);
+        $('#miPopupEstudiante').find('#txtCorreo').val(data['emailCliente']);
+        if (data['generoCliente'] == 0)
+            $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', true);
+        else
+            $('#miPopupEstudiante').find('#radioGeneroMasculino').prop('checked', true)
+
+        if (data['estadoEstudiante'] == 0)
+            $('#miPopupEstudiante').find('#radioNoBeneficiario').prop('checked', true);
+        else
+            $('#miPopupEstudiante').find('#radioSiBeneficiario').prop('checked', true)
+
+        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'hidden').attr('disabled', true);
+        desabilitar('#form_estudiante');
         $('#miPopupEstudiante').modal('show');
     },
     registrar: function () {
-        limpiar("#formCurso");
-        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
-        $('#miPopupCurso').modal('show');
+        habilitar('#form_estudiante');
+        limpiar("#form_estudiante");
+        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
+        $('#miPopupEstudiante').modal('show');
     },
     editar: function (data) {
-        curso.consultar(data);
-        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
+        limpiar("#formCurso");
+        estudiante.consultar(data);
+        habilitar('#form_estudiante');
+        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
     cargar: function () {
         tablaEstudiante = $('#tblEstudiantes').DataTable({
             "ajax": {
-                "url": "ControllerCliente",
+                "url": "ControllerEstudiante",
                 "type": "POST",
                 "data": {
                     action: 'Enlistar'
@@ -472,6 +508,59 @@ var cliente = {
 
 };
 
+var matricula = {
+    myAjax: function (accion, id, tipo) {
+        var form = $('#');
+        $(form).off();
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
+                success: function (data) {
+                    if (accion == 'Consultar') {
+                        if (aux == 'Editar') {
+                            estudiante.editar(data);
+                        } else
+                            estudiante.consultar(data);
+                    }
+                    else if (accion == 'Registrar' || accion == 'Editar' || accion == 'Estado') {
+                        if (accion != 'Estado') {
+                            $('#miPopupEstudiante').modal('hide');
+                        }
+                        mensaje(data);
+                        estudiante.actualizarTabla();
+                    }
+                    else if (accion === 'getOptionsCursos') {
+                        estudiante.cargarOpciones(data);
+                    }
+                }
+            });
+            $(form).off();
+            return false;
+        });
+        if (accion === 'Estado' || accion === 'Consultar' || accion === 'getOptionsCursos') {
+            $(form).submit();
+        }
+    },
+    cargar: function () {
+        tablaEstudiante = $('#tblEstudiantes').DataTable({
+            "ajax": {
+                "url": "ControllerEstudiante",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            }, "language": {
+                "url": "public/lang/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaEstudiante.ajax.reload();
+    }
+};
+
 function limpiar(miForm) {
     $(':input', miForm).each(function () {
         var type = this.type;
@@ -487,6 +576,28 @@ function limpiar(miForm) {
     });
 }
 
+function habilitar(miForm) {
+    $(':input', miForm).each(function () {
+        var type = this.type;
+        var tag = this.tagName.toLowerCase();
+        if (type == 'checkbox' || type == 'radio' || tag == 'select')
+            this.disabled = false;
+        else
+            this.readOnly = false;
+    });
+}
+
+function desabilitar(miForm) {
+    $(':input', miForm).each(function () {
+        var type = this.type;
+        var tag = this.tagName.toLowerCase();
+        if (type == 'checkbox' || type == 'radio' || tag == 'select')
+            this.disabled = true;
+        else
+            this.readOnly = true;
+    });
+}
+
 function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
@@ -496,5 +607,5 @@ categoriaCurso.cargar();
 curso.cargar();
 seminario.cargar();
 abono.cargar();
-cliente.cargar();
+estudiante.cargar();
 //credito.cargar()

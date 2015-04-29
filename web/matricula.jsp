@@ -42,7 +42,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupEstudiante" data-dismiss="modal" name="regEstudiante" value="Registrar Estudiante">
+                                            <input class="btn btn-default btn-block" type="button" onclick="estudiante.registrar()" name="regEstudiante" value="Registrar Estudiante">
                                         </div>
                                     </div>
                                 </div>
@@ -125,6 +125,7 @@
                                         <th class="text-center">Beneficiario</th>
                                         <th class="text-center">Consultar</th>
                                         <th class="text-center">Editar</th>
+                                        <th class="text-center">Matricular</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -166,148 +167,8 @@
             </div>
         </div>
 
-        <!--Emergente de Matricular-->
-        <div class="modal" id="matricular">
-            <div class="modal-dialog ">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <form action="ControllerEstudiante" method="POST">
-                                    <div class="panel">
-                                        <div class="panel-heading estilo2">
-                                            <h3 class="panel-title">
-                                                Matricular Estudiante
-                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                            </h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="row">
-                                                <div class="col-md-7">
-                                                    <div class="form-group">
-                                                        <label for="txtNombre">
-                                                            Nombres: 
-                                                        </label>
-                                                        <label id="txtNombre">Juan Sebastian Montoya Montoya</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <div class="form-group">
-                                                        <label for="radioBtn2">
-                                                            Estado de Matricula: 
-                                                        </label>
-                                                        <div id="radioBtn2" class="btn-group">
-                                                            <a id="radio2" class="btn btn-success btn-sm active" data-toggle="radioEstado" data-title="Y">Activo</a>
-                                                            <a id="radio2" class="btn btn-danger btn-sm notActive" data-toggle="radioEstado" data-title="N">Inactivo</a>
-                                                        </div>
-                                                        <input type="hidden" name="radioEstado" id="radioEstado">
-                                                    </div>
-                                                </div>
-                                            </div>                                            
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="txtTelefono">
-                                                            Telefono: 
-                                                        </label>
-                                                        <label id="txtTelefono">5861529</label>                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="txtCelular">
-                                                            Celular: 
-                                                        </label>
-                                                        <label id="txtCelular">3218016237</label>                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="txtCorreo">
-                                                            Email: 
-                                                        </label>
-                                                        <label id="txtCorreo">jsmontoya37@misena.edu.co</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="txtDireccion">
-                                                            Dirección: 
-                                                        </label>
-                                                        <label id="txtDireccion">Cll 24 # 65 e 25</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="dateFechaNaciemiento">
-                                                            Fecha de Nacimiento: 
-                                                        </label>
-                                                        <label id="dateFechaNaciemiento">03/11/1994</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="ddlIdentificacion">
-                                                            Tipo de Documento: 
-                                                        </label>
-                                                        <label id="ddlIdentificacion">Cedula</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="txtIdentificacion">
-                                                            Numero de Identificación: 
-                                                        </label>
-                                                        <label id="txtIdentificacion">1017225673</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    No se encuentra matriculado
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <input class="btn btn-primary btn-block" type="button"  data-toggle="modal" data-target="#asignarFicha" value="Matricular">
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="panel-footer">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Aceptar">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cerrar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!--Emergente de Acudiente-->
-        <div class="modal" id="miPopup">
+        <div class="modal" id="miPopupAcudiente">
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -429,14 +290,15 @@
                 </div>
             </div>
         </div>
-        <!--Emergente de Asignar Ficha-->
-        <div class="modal" id="asignarFicha">
+
+        <!--Emergente de Matricular-->
+        <div class="modal" id="miPopupMatricula">
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form>
+                                <form id="formMatricula" method="POST" action="ControllerMatricula">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -451,20 +313,18 @@
                                                         <label for="txtIdentificacion">
                                                             Estudiante
                                                         </label>
-                                                        <label id="txtIdentificacion">CC: 1017225673</label>
+                                                        <label id="txtIdentificacion"></label>
+                                                        <input type="hidden" name="txtIdentificacion" id="idEstudiante"/>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtIdentificacion">
+                                                        <label for="idCursoFicha">
                                                             Ficha:
                                                         </label>
-                                                        <select name="ddlEstado" id="ddlEstado" class="form-control" required>
-                                                            <option value="1">Seleccione...</option>
-                                                            <option value="1">629256</option>
-                                                            <option value="1">651848</option>
+                                                        <select name="idCursoFicha" id="idCursoFicha" class="form-control" required>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -472,41 +332,30 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="dateFechaNaciemiento">
+                                                        <label for="dateInicioFicha">
                                                             Fecha de Inicio;
                                                         </label>
-                                                        <label id="dateFechaNaciemiento">03/11/1994</label>
+                                                        <label id="dateInicioFicha"></label>
+                                                        <input type="hidden" name="dateInicio" id="dateInicio"/>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="ddlIdentificacion">
+                                                        <label for="dateFinFicha">
                                                             Fecha Fin: 
                                                         </label>
-                                                        <label id="ddlIdentificacion">10/12/2014</label>
+                                                        <label id="dateFinFicha"></label>
+                                                        <input type="hidden" name="dateFinal" id="dateFinal"/>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label for="radioBtn2">
-                                                        Genero: 
-                                                    </label>
-                                                    <label id="ddlIdentificacion">Masculino</label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="panel-footer">
-                                            <div class="col-md-6">
+                                            <div class="col-md-offset-3 col-md-6">
                                                 <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Aceptar">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cerrar">
+                                                    <input  class="btn btn-default btn-block" type="submit" name="action" value="Matricular">
                                                 </div>
                                             </div>
                                         </div>
@@ -518,7 +367,9 @@
                 </div>
             </div>
         </div>
+
         <!--Emergete de Estudiante -->
+
         <div class="modal" id="miPopupEstudiante">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -586,8 +437,8 @@
                                                         <label for="radioGenero">
                                                             Genero: 
                                                         </label>
-                                                            <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGenero" class="radio-inline" value="0">Femenino</label>
-                                                            <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGenero" class="radio-inline" value="1">Masculino</label>
+                                                        <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroFemenino" class="radio-inline" value="0">Femenino</label>
+                                                        <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroMasculino" class="radio-inline" value="1">Masculino</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -648,27 +499,22 @@
                                                         <label for="radioBeneficiario">
                                                             Beneficiario: 
                                                         </label>
-                                                        <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioBeneficiario" class="radio-inline" value="1">Si</label>
-                                                        <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioBeneficiario" class="radio-inline" value="0">No</label>
+                                                        <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioSiBeneficiario" class="radio-inline" value="1">Si</label>
+                                                        <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioNoBeneficiario" class="radio-inline" value="0">No</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-offset-3 col-md-6">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input class="btn btn-primary btn-block" type="submit" name="action" value="Editar">
+                                                <input class="btn btn-default btn-block" type="submit" id="btnEstudiante" name="action" value="Registrar" onclick="estudiante.myAjax($('#btnEstudiante').val())">
                                             </div>
                                         </div>
                                     </div>
+                                </form>
                             </div>
-                            </form>
                         </div>
                     </div>
                 </div>

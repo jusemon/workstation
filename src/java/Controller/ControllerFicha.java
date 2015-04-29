@@ -113,6 +113,12 @@ public class ControllerFicha extends HttpServlet {
                     response.getWriter().write(getTableFichas());
                     break;
                 }
+                case "getOptionsCursos": {
+                    response.setContentType("application/text");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getOptionsFichas());
+                    break;
+                }
             }
         }
     }
@@ -136,8 +142,10 @@ public class ControllerFicha extends HttpServlet {
                 arreglo[2] = result.getString("cuposDisponibles").trim();
                 arreglo[3] = result.getString("precioFicha").trim();
                 arreglo[4] = result.getString("fechaInicio").trim();
-                arreglo[5] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"ficha.myAjax('Estado'," + arreglo[0] + ")\"><span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
-                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"ficha.editar(" + contador + "," + result.getInt("estado") + ", " + result.getInt("idCurso") + ")\"><span class=\"glyphicon glyphicon-pencil\"></span></a>";
+                arreglo[5] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"ficha.myAjax('Estado'," + arreglo[0] + ")\">"
+                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
+                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"ficha.editar(" + contador + "," + result.getInt("estado") + ", " + result.getInt("idCurso") + ")\">"
+                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
                 lista.add(arreglo);
                 contador++;
             }
@@ -203,5 +211,21 @@ public class ControllerFicha extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String getOptionsFichas() {
+        ResultSet result;
+        String OptionsCursos = "";
+        try {
+            result = daoModelFicha.ListAll();
+            while (result.next()) {
+                OptionsCursos += "<option value=\"" + result.getString("idFicha").trim() + "\">" + result.getString("nombreCurso").trim() +" Ficha: "+ result.getString("idFicha").trim() + "</option>";
+            }
+
+        } catch (Exception e) {
+            OptionsCursos = "Ha Ocurrido un error 2" + e.getMessage();
+        }
+
+        return OptionsCursos;
+    }
 
 }

@@ -27,8 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerEstudiante extends HttpServlet {
 
-    
-    public ModelEstudiante daoModelEstudiante = new ModelEstudiante();
+    ModelEstudiante daoModelEstudiante = new ModelEstudiante();
     public ObjEstudiante _objEstudiente = new ObjEstudiante();
     public ModelAcudiente daoModelAcudiente = new ModelAcudiente();
     public ObjAcudiente _objAcudiente = new ObjAcudiente();
@@ -44,9 +43,9 @@ public class ControllerEstudiante extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Map<String, String> respuesta;
         response.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
-
         if (action != null) {
             switch (action) {
                 case "Registrar": {
@@ -71,17 +70,90 @@ public class ControllerEstudiante extends HttpServlet {
                         }
                         _objEstudiente.setTipoDocumento(tipoDocumento);
                         _objEstudiente.setNumeroDocumento(numeroIdentificacion);
-                        _objEstudiente.setNombreCliente(nombre);
-                        _objEstudiente.setApellidoCliente(apellido);
-                        _objEstudiente.setGeneroCliente(genero);
+                        _objEstudiente.setNombreEstudiante(nombre);
+                        _objEstudiente.setApellidoEstudiente(apellido);
+                        _objEstudiente.setGeneroEstudiante(genero);
                         _objEstudiente.setFechaNacimiento(fechaNacimiento);
-                        _objEstudiente.setDireccionCliente(direccion);
+                        _objEstudiente.setDireccionEstudiante(direccion);
                         _objEstudiente.setTelefonoFijo(telefono);
                         _objEstudiente.setTelefonoMovil(celular);
-                        _objEstudiente.setEmailCliente(correo);
-                        _objEstudiente.setEstadoCliente(estado);
+                        _objEstudiente.setEmailEstudiante(correo);
+                        _objEstudiente.setEstadoEstudiante(estado);
                         response.setContentType("application/json");
-                        String salida = Mensaje(daoModelEstudiante.Add(_objEstudiente), "El cliente ha sido registrado", "A ocurrido un error al intentar registrar al cliente");
+                        daoModelEstudiante = new ModelEstudiante();
+                        String salida = Mensaje(daoModelEstudiante.Add(_objEstudiente), "El estudiante ha sido registrado", "A ocurrido un error al intentar registrar al estudiante");
+                        response.getWriter().write(salida);
+
+                    } catch (NumberFormatException | IOException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                }
+                case "Consultar": {
+                    String tipo = request.getParameter("id");
+                    String aux = request.getParameter("tipo");
+                    int id = Integer.parseInt(aux.trim());
+                    try {
+                        respuesta = new LinkedHashMap<>();
+                        ResultSet result = daoModelEstudiante.buscarPorID(id, tipo);
+                        while (result.next()) {
+                            respuesta.put("tipoDocumento", result.getString("tipoDocumento"));
+                            respuesta.put("numeroDocumento", result.getString("numeroDocumento"));
+                            respuesta.put("fechaNacimiento", result.getString("fechaNacimiento"));
+                            respuesta.put("generoCliente", result.getString("generoCliente"));
+                            respuesta.put("nombreCliente", result.getString("nombreCliente"));
+                            respuesta.put("apellidoCliente", result.getString("apellidoCliente"));
+                            respuesta.put("direccionCliente", result.getString("direccionCliente"));
+                            respuesta.put("telefonoFijo", result.getString("telefonoFijo"));
+                            respuesta.put("telefonoMovil", result.getString("telefonoMovil"));
+                            respuesta.put("emailCliente", result.getString("emailCliente"));
+                            respuesta.put("estadoEstudiante", result.getString("estadoEstudiante"));
+                            respuesta.put("tblacudiente_tipoDocumento", result.getString("tblacudiente_tipoDocumento"));
+                            respuesta.put("tblacudiente_numeroDocumento", result.getString("tblacudiente_numeroDocumento"));
+                        }
+                        String salida = new Gson().toJson(respuesta);
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write(salida);
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
+                    break;
+                }
+
+                case "Editar": {
+                    try {
+                        String tipoDocumento = new String(request.getParameter("ddlIdentificacion").getBytes("ISO-8859-1"), "UTF-8");
+                        int numeroIdentificacion = Integer.parseInt(request.getParameter("txtIdentificacion"));
+                        String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                        String apellido = new String(request.getParameter("txtApellido").getBytes("ISO-8859-1"), "UTF-8");
+                        int genero = Integer.parseInt(request.getParameter("radioGenero"));
+                        String fechaNacimiento = String.valueOf(request.getParameter("dateFechaNacimiento"));
+                        String direccion = new String(request.getParameter("txtDireccion").getBytes("ISO-8859-1"), "UTF-8");
+                        String telefono = String.valueOf(request.getParameter("txtTelefono"));
+                        String celular = String.valueOf(request.getParameter("txtCelular").trim());
+                        String correo = new String(request.getParameter("txtCorreo").getBytes("ISO-8859-1"), "UTF-8");
+                        int estado = Integer.parseInt(request.getParameter("radioBeneficiario"));
+                        //Beneficiario 0->No Subvencionado 1->Subvencionado?
+                        String tipoDocAcudiente = "";
+                        int numeroDocAcudiente = 0;
+                        if (request.getParameter("tipoDocAcudiente") != null && request.getParameter("numeroDocAcudiente") != null) {
+                            tipoDocAcudiente = new String(request.getParameter("tipoDocAcudiente").getBytes("ISO-8859-1"), "UTF-8");
+                            numeroDocAcudiente = Integer.parseInt(request.getParameter("numeroDocAcudiente"));
+                        }
+                        _objEstudiente.setTipoDocumento(tipoDocumento);
+                        _objEstudiente.setNumeroDocumento(numeroIdentificacion);
+                        _objEstudiente.setNombreEstudiante(nombre);
+                        _objEstudiente.setApellidoEstudiente(apellido);
+                        _objEstudiente.setGeneroEstudiante(genero);
+                        _objEstudiente.setFechaNacimiento(fechaNacimiento);
+                        _objEstudiente.setDireccionEstudiante(direccion);
+                        _objEstudiente.setTelefonoFijo(telefono);
+                        _objEstudiente.setTelefonoMovil(celular);
+                        _objEstudiente.setEmailEstudiante(correo);
+                        _objEstudiente.setEstadoEstudiante(estado);
+                        response.setContentType("application/json");
+                        String salida = Mensaje(daoModelEstudiante.Edit(_objEstudiente), "El estudiante ha sido actualizado", "A ocurrido un error al intentar actualizar al estudiante");
                         response.getWriter().write(salida);
 
                     } catch (NumberFormatException | IOException e) {
@@ -91,38 +163,38 @@ public class ControllerEstudiante extends HttpServlet {
                 }
                 case "Enlistar": {
                     response.setContentType("application/json");
-                    response.getWriter().write(getTableClientes());
+                    response.getWriter().write(getTableEstudiantes());
                     break;
                 }
             }
         }
     }
 
-    public String getTableClientes() {
-
+    public String getTableEstudiantes() {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
         try {
             result = daoModelEstudiante.ListAll();
             String[] arreglo;
             while (result.next()) {
-                arreglo = new String[7];
+                arreglo = new String[8];
                 arreglo[0] = result.getString("tipoDocumento").trim();
                 arreglo[1] = result.getString("numeroDocumento").trim();
                 arreglo[2] = result.getString("nombreCliente").trim();
                 arreglo[3] = result.getString("generoCliente").trim();
                 arreglo[4] = result.getString("estadoEstudiante").trim();
-                arreglo[5] = "<a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#matricular\" href=\"javascript:void(0)\"  onclick=\"cliente.myAjax('Consultar'," + result.getString("tipoDocumento") + ", " + result.getInt("numeroDocumento") + " )\">\n"
+                arreglo[5] = "<a class=\"btn-sm btn-success btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ")\">\n"
                         + "                                                <span class=\"glyphicon glyphicon-search\"></span></a>";
-                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \"  data-toggle=\"modal\"  data-target=\"#matricular\" href=\"javascript:void(0)\"  onclick=\"cliente.myAjax('Editar'," + result.getString("tipoDocumento") + ", " + result.getInt("numeroDocumento") + " )\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-search\"></span></a>";
+                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ", 'Editar')\">\n"
+                        + "                                                <span class=\"glyphicon glyphicon-edit\"></span></a>";
+                arreglo[7] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ", 'Matricular')\">\n"
+                        + "                                                <span class=\"glyphicon glyphicon-bookmark\"></span></a>";
                 lista.add(arreglo);
             }
 
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error" + e.getMessage());
         } finally {
-            daoModelEstudiante.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
@@ -142,7 +214,6 @@ public class ControllerEstudiante extends HttpServlet {
         String salida = new Gson().toJson(mensaje);
         return salida;
     }
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
