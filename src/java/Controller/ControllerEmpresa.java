@@ -17,6 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Model.DTO.ObjEmpresa;
 import Model.Data.ModelEmpresa;
+import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ControllerEmpresa extends HttpServlet {
 
@@ -52,8 +57,10 @@ public class ControllerEmpresa extends HttpServlet {
                     _objEmpresa.setTelefonoContacto(telefonoContacto);
                     String emailContacto = new String(request.getParameter("txtEmailContacto").getBytes("ISO-8859-1"), "UTF-8");
                     _objEmpresa.setEmailContacto(emailContacto);
-                    daoModelEmpresa.Add(_objEmpresa);
-
+                    String salida = Mensaje(daoModelEmpresa.Add(_objEmpresa), "La empresa ha sido registrada", "Ha ocurrido un error al intentar registrar la empresa");
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(salida);
                     break;
                 }
                 case "Editar": {
@@ -70,43 +77,68 @@ public class ControllerEmpresa extends HttpServlet {
                     _objEmpresa.setTelefonoContacto(telefonoContacto);
                     String emailContacto = new String(request.getParameter("txtEmailContacto").getBytes("ISO-8859-1"), "UTF-8");
                     _objEmpresa.setEmailContacto(emailContacto);
-                    daoModelEmpresa.Update(_objEmpresa);
+                    String salida = Mensaje(daoModelEmpresa.Edit(_objEmpresa), "La empresa ha sido actualizada", "Ha ocurrido un error al intentar actualizar la empresa");
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(salida);
+                    break;
+                }
+                case "Enlistar": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getTableEmpresa());
                     break;
                 }
             }
-            response.sendRedirect("empresa.jsp");
         }
     }
 
     public String getTableEmpresa() {
         ResultSet result;
-        String tableEmpresa = "";
+        List<String[]> lista = new ArrayList<>();
+        int contador = 0;
+        String[] arreglo;
         try {
             daoModelEmpresa = new ModelEmpresa();
             result = daoModelEmpresa.ListAll();
             while (result.next()) {
-                tableEmpresa += "<tr data-tipo=\"empresa\" >";
-                tableEmpresa += "<td class=\"text-center\">" + result.getString("nitEmpresa").trim() + "</td>";
-                tableEmpresa += "<td class=\"text-center\">" + result.getString("nombreEmpresa").trim() + "</td>";
-                tableEmpresa += "<td class=\"text-center\">" + result.getString("direccionEmpresa").trim() + "</td>";
-                tableEmpresa += "<td class=\"text-center\">" + result.getString("nombreContacto").trim() + "</td>";
-                tableEmpresa += "<td class=\"text-center\">" + result.getString("telefonoContacto").trim() + "</td>";
-                tableEmpresa += "<td class=\"text-center\">" + result.getString("emailContacto").trim() + "</td>";
-                tableEmpresa += "<td class=\"text-center\"><a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"editar()\">\n"
-                        + "<span class=\"glyphicon glyphicon-pencil\"></span></a>\n</td>";
-                tableEmpresa += "</tr>";
+                arreglo = new String[7];
+                arreglo[0] = result.getString("nitEmpresa").trim();
+                arreglo[1] = result.getString("nombreEmpresa").trim();
+                arreglo[2] = result.getString("direccionEmpresa").trim();
+                arreglo[3] = result.getString("nombreContacto").trim();
+                arreglo[4] = result.getString("telefonoContacto").trim();
+                arreglo[5] = result.getString("emailContacto").trim();
+                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"empresa.editar(" + contador + ")\">"
+                        + "<span class=\"glyphicon glyphicon-pencil\"></span></a>";
+                lista.add(arreglo);
+                contador++;
             }
         } catch (Exception e) {
-            tableEmpresa = "Ha ocurrido un error." + e.getMessage();
+            System.err.println("Ha ocurrido un error." + e.getMessage());
         } finally {
             daoModelEmpresa.Signout();
         }
+        String salida = new Gson().toJson(lista);
+        salida = "{\"data\":" + salida + "}";
+        return salida;
+    }
 
-        return tableEmpresa;
+    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
+        Map<String, String> mensaje = new LinkedHashMap<>();
+        if (entrada) {
+            mensaje.put("mensaje", mensajeSuccess);
+            mensaje.put("tipo", "success");
+
+        } else {
+            mensaje.put("mensaje", mensajeError);
+            mensaje.put("tipo", "error");
+        }
+        String salida = new Gson().toJson(mensaje);
+        return salida;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *

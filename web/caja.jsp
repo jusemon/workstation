@@ -191,7 +191,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="compra">
-                            <table id="tblCompra" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblCompra" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Número Factura</th>
@@ -206,7 +206,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="ventas">
-                            <table id="tblVentas" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblVentas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -227,7 +227,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="abonos">
-                            <table id="tblAbono" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblAbono" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Id. Abono</th>

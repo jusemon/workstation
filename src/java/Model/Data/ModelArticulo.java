@@ -16,16 +16,17 @@ import Model.DTO.ObjArticulo;
  * @author Lorenzo
  */
 public class ModelArticulo extends ConnectionDB {
+
     private PreparedStatement pStmt;
-    
-    public ModelArticulo(){
+
+    public ModelArticulo() {
         getConnection();
     }
-    
-    public boolean Add(ObjArticulo _objArticulo){
+
+    public boolean Add(ObjArticulo _objArticulo) {
         boolean objReturn = false;
         String sql = "call spIngresarArticulo(?,?,?,?)";
-        
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
@@ -33,24 +34,23 @@ public class ModelArticulo extends ConnectionDB {
             pStmt.setString(2, _objArticulo.getDescripcionArticulo());
             pStmt.setInt(3, _objArticulo.getCantidadDisponible());
             pStmt.setDouble(4, _objArticulo.getPrecioUnitario());
-            
-              int updateCount = pStmt.executeUpdate();
+
+            int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
             }
-            
-            
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return objReturn;
     }
-    
-     public ResultSet ListAll() throws Exception {
+
+    public ResultSet ListAll() throws Exception {
 
         ResultSet rs = null;
-        String sql ="call spListarArticulos()";
-           try {
+        String sql = "call spListarArticulos()";
+        try {
             getStmt();
             rs = stmt.executeQuery(sql);
 
@@ -61,6 +61,30 @@ public class ModelArticulo extends ConnectionDB {
         return rs;
     }
 
+    public boolean Edit(ObjArticulo _objArticulo) {
+        boolean objReturn = false;
+        String sql = "call spActualizarArticulo(?,?,?,?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, _objArticulo.getIdArticulo());
+            pStmt.setInt(2, _objArticulo.getIdCategoriaArticulo());
+            pStmt.setString(3, _objArticulo.getDescripcionArticulo());
+            pStmt.setInt(4, _objArticulo.getCantidadDisponible());
+            pStmt.setDouble(5, _objArticulo.getPrecioUnitario());
+
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
+
     public ResultSet buscarPorNombre(String nombreArticulo) {
         ResultSet rs = null;
         String sql = "call spConsultarArticuloByNombre(?)";
@@ -69,11 +93,11 @@ public class ModelArticulo extends ConnectionDB {
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, nombreArticulo);
             rs = pStmt.executeQuery();
-            
+
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
         return rs;
     }
-    
+
 }

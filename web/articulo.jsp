@@ -26,10 +26,6 @@
     </head>
     <body>
         <%@include file="WEB-INF/jspf/superior.jspf" %>
-
-        <%            Controller.ControllerCategoriaArticulo controllerCategoriaArticulo = new ControllerCategoriaArticulo();
-            Controller.ControllerArticulo controllerArticulo = new ControllerArticulo();
-        %>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4">
@@ -43,43 +39,24 @@
                                 </h4>
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in">
-                                <form id="form_articulo" action="ControllerArticulo" method="POST" >
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupArticulo" data-dismiss="modal" name="regArticulo" value="Registrar Articulo">
-                                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input class="btn btn-default btn-block" type="button" onclick="articulo.registrar()" value="Registrar Articulo">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="panel-footer">
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                        Gestion de Categorias
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseTwo" class="panel-collapse collapse">
-                                <form id="form_categoria" class="" action="ControllerCategoriaArticulo" method="POST">
-                                    <div class="panel-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <input data-toggle="modal" class="btn btn-default btn-block" type="button" id="registrarCategoriaArticulo" name="regCategoria" value="Registrar">
-                                                </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input class="btn btn-default btn-block" type="button" onclick="categoriaArticulo.registrar()" value="Registrar Categoria">
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="panel-footer">
-                                    </div>
-                                </form>
+                                </div>
+                                <div class="panel-footer">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -95,7 +72,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="articulos">
-                            <table id="tblArticulos" class="table table-striped table-bordered tabla" cellspacing="0" width="100%">
+                            <table id="tblArticulos" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Codigo</th>
@@ -107,14 +84,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%
-                                        out.print(controllerArticulo.getTableArticulo());
-                                    %>
                                 </tbody>
                             </table>
                         </div>
                         <div class="tab-pane" id="categorias">
-                            <table id="tblCategoriaArticulos" class="table table-striped table-bordered tabla" cellspacing="0" width="100%">
+                            <table id="tblCategoriaArticulos" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -123,9 +97,6 @@
                                     </tr>
                                 </thead>
                                 <tbody> 
-                                    <%
-                                        out.print(controllerCategoriaArticulo.getTableCategoriaArticulo());
-                                    %>
                                 </tbody>
                             </table>
                         </div>
@@ -133,18 +104,18 @@
                 </div>
             </div>
         </div>
-                                
+
         <div class="modal" id="miPopupArticulo">
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="ControllerArticulo" method="POST">
+                                <form id="formArticulo" action="ControllerArticulo" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Ingresar Articulo
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>
                                         </div>
@@ -187,10 +158,6 @@
                                                             Categoria:
                                                         </label>
                                                         <select name="idCategoria" id="idCategoriaArticulo" class="form-control" required>
-                                                            <option value="">Seleccionar...</option>
-                                                            <%
-                                                                out.print(controllerCategoriaArticulo.getOptionsCategorias());
-                                                            %>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -199,7 +166,7 @@
                                         <div class="panel-footer">
                                             <div class="col-md-offset-3 col-md-6">
                                                 <div class="form-group">
-                                                    <input id="btnArticulo"  class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
+                                                    <input id="btnArticulo"  class="btn btn-default btn-block" onclick="articulo.myAjax($('#btnArticulo').val())" type="submit" name="action" value="Registrar">
                                                 </div>
                                             </div>
                                         </div>
@@ -211,27 +178,27 @@
                 </div>
             </div>
         </div>
-                                                        
+
         <div class="modal" id="miPopupCategoriaArticulo">
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form method="POST" action="ControllerCategoriaArticulo">
+                                <form id="formCategoriaArticulo" method="POST" action="ControllerCategoriaArticulo">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Ingresar Categoria
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>
                                         </div>
                                         <div class="panel-body">
                                             <div class="row">
-                                                 <input type="hidden" id="idCategoriaArticulo" name="idCategoriaArticulo"/>
+                                                <input type="hidden" id="idCategoriaArticulo" name="idCategoriaArticulo"/>
                                                 <div class="col-md-12">                                        
                                                     <div class="form-group">
-                                                            Nombre
+                                                        Nombre
                                                         <input name="txtNombre" id="txtNombreCategoriaArticulo" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
                                                     </div>
                                                 </div>
@@ -241,7 +208,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input  class="btn btn-default btn-block" id="btnCategoriaArticulo" type="submit" name="action" value="Registrar">
+                                                        <input  class="btn btn-default btn-block" id="btnCategoriaArticulo" onclick="categoriaArticulo.myAjax($('#btnCategoriaArticulo').val())" type="submit" name="action" value="Registrar">
                                                     </div>
                                                 </div>
                                             </div>

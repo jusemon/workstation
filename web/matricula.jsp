@@ -42,7 +42,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input class="btn btn-default btn-block" type="button" onclick="estudiante.registrar()" name="regEstudiante" value="Registrar Estudiante">
+                                            <input class="btn btn-default btn-block" type="button" onclick="estudiante.registrar()" value="Registrar Estudiante">
                                         </div>
                                     </div>
                                 </div>
@@ -94,14 +94,12 @@
                                                 </form>
                                             </div>
                                             <div class="panel-footer">
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -115,7 +113,7 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="estudiantes">
-                            <table id="tblEstudiantes" class="table table-hover" cellspacing="0" width="100%">
+                            <table id="tblEstudiantes" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Tipo Documento</th>
@@ -133,7 +131,7 @@
                             </table>
                         </div>
                         <div class="tab-pane" id="matriculas">
-                            <table id="tblMatriculas" class="table table-hover tabla" cellspacing="0" width="100%">
+                            <table id="tblMatriculas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Código</th>
@@ -178,7 +176,8 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Ingresar Acudiente<button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                <label id="titulo"></label>
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                             </h3>
                                         </div>
                                         <div class="panel-body">
@@ -302,7 +301,7 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Matricular Estudiante
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                             </h3>
                                         </div>
@@ -311,9 +310,16 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtIdentificacion">
-                                                            Estudiante
+                                                            Estudiante:
                                                         </label>
                                                         <label id="txtIdentificacion"></label>
+                                                        <div id="nombres">
+                                                            <label for="nombres">
+                                                                Nombres:
+                                                            </label>
+                                                            <label id="txtNombre"></label>
+                                                            <label id="txtApellido"></label>
+                                                        </div>
                                                         <input type="hidden" name="txtIdentificacion" id="idEstudiante"/>
                                                     </div>
                                                 </div>
@@ -324,7 +330,7 @@
                                                         <label for="idCursoFicha">
                                                             Ficha:
                                                         </label>
-                                                        <select name="idCursoFicha" id="idCursoFicha" class="form-control" required>
+                                                        <select name="idCursoFicha" id="idCursoFicha" class="form-control" onchange="estudiante.myAjax('Seleccion', $('#idCursoFicha').val())" required>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -333,7 +339,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="dateInicioFicha">
-                                                            Fecha de Inicio;
+                                                            Fecha de Inicio:
                                                         </label>
                                                         <label id="dateInicioFicha"></label>
                                                         <input type="hidden" name="dateInicio" id="dateInicio"/>
@@ -377,10 +383,11 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <form id="form_estudiante" class="" action="ControllerEstudiante" method="POST">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
+                                    <div class="panel">
+                                        <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Formulario de Estudiante
+                                                <label id="titulo"></label>
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                             </h3>
                                         </div>
                                         <div class="panel-body">

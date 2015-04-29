@@ -9,10 +9,14 @@ import Model.DTO.ObjAcudiente;
 import Model.DTO.ObjEstudiante;
 import Model.Data.ModelAcudiente;
 import Model.Data.ModelEstudiante;
+import Model.Data.ModelFicha;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +35,7 @@ public class ControllerEstudiante extends HttpServlet {
     public ObjEstudiante _objEstudiente = new ObjEstudiante();
     public ModelAcudiente daoModelAcudiente = new ModelAcudiente();
     public ObjAcudiente _objAcudiente = new ObjAcudiente();
+    ModelFicha daoModelFicha = new ModelFicha();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -83,7 +88,6 @@ public class ControllerEstudiante extends HttpServlet {
                         daoModelEstudiante = new ModelEstudiante();
                         String salida = Mensaje(daoModelEstudiante.Add(_objEstudiente), "El estudiante ha sido registrado", "A ocurrido un error al intentar registrar al estudiante");
                         response.getWriter().write(salida);
-
                     } catch (NumberFormatException | IOException e) {
                         System.out.println(e.getMessage());
                     }
@@ -161,9 +165,42 @@ public class ControllerEstudiante extends HttpServlet {
                     }
                     break;
                 }
+                case "Seleccion": {
+                    daoModelFicha = new ModelFicha();
+                    String aux = request.getParameter("id");
+                    int id = Integer.parseInt(aux.trim());
+                    try {
+                        respuesta = new LinkedHashMap<>();
+                        ResultSet result = daoModelFicha.buscarPorID(id);
+                        while (result.next()) {
+                            respuesta.put("idFicha", result.getString("idFicha"));
+                            respuesta.put("estado", result.getString("estado"));
+                            respuesta.put("cuposDisponibles", result.getString("cuposDisponibles"));
+                            respuesta.put("fechaInicio", result.getString("fechaInicio"));
+                            respuesta.put("precioFicha", result.getString("precioFicha"));
+                            respuesta.put("tblcurso_idCurso", result.getString("tblcurso_idCurso"));
+                            Date fechaFinal = result.getDate("fechaInicio");
+                            respuesta.put("fechaFinal", String.valueOf(sumarRestarDiasFecha(fechaFinal, 30)));
+                        }
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        String salida = new Gson().toJson(respuesta);
+                        daoModelFicha.Signout();
+                        response.getWriter().write(salida);
+                    } catch (SQLException | IOException e) {
+                        System.err.println("Ha ocurrido un error " + e.toString());
+                    }
+                    break;
+                }
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.getWriter().write(getTableEstudiantes());
+                    break;
+                }
+                case "getOptionsFichas": {
+                    ControllerFicha controllerFicha = new ControllerFicha();
+                    response.setContentType("application/text");
+                    response.getWriter().write(controllerFicha.getOptionsFichas());
                     break;
                 }
             }
@@ -184,11 +221,11 @@ public class ControllerEstudiante extends HttpServlet {
                 arreglo[3] = result.getString("generoCliente").trim();
                 arreglo[4] = result.getString("estadoEstudiante").trim();
                 arreglo[5] = "<a class=\"btn-sm btn-success btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ")\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-search\"></span></a>";
+                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
                 arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ", 'Editar')\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-edit\"></span></a>";
+                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
                 arreglo[7] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ", 'Matricular')\">\n"
-                        + "                                                <span class=\"glyphicon glyphicon-bookmark\"></span></a>";
+                        + "<span class=\"glyphicon glyphicon-bookmark\"></span></a>";
                 lista.add(arreglo);
             }
 
@@ -212,6 +249,14 @@ public class ControllerEstudiante extends HttpServlet {
             mensaje.put("tipo", "error");
         }
         String salida = new Gson().toJson(mensaje);
+        return salida;
+    }
+
+    public Date sumarRestarDiasFecha(Date fecha, int dias) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+        calendar.add(Calendar.DAY_OF_YEAR, dias);
+        Date salida = new Date(calendar.getTime().getTime());
         return salida;
     }
 

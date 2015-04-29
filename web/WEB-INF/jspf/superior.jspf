@@ -1,15 +1,12 @@
 <%-- any content can be specified here e.g.: --%>
 <%@page import="Controller.ControllerLogin"%>
-        <%
-            ControllerLogin controllerLogin = new ControllerLogin();
-            if (!controllerLogin.comprobarEntrada(session.getAttribute("derechos"), request.getRequestURI())) {
-               response.sendRedirect("index.jsp");
-            }
-        %>
-
-
+<%
+    ControllerLogin controllerLogin = new ControllerLogin();
+    if (!controllerLogin.comprobarEntrada(session.getAttribute("derechos"), request.getRequestURI())) {
+        response.sendRedirect("index.jsp");
+    }
+%>
 <%@ page pageEncoding="UTF-8" %>
-
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -29,7 +26,6 @@
         <ul class="nav navbar-nav">
             <li id="btnindex" ><a href="index.jsp">Inicio</a></li>
                 <%
-                    
                     if (session.getAttribute("usuario") == null) {
                         out.print(controllerLogin.imprimirBarra("", ""));
                     } else {
@@ -37,7 +33,6 @@
                     }
                 %>
         </ul>
-
         <%if (session != null) {
                 if (session.getAttribute("usuario") != null) {
         %>
@@ -53,10 +48,6 @@
         <!--%@include file="logueado.jspf" %-->
         <%
             }
-
         %>
-        
     </div>
 </div>
-
-

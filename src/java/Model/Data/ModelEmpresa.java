@@ -78,7 +78,7 @@ public class ModelEmpresa extends ConnectionDB {
         }
         return rs;
     }
-    public boolean Update(ObjEmpresa _objEmpresa){
+    public boolean Edit(ObjEmpresa _objEmpresa){
         boolean objReturn = false;
         String sql = "call spActualizarEmpresa(?,?,?,?,?,?)";
         
