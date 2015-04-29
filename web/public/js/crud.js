@@ -3,12 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var tablaCurso, tablaCategoriaCurso, tablaFicha, tablaSeminario, tablaEstudiante;
-var tablas = $('.tabla').DataTable({
-    "language": {
-        "url": "public/lang/Spanish.json"
-    }
-});
+var tablaCurso, tablaCategoriaCurso, tablaFicha, tablaSeminario, tablaEstudiante,tablaCompra;
 
 function editar() {
     var tipo;
@@ -543,6 +538,7 @@ var matricula = {
             $(form).submit();
         }
     },
+    
     cargar: function () {
         tablaEstudiante = $('#tblEstudiantes').DataTable({
             "ajax": {
@@ -575,6 +571,80 @@ function limpiar(miForm) {
             this.value = 0;
     });
 }
+var compra = {
+    myAjax: function (accion, id, tipo) {
+        var form = $('#formCompra');
+        $(form).off();
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
+                success: function (data) {
+                    if (accion == 'Consultar') {
+                        if (aux == 'Editar') {
+                            compra.editar(data);
+                        } else
+                            compra.consultar(data);
+                    }
+                    else if (accion == 'Registrar' || accion == 'Editar' || accion == 'Estado') {
+                        if (accion != 'Estado') {
+                            $('#miPopupCompra').modal('hide');
+                        }
+                        mensaje(data);
+                        compra.actualizarTabla();
+                    }
+                    else if (accion === 'getOptionsCompra') {
+                        compra.cargarOpciones(data);
+                    }
+                }
+            });
+            $(form).off();
+            return false;
+        });
+        if (accion === 'Estado' || accion === 'Consultar' || accion === 'getOptionsCompra') {
+            $(form).submit();
+        }
+    },
+    consultar: function (data) {
+        limpiar("#form_compra");
+        $('#miPopupCompra').find('#txtFacturaProveedor').val(data['facturaProveedor']);
+        $('#miPopupCompra').find('#txtNombreProveedor').val(data['nombreProveedor']);
+        $('#miPopupCompra').find('#dateFechaCompra').val(data['fechaCompra']);
+        $('#miPopupCompra').find('#totalFactura').val(data['totalFactura']);
+        $('#miPopupCompra').find('#btnCompra').attr('type', 'hidden').attr('disabled', true);
+        desabilitar('#form_compra');
+        $('#miPopupCompra').modal('show');
+    },
+    registrar: function () {
+        habilitar('#form_compra');
+        limpiar("#form_compra");
+        $('#miPopupCompra').find('#btnCompra').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
+        $('#miPopupCompra').modal('show');
+    },
+    editar: function (data) {
+        limpiar("#form_compra");
+        compra.consultar(data);
+        habilitar('#form_compra');
+        $('#miPopupCompra').find('#btnCompra').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
+    },
+    cargar: function () {
+        tablaCompra = $('#tblCompra').DataTable({
+            "ajax": {
+                "url": "ControllerCompra",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            }, "language": {
+                "url": "public/lang/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaCompra.ajax.reload();
+    }
+};
 
 function habilitar(miForm) {
     $(':input', miForm).each(function () {
@@ -602,10 +672,16 @@ function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
 
+
+
+
+
+
 ficha.cargar();
 categoriaCurso.cargar();
 curso.cargar();
 seminario.cargar();
-abono.cargar();
+//abono.cargar();
 estudiante.cargar();
+compra.cargar();
 //credito.cargar()

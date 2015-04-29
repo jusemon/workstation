@@ -9,12 +9,12 @@ import Model.DTO.ObjCompra;
 import Model.Data.ModelCompra;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.print.DocFlavor;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerCompra extends HttpServlet {
 
-     ModelCompra daoModelCompra;
-     ObjCompra _ObjCompra = new ObjCompra();
+    ModelCompra daoModelCompra;
+    ObjCompra _objCompra = new ObjCompra();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,26 +42,93 @@ public class ControllerCompra extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+
         if (request.getParameter("action") != null) {
-            String facturaProveedor, nombreProveedor,fechaCompra; 
-             
-            int totalCompra;
-            
+            //int estado = 0;
+
             String action = new String(request.getParameter("action").getBytes("ISO-8859-1"), "UTF-8");
-                switch ( request.getParameter("action")) {
-                    case "Registrar":{
-                        facturaProveedor = new String(request.getParameter("txtfacturaProveedor").getBytes("ISO-8859-1"), "UTF-8");
-                        nombreProveedor = new String(request.getParameter("txtnombreProveedor").getBytes("ISO-8859-1"), "UTF-8"); 
-                        fechaCompra = new Integer.parseInt(request.getParameter("datefechaCompra")); 
-                        totalCompra = new Integer.parseInt(request.getParameter("ddltotoalCompra"));
+            switch (request.getParameter("action")) {
+                case "Registrar": {
+                    String facturaProveedor = (request.getParameter("txtFacturaProveedor"));
+                    String nombreProveedor = (request.getParameter("txtNombreProveedor"));
+                    Date fechaCompra = Date.valueOf(request.getParameter("dateFechaCompra"));
+                    int totalCompra = Integer.parseInt(request.getParameter("txtTotalCompra"));
+                    _objCompra.setFacturaProveedor(facturaProveedor);
+                    _objCompra.setNombreProveedor(nombreProveedor);
+                    _objCompra.setFechaCompra(fechaCompra);
+                    _objCompra.setTotalCompra(totalCompra);
+                    daoModelCompra = new ModelCompra();
+                    daoModelCompra.Add(_objCompra);
+                    daoModelCompra.Signout();
+                    break;
+                }
+                case "Editar": {
+                    String facturaProveedor = (request.getParameter("txtFacturaProveedor"));
+                    String nombreProveedor = (request.getParameter("txtNombreProveedor"));
+                    Date fechaCompra = Date.valueOf(request.getParameter("dateFechaCompra"));
+                    int totalCompra = Integer.parseInt(request.getParameter("txtTotalCompra"));
+                    _objCompra.setFacturaProveedor(facturaProveedor);
+                    _objCompra.setNombreProveedor(nombreProveedor);
+                    _objCompra.setFechaCompra(fechaCompra);
+                    _objCompra.setTotalCompra(totalCompra);
+                    daoModelCompra = new ModelCompra();
+                    daoModelCompra.Add(_objCompra);
+                    daoModelCompra.Signout();
+                    break;
+                }
+                case "Enlistar": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getTableCompra());
+                    break;
                 }
 
             }
-
         }
+
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    public String getTableCompra() {
+        ResultSet result;
+        List<String[]> lista = new ArrayList<>();
+        try {
+            int contador = 0;
+            daoModelCompra = new ModelCompra();
+            result = daoModelCompra.ListAll();
+            while (result.next()) {
+                String[] arreglo = new String[5];
+                arreglo[0] = result.getString("facturaProveedor").trim();
+                arreglo[1] = result.getString("nombreProveedor").trim();
+                arreglo[2] = result.getString("fechaCompra").trim();
+                arreglo[3] = result.getString("totalCompra").trim();
+                arreglo[4] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"compra.editar(" + contador + ")\">"
+                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
+                lista.add(arreglo);
+                contador++;
+            }
+        } catch (Exception e) {
+            System.err.println("Ha Ocurrido un error en el controller compra " + e.toString());
+        }
+        String salida = new Gson().toJson(lista);
+        salida = "{\"data\":" + salida + "}";
+        return salida;
+    }
+
+    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
+        Map<String, String> mensaje = new LinkedHashMap<>();
+        if (entrada) {
+            mensaje.put("mensaje", mensajeSuccess);
+            mensaje.put("tipo", "success");
+
+        } else {
+            mensaje.put("mensaje", mensajeError);
+            mensaje.put("tipo", "error");
+        }
+        String salida = new Gson().toJson(mensaje);
+        return salida;
+    }
+
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

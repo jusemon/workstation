@@ -32,8 +32,8 @@ public class ModelCompra extends ConnectionDB {
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objCompra.getFacturaProveedor());
             pStmt.setString(2, _objCompra.getNombreProveedor());
-            pStmt.setString(3, _objCompra.getFechaCompra());
-            pStmt.setDouble(4, _objCompra.getTotalCompra());
+            pStmt.setDate(3, _objCompra.getFechaCompra());
+            pStmt.setInt(4, _objCompra.getTotalCompra());
 
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
@@ -47,7 +47,7 @@ public class ModelCompra extends ConnectionDB {
 
     public ResultSet ListAll() throws Exception {
         ResultSet rs = null;
-        String sql = " call spConsultarCompra()";
+        String sql = " call spConsultarCompras()";
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
@@ -67,8 +67,8 @@ public class ModelCompra extends ConnectionDB {
             pStmt = connection.prepareCall(sql);
                 pStmt.setString(1, _objCompra.getFacturaProveedor());
             pStmt.setString(2, _objCompra.getNombreProveedor());
-            pStmt.setString(3, _objCompra.getFechaCompra());
-            pStmt.setDouble(4, _objCompra.getTotalCompra());
+            pStmt.setDate(3, _objCompra.getFechaCompra());
+            pStmt.setInt(4, _objCompra.getTotalCompra());
 
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
