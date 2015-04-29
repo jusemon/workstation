@@ -195,7 +195,7 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                <label id="titulo">Ingresar Curso</label>
+                                                <label id="titulo">Registrar Curso</label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
                                             </h3>
                                         </div>
@@ -273,7 +273,6 @@
                 </div>
             </div>
         </div>
-
         <!-- 
             Emergente para registrar Categorias de Cursos
         -->
@@ -404,7 +403,7 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Crear Ficha
+                                                <label id="titulo">Crear Ficha</label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                             </h3>
                                         </div>

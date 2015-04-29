@@ -73,6 +73,7 @@
                 </div>
             </div>
         </div>
+
         <div class="modal" id="miPopupEmpresa">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -83,12 +84,13 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Gestión de Empresas
+                                                <label id="titulo">
+                                                    Gestión de Empresas
+                                                </label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>
                                         </div>
                                         <div class="panel-body">
-
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">

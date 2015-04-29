@@ -131,6 +131,8 @@ var categoriaCurso = {
     },
     editar: function(tr) {
         var data = tablaCategoriaCurso.row(tr).data();
+        $('#miPopupCategoriaCurso').find('#titulo').empty();
+        $('#miPopupCategoriaCurso').find('#titulo').append('Editar Categoria');
         $('#miPopupCategoriaCurso').find('#idCategoriaCurso').val(data[0]);
         $('#miPopupCategoriaCurso').find('#txtNombreCategoriaCurso').val(data[1]);
         $('#miPopupCategoriaCurso').find('#btnCategoriaCurso').val('Editar');
@@ -191,11 +193,15 @@ var ficha = {
     },
     registrar: function() {
         limpiar('#formFicha');
+        $('#miPopupFicha').find('#titulo').empty();
+        $('#miPopupFicha').find('#titulo').append('Registrar Ficha');
         $('#miPopupFicha').find('#btnFicha').attr('value', 'Registrar');
         $('#miPopupFicha').modal('show');
     },
     editar: function(tr, estado, id) {
         var data = tablaFicha.row(tr).data();
+        $('#miPopupFicha').find('#titulo').empty();
+        $('#miPopupFicha').find('#titulo').append('Editar Ficha');
         $('#miPopupFicha').find('#idFicha').val(data[0]);
         $('#miPopupFicha').find('#idCursoFicha option').prop('selected', false).filter('[value="' + id + '"]').prop('selected', true);
         $('#miPopupFicha').find('#txtCupos').val(data[2]);
@@ -255,11 +261,15 @@ var seminario = {
     },
     registrar: function() {
         limpiar('#formSeminario');
+        $('#miPopupSeminario').find('#titulo').empty();
+        $('#miPopupSeminario').find('#titulo').append('Registrar Seminario');
         $('#miPopupSeminario').find('#btnSeminario').attr('value', 'Registrar');
         $('#miPopupSeminario').modal('show');
     },
     editar: function(tr, estado) {
         var data = tablaSeminario.row(tr).data();
+        $('#miPopupSeminario').find('#titulo').empty();
+        $('#miPopupSeminario').find('#titulo').append('Editar Seminario');
         $('#miPopupSeminario').find('#idSeminario').val(data[0]);
         $('#miPopupSeminario').find('#txtNombreSeminario').val(data[1]);
         $('#miPopupSeminario').find('#txtDuracion').val(data[2]);
@@ -321,6 +331,8 @@ var abono = {
     },
     consultar: function(data) {
         limpiar("#formAbono");
+        $('#miPopupAbono').find('#titulo').empty();
+        $('#miPopupAbono').find('#titulo').append('Consultar Abono');
         $('#miPopupAbono').find('#idAbono').val(data['idAbono']);
         $('#miPopupAbono').find('#txtIdCredito').val(data['idCredito']);
         $('#miPopupAbono').find('#txtValorAbono').val(data['valorAbono']);
@@ -330,11 +342,15 @@ var abono = {
     },
     registrar: function() {
         limpiar("#formAbono");
+        $('#miPopupAbono').find('#titulo').empty();
+        $('#miPopupAbono').find('#titulo').append('Registrar Abono');
         $('#miPopupAbono').find('#btnAbono').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupAbono').modal('show');
     },
     editar: function(data) {
         abono.consultar(data);
+        $('#miPopupAbono').find('#titulo').empty();
+        $('#miPopupAbono').find('#titulo').append('Editar Abono');
         $('#miPopupAbono').find('#btnAbono').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
     mensaje: function(data) {
@@ -401,6 +417,8 @@ var estudiante = {
     },
     matricular: function(data) {
         limpiar("#formMatricula");
+        $('#miPopupMatricula').find('#titulo').empty();
+        $('#miPopupMatricula').find('#titulo').append('Matricular Estudiante');
         $('#miPopupMatricula').find('#txtNombre').empty();
         $('#miPopupMatricula').find('#txtApellido').empty();
         $('#miPopupMatricula').find('#txtNombre').append(data["nombreCliente"]);
@@ -417,6 +435,8 @@ var estudiante = {
     },
     consultar: function(data) {
         limpiar("#form_estudiante");
+        $('#miPopupEstudiante').find('#titulo').empty();
+        $('#miPopupEstudiante').find('#titulo').append('Consultar Estudiante');
         $('#miPopupEstudiante').find('#txtIdentificacion').val(data['numeroDocumento']);
         $('#miPopupEstudiante').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + data['tipoDocumento'] + '"]').prop('selected', true);
         $('#miPopupEstudiante').find('#txtNombre').val(data['nombreCliente']);
@@ -443,17 +463,20 @@ var estudiante = {
     registrar: function() {
         habilitar('#form_estudiante');
         limpiar("#form_estudiante");
+        $('#miPopupEstudiante').find('#titulo').empty();
+        $('#miPopupEstudiante').find('#titulo').append('Registrar Estudiante');
         $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupEstudiante').modal('show');
     },
     editar: function(data) {
         limpiar("#formCurso");
         estudiante.consultar(data);
+        $('#miPopupEstudiante').find('#titulo').empty();
+        $('#miPopupEstudiante').find('#titulo').append('Editar Estudiante');
         habilitar('#form_estudiante');
         $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
     cargarSeleccion: function(data) {
-
         $('#miPopupMatricula').find('#dateInicio').val(data['fechaInicio']);
         $('#miPopupMatricula').find('#dateFinal').val(data['fechaFinal']);
         $('#miPopupMatricula').find('#dateInicioFicha').empty();
@@ -552,11 +575,15 @@ var categoriaArticulo = {
     },
     registrar: function() {
         limpiar('#formCategoriaArticulo');
+        $('#miPopupCategoriaArticulo').find('#titulo').empty();
+        $('#miPopupCategoriaArticulo').find('#titulo').append('Registrar Categoria Articulo');
         $('#miPopupCategoriaArticulo').find('#btnCategoriaArticulo').attr('value', 'Registrar');
         $('#miPopupCategoriaArticulo').modal('show');
     },
     editar: function(tr) {
         var data = tablaCategoriaArticulo.row(tr).data();
+        $('#miPopupCategoriaArticulo').find('#titulo').empty();
+        $('#miPopupCategoriaArticulo').find('#titulo').append('Editar Categoria Articulo');        
         $('#miPopupCategoriaArticulo').find('#idCategoriaArticulo').val(data[0]);
         $('#miPopupCategoriaArticulo').find('#txtNombreCategoriaArticulo').val(data[1]);
         $('#miPopupCategoriaArticulo').find('#btnCategoriaArticulo').val('Editar');

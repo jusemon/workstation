@@ -178,7 +178,10 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Ingresar Acudiente<button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                <label id="titulo">
+                                                    Ingresar Acudiente
+                                                </label>
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                             </h3>
                                         </div>
                                         <div class="panel-body">
@@ -302,7 +305,9 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Matricular Estudiante
+                                                <label id="titulo">
+                                                    Matricular Estudiante
+                                                </label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                             </h3>
                                         </div>
@@ -385,9 +390,11 @@
                             <div class="col-md-12">
                                 <form id="form_estudiante" class="" action="ControllerEstudiante" method="POST">
                                     <div class="panel panel-default">
-                                        <div class="panel-heading">
+                                        <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Formulario de Estudiante
+                                                <label id="titulo">
+                                                    Formulario de Estudiante
+                                                </label>
                                             </h3>
                                         </div>
                                         <div class="panel-body">
