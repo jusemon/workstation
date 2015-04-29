@@ -42,7 +42,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input class="btn btn-default btn-block" type="button" onclick="estudiante.registrar()" name="regEstudiante" value="Registrar Estudiante">
+                                            <input class="btn btn-default btn-block" type="button" onclick="estudiante.registrar()" value="Registrar Estudiante">
                                         </div>
                                     </div>
                                 </div>
@@ -94,14 +94,12 @@
                                                 </form>
                                             </div>
                                             <div class="panel-footer">
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -178,9 +176,7 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                <label id="titulo">
-                                                    Ingresar Acudiente
-                                                </label>
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                             </h3>
                                         </div>
@@ -305,9 +301,7 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                <label id="titulo">
-                                                    Matricular Estudiante
-                                                </label>
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                             </h3>
                                         </div>
@@ -389,12 +383,11 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <form id="form_estudiante" class="" action="ControllerEstudiante" method="POST">
-                                    <div class="panel panel-default">
+                                    <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                <label id="titulo">
-                                                    Formulario de Estudiante
-                                                </label>
+                                                <label id="titulo"></label>
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                             </h3>
                                         </div>
                                         <div class="panel-body">

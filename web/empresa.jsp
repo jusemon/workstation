@@ -36,7 +36,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <input class="btn btn-default btn-block" type="button" name="registrarEmpresa" value="Registrar empresa" onclick="empresa.registrar()">
+                                            <input class="btn btn-default btn-block" type="button" value="Registrar empresa" onclick="empresa.registrar()">
                                         </div>
                                     </div>
                                 </div>
@@ -84,9 +84,7 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                <label id="titulo">
-                                                    Gestión de Empresas
-                                                </label>
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>
                                         </div>

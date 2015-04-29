@@ -41,14 +41,14 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" id="registrarCurso" type="button" onclick="curso.registrar()" name="regCurso" value="Registrar Curso">
+                                                <input class="btn btn-default btn-block" type="button" onclick="curso.registrar()" value="Registrar Curso">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" onclick="categoriaCurso.registrar()" name="regCatCurso" value="Registrar Categoria">
+                                                <input class="btn btn-default btn-block" type="button" onclick="categoriaCurso.registrar()" value="Registrar Categoria">
                                             </div>
                                         </div>
                                     </div>
@@ -70,7 +70,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input  class="btn btn-default btn-block" type="button"  name="regCurso" value="Registrar Ficha" onclick="ficha.registrar()">
+                                                <input  class="btn btn-default btn-block" type="button" onclick="ficha.registrar()" value="Registrar Ficha">
                                             </div>
                                         </div>
                                     </div>
@@ -90,7 +90,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" id="registrarSeminario" name="regSeminario" value="Registrar Seminario" onclick="seminario.registrar()">
+                                                <input class="btn btn-default btn-block" type="button" onclick="seminario.registrar()" value="Registrar Seminario">
                                             </div>
                                         </div>
                                     </div>
@@ -195,7 +195,7 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                <label id="titulo">Registrar Curso</label>
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
                                             </h3>
                                         </div>
@@ -286,7 +286,7 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Ingresar Categoria
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
                                             </h3>
                                         </div>
@@ -333,7 +333,7 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Gestion de Seminarios
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
                                             </h3>
                                         </div>
@@ -403,7 +403,7 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                <label id="titulo">Crear Ficha</label>
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                             </h3>
                                         </div>

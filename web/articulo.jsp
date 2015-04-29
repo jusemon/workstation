@@ -43,14 +43,14 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupArticulo" data-dismiss="modal" name="regArticulo" value="Registrar Articulo">
+                                                <input class="btn btn-default btn-block" type="button" onclick="articulo.registrar()" value="Registrar Articulo">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" id="registrarCategoriaArticulo" onclick="categoriaArticulo.registrar()" value="Registrar Categoria">
+                                                <input class="btn btn-default btn-block" type="button" onclick="categoriaArticulo.registrar()" value="Registrar Categoria">
                                             </div>
                                         </div>
                                     </div>
@@ -115,7 +115,7 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Ingresar Articulo
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>
                                         </div>
@@ -189,7 +189,7 @@
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Ingresar Categoria
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>
                                         </div>
