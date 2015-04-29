@@ -68,7 +68,51 @@
                                             </div>
                                         </div>
                                     </div>
-                                   
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="panel-group" id="accordion2">
+                                                <div class="panel panel-default">
+                                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Compra" data-parent="#accordion2" href="#collapseConsultaCompra"/>                                                           
+                                                </div>
+                                            </div>
+                                            <div class="panel-collapse collapse" id="collapseConsultaCompra">
+                                                <div class="panel-body">
+                                                    <form action="ControllerCompra" method="POST">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="dateFechaInicio">
+                                                                        Fecha de Inicio 
+                                                                    </label>
+                                                                    <input name="dateFechaInicio" id="dateFechaInicio" type="date" class="form-control" placeholder="Ejm: 10/10/2014" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="dateFechaFinal">
+                                                                        Fecha de Final 
+                                                                    </label>
+                                                                    <input name="dateFechaFinal" id="dateFechaFinal" type="date" class="form-control" placeholder="Ejm: 10/10/2014" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <button type="button" class=" btn btn-default btn-block" >
+                                                                        <span class="glyphicon glyphicon-search "></span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -194,14 +238,21 @@
                             <table id="tblCompra" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Número Factura</th>
-                                        <th class="text-center">Nombre Proveedor</th>
-                                        <th class="text-center">Fecha de Compra</th>
-                                        <th class="text-center">Total Compra</th>
+                                        <th class="text-center">Codigo</th>
+                                        <th class="text-center">Fecha</th>
+                                        <th class="text-center">Total</th>
                                         <th class="text-center">Consultar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr>
+                                        <td class="text-center">001</td>
+                                        <td class="text-center">21/11/2014</td>
+                                        <td class="text-center">155000</td>
+                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleCompra" href="javascript:void(0)">
+                                                <span class="glyphicon glyphicon-search"></span></a>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -239,7 +290,7 @@
                                 <tbody>
                                     <%
                                         Controller.ControllerAbono controllerAbono = new ControllerAbono();
-                                        out.print(controllerAbono.getTableAbono());
+                                        out.print(controllerAbono.getTableAbono());                                        
                                     %>
                                 </tbody>
                             </table>
@@ -287,30 +338,119 @@ dentro del cuerpo del panel se encuentra el formulario para agregar elementos y 
 finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         -->
         <%--popup de compra--%>
+    <%--     <div class="modal" id="miPopupCompra">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">                               
+                                <form>
+                                    <div class="panel">
 
+                                        <div class="panel-heading estilo2">
+                                            <h3 class="panel-title">
+                                                Detalle de Compra
+                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                            </h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="row">
+
+                                                <div class="col-md-12 col-xs-12">
+                                                    <div class="form-group form-inline pull-left">
+                                                        <input class="form-control" type="search" placeholder="Ingrese la factura"/>
+                                                        <div class="btn btn-primary form-control">
+                                                            <span class="glyphicon glyphicon-folder-open" ></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group form-inline pull-right">
+                                                        <input class="form-control" type="search"/>         
+                                                        <div class="btn btn-primary form-control">
+                                                            <span class="glyphicon glyphicon-search" ></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-xs-12">
+                                                    <div class="form-group form-inline pull-right">
+                                                        <label for="txtNombre">
+                                                            Agrege Compra
+                                                        </label>
+                                                        <select class="form-control" name="txtNombre">
+                                                            <option value="000">...</option>
+                                                            <option value="001">Pincel 3"      1200$</option>
+                                                        </select>
+                                                        <input type="button" class="form-control btn-default" value="Agregar"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table id="tblArticulosCompra" class="table table-hover" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">Nº Factura Proveedor</th>
+                                                        <th class="text-center">Nombre Proveedor</th>
+                                                        <th class="text-center">Fecha Compra</th>
+                                                        <th class="text-center">Total Compra</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-center">00001</td>
+                                                        <td class="text-center">Pinturas Arcoiris</td>
+                                                        <td class="text-center">15/04/2015</td>
+                                                        <td class="text-center">12000</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                            </div>
+
+                            <div class="panel-footer">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
+        Popup Venta
+      --%> 
         <div class="modal" id="miPopupCompra">
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form id="formCompra" action="ControllerCompra" method="POST">
+                                <form action="ControllerCompra" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
-                                                Ingresar Compra:
+                                             Ingresar Compra:
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>
                                         </div>
                                         <div class="panel-body">
                                             <input type="hidden" name="facturaProveedor" id="idArticulo"/>
-                                            <div class="row">
+                                                 <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtFacturaProveedor">
                                                             Nº Factura Proveedor:
                                                         </label>
-                                                        <input name="txtFacturaProveedor" id="txtFacturaProveedor" type="text" class="form-control" placeholder="P23455" required>
+                                                        <input name="txtFacturaProvedor" id="txtFacturaProveedor" type="text" class="form-control" placeholder="P23455" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -320,17 +460,17 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                         <label for="txtNombreProveedor">
                                                             Nombre Proveedor:
                                                         </label>
-                                                        <input name="txtNombreProveedor" id="txtNombreProveedor" type="text" class="form-control" placeholder="Ejm: Pinturas Arcoíris" required>
+                                                        <input name="txtNombreProvedor" id="txtNombreProveedor" type="text" class="form-control" placeholder="Ejm: Pinturas Arcoíris" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="dateFechaInicio">
-                                                            Fecha de Compra
+                                                        <label for="txtPrecio">
+                                                            Fecha Compra:
                                                         </label>
-                                                        <input name="dateFechaCompra" id="dateFechaCompra" type="date" class="form-control" placeholder="Ejm: 10/10/2014" required>
+                                                        <input name="txtFecha" id="txtPrecioArticulo" type="number" class="form-control" placeholder="Ejm: 10000" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -340,11 +480,11 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                         <label for="txtTotalCompra">
                                                             Total Compra:
                                                         </label>
-                                                        <input name="txtTotalCompra" id="txtTotalCompra" type="number" class="form-control" placeholder="Ejm:30000" required>
+                                                        <input name="txtTotalCompra" id="txtTotalCompra" type="number" class="form-control" placeholder="Ejm: 30000" required>
                                                     </div>
                                                 </div>
                                             </div>
-
+           
                                         </div>
                                         <div class="panel-footer">
                                             <div class="col-md-offset-3 col-md-6">
@@ -361,7 +501,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                 </div>
             </div>
         </div>
-        <!--popup de Venta -->
+      <!--popup de Venta -->
         <div class="modal" id="miPopupVenta">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -612,7 +752,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                 </div>
             </div>
         </div>
-
+        
         <!--
         Popup Abono
         -->
@@ -678,7 +818,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                 </div>
             </div>
         </div>
-
+        
     </body>
     <%@include file="WEB-INF/jspf/imports.jspf" %>
 </html>

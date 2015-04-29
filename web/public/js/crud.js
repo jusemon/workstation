@@ -526,7 +526,6 @@ var matricula = {
             $(form).submit();
         }
     },
-    
     cargar: function () {
         tablaMatricula = $('#tblMatriculas').DataTable({
             "ajax": {
@@ -752,16 +751,11 @@ var empresa = {
     }
 };
 
-
-
-
-
-
 ficha.cargar();
 categoriaCurso.cargar();
 curso.cargar();
 seminario.cargar();
-//abono.cargar();
+abono.cargar();
 estudiante.cargar();
 categoriaArticulo.cargar();
 articulo.cargar();
