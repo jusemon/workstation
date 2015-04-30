@@ -209,7 +209,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtIdentificacion">
-                                                            Numero de Identificación
+                                                            Número de Identificación
                                                         </label>
                                                         <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
                                                     </div>
@@ -353,7 +353,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtIdentificacion">
-                                                            Numero de Identificación
+                                                            Número de Identificación
                                                         </label>
                                                         <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
                                                     </div>

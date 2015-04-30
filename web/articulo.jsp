@@ -34,7 +34,7 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                        Gestión de Articulos
+                                        Gestión de Artículos
                                     </a>
                                 </h4>
                             </div>
@@ -43,7 +43,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" onclick="articulo.registrar()" value="Registrar Articulo">
+                                                <input class="btn btn-default btn-block" type="button" onclick="articulo.registrar()" value="Registrar Artículo">
                                             </div>
                                         </div>
                                     </div>
@@ -125,7 +125,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtNombreArticulo">
-                                                            Descripción Articulo:
+                                                            Descripción Artículo:
                                                         </label>
                                                         <input name="txtDescripcion" id="txtNombreArticulo" type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>
                                                     </div>

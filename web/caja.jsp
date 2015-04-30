@@ -385,7 +385,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                 <div class="col-md-12 col-xs-12">
                                                     <div class="form-group form-inline pull-right">
                                                         <label for="txtNombre">
-                                                            Agrege los articulos
+                                                            Agrege los artículos
                                                         </label>
                                                         <select class="form-control" name="txtNombre">
                                                             <option value="000">...</option>
@@ -398,7 +398,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                             <table id="tblArticulosVenta" class="table table-hover" cellspacing="0" width="100%">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-center">Codigo</th>
+                                                        <th class="text-center">Código</th>
                                                         <th class="text-center">Nombre</th>
                                                         <td class="text-center">Cantidad</td>
                                                         <th class="text-center">Precio</th>
@@ -464,7 +464,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                 </div>
                                                 <div class="col-md-6 col-xs-6">
                                                     <div class="form-group form-inline">
-                                                        Cedula: 123654    
+                                                        Cédula: 123654    
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-xs-6">
@@ -481,8 +481,8 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                             <table id="tblArticulosVenta" class="table table-hover" cellspacing="0" width="100%">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-center">Codigo</th>
-                                                        <th class="text-center">Articulo</th>
+                                                        <th class="text-center">Código</th>
+                                                        <th class="text-center">Artículo</th>
                                                         <th class="text-center">Cantidad</th>
                                                         <th class="text_center">Precio Unidad</th>
                                                         <th class="text-center">Total</th>

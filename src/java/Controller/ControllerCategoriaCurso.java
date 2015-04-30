@@ -46,7 +46,7 @@ public class ControllerCategoriaCurso extends HttpServlet {
                     daoModelCategoriaCurso = new ModelCategoriaCurso();
                     String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
                     _objCategoriaCurso.setNombreCategoriaCurso(nombre);
-                    String salida = Mensaje(daoModelCategoriaCurso.Add(_objCategoriaCurso), "La categoria ha sido registrada", "Ha ocurrido un error al intentar registrar la categoria");
+                    String salida = Mensaje(daoModelCategoriaCurso.Add(_objCategoriaCurso), "La categoría ha sido registrada", "Ha ocurrido un error al intentar registrar la categoría");
                     response.setContentType("application/json");
                     response.getWriter().write(salida);
                     break;
@@ -57,7 +57,7 @@ public class ControllerCategoriaCurso extends HttpServlet {
                     String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
                     _objCategoriaCurso.setIdCategoriaCurso(idCategoriaArticulo);
                     _objCategoriaCurso.setNombreCategoriaCurso(nombre);;
-                    String salida = Mensaje(daoModelCategoriaCurso.Edit(_objCategoriaCurso), "La categoria ha sido actualizada", "Ha ocurrido un error al intentar actualizar la categoria");
+                    String salida = Mensaje(daoModelCategoriaCurso.Edit(_objCategoriaCurso), "La categoría ha sido actualizada", "Ha ocurrido un error al intentar actualizar la categoría");
                     response.setContentType("application/json");
                     response.getWriter().write(salida);
                     break;

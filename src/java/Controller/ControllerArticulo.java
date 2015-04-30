@@ -59,7 +59,7 @@ public class ControllerArticulo extends HttpServlet {
                             _objArticulo.setDescripcionArticulo(descripcionArticulo);
                             _objArticulo.setCantidadDisponible(cantidadDisponible);
                             _objArticulo.setPrecioUnitario(precioUnitario);
-                            String salida = Mensaje(daoModelArticulo.Add(_objArticulo), "Articulo registrado con exito", "Ha ocurrido un error al intentar registrar el articulo");
+                            String salida = Mensaje(daoModelArticulo.Add(_objArticulo), "Artículo registrado con exito", "Ha ocurrido un error al intentar registrar el artículo");
                             response.setContentType("application/json");
                             response.setCharacterEncoding("UTF-8");
                             response.getWriter().write(salida);
@@ -77,7 +77,7 @@ public class ControllerArticulo extends HttpServlet {
                         _objArticulo.setDescripcionArticulo(descripcionArticulo);
                         _objArticulo.setCantidadDisponible(cantidadDisponible);
                         _objArticulo.setPrecioUnitario(precioUnitario);
-                        String salida = Mensaje(daoModelArticulo.Edit(_objArticulo), "Articulo actualizado con exito", "Ha ocurrido un error al intentar actualizar el articulo");
+                        String salida = Mensaje(daoModelArticulo.Edit(_objArticulo), "Artículo actualizado con exito", "Ha ocurrido un error al intentar actualizar el artículo");
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(salida);

@@ -757,10 +757,10 @@ CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
 --
 
 INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArticulo`) VALUES
-(1, 'Categoria A'),
-(2, 'Categoria B'),
-(3, 'Categoria C'),
-(4, 'Categoria D'),
+(1, 'Categoría A'),
+(2, 'Categoría B'),
+(3, 'Categoría C'),
+(4, 'Categoría D'),
 (5, 'Vinilos');
 
 -- --------------------------------------------------------
@@ -779,11 +779,11 @@ CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
 --
 
 INSERT INTO `tblcategoriacurso` (`idtblCategoriaCurso`, `nombreCategoriaCurso`) VALUES
-(1, 'Categoria A'),
-(2, 'Categoria B'),
-(3, 'Categoria C'),
-(4, 'Categoria D'),
-(5, 'Categoria E');
+(1, 'Categoría A'),
+(2, 'Categoría B'),
+(3, 'Categoría C'),
+(4, 'Categoría D'),
+(5, 'Categoría E');
 
 -- --------------------------------------------------------
 
@@ -1000,10 +1000,10 @@ CREATE TABLE IF NOT EXISTS `tblmodulo` (
 --
 
 INSERT INTO `tblmodulo` (`idmodulo`, `enlace`, `nombre`) VALUES
-(1, 'matricula.jsp', 'Gestion de Matriculas'),
-(2, 'empresa.jsp', 'Gestion de Empresas'),
-(3, 'curso.jsp', 'Gestion de Cursos y Seminarios'),
-(5, 'articulo.jsp', 'Gestion de Articulos'),
+(1, 'matricula.jsp', 'Gestión de Matriculas'),
+(2, 'empresa.jsp', 'Gestión de Empresas'),
+(3, 'curso.jsp', 'Gestión de Cursos y Seminarios'),
+(5, 'articulo.jsp', 'Gestión de Artículos'),
 (6, 'caja.jsp', 'Caja Registradora'),
 (7, 'nuestro.jsp', 'Nuestros Cursos'),
 (8, 'acerca.jsp', 'Acerca de Nosotros');
