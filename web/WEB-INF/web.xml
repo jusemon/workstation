@@ -41,8 +41,8 @@
         <servlet-class>Controller.ControllerEmpresa</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ControllerMatricula</servlet-name>
-        <servlet-class>Controller.ControllerMatricula</servlet-class>
+        <servlet-name>ControllerCompra</servlet-name>
+        <servlet-class>Controller.ControllerCompra</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ControllerCliente</servlet-name>
@@ -85,8 +85,8 @@
         <url-pattern>/ControllerEmpresa</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ControllerMatricula</servlet-name>
-        <url-pattern>/ControllerMatricula</url-pattern>
+        <servlet-name>ControllerCompra</servlet-name>
+        <url-pattern>/ControllerCompra</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

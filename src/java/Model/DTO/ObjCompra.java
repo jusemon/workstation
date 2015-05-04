@@ -5,15 +5,34 @@
  */
 package Model.DTO;
 
+import java.sql.Date;
+
 /**
  *
  * @author Administrador
  */
 public class ObjCompra {
+
     private String facturaProveedor;
     private String nombreProveedor;
-    private String fechaCompra;
-    private double totalCompra;
+    private Date fechaCompra;
+    private int totalCompra;
+
+    public int getTotalCompra() {
+        return totalCompra;
+    }
+
+    public void setTotalCompra(int totalCompra) {
+        this.totalCompra = totalCompra;
+    }
+
+    public Date getFechaCompra() {
+        return fechaCompra;
+    }
+
+    public void setFechaCompra(Date fechaCompra) {
+        this.fechaCompra = fechaCompra;
+    }
 
     public String getFacturaProveedor() {
         return facturaProveedor;
@@ -22,28 +41,13 @@ public class ObjCompra {
     public void setFacturaProveedor(String facturaProveedor) {
         this.facturaProveedor = facturaProveedor;
     }
-     public String getNombreProveedor() {
+
+    public String getNombreProveedor() {
         return nombreProveedor;
     }
 
     public void setNombreProveedor(String nombreProveedor) {
         this.nombreProveedor = nombreProveedor;
     }
-    
-    public String getFechaCompra() {
-        return fechaCompra;
-    }
 
-    public void setFechaCompra(String fechaCompra) {
-        this.fechaCompra = fechaCompra;
-    }
-
-    public double getTotalCompra() {
-        return totalCompra;
-    }
-
-    public void setTotalCompra(double totalCompra) {
-        this.totalCompra = totalCompra;
-    }
-    
 }

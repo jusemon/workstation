@@ -34,7 +34,7 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                        Gestion de Articulos
+                                        Gestión de Artículos
                                     </a>
                                 </h4>
                             </div>
@@ -43,14 +43,14 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" onclick="articulo.registrar()" value="Registrar Articulo">
+                                                <input class="btn btn-default btn-block" type="button" onclick="articulo.registrar()" value="Registrar Artículo">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" onclick="categoriaArticulo.registrar()" value="Registrar Categoria">
+                                                <input class="btn btn-default btn-block" type="button" onclick="categoriaArticulo.registrar()" value="Registrar Categoría">
                                             </div>
                                         </div>
                                     </div>
@@ -64,10 +64,10 @@
                 <div class="col-md-8">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="active">
-                            <a href="#articulos" role="tab" data-toggle="tab">Listado de Articulos</a>
+                            <a href="#articulos" role="tab" data-toggle="tab">Listado de Artículos</a>
                         </li>
                         <li>
-                            <a href="#categorias" role="tab" data-toggle="tab">Listado de Categorias</a>
+                            <a href="#categorias" role="tab" data-toggle="tab">Listado de Categorías</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -75,9 +75,9 @@
                             <table id="tblArticulos" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Codigo</th>
-                                        <th class="text-center">Categoria</th>
-                                        <th class="text-center">Descripcion</th>
+                                        <th class="text-center">Código</th>
+                                        <th class="text-center">Categoría</th>
+                                        <th class="text-center">Descripción</th>
                                         <th class="text-center">Cantidad</th>                                        
                                         <th class="text-center">Precio</th>
                                         <th class="text-center">Editar</th>
@@ -125,7 +125,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtNombreArticulo">
-                                                            Descripcion Articulo:
+                                                            Descripción Artículo:
                                                         </label>
                                                         <input name="txtDescripcion" id="txtNombreArticulo" type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>
                                                     </div>
@@ -155,7 +155,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="idCategoria">
-                                                            Categoria:
+                                                            Categoría:
                                                         </label>
                                                         <select name="idCategoria" id="idCategoriaArticulo" class="form-control" required>
                                                         </select>
@@ -166,7 +166,7 @@
                                         <div class="panel-footer">
                                             <div class="col-md-offset-3 col-md-6">
                                                 <div class="form-group">
-                                                    <input id="btnArticulo"  class="btn btn-default btn-block" onclick="articulo.myAjax($('#btnArticulo').val())" type="submit" name="action" value="Registrar">
+                                                    <input id="btnArticulo"  class="btn btn-default btn-block" onclick="articulo.myAjax($('#btnArticulo').val())" type="submit" name="action">
                                                 </div>
                                             </div>
                                         </div>
@@ -208,7 +208,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input  class="btn btn-default btn-block" id="btnCategoriaArticulo" onclick="categoriaArticulo.myAjax($('#btnCategoriaArticulo').val())" type="submit" name="action" value="Registrar">
+                                                        <input  class="btn btn-default btn-block" id="btnCategoriaArticulo" onclick="categoriaArticulo.myAjax($('#btnCategoriaArticulo').val())" type="submit" name="action">
                                                     </div>
                                                 </div>
                                             </div>

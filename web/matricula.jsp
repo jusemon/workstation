@@ -69,7 +69,7 @@
                                         <th class="text-center">Tipo Documento</th>
                                         <th class="text-center">Documento</th>
                                         <th class="text-center">Nombres</th>
-                                        <th class="text-center">Genero</th>
+                                        <th class="text-center">Género</th>
                                         <th class="text-center">Beneficiario</th>
                                         <th class="text-center">Consultar</th>
                                         <th class="text-center">Editar</th>
@@ -122,7 +122,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form>
+                                <form id="formAcudiente" action="ControllerAcudiente" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -155,7 +155,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtDireccion">
-                                                            Telefono
+                                                            Teléfono
                                                         </label>
                                                         <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
                                                     </div>
@@ -165,7 +165,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtDireccion">
-                                                            Correo Electronico
+                                                            Correo Electrónico
                                                         </label>
                                                         <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
                                                     </div>
@@ -199,8 +199,8 @@
                                                         </label>
                                                         <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control" required>
                                                             <option value="">Seleccionar...</option>
-                                                            <option value="0" > Cedula </option>
-                                                            <option value="1" > Cedula Extranjeria </option>
+                                                            <option value="0" > Cédula </option>
+                                                            <option value="1" > Cédula Extranjeria </option>
                                                             <option value="3" > Tarjeta de Identidad </option>
                                                             <option value="4" > Registro Civil </option>
                                                         </select>
@@ -211,7 +211,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtIdentificacion">
-                                                            Numero de Identificación
+                                                            Número de Identificación
                                                         </label>
                                                         <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
                                                     </div>
@@ -219,15 +219,9 @@
                                             </div>
                                         </div>
                                         <div class="panel-footer">
-                                            <div class="col-md-6">
+                                            <div class="col-md-offset-3 col-md-6">
                                                 <div class="form-group">
                                                     <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
                                                 </div>
                                             </div>
                                         </div>
@@ -349,8 +343,8 @@
                                                         </label>
                                                         <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control" required>
                                                             <option value="">Seleccionar...</option>
-                                                            <option value="CC" > Cedula </option>
-                                                            <option value="CE" > Cedula Extranjeria </option>
+                                                            <option value="CC" > Cédula </option>
+                                                            <option value="CE" > Cédula Extranjería </option>
                                                             <option value="TI" > Tarjeta de Identidad </option>
                                                             <option value="RC" > Registro Civil </option>
                                                         </select>
@@ -361,7 +355,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtIdentificacion">
-                                                            Numero de Identificación
+                                                            Número de Identificación
                                                         </label>
                                                         <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
                                                     </div>
@@ -392,7 +386,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="radioGenero">
-                                                            Genero: 
+                                                            Género: 
                                                         </label>
                                                         <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroFemenino" class="radio-inline" value="0">Femenino</label>
                                                         <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroMasculino" class="radio-inline" value="1">Masculino</label>
@@ -424,7 +418,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtTelefono">
-                                                            Telefono
+                                                            Teléfono
                                                         </label>
                                                         <input name="txtTelefono" id="txtTelefono" type="text" class="form-control" placeholder="Ejm: 5 65 85 45" required>
                                                     </div>
@@ -444,7 +438,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtCorreo">
-                                                            Correo Electronico
+                                                            Correo Electrónico
                                                         </label>
                                                         <input name="txtCorreo" id="txtCorreo" type="email" class="form-control" placeholder="Ejm: juansmm@outlook.com" required>
                                                     </div>
@@ -466,7 +460,7 @@
                                     <div class="row">
                                         <div class="col-md-offset-3 col-md-6">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="submit" id="btnEstudiante" name="action" value="Registrar" onclick="estudiante.myAjax($('#btnEstudiante').val())">
+                                                <input class="btn btn-default btn-block" type="submit" id="btnEstudiante" name="action" onclick="estudiante.myAjax($('#btnEstudiante').val())">
                                             </div>
                                         </div>
                                     </div>

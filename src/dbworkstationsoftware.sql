@@ -58,6 +58,33 @@ BEGIN
 		where numeroFactura=numeroFactu;
 	set msg="Compra actualizada exitosamente";	
     select msg as Respuesta;
+END
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarCompras`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
+    NO SQL
+BEGIN
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCategoriaArticulo`(
+    in idCategoriaArticu			int,
+	in nombreCategoriaArticu	varchar(50)
+)
+BEGIN
+	update tblCategoriaArticulo set nombreCategoriaArticulo=nombreCategoriaArticu where idCategoriaArticulo=idCategoriaArticu;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCategoriaCurso`(idCategoria int, nombreCategoria varchar(30))
+BEGIN
+	update tblcategoriacurso set nombreCategoriaCurso=nombreCategoria
+	where idtblCategoriaCurso=idCategoria;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCompra`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
+    NO SQL
+BEGIN
+	declare msg varchar(40);   
+	update tblCompra set numeroFactura=numeroFactu,nombreProveedor=nombreProveed,fechaCompra=fechaComp,totalCompra=totalComp
+		where numeroFactura=numeroFactu;
+	set msg="Compra actualizada exitosamente";	
+    select msg as Respuesta;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCredito`(
@@ -730,10 +757,10 @@ CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
 --
 
 INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArticulo`) VALUES
-(1, 'Categoria A'),
-(2, 'Categoria B'),
-(3, 'Categoria C'),
-(4, 'Categoria D'),
+(1, 'Categoría A'),
+(2, 'Categoría B'),
+(3, 'Categoría C'),
+(4, 'Categoría D'),
 (5, 'Vinilos');
 
 -- --------------------------------------------------------
@@ -752,11 +779,11 @@ CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
 --
 
 INSERT INTO `tblcategoriacurso` (`idtblCategoriaCurso`, `nombreCategoriaCurso`) VALUES
-(1, 'Categoria A'),
-(2, 'Categoria B'),
-(3, 'Categoria C'),
-(4, 'Categoria D'),
-(5, 'Categoria E');
+(1, 'Categoría A'),
+(2, 'Categoría B'),
+(3, 'Categoría C'),
+(4, 'Categoría D'),
+(5, 'Categoría E');
 
 -- --------------------------------------------------------
 
@@ -973,10 +1000,10 @@ CREATE TABLE IF NOT EXISTS `tblmodulo` (
 --
 
 INSERT INTO `tblmodulo` (`idmodulo`, `enlace`, `nombre`) VALUES
-(1, 'matricula.jsp', 'Gestion de Matriculas'),
-(2, 'empresa.jsp', 'Gestion de Empresas'),
-(3, 'curso.jsp', 'Gestion de Cursos y Seminarios'),
-(5, 'articulo.jsp', 'Gestion de Articulos'),
+(1, 'matricula.jsp', 'Gestión de Matriculas'),
+(2, 'empresa.jsp', 'Gestión de Empresas'),
+(3, 'curso.jsp', 'Gestión de Cursos y Seminarios'),
+(5, 'articulo.jsp', 'Gestión de Artículos'),
 (6, 'caja.jsp', 'Caja Registradora'),
 (7, 'nuestro.jsp', 'Nuestros Cursos'),
 (8, 'acerca.jsp', 'Acerca de Nosotros');
