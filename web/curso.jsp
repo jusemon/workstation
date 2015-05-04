@@ -423,16 +423,6 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="dateFechaFicha">
-                                                            Fecha de Inicio
-                                                        </label>
-                                                        <input name="dateFecha" id="dateFechaFicha" type="date" class="form-control" placeholder="Ejm: 500000" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
                                                         <label for="txtCupos">
                                                             Cupos disponibles
                                                         </label>
@@ -447,6 +437,18 @@
                                                             Precio
                                                         </label>
                                                         <input name="txtPrecio" id="txtPrecioFicha" type="number" class="form-control" placeholder="Ejm: 500000" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="dateFechaFicha">
+                                                            Fecha de Inicio
+                                                        </label>
+                                                        <div class="date">
+                                                            <input name="dateFecha" id="dateFechaFicha" placeholder="Ejm: 19/05/2015" type="text" class="form-control fecha">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

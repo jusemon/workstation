@@ -103,8 +103,6 @@ public class ModelEstudiante extends ConnectionDB {
             pStmt.setInt(11, _objCliente.getEstadoEstudiante());
             pStmt.setString(12, _objCliente.getTipoDocumentoAcudiente());
             pStmt.setString(13, _objCliente.getNumeroDocumentoAcudiente());
-            pStmt = connection.prepareCall(sql);
-
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;

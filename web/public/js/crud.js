@@ -79,7 +79,7 @@ var curso = {
                     action: 'Enlistar'
                 }
             }, "language": {
-                "url": "public/lang/Spanish.json"
+                "url": "public/js/locales/Spanish.json"
             }
         });
     },
@@ -149,7 +149,7 @@ var categoriaCurso = {
                 }
             },
             "language": {
-                "url": "public/lang/Spanish.json"
+                "url": "public/js/locales/Spanish.json"
             }
         });
     },
@@ -222,7 +222,7 @@ var ficha = {
                 }
             },
             "language": {
-                "url": "public/lang/Spanish.json"
+                "url": "public/js/locales/Spanish.json"
             }
         });
     },
@@ -287,7 +287,7 @@ var seminario = {
                 }
             },
             "language": {
-                "url": "public/lang/Spanish.json"
+                "url": "public/js/locales/Spanish.json"
             }
         });
     },
@@ -365,7 +365,7 @@ var abono = {
                     action: 'Enlistar'
                 }
             }, "language": {
-                "url": "public/lang/Spanish.json"
+                "url": "public/js/locales/Spanish.json"
             }
         });
     },
@@ -442,7 +442,7 @@ var estudiante = {
         $('#miPopupEstudiante').find('#txtNombre').val(data['nombreCliente']);
         $('#miPopupEstudiante').find('#txtApellido').val(data['apellidoCliente']);
         $('#miPopupEstudiante').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
-        $('#miPopupEstudiante').find('#txtDireccion').val(data['nombreCliente']);
+        $('#miPopupEstudiante').find('#txtDireccion').val(data['direccionCliente']);
         $('#miPopupEstudiante').find('#txtTelefono').val(data['telefonoFijo']);
         $('#miPopupEstudiante').find('#txtCelular').val(data['telefonoMovil']);
         $('#miPopupEstudiante').find('#txtCorreo').val(data['emailCliente']);
@@ -495,7 +495,7 @@ var estudiante = {
                     action: 'Enlistar'
                 }
             }, "language": {
-                "url": "public/lang/Spanish.json"
+                "url": "public/js/locales/Spanish.json"
             }
         });
     },
@@ -535,7 +535,7 @@ var matricula = {
                     action: 'Enlistar'
                 }
             }, "language": {
-                "url": "public/lang/Spanish.json"
+                "url": "public/js/locales/Spanish.json"
             }
         });
     },
@@ -600,7 +600,7 @@ var categoriaArticulo = {
                 }
             },
             "language": {
-                "url": "public/lang/Spanish.json"
+                "url": "public/js/locales/Spanish.json"
             }
         });
     },
@@ -673,7 +673,7 @@ var articulo = {
                 }
             },
             "language": {
-                "url": "public/lang/Spanish.json"
+                "url": "public/js/locales/Spanish.json"
             }
         });
     },
@@ -738,7 +738,7 @@ var empresa = {
                 }
             },
             "language": {
-                "url": "public/lang/Spanish.json"
+                "url": "public/js/locales/Spanish.json"
             }
         });
     },
@@ -759,6 +759,6 @@ abono.cargar();
 estudiante.cargar();
 categoriaArticulo.cargar();
 articulo.cargar();
-matricula.cargar();
+//matricula.cargar();
 empresa.cargar();
 //credito.cargar()
