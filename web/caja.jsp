@@ -64,7 +64,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupCompra" data-dismiss="modal" name="regCompra" value="Registrar Compra">
+                                                <input class="btn btn-default btn-block" type="button" value="Registrar Compra" onclick="compra.registrar()">
                                             </div>
                                         </div>
                                     </div>
@@ -198,7 +198,8 @@
                                         <th class="text-center">Nombre Proveedor</th>
                                         <th class="text-center">Fecha de Compra</th>
                                         <th class="text-center">Total Compra</th>
-                                     
+                                        <th class="text-center">Editar</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -291,20 +292,20 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                 <form action="ControllerCompra" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
-                                            <h3 class="panel-title">
-                                                Ingresar Compra:
+                                               <h3 class="panel-title">
+                                                <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>
                                         </div>
                                         <div class="panel-body">
-                                            <input type="hidden" name="facturaProveedor" id="idArticulo"/>
+                                            <input type="hidden" name="FacturaProveedor" id="idArticulo"/>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtFacturaProveedor">
                                                             Nº Factura Proveedor:
                                                         </label>
-                                                        <input name="txtFacturaProvedor" id="txtFacturaProveedor" type="text" class="form-control" placeholder="P23455" required>
+                                                        <input name="txtFacturaProveedor" id="txtFacturaProveedor" type="text" class="form-control" placeholder="P23455" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -314,17 +315,17 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                         <label for="txtNombreProveedor">
                                                             Nombre Proveedor:
                                                         </label>
-                                                        <input name="txtNombreProvedor" id="txtNombreProveedor" type="text" class="form-control" placeholder="Ejm: Pinturas Arcoíris" required>
+                                                        <input name="txtNombreProveedor" id="txtNombreProveedor" type="text" class="form-control" placeholder="Ejm: Pinturas Arcoíris" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtPrecio">
+                                                        <label for="dateFechaCompra">
                                                             Fecha Compra:
                                                         </label>
-                                                        <input name="txtFecha" id="txtPrecioArticulo" type="number" class="form-control" placeholder="Ejm: 10000" required>
+                                                        <input name="dateFechaCompra" id="dateFechaCompra" type="date" class="form-control" placeholder="Ejm: 10/04/2015" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -339,14 +340,14 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                 </div>
                                             </div>
                                         </div>
-                                 <!--  <div class="panel-footer">
-                                              <div class="col-md-offset-3 col-md-6">
-                                                  <div class="form-group">
-                                                      <input id="btnCompra"  class="btn btn-default btn-block" type="submit" name="action" value="Registrar">
-                                                  </div>
-                                              </div>
-                                       </div>
-                                        -->
+                                        <div class="panel-footer">
+                                            <div class="col-md-offset-3 col-md-6">
+                                                <div class="form-group">
+                                                    <input class="btn btn-default btn-block" id="btnCompra" type="submit" name="action"  value="Registrar" onclick="compra.myAjax($('#btnCompra').val())">
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </form>
                             </div>

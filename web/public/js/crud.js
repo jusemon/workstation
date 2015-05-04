@@ -761,11 +761,12 @@ var compra = {
                 url: $(form).attr('action'),
                 data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
                 success: function(data) {
-                    if (accion == 'Consultar') {
-                        if (aux == 'Editar') {
-                            compra.editar(data);
-                        } else
-                            compra.consultar(data);
+                    if (accion == 'Editar' || accion == 'Registrar') {
+                        $('#miPopupCompra').modal('hide');
+                        compra.actualizarTabla();
+                        mensaje(data);
+                    } else if (accion == 'getOptionsCompra') {
+                        compra.cargarOpciones(data);
                     }
                     else if (accion == 'Registrar' || accion == 'Editar' || accion == 'Estado') {
                         if (accion != 'Estado') {
@@ -786,24 +787,25 @@ var compra = {
             $(form).submit();
         }
     },
-    consultar: function(data) {
+    editar: function(tr) {
         limpiar("#form_compra");
-        $('#miPopupCompra').find('#txtFacturaProveedor').val(data['facturaProveedor']);
-        $('#miPopupCompra').find('#txtNombreProveedor').val(data['nombreProveedor']);
-        $('#miPopupCompra').find('#dateFechaCompra').val(data['fechaCompra']);
-        $('#miPopupCompra').find('#totalFactura').val(data['totalFactura']);
-        $('#miPopupCompra').find('#btnCompra').attr('type', 'hidden').attr('disabled', true);
-        desabilitar('#form_compra');
+        var data = tablaCompra.row(tr).data();
+        $('#miPopupCompra').find('#titulo').empty();
+        $('#miPopupCompra').find('#titulo').append('Editar Compra');
+        $('#miPopupCompra').find('#txtFacturaProveedor').val(data[0]);
+        $('#miPopupCompra').find('#txtNombreProveedor').val(data[1]);
+        $('#miPopupCompra').find('#dateFechaCompra').val(data[2]);
+        $('#miPopupCompra').find('#totalFactura').val(data[3]);
+        $('#miPopupCompra').find('#btnCompra').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
         $('#miPopupCompra').modal('show');
     },
     registrar: function() {
         habilitar('#form_compra');
         limpiar("#form_compra");
+        $('#miPopupCompra').find('#titulo').empty();
+        $('#miPopupCompra').find('#titulo').append('Registrar Compra');
         $('#miPopupCompra').find('#btnCompra').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupCompra').modal('show');
-    },
-    editar: function(tr) {
-        $('#miPopupDetalleCompra').modal('show');
     },
     cargar: function() {
         tablaCompra = $('#tblCompra').DataTable({
@@ -832,6 +834,6 @@ abono.cargar();
 estudiante.cargar();
 categoriaArticulo.cargar();
 articulo.cargar();
-matricula.cargar();
+//matricula.cargar();
 empresa.cargar();
 //credito.cargar()

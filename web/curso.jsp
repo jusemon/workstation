@@ -32,7 +32,7 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseZero">
-                                        Gestion de Cursos
+                                        Gestión de Cursos
                                     </a>
                                 </h4>
                             </div>
@@ -48,7 +48,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" onclick="categoriaCurso.registrar()" value="Registrar Categoria">
+                                                <input class="btn btn-default btn-block" type="button" onclick="categoriaCurso.registrar()" value="Registrar Categoría">
                                             </div>
                                         </div>
                                     </div>
@@ -61,7 +61,7 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a  data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                        Gestion de Fichas
+                                        Gestión de Fichas
                                     </a>
                                 </h4>
                             </div>
@@ -81,7 +81,7 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                        Gestion de Seminarios
+                                        Gestión de Seminarios
                                     </a>
                                 </h4>
                             </div>
@@ -107,7 +107,7 @@
                             <a href="#cursos" role="tab" data-toggle="tab">Listado de Cursos</a>
                         </li>
                         <li class="">
-                            <a href="#categoriaCursos" role="tab" data-toggle="tab">Categorias de los Cursos</a>
+                            <a href="#categoriaCursos" role="tab" data-toggle="tab">Categorías de los Cursos</a>
                         </li>
                         <li>
                             <a href="#fichas" role="tab" data-toggle="tab">Listado de Fichas</a>
@@ -353,7 +353,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtDuracion">
-                                                            Duracion (En horas)
+                                                            Duración (En horas)
                                                         </label>
                                                         <input name="txtDuracion" id="txtDuracion" type="text" class="form-control" placeholder="" required>
                                                     </div>
