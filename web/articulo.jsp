@@ -43,14 +43,14 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" onclick="articulo.registrar()" value="Registrar Articulo">
+                                                <input class="btn btn-default btn-block" type="button" onclick="articulo.registrar()" value="Registrar Artículo">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" onclick="categoriaArticulo.registrar()" value="Registrar Categoria">
+                                                <input class="btn btn-default btn-block" type="button" onclick="categoriaArticulo.registrar()" value="Registrar Categoría">
                                             </div>
                                         </div>
                                     </div>
@@ -166,7 +166,7 @@
                                         <div class="panel-footer">
                                             <div class="col-md-offset-3 col-md-6">
                                                 <div class="form-group">
-                                                    <input id="btnArticulo"  class="btn btn-default btn-block" onclick="articulo.myAjax($('#btnArticulo').val())" type="submit" name="action" value="Registrar">
+                                                    <input id="btnArticulo"  class="btn btn-default btn-block" onclick="articulo.myAjax($('#btnArticulo').val())" type="submit" name="action">
                                                 </div>
                                             </div>
                                         </div>
@@ -208,7 +208,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input  class="btn btn-default btn-block" id="btnCategoriaArticulo" onclick="categoriaArticulo.myAjax($('#btnCategoriaArticulo').val())" type="submit" name="action" value="Registrar">
+                                                        <input  class="btn btn-default btn-block" id="btnCategoriaArticulo" onclick="categoriaArticulo.myAjax($('#btnCategoriaArticulo').val())" type="submit" name="action">
                                                     </div>
                                                 </div>
                                             </div>

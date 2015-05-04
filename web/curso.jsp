@@ -205,7 +205,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="ddlCategoria">
-                                                            Categoria
+                                                            Categoría
                                                         </label>
                                                         <select name="ddlCategoria" id="ddlCategoria" class="form-control" required>
                                                         </select>
@@ -226,7 +226,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtDescripcion">
-                                                            Descripcion
+                                                            Descripción
                                                         </label>
                                                         <textarea rows="2" name="txtDescripcion" id="txtDescripcionCurso"  class="form-control" placeholder="Ejm: El oleo es un curso dedicado al..." required></textarea>
                                                     </div>
@@ -260,7 +260,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input class="btn btn-default btn-block" id="btnCurso" type="submit" name="action"  value="Registrar" onclick="curso.myAjax($('#btnCurso').val())">
+                                                        <input class="btn btn-default btn-block" id="btnCurso" type="submit" name="action" onclick="curso.myAjax($('#btnCurso').val())">
                                                     </div>
                                                 </div>
                                             </div>
@@ -296,7 +296,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtNombre">
-                                                            Nombre Categoria Curso
+                                                            Nombre Categoría Curso
                                                         </label>
                                                         <input name="txtNombre" id="txtNombreCategoriaCurso" type="text" class="form-control" placeholder="Ejm: Oleo" required>
                                                     </div>
@@ -307,7 +307,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="submit" name="action" value="Registrar" onclick="categoriaCurso.myAjax($('#btnCategoriaCurso').val())">
+                                                        <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="submit" name="action" onclick="categoriaCurso.myAjax($('#btnCategoriaCurso').val())">
                                                     </div>
                                                 </div>
                                             </div>
@@ -377,7 +377,7 @@
                                             <div class="row">
                                                 <div class="col-md-offset-3 col-md-6">
                                                     <div class="form-group">
-                                                        <input  class="btn btn-default btn-block" id="btnSeminario" type="submit" name="action" value="Registrar" onclick="seminario.myAjax($('#btnSeminario').val())">
+                                                        <input  class="btn btn-default btn-block" id="btnSeminario" type="submit" name="action" onclick="seminario.myAjax($('#btnSeminario').val())">
                                                     </div>
                                                 </div>
                                             </div>
@@ -423,16 +423,6 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="dateFechaFicha">
-                                                            Fecha de Inicio
-                                                        </label>
-                                                        <input name="dateFecha" id="dateFechaFicha" type="date" class="form-control" placeholder="Ejm: 500000" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
                                                         <label for="txtCupos">
                                                             Cupos disponibles
                                                         </label>
@@ -447,6 +437,18 @@
                                                             Precio
                                                         </label>
                                                         <input name="txtPrecio" id="txtPrecioFicha" type="number" class="form-control" placeholder="Ejm: 500000" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="dateFechaFicha">
+                                                            Fecha de Inicio
+                                                        </label>
+                                                        <div class="date">
+                                                            <input name="dateFecha" id="dateFechaFicha" placeholder="Ejm: 19/05/2015" type="text" class="form-control fecha">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -468,7 +470,7 @@
                                     <div class="panel-footer">
                                         <div class="col-md-offset-3 col-md-6">
                                             <div class="form-group">
-                                                <input id="btnFicha"  class="btn btn-default btn-block" type="submit" name="action" value="Registrar" onclick="ficha.myAjax($('#btnFicha').val())">
+                                                <input id="btnFicha"  class="btn btn-default btn-block" type="submit" name="action" onclick="ficha.myAjax($('#btnFicha').val())">
                                             </div>
                                         </div>
                                     </div>
@@ -479,7 +481,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <%@include file="WEB-INF/jspf/imports.jspf" %>
-</body>
+        <%@include file="WEB-INF/jspf/imports.jspf" %>
+    </body>
 </html>

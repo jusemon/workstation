@@ -33,7 +33,9 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">
-                                Formulario de Estudiante
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    Gestión de Estudiantes
+                                </a> 
                             </h3>
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse in">
@@ -42,58 +44,6 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <input class="btn btn-default btn-block" type="button" onclick="estudiante.registrar()" value="Registrar Estudiante">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="panel-group" id="accordion">
-                                            <div class="panel panel-default">
-                                                <input type="button" class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Estudiante" data-parent="#accodion" href="#collapseConsultaEstudiante"/>                                                           
-                                            </div>
-                                        </div>
-                                        <div class="panel-collapse collapse" id="collapseConsultaEstudiante">
-                                            <div class="panel-body">
-                                                <form action="ControllerEstudiante" method="POST">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label for="ddlIdentificacion">
-                                                                    Tipo de Identificación
-                                                                </label>
-                                                                <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control" required>
-                                                                    <option value="">Seleccionar...</option>
-                                                                    <option value="CC" > Cédula </option>
-                                                                    <option value="CE" > Cédula Extranjería </option>
-                                                                    <option value="TI" > Tarjeta de Identidad </option>
-                                                                    <option value="RC" > Registro Cívil </option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label for="txtIdentificacion">
-                                                                    Número de Identificación
-                                                                </label>
-                                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <button type="button" class=" btn btn-default btn-block" >
-                                                                    <span class="glyphicon glyphicon-search "></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="panel-footer">
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -171,7 +121,7 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form>
+                                <form id="formAcudiente" action="ControllerAcudiente" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                             <h3 class="panel-title">
@@ -214,7 +164,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtDireccion">
-                                                            Correo Electronico
+                                                            Correo Electrónico
                                                         </label>
                                                         <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
                                                     </div>
@@ -236,7 +186,7 @@
                                                         <label for="dateFechaNaciemiento">
                                                             Fecha de Nacimiento
                                                         </label>
-                                                        <input name="dateFechaNaciemiento" id="dateFechaNaciemiento" type="date" class="form-control" placeholder="Ejm: 10/10/2014" required>
+                                                        <input name="dateFechaNaciemiento" id="dateFechaNaciemiento" type="text" class="form-control fecha" placeholder="Ejm: 10/10/2014" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -248,8 +198,8 @@
                                                         </label>
                                                         <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control" required>
                                                             <option value="">Seleccionar...</option>
-                                                            <option value="0" > Cedula </option>
-                                                            <option value="1" > Cedula Extranjeria </option>
+                                                            <option value="0" > Cédula </option>
+                                                            <option value="1" > Cédula Extranjeria </option>
                                                             <option value="3" > Tarjeta de Identidad </option>
                                                             <option value="4" > Registro Civil </option>
                                                         </select>
@@ -268,15 +218,9 @@
                                             </div>
                                         </div>
                                         <div class="panel-footer">
-                                            <div class="col-md-6">
+                                            <div class="col-md-offset-3 col-md-6">
                                                 <div class="form-group">
                                                     <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
                                                 </div>
                                             </div>
                                         </div>
@@ -410,7 +354,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtIdentificacion">
-                                                            Numero de Identificación
+                                                            Número de Identificación
                                                         </label>
                                                         <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
                                                     </div>
@@ -454,7 +398,7 @@
                                                         <label for="dateFechaNacimiento">
                                                             Fecha de Nacimiento
                                                         </label>
-                                                        <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="date" class="form-control" placeholder="Ejm: 10/10/2014" required>
+                                                        <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" class="form-control" placeholder="Ejm: 10/10/2014" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -515,7 +459,7 @@
                                     <div class="row">
                                         <div class="col-md-offset-3 col-md-6">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="submit" id="btnEstudiante" name="action" value="Registrar" onclick="estudiante.myAjax($('#btnEstudiante').val())">
+                                                <input class="btn btn-default btn-block" type="submit" id="btnEstudiante" name="action" onclick="estudiante.myAjax($('#btnEstudiante').val())">
                                             </div>
                                         </div>
                                     </div>
