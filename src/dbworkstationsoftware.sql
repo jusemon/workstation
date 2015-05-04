@@ -15,7 +15,9 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-
+DROP DATABASE dbworkstationsoftware;
+Create Database dbworkstationsoftware;
+use dbworkstationsoftware;
 --
 -- Base de datos: `dbworkstationsoftware`
 --
@@ -156,7 +158,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarFicha`(
     in idFic			int,
 	in idCurs			int,
 	in cuposDisponibl	int,
-	in fechaInic		datetime, 
+	in fechaInic		date, 
 in precio int,
 in estadoFich int
 )
@@ -167,7 +169,7 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarMatricula`(
     in idMatricu			int,
 	in estadoMatricu		int,
-	in fechaInic			datetime
+	in fechaInic			date
 )
 BEGIN
 	update tblCategoriaArticulo set nombreCategoriaArticulo=nombreCategoriaArticu where idCategoriaArticulo=idCategoriaArticu;
@@ -295,11 +297,13 @@ SELECT
 FROM tblestudiante;
 END$$
 
+Drop procedure `spConsultarFichaPorID`;
+Delimiter $$;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarFichaPorID`(id int)
 BEGIN
 SELECT `idFicha`,
     `cuposDisponibles`,
-    `fechaInicio`,
+    DATE_FORMAT(`fechaInicio`, '%d/%m/%yy'),
     `tblcurso_idCurso`,
     `precioFicha`,
 estado
@@ -518,7 +522,7 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarEstudiante`(IN `tipoDocumen` VARCHAR(5),
  IN `numeroDocumen` VARCHAR(20),
- IN `fechaNacimien` DATETIME,
+ IN `fechaNacimien` date,
  IN `generoClien` INT,
  IN `nombreClien` VARCHAR(50),
  IN `apellidoClien` VARCHAR(50),
@@ -557,7 +561,7 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarFicha`(
     in id          int,
     in cupos  int,  
-    in fecha       datetime,
+    in fecha       date,
     in precio	   int,
 in estadoFich int
  )

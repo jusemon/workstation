@@ -3,6 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+$('.fecha').datepicker({
+    format: "dd/mm/yyyy",
+    language: "es",
+    autoclose: true,
+    orientation: "top left"
+});
+
 var tablaCurso, tablaCategoriaCurso, tablaFicha, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra;
 
 var curso = {
