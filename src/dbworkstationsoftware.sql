@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-05-2015 a las 20:13:26
+-- Tiempo de generación: 04-05-2015 a las 23:06:14
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -15,8 +15,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-Create Database dbworkstationsoftware;
-use dbworkstationsoftware;
+
 --
 -- Base de datos: `dbworkstationsoftware`
 --
@@ -51,14 +50,10 @@ BEGIN
 	where idtblCategoriaCurso=idCategoria;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCompra`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCompra`(IN `facturaProveed` VARCHAR(50), IN `nombreProveed` VARCHAR(50), IN `fechaComp` DATE, IN `totalComp` INT)
 BEGIN
-	declare msg varchar(40);   
-	update tblCompra set numeroFactura=numeroFactu,nombreProveedor=nombreProveed,fechaCompra=fechaComp,totalCompra=totalComp
-		where numeroFactura=numeroFactu;
-	set msg="Compra actualizada exitosamente";	
-    select msg as Respuesta;
+	update tblCompra set nombreProveedor=nombreProveed,fechaCompra=fechaComp,totalCompra=totalComp
+		where facturaProveedor=facturaProveed;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCredito`(
@@ -204,6 +199,12 @@ BEGIN
 	order by tblCliente.apellidoCliente;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCompras`()
+BEGIN
+
+SELECT `facturaProveedor`, `nombreProveedor`,DATE_FORMAT(`fechaCompra`, '%d/%m/%Y') as `fechaCompra`, `totalCompra` FROM tblCompra;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarComprasRangoFecha`(
 	in	fechaInici	datetime,
 	in	fechaFin	datetime
@@ -263,7 +264,7 @@ BEGIN
 SELECT 
     `tipoDocumento`,
     `numeroDocumento`,
-    `fechaNacimiento`,
+    DATE_FORMAT(`fechaNacimiento`, '%d/%m/%Y') as `fechaNacimiento`,
     `generoCliente`,
     `nombreCliente`,
     `apellidoCliente`,
@@ -311,7 +312,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarFichas`()
 BEGIN
 SELECT `idFicha`,
     `cuposDisponibles`,
-    `fechaInicio`,
+    DATE_FORMAT(`fechaInicio`, '%d/%m/%Y') as `fechaInicio`,
     `precioFicha`,
     nombreCurso,
     estado,
@@ -403,17 +404,10 @@ BEGIN
 insert into tblCategoriaCurso (nombreCategoriaCurso) values (nombre);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCompra`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCompra`(IN facturaProveed VARCHAR(50), IN nombreProveed VARCHAR(50), IN fechaComp DATE, IN totalComp INT)
 BEGIN
-	declare msg varchar(40);    
-	if (exists(select numeroFactura from tblCompra where numeroFactura=numeroFactura)) then
-		set msg="Esta compra ya fue registrada.";
-		select msg as Respuesta;
-	else
-		insert into tblCompra (numeroFactura,nombreProveedor,fechaCompra,totalCompra) Values(numeroFactu,nombreProveed,fechaComp,totalComp);
-		set msg="La compra se ha registrado correctamente.";
-		select msg as Respuesta; 
+	if (not exists(select facturaProveedor from tblCompra where facturaProveedor=facturaProveed)) then
+		insert into tblCompra (facturaProveedor,nombreProveedor,fechaCompra,totalCompra) Values(facturaProveed,nombreProveed,fechaComp,totalComp);
 	end if;
 END$$
 
@@ -773,12 +767,20 @@ INSERT INTO `tblcategoriacurso` (`idtblCategoriaCurso`, `nombreCategoriaCurso`) 
 --
 
 CREATE TABLE IF NOT EXISTS `tblcompra` (
-  `numeroFactura` varchar(50) NOT NULL,
+  `facturaProveedor` varchar(50) NOT NULL,
   `nombreProveedor` varchar(50) NOT NULL,
   `fechaCompra` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `totalCompra` int(11) NOT NULL,
-  PRIMARY KEY (`numeroFactura`)
+  PRIMARY KEY (`facturaProveedor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tblcompra`
+--
+
+INSERT INTO `tblcompra` (`facturaProveedor`, `nombreProveedor`, `fechaCompra`, `totalCompra`) VALUES
+('2133', 'ATT', '2015-05-01 00:00:00', 234234),
+('3456', 'maderas el tocho', '2015-05-07 00:00:00', 3444);
 
 -- --------------------------------------------------------
 
@@ -913,7 +915,7 @@ CREATE TABLE IF NOT EXISTS `tblestudiante` (
 --
 
 INSERT INTO `tblestudiante` (`tipoDocumento`, `numeroDocumento`, `fechaNacimiento`, `nombreCliente`, `apellidoCliente`, `direccionCliente`, `telefonoFijo`, `telefonoMovil`, `emailCliente`, `estadoEstudiante`, `generoCliente`, `tblacudiente_tipoDocumento`, `tblacudiente_numeroDocumento`) VALUES
-('CC', '1017225672', '2014-10-09', 'Juan', 'Montoya', 'Calle falsa 456', '65432198', '3218015236', 'jsmontoya@misena.edu.co', 0, '1', NULL, 'null'),
+('CC', '1017225672', '2015-05-01', 'Juan', 'Montoya', 'Calle falsa 456', '65432198', '3218015236', 'jsmontoya@misena.edu.co', 0, '1', NULL, 'null'),
 ('CC', '1017225673', '1994-11-03', 'Juan ', 'Montoya', 'Calle 24 # 65e25', '5861529', '03218016237', 'JuanSMM@outlook.com', 0, '1', NULL, 'null');
 
 -- --------------------------------------------------------
@@ -951,7 +953,7 @@ CREATE TABLE IF NOT EXISTS `tblficha` (
 --
 
 INSERT INTO `tblficha` (`idFicha`, `cuposDisponibles`, `fechaInicio`, `tblcurso_idCurso`, `precioFicha`, `estado`) VALUES
-(1, 15, '2015-04-08', 1, 50000, 1),
+(1, 15, '2015-05-01', 1, 50000, 1),
 (2, 15, '2015-04-17', 1, 10000, 1),
 (3, 15, '2015-04-30', 3, 50000, 1);
 
