@@ -72,7 +72,7 @@ public class ControllerCompra extends HttpServlet {
                     _objCompra.setFechaCompra(fechaCompra);
                     _objCompra.setTotalCompra(totalCompra);
                     daoModelCompra = new ModelCompra();
-                    daoModelCompra.Add(_objCompra);
+                    daoModelCompra.Edit(_objCompra);
                     daoModelCompra.Signout();
                     break;
                 }

@@ -292,7 +292,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                 <form action="ControllerCompra" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
-                                               <h3 class="panel-title">
+                                          <h3 class="panel-title">
                                                 <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>

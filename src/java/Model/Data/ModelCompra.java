@@ -57,15 +57,15 @@ public class ModelCompra extends ConnectionDB {
         return rs;
 
     }
-    
-    public boolean Edit (ObjCompra _objCompra) {
+
+    public boolean Edit(ObjCompra _objCompra) {
         boolean objReturn = false;
         String sql = " call spActualizarCompra(?,?,?,?)";
-        
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-                pStmt.setString(1, _objCompra.getFacturaProveedor());
+            pStmt.setString(1, _objCompra.getFacturaProveedor());
             pStmt.setString(2, _objCompra.getNombreProveedor());
             pStmt.setDate(3, _objCompra.getFechaCompra());
             pStmt.setInt(4, _objCompra.getTotalCompra());
@@ -79,6 +79,5 @@ public class ModelCompra extends ConnectionDB {
         }
         return objReturn;
     }
-    
 
 }

@@ -57,7 +57,7 @@
                             <a href="#estudiantes" role="tab" data-toggle="tab">Listado de Estudiantes</a>
                         </li>
                         <li>
-                            <a href="#matriculas" role="tab" data-toggle="tab">Listado de Matrículas</a>
+                            <a href="#matriculas" role="tab" data-toggle="tab">Listado de Matriculas</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -345,7 +345,7 @@
                                                             <option value="CC" > Cédula </option>
                                                             <option value="CE" > Cédula Extranjería </option>
                                                             <option value="TI" > Tarjeta de Identidad </option>
-                                                            <option value="RC" > Registro Cívil </option>
+                                                            <option value="RC" > Registro Civil </option>
                                                         </select>
                                                     </div>
                                                 </div>
