@@ -481,6 +481,6 @@
                 </div>
             </div>
         </div>
-    <%@include file="WEB-INF/jspf/imports.jspf" %>
-</body>
+        <%@include file="WEB-INF/jspf/imports.jspf" %>
+    </body>
 </html>

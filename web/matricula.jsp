@@ -3,7 +3,6 @@
     Created on : 23-oct-2014, 12:13:22
     Author     : Administrador
 --%>
-<%@page import="Controller.ControllerCliente"%>
 <%@page import="Controller.ControllerLogin"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
