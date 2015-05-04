@@ -4,10 +4,6 @@
     Author     : Administrador
 --%>
 
-<%@page import="Controller.ControllerSeminario"%>
-<%@page import="Controller.ControllerCategoriaCurso"%>
-<%@page import="Controller.ControllerFicha"%>
-<%@page import="Controller.ControllerCurso"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%     if (session.getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
@@ -20,6 +16,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
         <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
+        <link href="public/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css"/>
         <link href="public/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>

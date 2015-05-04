@@ -17,7 +17,7 @@ public class ObjFicha {
     private int idCurso;
     private int cuposDisponibles;
     private int precioFicha;
-    private Date fechaInicio;
+    private String fechaInicio;
     private int estado;
 
     public int getEstado() {
@@ -60,11 +60,11 @@ public class ObjFicha {
         this.cuposDisponibles = cuposDisponibles;
     }
 
-    public Date getFechaInicio() {
+    public String getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 

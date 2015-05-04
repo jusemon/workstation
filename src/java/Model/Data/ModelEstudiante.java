@@ -32,7 +32,7 @@ public class ModelEstudiante extends ConnectionDB {
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objCliente.getTipoDocumento());
             pStmt.setInt(2, _objCliente.getNumeroDocumento());
-            pStmt.setDate(3, Date.valueOf(_objCliente.getFechaNacimiento()));
+            pStmt.setString(3,_objCliente.getFechaNacimiento());
             pStmt.setInt(4, _objCliente.getGeneroEstudiante());
             pStmt.setString(5, _objCliente.getNombreEstudiante());
             pStmt.setString(6, _objCliente.getApellidoEstudiente());
@@ -43,7 +43,6 @@ public class ModelEstudiante extends ConnectionDB {
             pStmt.setInt(11, _objCliente.getEstadoEstudiante());
             pStmt.setString(12, _objCliente.getTipoDocumentoAcudiente());
             pStmt.setString(13, _objCliente.getNumeroDocumentoAcudiente());
-
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
@@ -93,7 +92,7 @@ public class ModelEstudiante extends ConnectionDB {
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objCliente.getTipoDocumento());
             pStmt.setInt(2, _objCliente.getNumeroDocumento());
-            pStmt.setDate(3, Date.valueOf(_objCliente.getFechaNacimiento()));
+            pStmt.setString(3, _objCliente.getFechaNacimiento());
             pStmt.setInt(4, _objCliente.getGeneroEstudiante());
             pStmt.setString(5, _objCliente.getNombreEstudiante());
             pStmt.setString(6, _objCliente.getApellidoEstudiente());

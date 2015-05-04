@@ -32,7 +32,7 @@ public class ModelFicha extends ConnectionDB {
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, _objFicha.getIdCurso());
             pStmt.setInt(2, _objFicha.getCuposDisponibles());
-            pStmt.setDate(3, _objFicha.getFechaInicio());
+            pStmt.setString(3, _objFicha.getFechaInicio());
             pStmt.setInt(4, _objFicha.getPrecioFicha());
             pStmt.setInt(5, _objFicha.getEstado());
             int updateCount = pStmt.executeUpdate();
@@ -56,7 +56,7 @@ public class ModelFicha extends ConnectionDB {
             pStmt.setInt(1, _objFicha.getIdficha());
             pStmt.setInt(2, _objFicha.getIdCurso());
             pStmt.setInt(3, _objFicha.getCuposDisponibles());
-            pStmt.setDate(4, _objFicha.getFechaInicio());
+            pStmt.setString(4, _objFicha.getFechaInicio());
             pStmt.setInt(5, _objFicha.getPrecioFicha());
             pStmt.setInt(6, _objFicha.getEstado());
             int updateCount = pStmt.executeUpdate();

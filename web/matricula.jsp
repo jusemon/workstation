@@ -21,6 +21,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
         <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
+        <link href="public/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css"/>
         <link href="public/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
@@ -398,7 +399,7 @@
                                                         <label for="dateFechaNacimiento">
                                                             Fecha de Nacimiento
                                                         </label>
-                                                        <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" class="form-control" placeholder="Ejm: 10/10/2014" required>
+                                                        <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" class="form-control fecha" placeholder="Ejm: 10/10/2014" required>
                                                     </div>
                                                 </div>
                                             </div>

@@ -15,11 +15,15 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +54,8 @@ public class ControllerEstudiante extends HttpServlet {
             throws ServletException, IOException {
         Map<String, String> respuesta;
         response.setCharacterEncoding("UTF-8");
+        SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
         String action = request.getParameter("action");
         if (action != null) {
             switch (action) {
@@ -60,7 +66,7 @@ public class ControllerEstudiante extends HttpServlet {
                         String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
                         String apellido = new String(request.getParameter("txtApellido").getBytes("ISO-8859-1"), "UTF-8");
                         int genero = Integer.parseInt(request.getParameter("radioGenero"));
-                        String fechaNacimiento = String.valueOf(request.getParameter("dateFechaNacimiento"));
+                        String fechaNacimiento = request.getParameter("dateFechaNacimiento");
                         String direccion = new String(request.getParameter("txtDireccion").getBytes("ISO-8859-1"), "UTF-8");
                         String telefono = String.valueOf(request.getParameter("txtTelefono"));
                         String celular = String.valueOf(request.getParameter("txtCelular").trim());
@@ -78,7 +84,7 @@ public class ControllerEstudiante extends HttpServlet {
                         _objEstudiente.setNombreEstudiante(nombre);
                         _objEstudiente.setApellidoEstudiente(apellido);
                         _objEstudiente.setGeneroEstudiante(genero);
-                        _objEstudiente.setFechaNacimiento(fechaNacimiento);
+                        _objEstudiente.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
                         _objEstudiente.setDireccionEstudiante(direccion);
                         _objEstudiente.setTelefonoFijo(telefono);
                         _objEstudiente.setTelefonoMovil(celular);
@@ -89,7 +95,11 @@ public class ControllerEstudiante extends HttpServlet {
                         String salida = Mensaje(daoModelEstudiante.Add(_objEstudiente), "El estudiante ha sido registrado", "A ocurrido un error al intentar registrar al estudiante");
                         response.getWriter().write(salida);
                     } catch (NumberFormatException | IOException e) {
-                        System.out.println(e.getMessage());
+                        System.out.println("Ha ocurrido un error en el Controller Estudiante" + e.getMessage());
+                    } catch (ParseException ex) {
+                        response.setContentType("application/json");
+                        String salida = Mensaje(false, "", "A ocurrido un error con la fecha de nacimiento");
+                        response.getWriter().write(salida);
                     }
                     break;
                 }
@@ -150,7 +160,7 @@ public class ControllerEstudiante extends HttpServlet {
                         _objEstudiente.setNombreEstudiante(nombre);
                         _objEstudiente.setApellidoEstudiente(apellido);
                         _objEstudiente.setGeneroEstudiante(genero);
-                        _objEstudiente.setFechaNacimiento(fechaNacimiento);
+                        _objEstudiente.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
                         _objEstudiente.setDireccionEstudiante(direccion);
                         _objEstudiente.setTelefonoFijo(telefono);
                         _objEstudiente.setTelefonoMovil(celular);
@@ -162,6 +172,10 @@ public class ControllerEstudiante extends HttpServlet {
 
                     } catch (NumberFormatException | IOException e) {
                         System.out.println(e.getMessage());
+                    } catch (ParseException ex) {
+                        response.setContentType("application/json");
+                        String salida = Mensaje(false, "", "A ocurrido un error con la fecha de nacimiento");
+                        response.getWriter().write(salida);
                     }
                     break;
                 }

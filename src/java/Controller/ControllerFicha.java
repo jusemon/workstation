@@ -10,14 +10,16 @@ import Model.Data.ModelCurso;
 import Model.Data.ModelFicha;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -46,42 +48,57 @@ public class ControllerFicha extends HttpServlet {
             throws ServletException, IOException {
         if (request.getParameter("action") != null) {
             int estado = 0;
+            SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
             switch (request.getParameter("action")) {
                 case "Registrar": {
-                    int idCurso = Integer.parseInt(request.getParameter("idCurso"));
-                    Date fecha = Date.valueOf(request.getParameter("dateFecha"));
-                    int cupos = Integer.parseInt(request.getParameter("txtCupos"));
-                    int precio = Integer.parseInt(request.getParameter("txtPrecio"));
-                    estado = Integer.parseInt(request.getParameter("estadoFicha"));
-                    _objFicha.setIdCurso(idCurso);
-                    _objFicha.setFechaInicio(fecha);
-                    _objFicha.setCuposDisponibles(cupos);
-                    _objFicha.setPrecioFicha(precio);
-                    _objFicha.setEstado(estado);
-                    daoModelFicha = new ModelFicha();
-                    daoModelFicha.Add(_objFicha);
-                    daoModelFicha.Signout();
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    try {
+                        int idCurso = Integer.parseInt(request.getParameter("idCurso"));
+                        String fecha = request.getParameter("dateFecha");
+                        int cupos = Integer.parseInt(request.getParameter("txtCupos"));
+                        int precio = Integer.parseInt(request.getParameter("txtPrecio"));
+                        estado = Integer.parseInt(request.getParameter("estadoFicha"));
+                        _objFicha.setIdCurso(idCurso);
+                        _objFicha.setFechaInicio(formatoFechaSalida.format(formatoFechaEntrada.parse(fecha)));
+                        _objFicha.setCuposDisponibles(cupos);
+                        _objFicha.setPrecioFicha(precio);
+                        _objFicha.setEstado(estado);
+                        daoModelFicha = new ModelFicha();
+                        String salida = Mensaje(daoModelFicha.Add(_objFicha), "La Ficha ha sido registrada", "Ha ocurrido un error al intentar registrar la ficha");
+                        daoModelFicha.Signout();
+                        response.getWriter().write(salida);
+                    } catch (ParseException ex) {
+                        String salida = Mensaje(false, "", "Ha ocurrido un error en el formato de la fecha");
+                        response.getWriter().write(salida);
+                    }
                     break;
                 }
                 case "Editar": {
-                    int idFicha = Integer.parseInt(request.getParameter("idFicha"));
-                    int idCurso = Integer.parseInt(request.getParameter("idCurso"));
-                    Date fecha = Date.valueOf(request.getParameter("dateFecha"));
-                    int cupos = Integer.parseInt(request.getParameter("txtCupos"));
-                    int precio = Integer.parseInt(request.getParameter("txtPrecio"));
-                    estado = Integer.parseInt(request.getParameter("estadoFicha"));
-                    _objFicha.setIdficha(idFicha);
-                    _objFicha.setIdCurso(idCurso);
-                    _objFicha.setFechaInicio(fecha);
-                    _objFicha.setCuposDisponibles(cupos);
-                    _objFicha.setPrecioFicha(precio);
-                    _objFicha.setEstado(estado);
-                    daoModelFicha = new ModelFicha();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
-                    String salida = Mensaje(daoModelFicha.Edit(_objFicha), "La Ficha ha sido actualizada", "Ha ocurrido un error al intentar actualizar la ficha");
-                    response.getWriter().write(salida);
-                    daoModelFicha.Signout();
+                    try {
+                        int idFicha = Integer.parseInt(request.getParameter("idFicha"));
+                        int idCurso = Integer.parseInt(request.getParameter("idCurso"));
+                        String fecha = request.getParameter("dateFecha");
+                        int cupos = Integer.parseInt(request.getParameter("txtCupos"));
+                        int precio = Integer.parseInt(request.getParameter("txtPrecio"));
+                        estado = Integer.parseInt(request.getParameter("estadoFicha"));
+                        _objFicha.setIdficha(idFicha);
+                        _objFicha.setIdCurso(idCurso);
+                        _objFicha.setFechaInicio(formatoFechaSalida.format(formatoFechaEntrada.parse(fecha)));
+                        _objFicha.setCuposDisponibles(cupos);
+                        _objFicha.setPrecioFicha(precio);
+                        _objFicha.setEstado(estado);
+                        daoModelFicha = new ModelFicha();
+                        String salida = Mensaje(daoModelFicha.Edit(_objFicha), "La Ficha ha sido actualizada", "Ha ocurrido un error al intentar actualizar la ficha");
+                        daoModelFicha.Signout();
+                        response.getWriter().write(salida);
+                    } catch (ParseException ex) {
+                        String salida = Mensaje(false, "", "Ha ocurrido un error en el formato de la fecha");
+                        response.getWriter().write(salida);
+                    }
                     break;
                 }
                 case "Estado": {
@@ -187,8 +204,6 @@ public class ControllerFicha extends HttpServlet {
 
         return OptionsCursos;
     }
-
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
