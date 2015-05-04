@@ -25,6 +25,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
         <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
+        <link href="public/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css"/>
         <link href="public/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
@@ -289,7 +290,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="ControllerCompra" method="POST">
+                                <form id="formCompra" action="ControllerCompra" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
                                           <h3 class="panel-title">
@@ -325,7 +326,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                         <label for="dateFechaCompra">
                                                             Fecha Compra:
                                                         </label>
-                                                        <input name="dateFechaCompra" id="dateFechaCompra" type="date" class="form-control" placeholder="Ejm: 10/04/2015" required>
+                                                        <input name="dateFechaCompra" id="dateFechaCompra" type="text" class="form-control fecha" placeholder="Ejm: 10/04/2015" required>
                                                     </div>
                                                 </div>
                                             </div>

@@ -15,7 +15,7 @@ public class ObjCompra {
 
     private String facturaProveedor;
     private String nombreProveedor;
-    private Date fechaCompra;
+    private String fechaCompra;
     private int totalCompra;
 
     public int getTotalCompra() {
@@ -26,11 +26,11 @@ public class ObjCompra {
         this.totalCompra = totalCompra;
     }
 
-    public Date getFechaCompra() {
+    public String getFechaCompra() {
         return fechaCompra;
     }
 
-    public void setFechaCompra(Date fechaCompra) {
+    public void setFechaCompra(String fechaCompra) {
         this.fechaCompra = fechaCompra;
     }
 

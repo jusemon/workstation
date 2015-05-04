@@ -759,27 +759,19 @@ var empresa = {
 };
 
 var compra = {
-    myAjax: function(accion, id, tipo) {
+    myAjax: function(accion, id) {
         var form = $('#formCompra');
         $(form).off();
         $(form).on('submit', function() {
             $.ajax({
                 type: $(form).attr('method'),
                 url: $(form).attr('action'),
-                data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id,
                 success: function(data) {
-                    if (accion == 'Consultar') {
-                        if (aux == 'Editar') {
-                            compra.editar(data);
-                        } else
-                            compra.consultar(data);
-                    }
-                    else if (accion == 'Registrar' || accion == 'Editar' || accion == 'Estado') {
-                        if (accion != 'Estado') {
-                            $('#miPopupCompra').modal('hide');
-                        }
-                        mensaje(data);
+                    if (accion == 'Registrar' || accion == 'Editar') {
+                        $('#miPopupCompra').modal('hide');
                         compra.actualizarTabla();
+                        mensaje(data);
                     }
                     else if (accion === 'getOptionsCompra') {
                         compra.cargarOpciones(data);
@@ -797,10 +789,10 @@ var compra = {
         var data = tablaCompra.row(tr).data();
         $('#miPopupCompra').find('#titulo').empty();
         $('#miPopupCompra').find('#titulo').append('Editar Compra');
-        $('#miPopupCompra').find('#txtFacturaProveedor').val(data[5]);
+        $('#miPopupCompra').find('#txtFacturaProveedor').val(data[0]);
         $('#miPopupCompra').find('#txtNombreProveedor').val(data[1]);
         $('#miPopupCompra').find('#dateFechaCompra').val(data[2]);
-        $('#miPopupCompra').find('#totalFactura').val(data[3]);
+        $('#miPopupCompra').find('#txtTotalCompra').val(data[3]);
         $('#miPopupCompra').find('#btnCompra').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
         $('#miPopupCompra').modal('show');
     },
@@ -821,7 +813,7 @@ var compra = {
                     action: 'Enlistar'
                 }
             }, "language": {
-                "url": "public/lang/Spanish.json"
+                "url": "public/js/locales/Spanish.json"
             }
         });
     },
@@ -835,7 +827,7 @@ ficha.cargar();
 categoriaCurso.cargar();
 curso.cargar();
 seminario.cargar();
-abono.cargar();
+//abono.cargar();
 estudiante.cargar();
 categoriaArticulo.cargar();
 articulo.cargar();

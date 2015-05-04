@@ -11,10 +11,14 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,40 +45,46 @@ public class ControllerCompra extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-
+        SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
         if (request.getParameter("action") != null) {
             //int estado = 0;
 
             String action = new String(request.getParameter("action").getBytes("ISO-8859-1"), "UTF-8");
             switch (request.getParameter("action")) {
                 case "Registrar": {
-                    String facturaProveedor = (request.getParameter("txtFacturaProveedor"));
-                    String nombreProveedor = (request.getParameter("txtNombreProveedor"));
-                    Date fechaCompra = Date.valueOf(request.getParameter("dateFechaCompra"));
-                    int totalCompra = Integer.parseInt(request.getParameter("txtTotalCompra"));
-                    _objCompra.setFacturaProveedor(facturaProveedor);
-                    _objCompra.setNombreProveedor(nombreProveedor);
-                    _objCompra.setFechaCompra(fechaCompra);
-                    _objCompra.setTotalCompra(totalCompra);
-                    daoModelCompra = new ModelCompra();
-                    daoModelCompra.Add(_objCompra);
-                    daoModelCompra.Signout();
-                    break;
+                    try {
+                        String facturaProveedor = (request.getParameter("txtFacturaProveedor"));
+                        String nombreProveedor = (request.getParameter("txtNombreProveedor"));
+                        String fechaCompra = request.getParameter("dateFechaCompra");
+                        int totalCompra = Integer.parseInt(request.getParameter("txtTotalCompra"));
+                        _objCompra.setFacturaProveedor(facturaProveedor);
+                        _objCompra.setNombreProveedor(nombreProveedor);
+                        _objCompra.setFechaCompra(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaCompra)));
+                        _objCompra.setTotalCompra(totalCompra);
+                        daoModelCompra = new ModelCompra();
+                        daoModelCompra.Add(_objCompra);
+                        daoModelCompra.Signout();
+                        break;
+                    } catch (ParseException ex) {
+                    }
                 }
                 case "Editar": {
-                    String facturaProveedor = (request.getParameter("txtFacturaProveedor"));
-                    String nombreProveedor = (request.getParameter("txtNombreProveedor"));
-                    Date fechaCompra = Date.valueOf(request.getParameter("dateFechaCompra"));
-                    int totalCompra = Integer.parseInt(request.getParameter("txtTotalCompra"));
-                    _objCompra.setFacturaProveedor(facturaProveedor);
-                    _objCompra.setNombreProveedor(nombreProveedor);
-                    _objCompra.setFechaCompra(fechaCompra);
-                    _objCompra.setTotalCompra(totalCompra);
-                    daoModelCompra = new ModelCompra();
-                    daoModelCompra.Edit(_objCompra);
-                    daoModelCompra.Signout();
-                    break;
+                    try {
+                        String facturaProveedor = (request.getParameter("txtFacturaProveedor"));
+                        String nombreProveedor = (request.getParameter("txtNombreProveedor"));
+                        String fechaCompra = request.getParameter("dateFechaCompra");
+                        int totalCompra = Integer.parseInt(request.getParameter("txtTotalCompra"));
+                        _objCompra.setFacturaProveedor(facturaProveedor);
+                        _objCompra.setNombreProveedor(nombreProveedor);
+                        _objCompra.setFechaCompra(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaCompra)));
+                        _objCompra.setTotalCompra(totalCompra);
+                        daoModelCompra = new ModelCompra();
+                        daoModelCompra.Edit(_objCompra);
+                        daoModelCompra.Signout();
+                        break;
+                    } catch (ParseException ex) {
+                    }
                 }
                 case "Enlistar": {
                     response.setContentType("application/json");

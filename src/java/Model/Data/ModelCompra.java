@@ -32,7 +32,7 @@ public class ModelCompra extends ConnectionDB {
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objCompra.getFacturaProveedor());
             pStmt.setString(2, _objCompra.getNombreProveedor());
-            pStmt.setDate(3, _objCompra.getFechaCompra());
+            pStmt.setString(3, _objCompra.getFechaCompra());
             pStmt.setInt(4, _objCompra.getTotalCompra());
 
             int updateCount = pStmt.executeUpdate();
@@ -67,7 +67,7 @@ public class ModelCompra extends ConnectionDB {
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objCompra.getFacturaProveedor());
             pStmt.setString(2, _objCompra.getNombreProveedor());
-            pStmt.setDate(3, _objCompra.getFechaCompra());
+            pStmt.setString(3, _objCompra.getFechaCompra());
             pStmt.setInt(4, _objCompra.getTotalCompra());
 
             int updateCount = pStmt.executeUpdate();
