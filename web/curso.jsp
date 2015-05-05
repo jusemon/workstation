@@ -295,7 +295,7 @@
                                                         <label for="txtNombre">
                                                             Nombre Categoría Curso
                                                         </label>
-                                                        <input name="txtNombre" id="txtNombreCategoriaCurso" type="text" class="form-control" placeholder="Ejm: Oleo" required>
+                                                        <input name="txtNombre" id="txtNombreCategoriaCurso" type="text" class="form-control"  onkeypress="return soloLetras(event)" onblur="limpia()" placeholder="Ejm: Oleo" required>
                                                     </div>
                                                 </div>
                                             </div>
