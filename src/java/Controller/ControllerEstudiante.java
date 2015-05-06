@@ -196,7 +196,7 @@ public class ControllerEstudiante extends HttpServlet {
                             respuesta.put("precioFicha", result.getString("precioFicha"));
                             respuesta.put("tblcurso_idCurso", result.getString("tblcurso_idCurso"));
                             String fechaFinal = result.getString("fechaInicio");
-                            respuesta.put("fechaFinal", formatoFechaEntrada.format(sumarRestarDiasFecha(fechaFinal, 30)));
+                            respuesta.put("fechaFinal", formatoFechaEntrada.format(sumarRestarDiasFecha(fechaFinal, 90)));
                         }
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");

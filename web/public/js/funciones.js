@@ -63,11 +63,16 @@ function soloLetras(e) {
     }
 }
 
-function limpia() {
-    var val = document.getElementById("miInput").value;
+function limpia(input) {
+    var val = document.getElementById(input).value;
     var tam = val.length;
     for (i = 0; i < tam; i++) {
         if (!isNaN(val[i]))
-            document.getElementById("miInput").value = '';
+            document.getElementById(input).value = '';
     }
+}
+
+function menorDeEdad(){
+    var val = document.getElementById("miInput").value;
+    
 }

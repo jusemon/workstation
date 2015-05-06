@@ -83,7 +83,7 @@ public class ModelFicha extends ConnectionDB {
         }
 
         return rs;
-    }   
+    }
 
     public boolean cambiarEstado(ObjFicha _objFicha) {
         boolean objReturn = false;
@@ -113,6 +113,20 @@ public class ModelFicha extends ConnectionDB {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, ID);
+            rs = pStmt.executeQuery();
+
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }
+
+    public ResultSet ListCursosDisponibles() {
+        ResultSet rs = null;
+        String sql = "call spConsultarFichasDisponibles()";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
             rs = pStmt.executeQuery();
 
         } catch (SQLException e) {

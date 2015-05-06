@@ -40,9 +40,6 @@ public class ControllerMatricula extends HttpServlet {
             throws ServletException, IOException {
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
-                case "Matricular": {
-                    break;
-                }
                 case "Consultar": {
                     break;
                 }
