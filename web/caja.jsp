@@ -94,7 +94,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupVenta" data-dismiss="modal" name="regVenta" value="Registrar Venta">
+                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupRegistroVenta" data-dismiss="modal" name="regVenta" value="Registrar Venta">
                                             </div>
                                         </div>
                                     </div>
@@ -187,7 +187,7 @@
                             <a href="#abonos" role="tab" data-toggle="tab">Listado de Abonos</a>                            
                         </li>                            
                         <li>
-                            <a href="#diario" role="tab" data-toggle="tab">Caja del día</a>
+                            <a href="#diario" role="tab" data-toggle="tab">Diario de caja</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -293,7 +293,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                 <form id="formCompra" action="ControllerCompra" method="POST">
                                     <div class="panel">
                                         <div class="panel-heading estilo2">
-                                          <h3 class="panel-title">
+                                            <h3 class="panel-title">
                                                 <label id="titulo"></label>
                                                 <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                             </h3>
@@ -357,92 +357,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                 </div>
             </div>
         </div>
-        <!--popup de Venta -->
-        <div class="modal" id="miPopupVenta">
-            <div class="modal-dialog ">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">                               
-                                <form>
-                                    <div class="panel">
-                                        <div class="panel-heading estilo2">
-                                            <h3 class="panel-title">
-                                                Detalle de Venta
-                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
-                                            </h3>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="row">
-                                                <div class="col-md-12 col-xs-12">
-                                                    <div class="form-group form-inline pull-right">
-                                                        <input class="form-control" type="search"/>         
-                                                        <div class="btn btn-primary form-control">
-                                                            <span class="glyphicon glyphicon-search" ></span></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-xs-12">
-                                                    <div class="form-group form-inline pull-right">
-                                                        <label for="txtNombre">
-                                                            Agrege los artículos
-                                                        </label>
-                                                        <select class="form-control" name="txtNombre">
-                                                            <option value="000">...</option>
-                                                            <option value="001">Pincel 3"      1200$</option>
-                                                        </select>
-                                                        <input type="button" class="form-control btn-default" value="Agregar"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <table id="tblArticulosVenta" class="table table-hover" cellspacing="0" width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center">Código</th>
-                                                        <th class="text-center">Nombre</th>
-                                                        <td class="text-center">Cantidad</td>
-                                                        <th class="text-center">Precio</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-center">00001</td>
-                                                        <td class="text-center">Vinilo Azul Mediano</td>
-                                                        <td class="text-center">15</td>
-                                                        <td class="text-center">1200</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="col-md-12">
-                                                <div class="col-sm-4 pull-right">
-                                                    Total: 1200
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="panel-footer">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" id="boton1" onclick="imprimir()" type="button" name="action" value="Añadir">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--popup detalle de Venta -->
+        <!--popup de DetalleVenta -->
         <div class="modal" id="miPopupDetalleVenta">
             <div class="modal-dialog ">
                 <div class="modal-content">
@@ -451,150 +366,281 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                             <div class="col-md-12">                               
                                 <form>
                                     <div class="panel">
-                                        <div class="panel-heading estilo2">
-                                            <h3 class="panel-title">
-                                                Detalle de Venta
-                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
-                                            </h3>
-                                        </div>
                                         <div class="panel-body">
+                                            <input type="hidden" name="idArticulo" id="idArticulo"/>
                                             <div class="row">
-                                                <div class="col-md-12 col-xs-12">
-                                                    <div class="form-group form-inline">
-                                                        Nombre: Juan Montoya     
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-xs-6">
-                                                    <div class="form-group form-inline">
-                                                        Cédula: 123654    
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-xs-6">
-                                                    <div class="form-group form-inline">
-                                                        Teléfono: 3214587     
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 col-xs-12">
-                                                    <div class="form-group form-inline">
-                                                        Fecha: 21/11/2014     
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="idCategoria">
+                                                            Categoría:
+                                                        </label>
+                                                        <select name="idCategoria" id="idCategoriaArticulo" class="form-control" required>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <table id="tblArticulosVenta" class="table table-hover" cellspacing="0" width="100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center">Código</th>
-                                                        <th class="text-center">Artículo</th>
-                                                        <th class="text-center">Cantidad</th>
-                                                        <th class="text_center">Precio Unidad</th>
-                                                        <th class="text-center">Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="text-center">00001</td>
-                                                        <td class="text-center">Vinilo Azul Mediano</td>
-                                                        <td class="text-center">15</td>
-                                                        <td class="text-center">1000</td>
-                                                        <td class="text-center">15000</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtCodigoArticulo">
+                                                            Código Artículo:
+                                                        </label>
+                                                        <input name="txtCodigo" id="txtCodigo" type="number" class="form-control" placeholder="Ejm: 20000" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtDescripcionArticulo">
+                                                            Descripción Artículo:
+                                                        </label>
+                                                        <input name="txtDescripcionArticulo" id="txtDescripcionArticulo"type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtPrecio">
+                                                            Cantidad:
+                                                        </label>
+                                                        <input name="txtCantidad" id="txtCantidad" type="number" class="form-control" placeholder="Ejm: 10000" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtPrecio">
+                                                            Precio Unidad:
+                                                        </label>
+                                                        <input name="txtPrecioArticulo" id="txtPrecioArticulo" type="number" class="form-control" placeholder="Ejm: 10000" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtCantidad">
+                                                            Descuento:
+                                                        </label>
+                                                        <input name="txtDescuento" id="txtDescuento" type="number" class="form-control" placeholder="Ejm: 30" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                 <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtCantidad">
+                                                            Total:
+                                                        </label>
+                                                        <input name="txtTotal" id="txtDescuento" type="number" class="form-control" placeholder="Ejm: 30" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="panel-footer">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input  class="btn btn-default btn-block" id="boton1" onclick="imprimir()" type="button" name="action" value="Añadir">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--popup RegistroVenta -->
+    <div class="modal" id="miPopupRegistroVenta">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">                               
+                            <form>
+                                <div class="panel">
+                                    <div class="panel-heading estilo2">
+                                        <h3 class="panel-title">
+                                            Ventas
+                                            <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNumero">
+                                                            Núnero:
+                                                        </label>
+                                                        <input name="txtNumero" id="txtNumero" type="text" class="form-control" placeholder="00001" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtCliente">
+                                                            Cliente:
+                                                        </label>
+                                                        <input name="txtCliente" id="txtCliente" type="text" class="form-control" placeholder="calle" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="dateFechaCompra">
+                                                            Fecha :
+                                                        </label>
+                                                        <input name="dateFecha" id="dateFecha" type="text" class="form-control fecha" placeholder="Ejm: 10/04/2015" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupDetalleVenta" data-dismiss="modal" name="regVenta" value="Registrar Artículo">
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="col-md-12">
-                                                <div class="col-sm-4 pull-right">
-                                                    Total: 15000
+                                                <div class="form-group">
+                                                    <label for="Líneas de detalle">
+                                                        Líneas de detalle
+                                                    </label>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="panel-footer">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" id="boton1"type="button" name="action" value="Imprimir">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cerrar">
-                                                </div>
+                                        </div>
+                                        <table id="tblArticulosVenta" class="table table-hover" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">Código</th>
+                                                    <th class="text-center">Artículo</th>
+                                                    <th class="text-center">Cantidad</th>
+                                                    <th class="text_center">Precio Unidad</th>
+                                                    <th class="text_center">Descuento</th>
+                                                    <th class="text_center">% I.V.A </th>
+                                                    <th class="text-center">Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-center">00001</td>
+                                                    <td class="text-center">Vinilo Azul Mediano</td>
+                                                    <td class="text-center">15</td>
+                                                    <td class="text-center">1000</td>
+                                                    <td class="text-center">0</td>
+                                                    <td class="text-center">16</td>
+                                                    <td class="text-center">15000</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="col-md-12">
+                                            <div class="col-sm-4 pull-right">
+                                                Total: 15000
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
+
+                                    <div class="panel-footer">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input  class="btn btn-default btn-block" id="boton1"type="button" name="action" value="Registrar">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cerrar">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    <!--Popup Abono-->
+    <div class="modal" id="miPopupAbono">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">                               
+                            <form method="POST" action="ControllerAbono">
+                                <div class="panel">
+                                    <div class="panel-heading estilo2">
+                                        <h3 class="panel-title">
+                                            Registrar abono
+                                            <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
 
-
-        <!--
-        Popup Abono
-        -->
-        <div class="modal" id="miPopupAbono">
-            <div class="modal-dialog ">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">                               
-                                <form method="POST" action="ControllerAbono">
-                                    <div class="panel">
-                                        <div class="panel-heading estilo2">
-                                            <h3 class="panel-title">
-                                                Registrar abono
-                                                <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                                            </h3>
-                                        </div>
-                                        <div class="panel-body">
-
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="txtIdCredito">
-                                                            Id. del crédito
-                                                        </label>
-                                                        <input name="txtIdCredito" id="txtIdCredito" type="text" class="form-control" placeholder="Ej: 0001" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="txtValorAbono">
-                                                            Valor abono ($)
-                                                        </label>
-                                                        <input name="txtValorAbono" id="txtValorAbono" type="number" class="form-control" placeholder="Ej: 25000" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="dateFechaPago">
-                                                            Fecha de pago
-                                                        </label>
-                                                        <input name="dateFechaPago" id="dateFechaPago" type="date" class="form-control" placeholder="" required>
-                                                    </div>
-                                                </div>
-                                            </div>                                
-                                        </div>
-                                        <div class="panel-footer">
-                                            <div class="col-md-offset-3 col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <input  class="btn btn-default btn-block" id="btnAbono" type="submit" name="action" value="Registrar">
+                                                    <label for="txtIdCredito">
+                                                        Id. del crédito
+                                                    </label>
+                                                    <input name="txtIdCredito" id="txtIdCredito" type="text" class="form-control" placeholder="Ej: 0001" required>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="txtValorAbono">
+                                                        Valor abono ($)
+                                                    </label>
+                                                    <input name="txtValorAbono" id="txtValorAbono" type="number" class="form-control" placeholder="Ej: 25000" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="dateFechaPago">
+                                                        Fecha de pago
+                                                    </label>
+                                                    <input name="dateFechaPago" id="dateFechaPago" type="date" class="form-control" placeholder="" required>
+                                                </div>
+                                            </div>
+                                        </div>                                
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="col-md-offset-3 col-md-6">
+                                            <div class="form-group">
+                                                <input  class="btn btn-default btn-block" id="btnAbono" type="submit" name="action" value="Registrar">
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-    </body>
-    <%@include file="WEB-INF/jspf/imports.jspf" %>
+</body>
+<%@include file="WEB-INF/jspf/imports.jspf" %>
 </html>
