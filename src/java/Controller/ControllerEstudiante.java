@@ -40,6 +40,8 @@ public class ControllerEstudiante extends HttpServlet {
     public ModelAcudiente daoModelAcudiente = new ModelAcudiente();
     public ObjAcudiente _objAcudiente = new ObjAcudiente();
     ModelFicha daoModelFicha = new ModelFicha();
+    SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -193,8 +195,8 @@ public class ControllerEstudiante extends HttpServlet {
                             respuesta.put("fechaInicio", result.getString("fechaInicio"));
                             respuesta.put("precioFicha", result.getString("precioFicha"));
                             respuesta.put("tblcurso_idCurso", result.getString("tblcurso_idCurso"));
-                            Date fechaFinal = result.getDate("fechaInicio");
-                            respuesta.put("fechaFinal", String.valueOf(sumarRestarDiasFecha(fechaFinal, 30)));
+                            String fechaFinal = result.getString("fechaInicio");
+                            respuesta.put("fechaFinal", formatoFechaEntrada.format(sumarRestarDiasFecha(fechaFinal, 30)));
                         }
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
@@ -266,12 +268,19 @@ public class ControllerEstudiante extends HttpServlet {
         return salida;
     }
 
-    public Date sumarRestarDiasFecha(Date fecha, int dias) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(fecha);
-        calendar.add(Calendar.DAY_OF_YEAR, dias);
-        Date salida = new Date(calendar.getTime().getTime());
+    public Date sumarRestarDiasFecha(String fecha, int dias) {
+        Date salida = null;
+        try {
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(formatoFechaEntrada.parse(fecha));
+            calendar.add(Calendar.DAY_OF_YEAR, dias);
+            salida = new Date(calendar.getTime().getTime());
+        } catch (ParseException ex) {
+            Logger.getLogger(ControllerEstudiante.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return salida;
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
