@@ -10,6 +10,7 @@ import Model.Data.ModelSeminario;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -103,6 +104,33 @@ public class ControllerSeminario extends HttpServlet {
                 }
                 //</editor-fold>
 
+                //<editor-fold defaultstate="collapsed" desc="Enlistar los seminarios disponibles">
+                case "seminariosDisponibles": {
+                    try {
+                        List<Map> lista = new ArrayList<>();
+                        Map<String, String> respuesta;
+                        daoModelSeminario = new ModelSeminario();
+                        ResultSet result = daoModelSeminario.ListSeminariosDisponibles();
+                        while (result.next()) {
+                            respuesta = new LinkedHashMap<>();
+                            respuesta.put("idSeminario", result.getString("idSeminario"));
+                            respuesta.put("nombreSeminario", result.getString("nombreSeminario"));
+                            respuesta.put("duracionSeminario", result.getString("duracionSeminario"));
+                            lista.add(respuesta);
+                        }
+                        daoModelSeminario.Signout();
+                        String salida = new Gson().toJson(lista);
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write(salida);
+                        break;
+                    } catch (SQLException ex) {
+                        System.err.println("Ha ocurrido un error en el controllerFicha" + ex.getMessage());
+
+                    }
+                }
+                //</editor-fold>                
+                
                 //<editor-fold defaultstate="collapsed" desc="Enlistar los Seminarios">
                 case "Enlistar": {
                     response.setContentType("application/json");

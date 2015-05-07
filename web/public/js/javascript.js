@@ -12,7 +12,9 @@ $(document).ready(function () {
     } else if (URLactual.indexOf('nuestro') !== -1) {
         $('#btnnuestro').attr('class', 'active');
         ficha.mostrarDisponibles();
+        seminario.mostrarDisponibles();
         setInterval(ficha.mostrarDisponibles, 60000);
+        setInterval(seminario.mostrarDisponibles, 60000);
         $.ajaxSetup({cache: false});
     } else if (URLactual.indexOf('acerca') !== -1) {
         $('#btnacerca').attr('class', 'active');

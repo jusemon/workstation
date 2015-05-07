@@ -254,7 +254,7 @@ var ficha = {
                             + '<label id="cupos">' + data[i]['cuposDisponibles'] + '</label>'
                             + '</div>'
                             + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)">Preinscribirse</a>'
+                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="ficha.myAjax(\'Preinscripcion\', '+data[i]['idFicha']+')">Preinscribirse</a>'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -331,6 +331,52 @@ var seminario = {
         $('#miPopupSeminario').find('#ddlEstado option').prop('selected', false).filter('[value="' + estado + '"]').prop('selected', true);
         $('#miPopupSeminario').find('#btnSeminario').val('Editar');
         $('#miPopupSeminario').modal('show');
+    },
+    mostrarDisponibles: function () {
+        $('#seminariosDisponibles').empty();
+        $.ajax({
+            type: 'POST',
+            url: 'ControllerSeminario',
+            data: {
+                action: 'seminariosDisponibles'
+            },
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var html = '<div class="col-md-6">'
+                            + '<div class="panel panel-default">'
+                            + '<div class="panelCursos-Heading">'
+                            + '<div class="panel-title text-center">'
+                            + data[i]['nombreSeminario']
+                            + '</div>'
+                            + '</div>'
+                            + '<div class="panel-body">'
+                            + '<div class="row">'
+                            + '<div class="col-md-6">'
+                            + 'Precio:'
+                            + '<label id="precio"></label>'
+                            + '</div>'
+                            + '<div class="col-md-6">'
+                            + 'Duración:'
+                            + '<label id="fecha">' + data[i]['duracionSeminario'] + ' Horas </label>'
+                            + '</div>'
+                            + '</div>'
+                            + '<div class="row">'
+                            + '<div class="col-md-6">'
+                            + 'Cupos:'
+                            + '<label id="cupos"></label>'
+                            + '</div>'
+                            + '<div class="col-md-5">'
+                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="seminario.myAjax(\'Preinscripcion\', '+data[i]['idSeminario']+')">Preinscribirse</a>'
+                            + '</div>'
+                            + '</div>'
+                            + '</div>'
+                            + '</div>'
+                            + '</div';
+                    $("#seminariosDisponibles").append(html);
+                }
+
+            }
+        });
     },
     cargar: function () {
         tablaSeminario = $('#tblSeminarios').DataTable({
