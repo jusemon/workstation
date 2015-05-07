@@ -123,7 +123,7 @@
                                 </h4>
                             </div>
                             <!--
-                            Aquí el contenido de la gestión de abonos, en este caso habrá un botónn para registrar un abono
+                            Aquí el contenido de la gestión de abonos, en este caso habrá un botón para registrar un abono
                             y otro para consultar abonos por crédito
                             -->                              
                             <div id="collapseThree" class="panel-collapse collapse">
@@ -172,11 +172,40 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Gestion de Diario de Caja-->
+                        <div class="panel panel-default">
+                            <!--
+                            Aquí el botón que desplegara la gestión Diario de Caja
+                            -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                        Gestión de Diario de Caja
+                                    </a>
+                                </h4>
+                            </div>
+                            <!--
+                            Aquí el contenido de la gestión de Diario de Caja, en este caso un boton para registrar  Movimientos diarios
+                            
+                            -->                              
+                            <div id="collapseFour" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupDiario" data-dismiss="modal" name="regDiario" value="Registrar Diario">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-md-9">
                     <ul class="nav nav-tabs" role="tablist">
+
                         <li class="active">
                             <a href="#compra" role="tab" data-toggle="tab">Listado de Compras</a>
                         </li>
@@ -260,7 +289,7 @@
                                         <td class="text-center">10000</td>
                                         <td class="text-center">30000</td>
                                         <td class="text-center">21/11/2014</td>
-                                        <td class="text-center">20000</td>
+                                        <td class="text-center">30000</td>
                                         <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)">                                                <span class="glyphicon glyphicon-search"></span></a>
                                         </td>  
                                     </tr>
@@ -283,8 +312,8 @@ El panel que se encuentra en el Popup Detalle compra, esta dividido en cabeza cu
 dentro del cuerpo del panel se encuentra el formulario para agregar elementos y una tabla que muestra todos los articulos a comprar,
 finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         -->
-        <%--popup de compra--%> 
-        <div class="modal" id="miPopupCompra">
+     <%--popup de compra--%> 
+    <div class="modal" id="miPopupCompra">
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -357,8 +386,8 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                 </div>
             </div>
         </div>
-        <!--popup de DetalleVenta -->
-        <div class="modal" id="miPopupDetalleVenta">
+    <!--popup de DetalleVenta -->
+    <div class="modal" id="miPopupDetalleVenta">
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-body">
@@ -367,6 +396,12 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                 <form>
                                     <div class="panel">
                                         <div class="panel-body">
+                                            <div class="panel-heading estilo2">
+                                                <h3 class="panel-title">
+                                                    Detalle de venta
+                                                    <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                                </h3>
+                                            </div>
                                             <input type="hidden" name="idArticulo" id="idArticulo"/>
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -395,7 +430,8 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                         <label for="txtDescripcionArticulo">
                                                             Descripción Artículo:
                                                         </label>
-                                                        <input name="txtDescripcionArticulo" id="txtDescripcionArticulo"type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>
+                                                        <!-- <input name="txtDescripcionArticulo" id="txtDescripcionArticulo"type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>-->
+                                                        <input name="txtDescripcionArticulo" id="txtDescripcionArticulo" type="search" class="form-control input-sm" placeholder="" aria-controls="tblArticulo">
                                                     </div>
                                                 </div>
                                             </div>
@@ -429,13 +465,13 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                     </div>
                                                 </div>
                                             </div>
-                                                 <div class="row">
+                                            <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtCantidad">
                                                             Total:
                                                         </label>
-                                                        <input name="txtTotal" id="txtDescuento" type="number" class="form-control" placeholder="Ejm: 30" required>
+                                                        <input name="txtTotal" id="txtDescuento" type="number" class="form-control" placeholder="Ejm: 300000" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -462,7 +498,6 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                 </div>
             </div>
         </div>
-    </div>
     <!--popup RegistroVenta -->
     <div class="modal" id="miPopupRegistroVenta">
         <div class="modal-dialog ">
@@ -484,7 +519,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtNumero">
-                                                            Núnero:
+                                                            Código Cliente:
                                                         </label>
                                                         <input name="txtNumero" id="txtNumero" type="text" class="form-control" placeholder="00001" required>
                                                     </div>
@@ -535,7 +570,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                     <th class="text_center">Precio Unidad</th>
                                                     <th class="text_center">Descuento</th>
                                                     <th class="text_center">% I.V.A </th>
-                                                    <th class="text-center">Total</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -546,7 +581,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                     <td class="text-center">1000</td>
                                                     <td class="text-center">0</td>
                                                     <td class="text-center">16</td>
-                                                    <td class="text-center">15000</td>
+
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -624,6 +659,73 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                 </div>
                                             </div>
                                         </div>                                
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="col-md-offset-3 col-md-6">
+                                            <div class="form-group">
+                                                <input  class="btn btn-default btn-block" id="btnAbono" type="submit" name="action" value="Registrar">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+       <!--Popup Diario de Caja-->
+    <div class="modal" id="miPopupDiario">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">                               
+                            <form method="POST" action="ControllerCaja">
+                                <div class="panel">
+                                    <div class="panel-heading estilo2">
+                                        <h3 class="panel-title">
+                                            Diario de Caja
+                                            <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                        </h3>
+                                    </div>
+                                    <div class="panel-body">
+
+                                        <div class="row">
+                                            <div class="col-md-12">                                           
+                                        <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="dateFechaSaldo">
+                                                            Fecha:
+                                                        </label>
+                                                        <input name="dateFechaSaldo" id="dateFechaSaldo" type="text" class="form-control fecha" placeholder="Ejm: 10/04/2015" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                <div class="form-group">
+                                                    <label for="txtSaldo">
+                                                        Saldo Inicial
+                                                    </label>
+                                                    <input name="txtSaldo" id="txtIdSaldo" type="number" class="form-control" placeholder="Ej: 50000" required>
+                                                </div>
+                                                <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="ddlMovimientos">
+                                                            Movimientos
+                                                        </label>
+                                                        <select name="ddlMovimiento" id="ddlMovimiento" class="form-control" required>
+                                                            <option value="">Seleccionar...</option>
+                                                            <option value="CO" > Compra </option>
+                                                            <option value="VE" > Venta </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>                               
                                     </div>
                                     <div class="panel-footer">
                                         <div class="col-md-offset-3 col-md-6">
