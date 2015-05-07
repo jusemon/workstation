@@ -6,32 +6,21 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>WorkStation</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
-        <script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="public/js/javascript.js"></script>
-    </head>
-    <body>
-        <%@include file="WEB-INF/jspf/superior.jspf" %>
-        <div class="container-fluid">
-            <div class="row col-md-10 col-md-offset-2">
-                Acerca de Nosotros
-                <br>
-                <br>
+<%@include file="WEB-INF/jspf/superior.jspf" %>
+<div class="container-fluid">
+    <div class="row col-md-10 col-md-offset-2">
+        Acerca de Nosotros
+        <br>
+        <br>
 
-                Mision
-                <br>
-                <br>
+        Mision
+        <br>
+        <br>
 
-                Vision
-                <br>
+        Vision
+        <br>
 
-            </div>
-        </div>
-    </body>
-</html>
+    </div>
+</div>
+<%@include file="WEB-INF/jspf/imports.jspf" %>
+

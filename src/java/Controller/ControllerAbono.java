@@ -47,13 +47,14 @@ public class ControllerAbono extends HttpServlet {
             Map<String, String> respuesta;
             ResultSet result;
             switch (request.getParameter("action")) {
+                
                 // <editor-fold defaultstate="collapsed" desc="Registrar un abono">
                 case "Registrar":{
                     daoModelAbono = new ModelAbono();
                     
                     int idCredito = Integer.parseInt(request.getParameter("txtIdCredito"));
                     double valorAbono = Double.parseDouble(request.getParameter("txtValorAbono"));
-                    String fechaPago = new String(request.getParameter("dateFechaPago").getBytes("ISO-8859-1"), "UTF-8");
+                    String fechaPago = request.getParameter("dateFechaPago");
                     
                     _objAbono.setIdCredito(idCredito);
                     _objAbono.setValorAbono(valorAbono);
@@ -67,6 +68,7 @@ public class ControllerAbono extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
+                
                 // <editor-fold defaultstate="collapsed" desc="Consultar un abono por crédito">
                 case "Consultar": {
                     daoModelAbono = new ModelAbono();
@@ -97,7 +99,7 @@ public class ControllerAbono extends HttpServlet {
                 /*case "Editar":{
                     daoModelAbono = new ModelAbono();
                     int idAbono = Integer.parseInt(request.getParameter("idAbono"));
-                    //String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    //String nombre = request.getParameter("txtNombre");
                     _objAbono.setIdAbono(idAbono);
                     daoModelAbono.Edit(_objAbono);
                     
@@ -119,6 +121,7 @@ public class ControllerAbono extends HttpServlet {
             response.sendRedirect("caja.jsp");
         }
     }
+    
     // <editor-fold defaultstate="collapsed" desc="getTableAbono">
     public String getTableAbono() {
         

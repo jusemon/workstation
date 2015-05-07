@@ -10,6 +10,7 @@ import Model.Data.ModelSeminario;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,9 +45,11 @@ public class ControllerSeminario extends HttpServlet {
         String action = request.getParameter("action");
         if (action != null) {
             switch (action) {
+
+                //<editor-fold defaultstate="collapsed" desc="Registrar un Seminario">
                 case "Registrar": {
                     daoModelSeminario = new ModelSeminario();
-                    String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8").trim();
+                    String nombreSeminario = request.getParameter("txtNombre").trim();
                     int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion").trim());
                     int estado = Integer.parseInt(request.getParameter("ddlEstado").trim());
                     _objSeminario = new ObjSeminario();
@@ -57,10 +60,13 @@ public class ControllerSeminario extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
+                //</editor-fold>
+
+                //<editor-fold defaultstate="collapsed" desc="Editar un Seminario">
                 case "Editar": {
                     daoModelSeminario = new ModelSeminario();
                     int idSeminario = Integer.parseInt(request.getParameter("idSeminario"));
-                    String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    String nombreSeminario = request.getParameter("txtNombre");
                     int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion"));
                     int estado = Integer.parseInt(request.getParameter("ddlEstado"));
                     _objSeminario = new ObjSeminario();
@@ -72,6 +78,9 @@ public class ControllerSeminario extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
+                //</editor-fold>
+
+                //<editor-fold defaultstate="collapsed" desc="Cambiar el estado de un Seminario">
                 case "Estado": {
                     int estado = 0;
                     daoModelSeminario = new ModelSeminario();
@@ -93,12 +102,43 @@ public class ControllerSeminario extends HttpServlet {
                     }
                     break;
                 }
+                //</editor-fold>
+
+                //<editor-fold defaultstate="collapsed" desc="Enlistar los seminarios disponibles">
+                case "seminariosDisponibles": {
+                    try {
+                        List<Map> lista = new ArrayList<>();
+                        Map<String, String> respuesta;
+                        daoModelSeminario = new ModelSeminario();
+                        ResultSet result = daoModelSeminario.ListSeminariosDisponibles();
+                        while (result.next()) {
+                            respuesta = new LinkedHashMap<>();
+                            respuesta.put("idSeminario", result.getString("idSeminario"));
+                            respuesta.put("nombreSeminario", result.getString("nombreSeminario"));
+                            respuesta.put("duracionSeminario", result.getString("duracionSeminario"));
+                            lista.add(respuesta);
+                        }
+                        daoModelSeminario.Signout();
+                        String salida = new Gson().toJson(lista);
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write(salida);
+                        break;
+                    } catch (SQLException ex) {
+                        System.err.println("Ha ocurrido un error en el controllerFicha" + ex.getMessage());
+
+                    }
+                }
+                //</editor-fold>                
+                
+                //<editor-fold defaultstate="collapsed" desc="Enlistar los Seminarios">
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(getTableSeminario());
                     break;
                 }
+                //</editor-fold>
             }
         }
     }

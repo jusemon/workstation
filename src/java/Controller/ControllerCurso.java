@@ -48,11 +48,11 @@ public class ControllerCurso extends HttpServlet {
             switch (request.getParameter("action")) {
                 // <editor-fold defaultstate="collapsed" desc="Registrar un Curso">
                 case "Registrar": {
-                    nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                    descripcion = new String(request.getParameter("txtDescripcion").getBytes("ISO-8859-1"), "UTF-8");
-                    duracion = Integer.parseInt(request.getParameter("dateDuracion"));
-                    estado = Integer.parseInt(request.getParameter("ddlEstado"));
-                    categoria = Integer.parseInt(request.getParameter("ddlCategoria"));
+                    nombre = request.getParameter("txtNombre").trim();
+                    descripcion = request.getParameter("txtDescripcion").trim();
+                    duracion = Integer.parseInt(request.getParameter("dateDuracion").trim());
+                    estado = Integer.parseInt(request.getParameter("ddlEstado").trim());
+                    categoria = Integer.parseInt(request.getParameter("ddlCategoria").trim());
                     _objCurso.setIdCategoria(categoria);
                     _objCurso.setDescripcion(descripcion);
                     _objCurso.setNombreCurso(nombre);
@@ -93,6 +93,7 @@ public class ControllerCurso extends HttpServlet {
                 }
                 //</editor-fold>
 
+                // <editor-fold defaultstate="collapsed" desc="Cambiar el estado de un Curso">
                 case "Estado": {
                     aux = request.getParameter("id");
                     id = Integer.parseInt(aux.trim());
@@ -113,16 +114,18 @@ public class ControllerCurso extends HttpServlet {
                         System.err.println(e.getMessage());
                     }
                     break;
-                }
+                }                
+                //</editor-fold>
 
+                // <editor-fold defaultstate="collapsed" desc="Editar un Curso">
                 case "Editar": {
                     aux = request.getParameter("idCurso");
                     id = Integer.parseInt(aux.trim());
-                    nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                    descripcion = new String(request.getParameter("txtDescripcion").getBytes("ISO-8859-1"), "UTF-8");
-                    duracion = Integer.parseInt(request.getParameter("dateDuracion"));
-                    estado = Integer.parseInt(request.getParameter("ddlEstado"));
-                    categoria = Integer.parseInt(request.getParameter("ddlCategoria"));
+                    nombre = request.getParameter("txtNombre").trim();
+                    descripcion = request.getParameter("txtDescripcion").trim();
+                    duracion = Integer.parseInt(request.getParameter("dateDuracion").trim());
+                    estado = Integer.parseInt(request.getParameter("ddlEstado").trim());
+                    categoria = Integer.parseInt(request.getParameter("ddlCategoria").trim());
                     _objCurso.setIdCurso(id);
                     _objCurso.setIdCategoria(categoria);
                     _objCurso.setDescripcion(descripcion);
@@ -135,18 +138,26 @@ public class ControllerCurso extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
+                //</editor-fold>
+
+                // <editor-fold defaultstate="collapsed" desc="Enlistar los Cursos">
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableCursos());
                     break;
                 }
+                //</editor-fold>
+
+                // <editor-fold defaultstate="collapsed" desc="Obtener las opciones de los Cursos">
                 case "getOptionsCursos": {
                     response.setContentType("application/text");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getOptionsCursos());
                     break;
                 }
+                //</editor-fold>
+
             }
         }
     }

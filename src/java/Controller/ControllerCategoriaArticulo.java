@@ -43,9 +43,11 @@ public class ControllerCategoriaArticulo extends HttpServlet {
 
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
+                
+                //<editor-fold defaultstate="collapsed" desc="Registrar una Categoría de Artículo">
                 case "Registrar": {
                     daoModelCategoriaArticulo = new ModelCategoriaArticulo();
-                    String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    String nombreCategoriaArticulo = request.getParameter("txtNombre");
                     _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                     String salida = Mensaje(daoModelCategoriaArticulo.Add(_objCategoriaArticulo), "La categoría ha sido registrada", "Ha ocurrido un error al intentar registrar la categoría");
                     response.setContentType("application/json");
@@ -53,10 +55,13 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
+                //</editor-fold>
+                
+                //<editor-fold defaultstate="collapsed" desc="Editar una Categoría de Artículo">
                 case "Editar": {
                     daoModelCategoriaArticulo = new ModelCategoriaArticulo();
                     int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoriaArticulo"));
-                    String nombreCategoriaArticulo = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    String nombreCategoriaArticulo = request.getParameter("txtNombre");
                     _objCategoriaArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
                     _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                     String salida = Mensaje(daoModelCategoriaArticulo.Edit(_objCategoriaArticulo), "La categoría ha sido actualizada", "Ha ocurrido un error al intentar actualizar la categoría");
@@ -65,17 +70,24 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
+                //</editor-fold>
+                
+                //<editor-fold defaultstate="collapsed" desc="Enlistar todas las Categorías de Artículo">
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableCategoriaArticulo());
                     break;
                 }
+                                //</editor-fold>
+                
+                //<editor-fold defaultstate="collapsed" desc="Obtener las opciones de Categorías de Artículo">
                 case "getOptionsCategorias": {
                     response.setContentType("application/text");
                     response.getWriter().write(getOptionsCategorias());
                     break;
                 }
+                //</editor-fold>
             }
         }
     }

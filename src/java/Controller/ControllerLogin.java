@@ -10,7 +10,6 @@ import Model.Data.ModelModulo;
 import Model.Data.ModelUsuario;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -46,8 +45,8 @@ public class ControllerLogin extends HttpServlet {
                 case "Iniciar Sesion":
                     {
                         HttpSession session = request.getSession();
-                        String nombre = new String(request.getParameter("nom").getBytes("ISO-8859-1"), "UTF-8");
-                        String pass = new String(request.getParameter("pass").getBytes("ISO-8859-1"), "UTF-8");
+                        String nombre = request.getParameter("nom");
+                        String pass = request.getParameter("pass");
                         if (comprobarUsuario(nombre, pass)) {
                             session.setAttribute("usuario", nombre);
                             session.setAttribute("pass", pass);

@@ -56,30 +56,28 @@ public class ControllerEstudiante extends HttpServlet {
             throws ServletException, IOException {
         Map<String, String> respuesta;
         response.setCharacterEncoding("UTF-8");
-        SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
         String action = request.getParameter("action");
         if (action != null) {
             switch (action) {
                 case "Registrar": {
                     try {
-                        String tipoDocumento = new String(request.getParameter("ddlIdentificacion").getBytes("ISO-8859-1"), "UTF-8");
-                        int numeroIdentificacion = Integer.parseInt(request.getParameter("txtIdentificacion"));
-                        String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                        String apellido = new String(request.getParameter("txtApellido").getBytes("ISO-8859-1"), "UTF-8");
-                        int genero = Integer.parseInt(request.getParameter("radioGenero"));
-                        String fechaNacimiento = request.getParameter("dateFechaNacimiento");
-                        String direccion = new String(request.getParameter("txtDireccion").getBytes("ISO-8859-1"), "UTF-8");
-                        String telefono = String.valueOf(request.getParameter("txtTelefono"));
-                        String celular = String.valueOf(request.getParameter("txtCelular").trim());
-                        String correo = new String(request.getParameter("txtCorreo").getBytes("ISO-8859-1"), "UTF-8");
-                        int estado = Integer.parseInt(request.getParameter("radioBeneficiario"));
+                        String tipoDocumento = request.getParameter("ddlIdentificacion").trim();
+                        int numeroIdentificacion = Integer.parseInt(request.getParameter("txtIdentificacion").trim());
+                        String nombre = request.getParameter("txtNombre").trim();
+                        String apellido = request.getParameter("txtApellido").trim();
+                        int genero = Integer.parseInt(request.getParameter("radioGenero").trim());
+                        String fechaNacimiento = request.getParameter("dateFechaNacimiento").trim();
+                        String direccion = request.getParameter("txtDireccion").trim();
+                        String telefono = request.getParameter("txtTelefono").trim();
+                        String celular = request.getParameter("txtCelular").trim();
+                        String correo = request.getParameter("txtCorreo").trim();
+                        int estado = Integer.parseInt(request.getParameter("radioBeneficiario").trim());
                         //Beneficiario 0->No Subvencionado 1->Subvencionado?
                         String tipoDocAcudiente = "";
                         int numeroDocAcudiente = 0;
                         if (request.getParameter("tipoDocAcudiente") != null && request.getParameter("numeroDocAcudiente") != null) {
-                            tipoDocAcudiente = new String(request.getParameter("tipoDocAcudiente").getBytes("ISO-8859-1"), "UTF-8");
-                            numeroDocAcudiente = Integer.parseInt(request.getParameter("numeroDocAcudiente"));
+                            tipoDocAcudiente = request.getParameter("tipoDocAcudiente").trim();
+                            numeroDocAcudiente = Integer.parseInt(request.getParameter("numeroDocAcudiente").trim());
                         }
                         _objEstudiente.setTipoDocumento(tipoDocumento);
                         _objEstudiente.setNumeroDocumento(numeroIdentificacion);
@@ -139,23 +137,23 @@ public class ControllerEstudiante extends HttpServlet {
 
                 case "Editar": {
                     try {
-                        String tipoDocumento = new String(request.getParameter("ddlIdentificacion").getBytes("ISO-8859-1"), "UTF-8");
-                        int numeroIdentificacion = Integer.parseInt(request.getParameter("txtIdentificacion"));
-                        String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
-                        String apellido = new String(request.getParameter("txtApellido").getBytes("ISO-8859-1"), "UTF-8");
-                        int genero = Integer.parseInt(request.getParameter("radioGenero"));
-                        String fechaNacimiento = String.valueOf(request.getParameter("dateFechaNacimiento"));
-                        String direccion = new String(request.getParameter("txtDireccion").getBytes("ISO-8859-1"), "UTF-8");
-                        String telefono = String.valueOf(request.getParameter("txtTelefono"));
-                        String celular = String.valueOf(request.getParameter("txtCelular").trim());
-                        String correo = new String(request.getParameter("txtCorreo").getBytes("ISO-8859-1"), "UTF-8");
-                        int estado = Integer.parseInt(request.getParameter("radioBeneficiario"));
+                        String tipoDocumento = request.getParameter("ddlIdentificacion").trim();
+                        int numeroIdentificacion = Integer.parseInt(request.getParameter("txtIdentificacion").trim());
+                        String nombre = request.getParameter("txtNombre").trim();
+                        String apellido = request.getParameter("txtApellido").trim();
+                        int genero = Integer.parseInt(request.getParameter("radioGenero").trim());
+                        String fechaNacimiento = request.getParameter("dateFechaNacimiento").trim();
+                        String direccion = request.getParameter("txtDireccion").trim();
+                        String telefono = request.getParameter("txtTelefono").trim();
+                        String celular = request.getParameter("txtCelular").trim();
+                        String correo = request.getParameter("txtCorreo").trim();
+                        int estado = Integer.parseInt(request.getParameter("radioBeneficiario").trim());
                         //Beneficiario 0->No Subvencionado 1->Subvencionado?
                         String tipoDocAcudiente = "";
                         int numeroDocAcudiente = 0;
                         if (request.getParameter("tipoDocAcudiente") != null && request.getParameter("numeroDocAcudiente") != null) {
-                            tipoDocAcudiente = new String(request.getParameter("tipoDocAcudiente").getBytes("ISO-8859-1"), "UTF-8");
-                            numeroDocAcudiente = Integer.parseInt(request.getParameter("numeroDocAcudiente"));
+                            tipoDocAcudiente = request.getParameter("tipoDocAcudiente").trim();
+                            numeroDocAcudiente = Integer.parseInt(request.getParameter("numeroDocAcudiente").trim());
                         }
                         _objEstudiente.setTipoDocumento(tipoDocumento);
                         _objEstudiente.setNumeroDocumento(numeroIdentificacion);
@@ -196,7 +194,7 @@ public class ControllerEstudiante extends HttpServlet {
                             respuesta.put("precioFicha", result.getString("precioFicha"));
                             respuesta.put("tblcurso_idCurso", result.getString("tblcurso_idCurso"));
                             String fechaFinal = result.getString("fechaInicio");
-                            respuesta.put("fechaFinal", formatoFechaEntrada.format(sumarRestarDiasFecha(fechaFinal, 30)));
+                            respuesta.put("fechaFinal", formatoFechaEntrada.format(sumarRestarDiasFecha(fechaFinal, 90)));
                         }
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");

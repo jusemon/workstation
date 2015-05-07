@@ -49,6 +49,8 @@ public class ControllerFicha extends HttpServlet {
             SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
             SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
             switch (request.getParameter("action")) {
+                
+                // <editor-fold defaultstate="collapsed" desc="Registrar una Ficha">
                 case "Registrar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -73,6 +75,9 @@ public class ControllerFicha extends HttpServlet {
                     }
                     break;
                 }
+                //</editor-fold>
+                                
+                // <editor-fold defaultstate="collapsed" desc="Editar una Ficha">
                 case "Editar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -99,6 +104,9 @@ public class ControllerFicha extends HttpServlet {
                     }
                     break;
                 }
+                //</editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="Cambiar el estado de una Ficha">
                 case "Estado": {
                     daoModelFicha = new ModelFicha();
                     String aux = request.getParameter("id");
@@ -122,18 +130,54 @@ public class ControllerFicha extends HttpServlet {
                     }
                     break;
                 }
+                //</editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="Enlistar todas las Fichas">
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableFichas());
                     break;
                 }
+                //</editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="Enlistar las Fichas disponibles">
+                case "fichasDisponibles": {
+                    try {
+                        List<Map> lista = new ArrayList<>();
+                        Map<String, String> respuesta;
+                        daoModelFicha = new ModelFicha();
+                        ResultSet result = daoModelFicha.ListCursosDisponibles();
+                        while (result.next()) {
+                            respuesta = new LinkedHashMap<>();
+                            respuesta.put("idFicha", result.getString("idFicha"));
+                            respuesta.put("cuposDisponibles", result.getString("cuposDisponibles"));
+                            respuesta.put("fechaInicio", result.getString("fechaInicio"));
+                            respuesta.put("precioFicha", result.getString("precioFicha"));
+                            respuesta.put("nombreCurso", result.getString("nombreCurso"));
+                            lista.add(respuesta);
+                        }
+                        daoModelFicha.Signout();
+                        String salida = new Gson().toJson(lista);
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write(salida);
+                        break;
+                    } catch (SQLException ex) {
+                        System.err.println("Ha ocurrido un error en el controllerFicha" + ex.getMessage());
+
+                    }
+                }
+                //</editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="Obtener las opciones de Ficha">
                 case "getOptionsFichas": {
                     response.setContentType("application/text");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getOptionsFichas());
                     break;
                 }
+                //</editor-fold>
             }
         }
     }

@@ -9,7 +9,6 @@ import Model.DTO.ObjCompra;
 import Model.Data.ModelCompra;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,8 +16,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +47,7 @@ public class ControllerCompra extends HttpServlet {
         if (request.getParameter("action") != null) {
             //int estado = 0;
 
-            String action = new String(request.getParameter("action").getBytes("ISO-8859-1"), "UTF-8");
+            String action = request.getParameter("action");
             switch (request.getParameter("action")) {
                 case "Registrar": {
                     try {

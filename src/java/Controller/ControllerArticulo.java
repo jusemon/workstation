@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
  * @author lorenzo
  */
 public class ControllerArticulo extends HttpServlet {
-    
+
     public ModelArticulo daoModelArticulo = new ModelArticulo();
     public ObjArticulo _objArticulo = new ObjArticulo();
     public ModelCategoriaArticulo daoModelCategoriaArticulo = new ModelCategoriaArticulo();
@@ -43,13 +43,14 @@ public class ControllerArticulo extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         if (request.getParameter("action") != null) {
-            String action = new String(request.getParameter("action").getBytes("ISO-8859-1"), "UTF-8");
+            String action = request.getParameter("action");
             try {
                 switch (action) {
+                    //<editor-fold defaultstate="collapsed" desc="Registrar un Articulo">
                     case "Registrar": {
-                        String descripcionArticulo = new String(request.getParameter("txtDescripcion").getBytes("ISO-8859-1"), "UTF-8");
+                        String descripcionArticulo = request.getParameter("txtDescripcion");
                         int cantidadDisponible = Integer.parseInt(request.getParameter("txtCantidad"));
                         int precioUnitario = Integer.parseInt(request.getParameter("txtPrecio"));
                         int idCategoriaArticulo;
@@ -66,9 +67,12 @@ public class ControllerArticulo extends HttpServlet {
                         }
                         break;
                     }
+                    //</editor-fold>
+
+                    //<editor-fold defaultstate="collapsed" desc="Editar un Articulo">
                     case "Editar": {
                         int idArticulo = Integer.parseInt(request.getParameter("idArticulo"));
-                        String descripcionArticulo = new String(request.getParameter("txtDescripcion").getBytes("ISO-8859-1"), "UTF-8");
+                        String descripcionArticulo = request.getParameter("txtDescripcion");
                         int cantidadDisponible = Integer.parseInt(request.getParameter("txtCantidad"));
                         int precioUnitario = Integer.parseInt(request.getParameter("txtPrecio"));
                         int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
@@ -81,33 +85,40 @@ public class ControllerArticulo extends HttpServlet {
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(salida);
-                        
+
                         break;
                     }
+                    //</editor-fold>
+
+                    //<editor-fold defaultstate="collapsed" desc="Consultar un Articulo por ID">
                     case "Consultar": {
-                        String nombreBusqueda = new String(request.getParameter("nombreBusqueda").getBytes("ISO-8859-1"), "UTF-8");
+                        String nombreBusqueda = request.getParameter("nombreBusqueda");
                         HttpSession session = request.getSession();
                         session.setAttribute("isConsulta", true);
                         session.setAttribute("resultado", nombreBusqueda);
                         break;
                     }
+                    //</editor-fold>
+
+                    //<editor-fold defaultstate="collapsed" desc="Enlistar todos los Articulos">
                     case "Enlistar": {
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(getTableArticulo());
                         break;
                     }
+                    //</editor-fold>
                 }
             } catch (NumberFormatException ne) {
                 System.err.println(ne.getMessage());
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
-            
+
         }
-        
+
     }
-    
+
     public String getTableArticulo() {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
@@ -133,13 +144,13 @@ public class ControllerArticulo extends HttpServlet {
         salida = "{\"data\":" + salida + "}";
         return salida;
     }
-    
+
     public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
         Map<String, String> mensaje = new LinkedHashMap<>();
         if (entrada) {
             mensaje.put("mensaje", mensajeSuccess);
             mensaje.put("tipo", "success");
-            
+
         } else {
             mensaje.put("mensaje", mensajeError);
             mensaje.put("tipo", "error");

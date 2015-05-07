@@ -11,6 +11,11 @@ $(document).ready(function () {
         $('#btnindex').attr('class', 'active');
     } else if (URLactual.indexOf('nuestro') !== -1) {
         $('#btnnuestro').attr('class', 'active');
+        ficha.mostrarDisponibles();
+        seminario.mostrarDisponibles();
+        setInterval(ficha.mostrarDisponibles, 60000);
+        setInterval(seminario.mostrarDisponibles, 60000);
+        $.ajaxSetup({cache: false});
     } else if (URLactual.indexOf('acerca') !== -1) {
         $('#btnacerca').attr('class', 'active');
     } else if (URLactual.indexOf('matricula') !== -1) {
@@ -25,7 +30,8 @@ $(document).ready(function () {
         $('#btnarticulo').attr('class', 'active');
     } else if (URLactual.indexOf('caja') !== -1) {
         $('#btncaja').attr('class', 'active');
-    } else {
+    }
+    else {
         $('#btnindex').attr('class', 'active');
     }
     $('.imgIndex').on('load', function () {
