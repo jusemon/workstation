@@ -205,7 +205,7 @@
                                                 <label for="txtNombre">
                                                     Nombre Curso
                                                 </label>
-                                                <input name="txtNombre" id="txtNombreCurso" type="text" class="form-control" placeholder="Ejm: Oleo" required>
+                                                <input name="txtNombre" id="txtNombreCurso" type="text" class="form-control" pattern="[a-zA-Z\s]{3,15}" title="Entre 3 y 15 letras y no se permiten numeros" placeholder="Ejm: Oleo" required>
                                             </div>
                                         </div>
                                     </div>
@@ -215,7 +215,7 @@
                                                 <label for="txtDescripcion">
                                                     Descripción
                                                 </label>
-                                                <textarea rows="2" name="txtDescripcion" id="txtDescripcionCurso"  class="form-control" placeholder="Ejm: El oleo es un curso dedicado al..." required></textarea>
+                                                <textarea rows="2" name="txtDescripcion" id="txtDescripcionCurso"  class="form-control" pattern="{3,100}" title="Entre 3 y 100 letras" placeholder="Ejm: El oleo es un curso dedicado al..." required></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -225,7 +225,7 @@
                                                 <label for="dateDuracion">
                                                     Duración (En dias)
                                                 </label>
-                                                <input name="dateDuracion" id="dateDuracion" type="number" class="form-control" placeholder="Ejm: 10" required>
+                                                <input name="dateDuracion" id="dateDuracion" type="number" min="5" max="90" class="form-control" placeholder="Ejm: 10" required>
                                             </div>
                                         </div>
                                     </div>
@@ -285,7 +285,7 @@
                                                 <label for="txtNombre">
                                                     Nombre Categoría Curso
                                                 </label>
-                                                <input name="txtNombre" id="txtNombreCategoriaCurso" type="text" class="form-control"  onkeypress="return soloLetras(event)" onblur="limpia('txtNombreCategoriaCurso')" placeholder="Ejm: Oleo" required>
+                                                <input name="txtNombre" id="txtNombreCategoriaCurso" type="text" class="form-control"  pattern="[a-zA-Z\s]{3,15}" title="Entre 3 y 15 letras y no se permiten numeros" placeholder="Ejm: Oleo" required>
                                             </div>
                                         </div>
                                     </div>
@@ -332,7 +332,7 @@
                                                 <label>
                                                     Nombre
                                                 </label>
-                                                <input name="txtNombre" id="txtNombreSeminario" type="text" class="form-control" placeholder="" required>
+                                                <input name="txtNombre" id="txtNombreSeminario" type="text" class="form-control" pattern="[a-zA-Z\s]{3,30}" title="Entre 3 y 30 letras y no se permiten numeros" placeholder="Ejem: Nueva tecnica de patchwork" required>
                                             </div>
                                         </div>
                                     </div>
@@ -342,7 +342,7 @@
                                                 <label for="txtDuracion">
                                                     Duración (En horas)
                                                 </label>
-                                                <input name="txtDuracion" id="txtDuracion" type="text" class="form-control" placeholder="" required>
+                                                <input name="txtDuracion" id="txtDuracion" type="number" min="1" max="10" class="form-control" required>
                                             </div>
                                         </div>
                                     </div>
@@ -413,7 +413,7 @@
                                                 <label for="txtCupos">
                                                     Cupos disponibles
                                                 </label>
-                                                <input name="txtCupos" id="txtCupos" class="form-control" placeholder="Ejm: 15" required>
+                                                <input type="number" name="txtCupos" id="txtCupos" class="form-control" placeholder="Ejm: 15" min="0" max="30" required>
                                             </div>
                                         </div>
                                     </div>
@@ -423,7 +423,7 @@
                                                 <label for="txtPrecioFicha">
                                                     Precio
                                                 </label>
-                                                <input name="txtPrecio" id="txtPrecioFicha" type="number" class="form-control" placeholder="Ejm: 500000" required>
+                                                <input name="txtPrecio" id="txtPrecioFicha" type="number" min="5000" max="100000" class="form-control" placeholder="Ejm: 100000" required>
                                             </div>
                                         </div>
                                     </div>
@@ -434,7 +434,7 @@
                                                     Fecha de Inicio
                                                 </label>
                                                 <div class="date">
-                                                    <input name="dateFecha" id="dateFechaFicha" placeholder="Ejm: 19/05/2015" type="text" class="form-control fecha">
+                                                    <input name="dateFecha" id="dateFechaFicha" placeholder="Ejm: 19/05/2015" pattern="(0[1-9]|1[0-9]|3[01]).(0[1-9]|1[0-2]).([0-9]{4})" title="El formato de la fecha debe ser dd/mm/yyyy" type="text" class="form-control fecha" required>
                                                 </div>
                                             </div>
                                         </div>

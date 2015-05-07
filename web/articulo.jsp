@@ -3,8 +3,6 @@
     Created on : 23-oct-2014, 12:13:31
     Author     : Administrador
 --%>
-<%@page import="Controller.ControllerArticulo"%>
-<%@page import="Controller.ControllerCategoriaArticulo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@include file="WEB-INF/jspf/superior.jspf" %>
@@ -109,7 +107,7 @@
                                                 <label for="txtNombreArticulo">
                                                     Descripción Artículo:
                                                 </label>
-                                                <input name="txtDescripcion" id="txtNombreArticulo" type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>
+                                                <input name="txtDescripcion" id="txtNombreArticulo" type="text" class="form-control" title="Entre 3 y 30 letras, se permiten numeros y algunos caracteres como , y ."  placeholder="Ejm: Vinilo Rojo" required>
                                             </div>
                                         </div>
                                     </div>
@@ -119,7 +117,7 @@
                                                 <label for="txtPrecio">
                                                     Precio:
                                                 </label>
-                                                <input name="txtPrecio" id="txtPrecioArticulo" type="number" class="form-control" placeholder="Ejm: 10000" required>
+                                                <input name="txtPrecio" id="txtPrecioArticulo" type="number" min="1" max="10000000" class="form-control" placeholder="Ejm: 10000" required>
                                             </div>
                                         </div>
                                     </div>
@@ -129,7 +127,7 @@
                                                 <label for="txtCantidad">
                                                     Cantidad disponible:
                                                 </label>
-                                                <input name="txtCantidad" id="txtCantidadArticulo" type="text" class="form-control" placeholder="Ejm: 30" required>
+                                                <input name="txtCantidad" id="txtCantidadArticulo" type="number" min="0" max="1000" class="form-control" placeholder="Ejm: 30" required>
                                             </div>
                                         </div>
                                     </div>
@@ -181,7 +179,7 @@
                                         <div class="col-md-12">                                        
                                             <div class="form-group">
                                                 Nombre
-                                                <input name="txtNombre" id="txtNombreCategoriaArticulo" type="text" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                <input name="txtNombre" id="txtNombreCategoriaArticulo" type="text" title="Entre 3 y 30 letras y no se permiten numeros" class="form-control" placeholder="Ejm: Vinilos" required>
                                             </div>
                                         </div>
                                     </div>

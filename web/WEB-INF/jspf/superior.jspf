@@ -54,7 +54,7 @@
                 </ul>
                 <%if (session != null) {
                         if (session.getAttribute("usuario") != null) {
-                            %>
+                %>
                 <%@include file="logueado.jspf" %>
                 <%
                 } else {
