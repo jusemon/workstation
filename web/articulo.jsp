@@ -107,7 +107,7 @@
                                                 <label for="txtNombreArticulo">
                                                     Descripción Artículo:
                                                 </label>
-                                                <input name="txtDescripcion" id="txtNombreArticulo" type="text" class="form-control" title="Entre 3 y 30 letras, se permiten numeros y algunos caracteres como , y ."  placeholder="Ejm: Vinilo Rojo" required>
+                                                <input name="txtDescripcion" id="txtNombreArticulo" type="text" pattern="[áéíóú ÁÉÍÓÚ .,:'&quot; 0-9 a-zA-Z \s]{3,30}" class="form-control" title="Entre 3 y 30 letras, se permiten numeros y algunos caracteres como , y ."  placeholder="Ejm: Vinilo Rojo" required>
                                             </div>
                                         </div>
                                     </div>
@@ -179,7 +179,7 @@
                                         <div class="col-md-12">                                        
                                             <div class="form-group">
                                                 Nombre
-                                                <input name="txtNombre" id="txtNombreCategoriaArticulo" type="text" title="Entre 3 y 30 letras y no se permiten numeros" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                <input name="txtNombre" id="txtNombreCategoriaArticulo" type="text" pattern="[ÁÉÍÓÚáéíóú a-zA-Z \s]{3,15}" title="Entre 3 y 30 letras y no se permiten numeros" class="form-control" placeholder="Ejm: Vinilos" required>
                                             </div>
                                         </div>
                                     </div>

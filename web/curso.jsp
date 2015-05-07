@@ -205,7 +205,7 @@
                                                 <label for="txtNombre">
                                                     Nombre Curso
                                                 </label>
-                                                <input name="txtNombre" id="txtNombreCurso" type="text" class="form-control" pattern="[a-zA-Z\s]{3,15}" title="Entre 3 y 15 letras y no se permiten numeros" placeholder="Ejm: Oleo" required>
+                                                <input name="txtNombre" id="txtNombreCurso" type="text" class="form-control" pattern="[ÁÉÍÓÚáéíóú a-zA-Z \s]{3,15}" title="Entre 3 y 15 letras y no se permiten numeros" placeholder="Ejm: Oleo" required>
                                             </div>
                                         </div>
                                     </div>
@@ -285,7 +285,7 @@
                                                 <label for="txtNombre">
                                                     Nombre Categoría Curso
                                                 </label>
-                                                <input name="txtNombre" id="txtNombreCategoriaCurso" type="text" class="form-control"  pattern="[a-zA-Z\s]{3,15}" title="Entre 3 y 15 letras y no se permiten numeros" placeholder="Ejm: Oleo" required>
+                                                <input name="txtNombre" id="txtNombreCategoriaCurso" type="text" class="form-control"  pattern="[ÁÉÍÓÚáéíóú a-zA-Z \s]{3,15}" title="Entre 3 y 15 letras y no se permiten numeros" placeholder="Ejm: Oleo" required>
                                             </div>
                                         </div>
                                     </div>
@@ -332,7 +332,7 @@
                                                 <label>
                                                     Nombre
                                                 </label>
-                                                <input name="txtNombre" id="txtNombreSeminario" type="text" class="form-control" pattern="[a-zA-Z\s]{3,30}" title="Entre 3 y 30 letras y no se permiten numeros" placeholder="Ejem: Nueva tecnica de patchwork" required>
+                                                <input name="txtNombre" id="txtNombreSeminario" type="text" class="form-control" pattern="[ÁÉÍÓÚáéíóú a-zA-Z \s]{3,30}" title="Entre 3 y 30 letras y no se permiten numeros" placeholder="Ejem: Nueva tecnica de patchwork" required>
                                             </div>
                                         </div>
                                     </div>

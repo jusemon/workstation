@@ -336,7 +336,7 @@
                                                 <label for="txtIdentificacion">
                                                     Número de Identificación
                                                 </label>
-                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
+                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" pattern="[0-9]{5,15}"  title="Solo se permiten numeros y no deben ser menos de 5 o mas de 15" class="form-control" placeholder="Ejm: 1017225673" required>
                                             </div>
                                         </div>
                                     </div>
@@ -346,7 +346,7 @@
                                                 <label for="txtNombre">
                                                     Nombres
                                                 </label>
-                                                <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Juan Sebastian" required>
+                                                <input name="txtNombre" id="txtNombre" type="text" pattern="([ÁÉÍÓÚáéíóúa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos nombres, Ejem: Maria Camila" class="form-control" placeholder="Ejm: Juan Sebastián" required>
                                             </div>
                                         </div>
                                     </div>
@@ -356,7 +356,7 @@
                                                 <label for="txtApellido">
                                                     Apellidos
                                                 </label>
-                                                <input name="txtApellido" id="txtApellido" type="text" class="form-control" placeholder="Ejm: Montoya Montoya" required>
+                                                <input name="txtApellido" id="txtApellido" type="text" pattern="([ÁÉÍÓÚáéíóúa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos apellidos, Ejem: Montoya Soto" class="form-control" placeholder="Ejm: Montoya Montoya" required>
                                             </div>
                                         </div>
                                     </div>
@@ -378,7 +378,7 @@
                                                 <label for="dateFechaNacimiento">
                                                     Fecha de Nacimiento
                                                 </label>
-                                                <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" class="form-control fecha" placeholder="Ejm: 10/10/2014" required>
+                                                <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" pattern="(0[1-9]|1[0-9]|3[01]).(0[1-9]|1[0-2]).([0-9]{4})" title="El formato de la fecha debe ser dd/mm/yyyy" class="form-control fecha" placeholder="Ejm: 10/10/2014" required>
                                             </div>
                                         </div>
                                     </div>
@@ -399,7 +399,7 @@
                                                 <label for="txtTelefono">
                                                     Teléfono
                                                 </label>
-                                                <input name="txtTelefono" id="txtTelefono" type="text" class="form-control" placeholder="Ejm: 5 65 85 45" required>
+                                                <input name="txtTelefono" id="txtTelefono" type="text" pattern="([0-9 ]{7,12})" title="Numeros, se permiten espacios, ejem: 5 86 15 29" class="form-control" placeholder="Ejm: 5 65 85 45" required>
                                             </div>
                                         </div>
                                     </div>
@@ -409,7 +409,7 @@
                                                 <label for="txtCelular">
                                                     Celular
                                                 </label>
-                                                <input name="txtCelular" id="txtCelular" type="number" class="form-control" placeholder="Ejm: 321 801 62 37">
+                                                <input name="txtCelular" id="txtCelular" type="text" pattern="([0-9 ]{10,20})" title="Numeros, se permiten espacios, ejem: 321 801 62 37" class="form-control" placeholder="Ejm: 321 801 62 37">
                                             </div>
                                         </div>
                                     </div>

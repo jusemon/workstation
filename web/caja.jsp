@@ -92,44 +92,6 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                 </div>
             </div>
         </div>
-        <!--Gestión de Ventas-->
-        <div class="panel panel-default">
-            <!--
-            Aqui el boton que desplegara la gestión Ventas
-            -->
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                        Gestión de Ventas
-                    </a>
-                </h4>
-            </div>
-            <!--
-            Aqui el contenido de la gestion de Ventas, en este caso un boton para registrar  una Venta
-            y otro para consultar el registro de Ventas
-            -->                              
-            <div id="collapseTwo" class="panel-collapse collapse">
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupVenta" data-dismiss="modal" name="regVenta" value="Registrar Venta">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-group" id="accordion2">
-                                <div class="panel panel-default">
-                                    <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Venta" data-parent="#accordion2" href="#collapseConsultaVenta"/>                                                           
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="col-md-9">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="active">
@@ -227,102 +189,6 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
     </div>
 </div>
 
-<div class="col-md-9">
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#compra" role="tab" data-toggle="tab">Listado de Compras</a>
-        </li>
-        <li>
-            <a href="#ventas" role="tab" data-toggle="tab">Listado de Ventas</a>
-        </li>
-        <li>
-            <a href="#abonos" role="tab" data-toggle="tab">Listado de Abonos</a>                            
-        </li>                            
-        <li>
-            <a href="#diario" role="tab" data-toggle="tab">Caja del día</a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="compra">
-            <table id="tblCompra" class="table table-responsive table-hover" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                        <th class="text-center"> Factura Proveedor</th>
-                        <th class="text-center">Nombre Proveedor</th>
-                        <th class="text-center">Fecha de Compra</th>
-                        <th class="text-center">Total Compra</th>
-                        <th class="text-center">Editar</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        <div class="tab-pane" id="ventas">
-            <table id="tblVentas" class="table table-responsive table-hover" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                        <th class="text-center">Código</th>
-                        <th class="text-center">Fecha</th>
-                        <th class="text-center">Total </th>                                
-                        <th class="text-center">Consultar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-center">0001</td>
-                        <td class="text-center">21/11/2014</td>
-                        <td class="text-center">56000</td>
-                        <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)"> <span class="glyphicon glyphicon-search"></span></a>
-                        </td>  
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="tab-pane" id="abonos">
-            <table id="tblAbono" class="table table-responsive table-hover" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                        <th class="text-center">Id. Abono</th>
-                        <th class="text-center">Id. Crédito</th>
-                        <th class="text-center">Valor Abono ($)</th>                                
-                        <th class="text-center">Fecha Pago</th>                                        
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        <div class="tab-pane" id="diario">
-            <table id="tblDiario" class="table table-hover tabla" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                        <th class="text-center">Código</th>
-                        <th class="text-center">Total Compras</th>
-                        <th class="text-center">Total Ventas</th>
-                        <th class="text-center">Fecha</th>
-                        <th class="text-center">Total </th>                                
-                        <th class="text-center">Consultar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-center">0001</td>
-                        <td class="text-center">10000</td>
-                        <td class="text-center">30000</td>
-                        <td class="text-center">21/11/2014</td>
-                        <td class="text-center">20000</td>
-                        <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)">                                                <span class="glyphicon glyphicon-search"></span></a>
-                        </td>  
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-</div>
-</div>
 <!--
 
 Los Popup son ventanas emergentes que estan formadas por la clase modal, a su vez esta clase
@@ -544,7 +410,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         </div>
     </div>
 </div>
-</div>
+
 <!--popup RegistroVenta -->
 <div class="modal" id="miPopupRegistroVenta">
     <div class="modal-dialog ">
