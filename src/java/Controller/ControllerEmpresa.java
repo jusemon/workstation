@@ -43,19 +43,21 @@ public class ControllerEmpresa extends HttpServlet {
 
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
+
+                // <editor-fold defaultstate="collapsed" desc="Registrar una Empresa">
                 case "Registrar": {
                     daoModelEmpresa = new ModelEmpresa();
-                    String nitEmpresa = new String(request.getParameter("txtNitEmpresa").getBytes("ISO-8859-1"), "UTF-8");
+                    String nitEmpresa = request.getParameter("txtNitEmpresa").trim();
                     _objEmpresa.setNitEmpresa(nitEmpresa);
-                    String nombreEmpresa = new String(request.getParameter("txtNombreEmpresa").getBytes("ISO-8859-1"), "UTF-8");
+                    String nombreEmpresa = request.getParameter("txtNombreEmpresa").trim();
                     _objEmpresa.setNombreEmpresa(nombreEmpresa);
-                    String direccionEmpresa = new String(request.getParameter("txtDireccionEmpresa").getBytes("ISO-8859-1"), "UTF-8");
+                    String direccionEmpresa = request.getParameter("txtDireccionEmpresa").trim();
                     _objEmpresa.setDireccionEmpresa(direccionEmpresa);
-                    String nombreContacto = new String(request.getParameter("txtNombreContacto").getBytes("ISO-8859-1"), "UTF-8");
+                    String nombreContacto = request.getParameter("txtNombreContacto").trim();
                     _objEmpresa.setNombreContacto(nombreContacto);
-                    String telefonoContacto = new String(request.getParameter("txtTelefonoContacto").getBytes("ISO-8859-1"), "UTF-8");
+                    String telefonoContacto = request.getParameter("txtTelefonoContacto").trim();
                     _objEmpresa.setTelefonoContacto(telefonoContacto);
-                    String emailContacto = new String(request.getParameter("txtEmailContacto").getBytes("ISO-8859-1"), "UTF-8");
+                    String emailContacto = request.getParameter("txtEmailContacto").trim();
                     _objEmpresa.setEmailContacto(emailContacto);
                     String salida = Mensaje(daoModelEmpresa.Add(_objEmpresa), "La empresa ha sido registrada", "Ha ocurrido un error al intentar registrar la empresa");
                     response.setContentType("application/json");
@@ -63,19 +65,22 @@ public class ControllerEmpresa extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
+                // </editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="Editar una Empresa">
                 case "Editar": {
                     daoModelEmpresa = new ModelEmpresa();
-                    String nitEmpresa = new String(request.getParameter("txtNitEmpresa").getBytes("ISO-8859-1"), "UTF-8");
+                    String nitEmpresa = request.getParameter("txtNitEmpresa").trim();
                     _objEmpresa.setNitEmpresa(nitEmpresa);
-                    String nombreEmpresa = new String(request.getParameter("txtNombreEmpresa").getBytes("ISO-8859-1"), "UTF-8");
+                    String nombreEmpresa = request.getParameter("txtNombreEmpresa").trim();
                     _objEmpresa.setNombreEmpresa(nombreEmpresa);
-                    String direccionEmpresa = new String(request.getParameter("txtDireccionEmpresa").getBytes("ISO-8859-1"), "UTF-8");
+                    String direccionEmpresa = request.getParameter("txtDireccionEmpresa").trim();
                     _objEmpresa.setDireccionEmpresa(direccionEmpresa);
-                    String nombreContacto = new String(request.getParameter("txtNombreContacto").getBytes("ISO-8859-1"), "UTF-8");
+                    String nombreContacto = request.getParameter("txtNombreContacto").trim();
                     _objEmpresa.setNombreContacto(nombreContacto);
-                    String telefonoContacto = new String(request.getParameter("txtTelefonoContacto").getBytes("ISO-8859-1"), "UTF-8");
+                    String telefonoContacto = request.getParameter("txtTelefonoContacto").trim();
                     _objEmpresa.setTelefonoContacto(telefonoContacto);
-                    String emailContacto = new String(request.getParameter("txtEmailContacto").getBytes("ISO-8859-1"), "UTF-8");
+                    String emailContacto = request.getParameter("txtEmailContacto").trim();
                     _objEmpresa.setEmailContacto(emailContacto);
                     String salida = Mensaje(daoModelEmpresa.Edit(_objEmpresa), "La empresa ha sido actualizada", "Ha ocurrido un error al intentar actualizar la empresa");
                     response.setContentType("application/json");
@@ -83,12 +88,16 @@ public class ControllerEmpresa extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
+                // </editor-fold>
+
+                // <editor-fold defaultstate="collapsed" desc="Enlistar las Empresas">
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableEmpresa());
                     break;
                 }
+                // </editor-fold>
             }
         }
     }

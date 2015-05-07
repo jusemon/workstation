@@ -67,6 +67,5 @@
 </div>
 <script>
 </script>
-
 <%@include file="WEB-INF/jspf/imports.jspf" %>
 

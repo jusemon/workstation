@@ -51,6 +51,8 @@ public class ControllerFicha extends HttpServlet {
             SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
             SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
             switch (request.getParameter("action")) {
+                
+                // <editor-fold defaultstate="collapsed" desc="Registrar una Ficha">
                 case "Registrar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -75,6 +77,9 @@ public class ControllerFicha extends HttpServlet {
                     }
                     break;
                 }
+                //</editor-fold>
+                                
+                // <editor-fold defaultstate="collapsed" desc="Editar una Ficha">
                 case "Editar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -101,6 +106,9 @@ public class ControllerFicha extends HttpServlet {
                     }
                     break;
                 }
+                //</editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="Cambiar el estado de una Ficha">
                 case "Estado": {
                     daoModelFicha = new ModelFicha();
                     String aux = request.getParameter("id");
@@ -124,12 +132,18 @@ public class ControllerFicha extends HttpServlet {
                     }
                     break;
                 }
+                //</editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="Enlistar todas las Fichas">
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableFichas());
                     break;
                 }
+                //</editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="Enlistar las Fichas disponibles">
                 case "fichasDisponibles": {
                     try {
                         List<Map> lista = new ArrayList<>();
@@ -156,12 +170,16 @@ public class ControllerFicha extends HttpServlet {
 
                     }
                 }
+                //</editor-fold>
+                
+                // <editor-fold defaultstate="collapsed" desc="Obtener las opciones de Ficha">
                 case "getOptionsFichas": {
                     response.setContentType("application/text");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getOptionsFichas());
                     break;
                 }
+                //</editor-fold>
             }
         }
     }

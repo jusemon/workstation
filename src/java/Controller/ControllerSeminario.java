@@ -44,9 +44,11 @@ public class ControllerSeminario extends HttpServlet {
         String action = request.getParameter("action");
         if (action != null) {
             switch (action) {
+
+                //<editor-fold defaultstate="collapsed" desc="Registrar un Seminario">
                 case "Registrar": {
                     daoModelSeminario = new ModelSeminario();
-                    String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8").trim();
+                    String nombreSeminario = request.getParameter("txtNombre").trim();
                     int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion").trim());
                     int estado = Integer.parseInt(request.getParameter("ddlEstado").trim());
                     _objSeminario = new ObjSeminario();
@@ -57,10 +59,13 @@ public class ControllerSeminario extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
+                //</editor-fold>
+
+                //<editor-fold defaultstate="collapsed" desc="Editar un Seminario">
                 case "Editar": {
                     daoModelSeminario = new ModelSeminario();
                     int idSeminario = Integer.parseInt(request.getParameter("idSeminario"));
-                    String nombreSeminario = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    String nombreSeminario = request.getParameter("txtNombre");
                     int duracionSeminario = Integer.parseInt(request.getParameter("txtDuracion"));
                     int estado = Integer.parseInt(request.getParameter("ddlEstado"));
                     _objSeminario = new ObjSeminario();
@@ -72,6 +77,9 @@ public class ControllerSeminario extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
+                //</editor-fold>
+
+                //<editor-fold defaultstate="collapsed" desc="Cambiar el estado de un Seminario">
                 case "Estado": {
                     int estado = 0;
                     daoModelSeminario = new ModelSeminario();
@@ -93,12 +101,16 @@ public class ControllerSeminario extends HttpServlet {
                     }
                     break;
                 }
+                //</editor-fold>
+
+                //<editor-fold defaultstate="collapsed" desc="Enlistar los Seminarios">
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("utf-8");
                     response.getWriter().write(getTableSeminario());
                     break;
                 }
+                //</editor-fold>
             }
         }
     }

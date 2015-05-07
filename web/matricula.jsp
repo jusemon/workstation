@@ -7,7 +7,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@include file="WEB-INF/jspf/superior.jspf" %>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4 ">
@@ -452,4 +451,3 @@
     </div>
 </div>
 <%@include file="WEB-INF/jspf/imports.jspf" %>
-

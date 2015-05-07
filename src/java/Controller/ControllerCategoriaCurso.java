@@ -42,19 +42,24 @@ public class ControllerCategoriaCurso extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
+
+                //<editor-fold defaultstate="collapsed" desc="Registrar una Categoría de Curso">
                 case "Registrar": {
                     daoModelCategoriaCurso = new ModelCategoriaCurso();
-                    String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    String nombre = request.getParameter("txtNombre");
                     _objCategoriaCurso.setNombreCategoriaCurso(nombre);
                     String salida = Mensaje(daoModelCategoriaCurso.Add(_objCategoriaCurso), "La categoría ha sido registrada", "Ha ocurrido un error al intentar registrar la categoría");
                     response.setContentType("application/json");
                     response.getWriter().write(salida);
                     break;
                 }
+                //</editor-fold>
+
+                //<editor-fold defaultstate="collapsed" desc="Editar una Categoría de Curso">
                 case "Editar": {
                     daoModelCategoriaCurso = new ModelCategoriaCurso();
                     int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoriaCurso"));
-                    String nombre = new String(request.getParameter("txtNombre").getBytes("ISO-8859-1"), "UTF-8");
+                    String nombre = request.getParameter("txtNombre");
                     _objCategoriaCurso.setIdCategoriaCurso(idCategoriaArticulo);
                     _objCategoriaCurso.setNombreCategoriaCurso(nombre);;
                     String salida = Mensaje(daoModelCategoriaCurso.Edit(_objCategoriaCurso), "La categoría ha sido actualizada", "Ha ocurrido un error al intentar actualizar la categoría");
@@ -62,16 +67,24 @@ public class ControllerCategoriaCurso extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
+                //</editor-fold>
+
+                //<editor-fold defaultstate="collapsed" desc="Enlistar las Categorías de Curso">
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.getWriter().write(getTableCategoriaCurso());
                     break;
                 }
+                //</editor-fold>
+
+                //<editor-fold defaultstate="collapsed" desc="Obtener las opciones Categorías de Curso">
                 case "getOptionsCategorias": {
                     response.setContentType("application/text");
                     response.getWriter().write(getOptionsCategorias());
                     break;
                 }
+                //</editor-fold>
+
             }
         }
 

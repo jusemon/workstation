@@ -4,8 +4,6 @@
     Author     : David
 --%>
 
-<%@page import="Controller.ControllerEmpresa"%>
-<%@page import="Controller.ControllerLogin"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% if (session.getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");

@@ -6,7 +6,6 @@
 package Controller;
 
 import Model.DTO.ObjMatricula;
-import Model.Data.ModelEmpresa;
 import Model.Data.ModelMatricula;
 import com.google.gson.Gson;
 import java.io.IOException;
