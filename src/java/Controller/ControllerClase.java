@@ -5,9 +5,9 @@
  */
 package Controller;
 
-import Model.DTO.ObjFicha;
+import Model.DTO.ObjClase;
 import Model.Data.ModelCurso;
-import Model.Data.ModelFicha;
+import Model.Data.ModelClase;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -27,10 +27,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Zack
  */
-public class ControllerFicha extends HttpServlet {
+public class ControllerClase extends HttpServlet {
 
-    ObjFicha _objFicha = new ObjFicha();
-    ModelFicha daoModelFicha = new ModelFicha();
+    ObjClase _objClase = new ObjClase();
+    ModelClase daoModelFicha = new ModelClase();
     ModelCurso daoModelCurso = new ModelCurso();
 
     /**
@@ -57,16 +57,11 @@ public class ControllerFicha extends HttpServlet {
                     try {
                         int idCurso = Integer.parseInt(request.getParameter("idCurso"));
                         String fecha = request.getParameter("dateFecha");
-                        int cupos = Integer.parseInt(request.getParameter("txtCupos"));
-                        int precio = Integer.parseInt(request.getParameter("txtPrecio"));
                         estado = Integer.parseInt(request.getParameter("estadoFicha"));
-                        _objFicha.setIdCurso(idCurso);
-                        _objFicha.setFechaInicio(formatoFechaSalida.format(formatoFechaEntrada.parse(fecha)));
-                        _objFicha.setCuposDisponibles(cupos);
-                        _objFicha.setPrecioFicha(precio);
-                        _objFicha.setEstado(estado);
-                        daoModelFicha = new ModelFicha();
-                        String salida = Mensaje(daoModelFicha.Add(_objFicha), "La Ficha ha sido registrada", "Ha ocurrido un error al intentar registrar la ficha");
+                        _objClase.setIdCurso(idCurso);
+                        _objClase.setFecha(formatoFechaSalida.format(formatoFechaEntrada.parse(fecha)));
+                        daoModelFicha = new ModelClase();
+                        String salida = Mensaje(daoModelFicha.Add(_objClase), "La Ficha ha sido registrada", "Ha ocurrido un error al intentar registrar la ficha");
                         daoModelFicha.Signout();
                         response.getWriter().write(salida);
                     } catch (ParseException ex) {
@@ -75,62 +70,49 @@ public class ControllerFicha extends HttpServlet {
                     }
                     break;
                 }
-                //</editor-fold>
+                //</editor-fold>                //</editor-fold>                //</editor-fold>                //</editor-fold>
                                 
                 // <editor-fold defaultstate="collapsed" desc="Editar una Ficha">
                 case "Editar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
-                    try {
-                        int idFicha = Integer.parseInt(request.getParameter("idFicha"));
-                        int idCurso = Integer.parseInt(request.getParameter("idCurso"));
-                        String fecha = request.getParameter("dateFecha");
-                        int cupos = Integer.parseInt(request.getParameter("txtCupos"));
-                        int precio = Integer.parseInt(request.getParameter("txtPrecio"));
-                        estado = Integer.parseInt(request.getParameter("estadoFicha"));
-                        _objFicha.setIdficha(idFicha);
-                        _objFicha.setIdCurso(idCurso);
-                        _objFicha.setFechaInicio(formatoFechaSalida.format(formatoFechaEntrada.parse(fecha)));
-                        _objFicha.setCuposDisponibles(cupos);
-                        _objFicha.setPrecioFicha(precio);
-                        _objFicha.setEstado(estado);
-                        daoModelFicha = new ModelFicha();
-                        String salida = Mensaje(daoModelFicha.Edit(_objFicha), "La Ficha ha sido actualizada", "Ha ocurrido un error al intentar actualizar la ficha");
-                        daoModelFicha.Signout();
-                        response.getWriter().write(salida);
-                    } catch (ParseException ex) {
-                        String salida = Mensaje(false, "", "Ha ocurrido un error en el formato de la fecha");
-                        response.getWriter().write(salida);
-                    }
+                    int idFicha = Integer.parseInt(request.getParameter("idFicha"));
+                    int idCurso = Integer.parseInt(request.getParameter("idCurso"));
+                    String fecha = request.getParameter("dateFecha");
+                    int cupos = Integer.parseInt(request.getParameter("txtCupos"));
+                    int precio = Integer.parseInt(request.getParameter("txtPrecio"));
+                    estado = Integer.parseInt(request.getParameter("estadoFicha"));
+                    daoModelFicha = new ModelClase();
+                    String salida = Mensaje(daoModelFicha.Edit(_objClase), "La Ficha ha sido actualizada", "Ha ocurrido un error al intentar actualizar la ficha");
+                    daoModelFicha.Signout();
+                    response.getWriter().write(salida);
                     break;
                 }
-                //</editor-fold>
+                //</editor-fold>                //</editor-fold>                //</editor-fold>                //</editor-fold>
+                //</editor-fold>                //</editor-fold>                //</editor-fold>                //</editor-fold>
                 
                 // <editor-fold defaultstate="collapsed" desc="Cambiar el estado de una Ficha">
                 case "Estado": {
-                    daoModelFicha = new ModelFicha();
-                    String aux = request.getParameter("id");
-                    int id = Integer.parseInt(aux.trim());
+                    daoModelFicha = new ModelClase();
+                    String id = request.getParameter("id");
+                    
                     try {
-                        ResultSet result = daoModelFicha.buscarPorID(id);
+                        ResultSet result = daoModelFicha.buscarPorDocumentoUsuario(id);
                         while (result.next()) {
                             estado = Integer.parseInt(result.getString("estado"));
                         }
                         estado = estado > 0 ? 0 : 1;
-                        _objFicha = new ObjFicha();
-                        _objFicha.setIdficha(id);
-                        _objFicha.setEstado(estado);
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
-                        String salida = Mensaje(daoModelFicha.cambiarEstado(_objFicha), "El estado ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
+                        //String salida = Mensaje(daoModelFicha.cambiarEstado(_objClase), "El estado ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
                         daoModelFicha.Signout();
-                        response.getWriter().write(salida);
+                        //response.getWriter().write(salida);
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
                     break;
                 }
-                //</editor-fold>
+                //</editor-fold>                //</editor-fold>                //</editor-fold>                //</editor-fold>
                 
                 // <editor-fold defaultstate="collapsed" desc="Enlistar todas las Fichas">
                 case "Enlistar": {
@@ -146,8 +128,8 @@ public class ControllerFicha extends HttpServlet {
                     try {
                         List<Map> lista = new ArrayList<>();
                         Map<String, String> respuesta;
-                        daoModelFicha = new ModelFicha();
-                        ResultSet result = daoModelFicha.ListCursosDisponibles();
+                        daoModelFicha = new ModelClase();
+                        ResultSet result = daoModelCurso.ListCursosDisponibles();
                         while (result.next()) {
                             respuesta = new LinkedHashMap<>();
                             respuesta.put("idFicha", result.getString("idFicha"));
@@ -168,7 +150,7 @@ public class ControllerFicha extends HttpServlet {
 
                     }
                 }
-                //</editor-fold>
+                //</editor-fold>                //</editor-fold>
                 
                 // <editor-fold defaultstate="collapsed" desc="Obtener las opciones de Ficha">
                 case "getOptionsFichas": {
@@ -187,7 +169,7 @@ public class ControllerFicha extends HttpServlet {
         List<String[]> lista = new ArrayList<>();
         try {
             int contador = 0;
-            daoModelFicha = new ModelFicha();
+            daoModelFicha = new ModelClase();
             result = daoModelFicha.ListAll();
             while (result.next()) {
                 String[] estado = {"success", "ok"};

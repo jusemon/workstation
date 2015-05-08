@@ -5,7 +5,6 @@
  */
 package Controller;
 
-import Model.DTO.ObjMatricula;
 import Model.Data.ModelMatricula;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -24,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ControllerMatricula extends HttpServlet {
 
     ModelMatricula daoModelMatricula = new ModelMatricula();
-    ObjMatricula _objMatricula = new ObjMatricula();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

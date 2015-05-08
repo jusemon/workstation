@@ -45,14 +45,14 @@ public class ControllerLogin extends HttpServlet {
                 case "Iniciar Sesion":
                     {
                         HttpSession session = request.getSession();
-                        String nombre = request.getParameter("nom");
+                        String email = request.getParameter("nom");
                         String pass = request.getParameter("pass");
-                        if (comprobarUsuario(nombre, pass)) {
-                            session.setAttribute("usuario", nombre);
+                        if (comprobarUsuario(email, pass)) {
+                            session.setAttribute("usuario", email);
                             session.setAttribute("pass", pass);
-                            session.setAttribute("correo", _objUsuario.getEmail());
+                            session.setAttribute("correo", _objUsuario.getEmailUsuario());
                             try {
-                                String[] aux = _modelModulo.convertirRSaArray(_modelModulo.ListByUser(_objUsuario.getId()));
+                                String[] aux = _modelModulo.convertirRSaArray(_modelModulo.ListByUser(_objUsuario.getEmailUsuario()));
                                 session.setAttribute("derechos", aux);
                                 session.setAttribute("isConsulta", false);
                                 session.setAttribute("resultado", null);
@@ -80,16 +80,16 @@ public class ControllerLogin extends HttpServlet {
         }
     }
 
-    public boolean comprobarUsuario(String nombre, String pass) {
+    public boolean comprobarUsuario(String email, String pass) {
         ResultSet rs;
-        _objUsuario.setNombre(nombre);
+        _objUsuario.setNombreUsuario(email);
         _objUsuario.setPassword(pass);
         try {
             rs = _modelUsuario.Find(_objUsuario);
             while (rs.next()) {
-                if (rs.getString("nombreUsuario").equals(nombre) && rs.getString("password").equals(pass)) {
-                    _objUsuario.setId(rs.getInt("idusuario"));
-                    _objUsuario.setEmail(rs.getString("email"));
+                if (rs.getString("emailUsuario").equals(email) && rs.getString("password").equals(pass)) {
+                    _objUsuario.setEmailUsuario(rs.getString("emailUsuario"));
+                    _objUsuario.setNombreUsuario(rs.getString("nombreUsuario"));
                     return true;
                 }
             }
@@ -101,17 +101,17 @@ public class ControllerLogin extends HttpServlet {
     }
 
     //Este metodo imprime la barra superior segun los privilegios del usuario logueado
-    public String imprimirBarra(String nombre, String pass) {
+    public String imprimirBarra(String email, String pass) {
         ResultSet result;
         String barraModulos = "";
-        if (!comprobarUsuario(nombre, pass)) {
+        if (!comprobarUsuario(email, pass)) {
             barraModulos += "            <li id=\"btnnuestro\" class=\"\"><a href=\"nuestro.jsp\">Nuestros Cursos</a></li>\n"
                     + "            <li id=\"btnacerca\" class=\"\"><a href=\"acerca.jsp\">Acerca de Nosotros</a></li>";
             return barraModulos;
         }
         try {
-            comprobarUsuario(nombre, pass);
-            result = _modelModulo.ListByUser(_objUsuario.getId());
+            comprobarUsuario(email, pass);
+            result = _modelModulo.ListByUser(_objUsuario.getEmailUsuario());
             String btn;
             while (result.next()) {
                 btn = "btn" + result.getString("enlace");

@@ -25,14 +25,17 @@ public class ModelUsuario extends ConnectionDB {
 
     public boolean Add(ObjUsuario _objUsuario) {
         boolean objReturn = false;
-        String sql = "INSERT INTO `tblusuario`(`nombreUsuario`, `password`, `email`, `telefono`, `idrol`) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO `tblusuario`(`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idrol`) VALUES (?,?,?,?,?,?,?,?)";
         try {
             pStmt = connection.prepareStatement(sql);
-            pStmt.setString(1, _objUsuario.getNombre());
-            pStmt.setString(2, _objUsuario.getPassword());
-            pStmt.setString(3, _objUsuario.getEmail());
-            pStmt.setInt(5, _objUsuario.getTelefono());
-            pStmt.setInt(5, _objUsuario.getRol());
+            pStmt.setString(1, _objUsuario.getDocumentoUsuario());
+            pStmt.setString(2, _objUsuario.getFechaNacimiento());
+            pStmt.setString(3, _objUsuario.getNombreUsuario());
+            pStmt.setString(4, _objUsuario.getApellidoUsuario());
+            pStmt.setString(5, _objUsuario.getEmailUsuario());
+            pStmt.setString(6, _objUsuario.getPassword());
+            pStmt.setInt(7, _objUsuario.getEstadoUsuario());
+            pStmt.setInt(8, _objUsuario.getIdrol());
             
             int updateCount = pStmt.executeUpdate();
             if (updateCount>0) {
@@ -46,7 +49,7 @@ public class ModelUsuario extends ConnectionDB {
     
     public ResultSet ListAll() throws Exception{
         ResultSet rs= null;
-        String sql = "SELECT `idUsuario`, `nombreUsuario`, `password`, `email`, `telefono`, `idrol` FROM `tblusuario`";
+        String sql = "SELECT `documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente` FROM `tblusuario` ";
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
@@ -59,8 +62,8 @@ public class ModelUsuario extends ConnectionDB {
     //Busca el usuario en la base de datos segun su nombre  de usuario y contraseña
     public ResultSet Find (ObjUsuario _objUsuario){
     ResultSet rs = null;
-    String query = "SELECT `idUsuario`, `nombreUsuario`, `password`, `email`, `telefono`, `idrol` FROM `tblusuario` WHERE `nombreUsuario` = '%s' and `password` = '%s'";
-    String sql = String.format(query, _objUsuario.getNombre(), _objUsuario.getPassword());
+    String query = "SELECT `documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente` FROM `tblusuario`  WHERE `emailUsuario` = '%s' and `password` = '%s'";
+    String sql = String.format(query, _objUsuario.getEmailUsuario(), _objUsuario.getPassword());
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
