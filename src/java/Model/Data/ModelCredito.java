@@ -30,7 +30,7 @@ public class ModelCredito  extends ConnectionDB{
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setInt(1, _objCredito.getIdCliente());            
+            pStmt.setString(1, _objCredito.getDocumentoUsuario());            
             pStmt.setString(2, _objCredito.getFechaInicio());
             pStmt.setDouble(3, _objCredito.getSaldoInicial());
             pStmt.setDouble(4, _objCredito.getSaldoActual());
