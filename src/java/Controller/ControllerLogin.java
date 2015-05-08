@@ -82,13 +82,12 @@ public class ControllerLogin extends HttpServlet {
 
     public boolean comprobarUsuario(String email, String pass) {
         ResultSet rs;
-        _objUsuario.setNombreUsuario(email);
+        _objUsuario.setEmailUsuario(email);
         _objUsuario.setPassword(pass);
         try {
             rs = _modelUsuario.Find(_objUsuario);
             while (rs.next()) {
                 if (rs.getString("emailUsuario").equals(email) && rs.getString("password").equals(pass)) {
-                    _objUsuario.setEmailUsuario(rs.getString("emailUsuario"));
                     _objUsuario.setNombreUsuario(rs.getString("nombreUsuario"));
                     return true;
                 }
