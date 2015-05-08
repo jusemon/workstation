@@ -1,15 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.DTO;
 
 /**
- *
- * @author Administrador
+ * @author Zack
+ * @version 1.0
+ * @created 08-may.-2015 12:13:14 a. m.
  */
 public class ObjEmpresa {
+
     private String nitEmpresa;
     private String nombreEmpresa;
     private String direccionEmpresa;
@@ -64,5 +61,5 @@ public class ObjEmpresa {
     public void setEmailContacto(String emailContacto) {
         this.emailContacto = emailContacto;
     }
-    
-}
+
+}//end ObjEmpresa

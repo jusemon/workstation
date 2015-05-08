@@ -1,31 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.DTO;
 
 /**
- *
- * @author Administrador
+ * @author Zack
+ * @version 1.0
+ * @created 08-may.-2015 12:13:14 a. m.
  */
 public class ObjCurso {
 
-    public int getIdCategoria() {
-        return idCategoria;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
-    }
+    private int idCurso;
+    private String nombreCurso;
+    private int cantidadClases;
+    private int horasPorClase;
+    private int estadoCurso;
+    private String descripcionCurso;
+    private int precioCurso;
+    private int idCategoriaCurso;
 
     public int getIdCurso() {
         return idCurso;
@@ -43,12 +32,20 @@ public class ObjCurso {
         this.nombreCurso = nombreCurso;
     }
 
-    public int getDuracionCurso() {
-        return duracionCurso;
+    public int getCantidadClases() {
+        return cantidadClases;
     }
 
-    public void setDuracionCurso(int duracionCurso) {
-        this.duracionCurso = duracionCurso;
+    public void setCantidadClases(int cantidadClases) {
+        this.cantidadClases = cantidadClases;
+    }
+
+    public int getHorasPorClase() {
+        return horasPorClase;
+    }
+
+    public void setHorasPorClase(int horasPorClase) {
+        this.horasPorClase = horasPorClase;
     }
 
     public int getEstadoCurso() {
@@ -58,10 +55,29 @@ public class ObjCurso {
     public void setEstadoCurso(int estadoCurso) {
         this.estadoCurso = estadoCurso;
     }
-    private int idCurso;
-    private String nombreCurso;
-    private int duracionCurso;
-    private int estadoCurso;
-    private int idCategoria;
-    private String descripcion;
-}
+
+    public String getDescripcionCurso() {
+        return descripcionCurso;
+    }
+
+    public void setDescripcionCurso(String descripcionCurso) {
+        this.descripcionCurso = descripcionCurso;
+    }
+
+    public int getPrecioCurso() {
+        return precioCurso;
+    }
+
+    public void setPrecioCurso(int precioCurso) {
+        this.precioCurso = precioCurso;
+    }
+
+    public int getIdCategoriaCurso() {
+        return idCategoriaCurso;
+    }
+
+    public void setIdCategoriaCurso(int idCategoriaCurso) {
+        this.idCategoriaCurso = idCategoriaCurso;
+    }
+
+}//end ObjCurso

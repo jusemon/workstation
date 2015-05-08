@@ -346,7 +346,7 @@
                                                 <label for="txtNombre">
                                                     Nombres
                                                 </label>
-                                                <input name="txtNombre" id="txtNombre" type="text" pattern="([ÁÉÍÓÚáéíóúa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos nombres, Ejem: Maria Camila" class="form-control" placeholder="Ejm: Juan Sebastián" required>
+                                                <input name="txtNombre" id="txtNombre" type="text" pattern="([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos nombres, Ejem: Maria Camila" class="form-control" placeholder="Ejm: Juan Sebastián" required>
                                             </div>
                                         </div>
                                     </div>
@@ -356,7 +356,7 @@
                                                 <label for="txtApellido">
                                                     Apellidos
                                                 </label>
-                                                <input name="txtApellido" id="txtApellido" type="text" pattern="([ÁÉÍÓÚáéíóúa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos apellidos, Ejem: Montoya Soto" class="form-control" placeholder="Ejm: Montoya Montoya" required>
+                                                <input name="txtApellido" id="txtApellido" type="text" pattern="([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos apellidos, Ejem: Montoya Soto" class="form-control" placeholder="Ejm: Montoya Montoya" required>
                                             </div>
                                         </div>
                                     </div>

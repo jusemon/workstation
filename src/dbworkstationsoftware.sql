@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.12
+-- version 4.2.11
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-05-2015 a las 23:01:59
--- Versión del servidor: 5.6.16
--- Versión de PHP: 5.5.11
+-- Tiempo de generación: 08-05-2015 a las 18:16:24
+-- Versión del servidor: 5.6.21
+-- Versión de PHP: 5.6.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -25,183 +25,141 @@ DELIMITER $$
 -- Procedimientos
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarArticulo`(
-    in idArticu				int,
+        in idArticu		int,
 	in idCategoriaArticu	int,
 	in descripcionArticu	varchar(50),
-	in cantidadDisponib		int,
-	in precioUnitar			int
+	in cantidadDisponib	int,
+	in precioComp		int,
+        in precioVen            int
 )
 BEGIN
-	update tblArticulo set idCategoriaArticulo=idCategoriaArticu,descripcionArticulo=descripcionArticu,cantidadDisponible=cantidadDisponib,precioUnitario=precioUnitar
-		where idArticulo=idArticu;
+	UPDATE tblarticulo SET 
+            `idCategoriaArticulo` = `idCategoriaArticu`, 
+            `descripcionArticulo`=`descripcionArticu`,
+            `cantidadDisponible`=`cantidadDisponib`,
+            `precioCompra`=`precioComp`,
+            `precioVenta`=`precioVen`
+        WHERE `idArticulo`=`idArticu`;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCategoriaArticulo`(
-    in idCategoriaArticu			int,
-	in nombreCategoriaArticu	varchar(50)
+        in idCategoriaArticu        int,
+	in nombreCategoriaArticu    varchar(50)
 )
 BEGIN
-	update tblCategoriaArticulo set nombreCategoriaArticulo=nombreCategoriaArticu where idCategoriaArticulo=idCategoriaArticu;
+	UPDATE tblCategoriaArticulo SET 
+            `nombreCategoriaArticulo`=`nombreCategoriaArticu`
+        WHERE `idCategoriaArticulo`=`idCategoriaArticu`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCategoriaCurso`(idCategoria int, nombreCategoria varchar(30))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCategoriaCurso`(
+        in idCategoria int,
+        in nombreCategoria varchar(30)
+)
 BEGIN
-	update tblcategoriacurso set nombreCategoriaCurso=nombreCategoria
-	where idtblCategoriaCurso=idCategoria;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCompra`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
-    NO SQL
-BEGIN
-	declare msg varchar(40);   
-	update tblCompra set numeroFactura=numeroFactu,nombreProveedor=nombreProveed,fechaCompra=fechaComp,totalCompra=totalComp
-		where numeroFactura=numeroFactu;
-	set msg="Compra actualizada exitosamente";	
-    select msg as Respuesta;
+	UPDATE tblcategoriacurso SET 
+            `nombreCategoriaCurso`=`nombreCategoria`
+	WHERE `idCategoriaCurso`=`idCategoria`;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCredito`(
     in idCredi		int,
-    in idSaldoActu	int,
+    in saldoActu	int,
     in estadoCredi	int
 )
 BEGIN
-	update tblCredito set idSaldoActual=idSaldoActu,estadoCredito=estadoCredi
-		where idCredito=idCredi;
+	UPDATE tblcredito SET
+             `saldoActual`=`saldoActu`,`estadoCredito`=`estadoCredi`
+        WHERE `idCredito`=`idCredi`;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCurso`(
-    in idCur			int,
-	in nombreCur		varchar(50),
-	in duracionCur		int,
-	in estadoCur		int,
-	in descripcionCur	varchar(100),
-in categoriaCur tinyint
+        in idCur            int,
+	in nombreCur        varchar(50),
+	in cantidadClas     int,
+	in horasPorCla      int,
+	in estadoCur        int,
+        in descripcionCur   varchar(100),
+        in precioCur        int,
+        in idCategoriaCur   int
 )
 BEGIN
-	update tblCurso set nombreCurso=nombreCur,duracionCurso=duracionCur, `descripcionCurso`=descripcionCur, estadoCurso=estadoCur, `tblcategoriacurso_idtblCategoriaCurso`=categoriaCur where idCurso=idCur;
+	UPDATE tblcurso SET 
+            `nombreCurso`=`nombreCur`,
+            `cantidadClases`=`cantidadClas`,
+            `horasPorClase`=`horasPorCla`,
+            `estadoCurso` = `estadoCur`,
+            `descripcionCurso`=`descripcionCur`,
+            `precioCurso`=`precioCur`,
+            `idCategoriaCurso` = `idCategoriaCur`
+        WHERE `idCurso`=`idCur`;       
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEmpresa`(
-    in nitEmpre				int,
-	in nombreEmpre			varchar(50),
-	in direccionEmpre		varchar(50),
-	in nombreContac			varchar(50),
-	in telefonoContac		varchar(50),
-	in emailContac			varchar(50)
+        in nitEmpre         int,
+	in nombreEmpre      varchar(50),
+	in direccionEmpre   varchar(50),
+	in nombreContac     varchar(50),
+	in telefonoContac   varchar(50),
+	in emailContac      varchar(50)
 )
 BEGIN
-	declare msg varchar(40);    
-	update tblEmpresa set nombreEmpresa=nombreEmpre,direccionEmpresa=direccionEmpre,nombreContacto=nombreContac,telefonoContacto=telefonoContac,emailContacto=emailContac
-	 where nitEmpresa=nitEmpre;
-	set msg="Datos de la empresa actualizados correctamente";
-	select msg as Respuesta; 
+	UPDATE tblEmpresa SET
+            `nombreEmpresa`=`nombreEmpre`,
+            `direccionEmpresa`=`direccionEmpre`,
+            `nombreContacto`=`nombreContac`,
+            `telefonoContacto`=`telefonoContac`,
+            `emailContacto`=`emailContac`
+	WHERE `nitEmpresa`=`nitEmpre`;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstadoCurso`(
-    in idCur			int,
-    in estadoCur		int
+    in idCur        int,
+    in estadoCur    int
 )
 BEGIN
-	update tblCurso set estadoCurso=estadoCur where idCurso=idCur;
+	UPDATE tblcurso SET 
+            `estadoCurso`=`estadoCur` 
+        WHERE `idCurso`=`idCur`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstadoFicha`(
-    in idFich			int,
-    in estadoFich		int
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstudiante`(
+    in documentoUsuar   varchar(20),
+    in fechaNacimien    DATE,
+    in nombreUsuar      varchar(30),
+    in apellidoUsuar    varchar(30),
+    in emailUsuar       varchar(50),
+    in passwo           varchar(45),
+    in estadoUsuar      int,
+    in documentoAcudien varchar(20),
+    in direccionUsuar   varchar(50),
+    in telefonoFi       varchar(11),
+    in telefonoMov      varchar(15),
+    in generoUsuar      bit
 )
 BEGIN
-	update tblficha set estado = estadoFich where `idFicha`=idFich;
-END$$
+    UPDATE tblusuario SET
+        `fechaNacimiento`=`fechaNacimien`,
+        `nombreUsuario`=`nombreUsuar`,
+        `apellidoUsuario`=`apellidoUsuar`,
+        `emailUsuario`=`emailUsuar`,
+        password=passwo,
+        `estadoUsuario`=`estadoUsuar`,
+        `documentoAcudiente`=`documentoAcudien`
+    WHERE `documentoUsuario`=`documentoUsuar`;
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstadoSeminario`(
-    in idSem			int,
-    in estado   		int
-)
-BEGIN
-	update tblseminario set `estadoSeminario` = estado where `idSeminario`=idSem;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstudiante`(IN `tipoDocumen` VARCHAR(5),
- IN `numeroDocumen` VARCHAR(20),
- IN `fechaNacimien` DATE,
- IN `generoClien` INT,
- IN `nombreClien` VARCHAR(50),
- IN `apellidoClien` VARCHAR(50),
- IN `direccionClien` VARCHAR(50),
- IN `telefonoFi` VARCHAR(15),
- IN `telefonoMov` VARCHAR(15),
- IN `emailClien` VARCHAR(50),
- IN `estado` INT,
- IN `tipoDocAcudien` varchar(5),
- IN `numDocAcudien` varchar (15)
-)
-BEGIN
-    UPDATE tblestudiante 
-    SET `fechaNacimiento` = `fechaNacimien`,
-        `generoCliente` = `generoClien`,
-        `nombreCliente` = `nombreClien`,
-        `apellidoCliente` = `apellidoClien`,
-        `direccionCliente` = `direccionClien`,
-        `telefonoFijo` =  `telefonoFi`,
-        `telefonoMovil` = `telefonoMov`,
-        `emailCliente` = `emailClien`,
-        `estadoEstudiante` = `estado`,
-        `tblacudiente_tipoDocumento` = `tipoDocAcudien`,
-        `tblacudiente_numeroDocumento` = `numDocAcudien`
-    WHERE `tipoDocumento`=`tipoDocumen` AND `numeroDocumento`=`numeroDocumen`;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarFicha`(
-    in idFic			int,
-	in idCurs			int,
-	in cuposDisponibl	int,
-	in fechaInic		date, 
-in precio int,
-in estadoFich int
-)
-BEGIN
-	update tblFicha set `tblcurso_idCurso`=idCurs,cuposDisponibles=cuposDisponibl,fechaInicio=fechaInic, `precioFicha`=precio, estado= estadoFich where idFicha=idFic;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarMatricula`(
-    in idMatricu			int,
-	in estadoMatricu		int,
-	in fechaInic			date
-)
-BEGIN
-	update tblCategoriaArticulo set nombreCategoriaArticulo=nombreCategoriaArticu where idCategoriaArticulo=idCategoriaArticu;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarSeminario`(
-    in idSeminar			int,
-	in nombreSeminar		varchar(50),
-	in duracionSeminar		int,
-	in estadoSeminar		int
-)
-BEGIN
-	update tblSeminario set nombreSeminario=nombreSeminar,duracionSeminario=duracionSeminar,estadoSeminario=estadoSeminar
-	 where idSeminario=idSeminar;
+    UPDATE tbldetalleusuario SET 
+        `direccionUsuario` = `direccionUsuar`,
+        `telefonoFijo`=`telefonoFi`,
+        `telefonoMovil`=`telefonoMov`,
+        `generoUsuario`=`generoUsuar`
+    WHERE `idDetalleUsuario` = (SELECT `idDetalleUsuario` FROM tblusuario WHERE `documentoUsuario`=`documentoUsuar`);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarAbonoByCredito`(IN `idCredi`     int)
 select (a.idAbono, a.idCredito, a.valorAbono, a.fechaPago) from tblAbono a inner join tblCredito c on(a.idCredito=c.idCredito) 
 where a.idCredito like concat('%',idCredi,'%') 
 order by (a.idCredito,a.FechaPago)$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarArticuloByNombre`(IN `nombre` VARCHAR(50))
-    NO SQL
-select idArticulo, descripcionArticulo, precioUnitario, cantidadDisponible, nombreCategoriaArticulo from tblArticulo a inner join tblCategoriaArticulo ca on(a.idCategoriaArticulo=ca.idCategoriaArticulo) where descripcionArticulo like concat('%',nombre,'%')$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarClientesCurso`(
-
-)
-BEGIN
-	select tblCliente.idCliente, tblCliente.nombreCliente, tblCliente.apellidoCliente, tblCurso.nombreCurso 
-	from (((tblCliente inner join tblVenta on tblVenta.idCliente = tblCliente.idCliente) inner join tblMatricula on tblMatricula.idVenta=tblVenta.idVenta) inner join tblFicha on tblFicha.idMatricula=tblMatricula.idMatricula) inner join tblCurso on tblCurso.idCurso=tblFicha.idCurso
-	group by tblCurso.idCurso
-	order by tblCliente.apellidoCliente;
-END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarComprasRangoFecha`(
 	in	fechaInici	datetime,
@@ -215,39 +173,51 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursoPorID`(id int)
 BEGIN
-SELECT idCurso,
-    nombreCurso,
-    duracionCurso,
-    estadoCurso,
-    descripcionCurso,
-idtblCategoriaCurso,
-    nombreCategoriaCurso
-FROM tblcurso c inner join tblcategoriacurso cc on(c.`tblcategoriacurso_idtblCategoriaCurso`=cc.`idtblCategoriaCurso`) where idCurso =id;
+    SELECT 
+        `idCurso`,
+        `nombreCurso`, 
+        `cantidadClases`, 
+        `horasPorClase`, 
+        `estadoCurso`, 
+        `descripcionCurso`, 
+        `precioCurso`, 
+        cc.`idCategoriaCurso` as `idCategoriaCurso`,
+        cc.`nombreCategoriaCurso` as `nombreCategoriaCurso`
+    FROM `tblcurso` c INNER JOIN tblcategoriacurso cc ON (c.`idCategoriaCurso`=cc.`idCategoriaCurso`) 
+    WHERE `idCurso`=id AND `nombreCategoriaCurso`!='Seminario';
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursos`()
 BEGIN
-
-SELECT idCurso,
-    nombreCurso,
-    duracionCurso,
-    estadoCurso,
-    descripcionCurso,
-    nombreCategoriaCurso
-FROM tblcurso c inner join tblcategoriacurso cc on(c.`tblcategoriacurso_idtblCategoriaCurso`=cc.`idtblCategoriaCurso`);
+    SELECT 
+        `idCurso`,
+        `nombreCurso`, 
+        `cantidadClases`, 
+        `horasPorClase`, 
+        `estadoCurso`, 
+        `descripcionCurso`, 
+        `precioCurso`, 
+        cc.`idCategoriaCurso` as `idCategoriaCurso`,
+        cc.`nombreCategoriaCurso` as `nombreCategoriaCurso`
+    FROM `tblcurso` c INNER JOIN tblcategoriacurso cc ON (c.`idCategoriaCurso`=cc.`idCategoriaCurso`) 
+    WHERE `nombreCategoriaCurso`!='Seminario';
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarDetallesCompra`(
-	in idComp	int
-)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursosDisponibles`()
 BEGIN
-	select * from tblDetalleCompra
-	where idCompra = idComp
-	order by idArticulo;
+    SELECT 
+        `idCurso`,
+        `nombreCurso`, 
+        `cantidadClases`, 
+        `horasPorClase`, 
+        `estadoCurso`, 
+        `descripcionCurso`, 
+        `precioCurso`, 
+        cc.`idCategoriaCurso` as `idCategoriaCurso`,
+        cc.`nombreCategoriaCurso` as `nombreCategoriaCurso`
+    FROM `tblcurso` c INNER JOIN tblcategoriacurso cc ON (c.`idCategoriaCurso`=cc.`idCategoriaCurso`) 
+    WHERE `nombreCategoriaCurso`!='Seminario' and `estadoCurso`=1;
 END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEmpresabyNIT`(IN `nitEmpre` VARCHAR(20))
-select * from tblEmpresa where nitEmpresa like concat('%',nitEmpre,'%')$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudianteCreditosActivos`(
  )
@@ -257,103 +227,96 @@ BEGIN
 	from tblestudiante inner join tblCredito on tblestudiante.`tipoDocumento` = tblCredito.`tipoDocumento` AND tblestudiante.`numeroDocumento` = tblCredito.`numeroDocumento`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudiantePorID`(id int, tipo varchar(5))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudiantePorID`(
+    in id int
+)
 BEGIN
-SELECT 
-    `tipoDocumento`,
-    `numeroDocumento`,
-    DATE_FORMAT(`fechaNacimiento`, '%d/%m/%Y') as `fechaNacimiento`,
-    `generoCliente`,
-    `nombreCliente`,
-    `apellidoCliente`,
-    `direccionCliente`,
-    `telefonoFijo`,
-    `telefonoMovil`,
-    `emailCliente`, 
-    `estadoEstudiante`,
-    `tblacudiente_tipoDocumento`, 
-    `tblacudiente_numeroDocumento`
-FROM tblestudiante WHERE `tipoDocumento` = tipo AND `numeroDocumento`= id;
+    SELECT 
+        `documentoUsuario`, 
+        `fechaNacimiento`, 
+        `nombreUsuario`, 
+        `apellidoUsuario`, 
+        `emailUsuario`, 
+        `password`, 
+        `estadoUsuario`, 
+        du.`idDetalleUsuario` as `idDetalleUsuario`, 
+        `direccionUsuario`, 
+        `telefonoFijo`, 
+        `telefonoMovil`, 
+        `generoUsuario`, 
+        `idrol`, 
+        `documentoAcudiente` 
+    FROM `tblusuario` u inner join `tbldetalleusuario` du on (u.`idDetalleUsuario`= du.`idDetalleUsuario`)
+    WHERE idrol='Estudiante' and u.`documentoUsuario`=id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudiantes`()
 BEGIN
-SELECT 
-    `tipoDocumento`,
-    `numeroDocumento`,
-    `fechaNacimiento`,
-    `generoCliente`,
-    `nombreCliente`,
-    `apellidoCliente`,
-    `direccionCliente`,
-    `telefonoFijo`,
-    `telefonoMovil`,
-    `emailCliente`, 
-    `estadoEstudiante`,
-    `tblacudiente_tipoDocumento`, 
-    `tblacudiente_numeroDocumento`
-FROM tblestudiante;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarFichaPorID`(id int)
-BEGIN
-SELECT `idFicha`,
-    `cuposDisponibles`,
-     DATE_FORMAT(`fechaInicio`, '%d/%m/%Y') as `fechaInicio`,
-    `tblcurso_idCurso`,
-    `precioFicha`,
-estado
-FROM `tblficha` where idFicha = id;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarFichas`()
-BEGIN
-SELECT `idFicha`,
-    `cuposDisponibles`,
-     DATE_FORMAT(`fechaInicio`, '%d/%m/%Y') as `fechaInicio`,
-    `precioFicha`,
-    nombreCurso,
-    estado,
-    `idCurso`
-FROM `tblficha` f inner join tblCurso c on(f.tblCurso_idCurso=c.idCurso);
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarFichasDisponibles`()
-BEGIN
-SELECT `idFicha`,
-    `cuposDisponibles`,
-     DATE_FORMAT(`fechaInicio`, '%d/%m/%Y') as `fechaInicio`,
-    `precioFicha`,
-    nombreCurso
-FROM `tblficha` f inner join tblCurso c on(f.tblCurso_idCurso=c.idCurso) WHERE estado=1 and `fechaInicio`>CURRENT_DATE();
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarInscritosSeminario`(
-    in idSeminar       int
- )
-BEGIN
-	declare msg varchar(40);    
-	select count(*) as Inscritos from tblInscripcion where idSeminario = idSeminar;
+    SELECT 
+        `documentoUsuario`, 
+        `fechaNacimiento`, 
+        `nombreUsuario`, 
+        `apellidoUsuario`, 
+        `emailUsuario`, 
+        `password`, 
+        `estadoUsuario`, 
+        du.`idDetalleUsuario` as `idDetalleUsuario`, 
+        `direccionUsuario`, 
+        `telefonoFijo`, 
+        `telefonoMovil`, 
+        `generoUsuario`, 
+        `idrol`, 
+        `documentoAcudiente` 
+    FROM `tblusuario` u inner join `tbldetalleusuario` du on (u.`idDetalleUsuario`= du.`idDetalleUsuario`)
+    WHERE idrol='Estudiante';
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarSeminarioPorID`(id int)
 BEGIN
-SELECT 
-         `idSeminario`
-        ,`nombreSeminario`
-        ,`duracionSeminario`
-        ,`estadoSeminario`
-FROM tblseminario where `idSeminario` = id; 
+    SELECT 
+        `idCurso`,
+        `nombreCurso`, 
+        `cantidadClases`, 
+        `horasPorClase`, 
+        `estadoCurso`, 
+        `descripcionCurso`, 
+        `precioCurso`, 
+        cc.`idCategoriaCurso` as `idCategoriaCurso`,
+        cc.`nombreCategoriaCurso` as `nombreCategoriaCurso`
+    FROM `tblcurso` c INNER JOIN tblcategoriacurso cc ON (c.`idCategoriaCurso`=cc.`idCategoriaCurso`) 
+    WHERE `idCurso`=id AND `nombreCategoriaCurso`='Seminario';
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarSeminarios`()
 BEGIN
-SELECT 
-          `idSeminario`
-        , `nombreSeminario`
-        , `duracionSeminario`
-        , `estadoSeminario` 
-FROM tblseminario;
+    SELECT 
+        `idCurso`,
+        `nombreCurso`, 
+        `cantidadClases`, 
+        `horasPorClase`, 
+        `estadoCurso`, 
+        `descripcionCurso`, 
+        `precioCurso`, 
+        cc.`idCategoriaCurso` as `idCategoriaCurso`,
+        cc.`nombreCategoriaCurso` as `nombreCategoriaCurso`
+    FROM `tblcurso` c INNER JOIN tblcategoriacurso cc ON (c.`idCategoriaCurso`=cc.`idCategoriaCurso`) 
+    WHERE `nombreCategoriaCurso`='Seminario';
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarSeminariosDisponibles`()
+BEGIN
+    SELECT 
+        `idCurso`,
+        `nombreCurso`, 
+        `cantidadClases`, 
+        `horasPorClase`, 
+        `estadoCurso`, 
+        `descripcionCurso`, 
+        `precioCurso`, 
+        cc.`idCategoriaCurso` as `idCategoriaCurso`,
+        cc.`nombreCategoriaCurso` as `nombreCategoriaCurso`
+    FROM `tblcurso` c INNER JOIN tblcategoriacurso cc ON (c.`idCategoriaCurso`=cc.`idCategoriaCurso`) 
+    WHERE `nombreCategoriaCurso`='Seminario' and `estadoCurso`=1;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarSubsidiosEmpresa`(
@@ -367,11 +330,16 @@ BEGIN
 	order by idSubsidio;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarUsuarioModulo`(IN `idUser` INT)
-    COMMENT 'Hecho el 28/02/2015 - Juan Montoya'
-begin
-select tblusuario.idusuario "id", tblmodulo.enlace "enlace", tblmodulo.nombre "nombre" from tblusuario inner join tblrol on (tblusuario.idrol = tblrol.idrol) inner join tblmodulorol on(tblrol.idrol=tblmodulorol.idrol) inner join tblmodulo on(tblmodulorol.idmodulo=tblmodulo.idmodulo) where tblusuario.idusuario=idUser;
-end$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarUsuarioModulo`(
+    IN `idUser` varchar (30)
+)
+BEGIN
+    SELECT 
+        tblusuario.`emailUsuario` "id",
+        tblmodulo.enlace "enlace",
+        tblmodulo.nombre "nombre" 
+    FROM tblusuario inner join tblrol on (tblusuario.idrol = tblrol.idrol) inner join tblmodulorol on(tblrol.idrol=tblmodulorol.idrol) inner join tblmodulo on(tblmodulorol.idmodulo=tblmodulo.idmodulo) where tblusuario.`emailUsuario`=idUser;
+END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarVentasDiarias`(
 
@@ -448,22 +416,32 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCurso`(
-nombre varchar(30), duracion int, estado int, descripcion varchar(100), idcategoria int
+    in nombre varchar(30),
+    in cantidad int,
+    in horas int,
+    in estado int,
+    in descripcion varchar(100),
+    in precio int,
+    in idcategoria int
 )
 BEGIN
-INSERT INTO `dbworkstationsoftware`.`tblcurso`
-(`nombreCurso`,
-`duracionCurso`,
-`estadoCurso`,
-`descripcionCurso`,
-`tblcategoriacurso_idtblCategoriaCurso`)
-VALUES
-(nombre,
-duracion,
-estado,
-descripcion,
-idcategoria);
-
+INSERT INTO `tblcurso`(
+    `nombreCurso`, 
+    `cantidadClases`, 
+    `horasPorClase`, 
+    `estadoCurso`, 
+    `descripcionCurso`, 
+    `precioCurso`, 
+    `idCategoriaCurso`
+) VALUES (
+    nombre,
+    cantidad,
+    horas,
+    estado,
+    descripcion,
+    precio,
+    idcategoria
+);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleCompra`(
@@ -526,24 +504,54 @@ BEGIN
 	end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarEstudiante`(IN `tipoDocumen` VARCHAR(5),
- IN `numeroDocumen` VARCHAR(20),
- IN `fechaNacimien` date,
- IN `generoClien` INT,
- IN `nombreClien` VARCHAR(50),
- IN `apellidoClien` VARCHAR(50),
- IN `direccionClien` VARCHAR(50),
- IN `telefonoFi` VARCHAR(15),
- IN `telefonoMov` VARCHAR(15),
- IN `emailClien` VARCHAR(50),
- IN `estado` INT,
- IN `tipoDocAcudien` varchar(5),
- IN `numDocAcudien` varchar (15)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarEstudiante`(
+    in documentoUsuar   varchar(20),
+    in fechaNacimien    DATE,
+    in nombreUsuar      varchar(30),
+    in apellidoUsuar    varchar(30),
+    in emailUsuar       varchar(50),
+    in passwo           varchar(45),
+    in estadoUsuar      int,
+    in documentoAcudien varchar(20),
+    in direccionUsuar   varchar(50),
+    in telefonoFi       varchar(11),
+    in telefonoMov      varchar(15),
+    in generoUsuar      bit
 )
 BEGIN
-INSERT INTO `tblestudiante`
-    (`tipoDocumento`, `numeroDocumento`, `fechaNacimiento`, `nombreCliente`, `apellidoCliente`, `direccionCliente`, `telefonoFijo`, `telefonoMovil`, `emailCliente`, `estadoEstudiante`, `generoCliente`, `tblacudiente_tipoDocumento`, `tblacudiente_numeroDocumento`)
-VALUES (tipoDocumen,numeroDocumen,fechaNacimien,nombreClien,apellidoClien,direccionClien,telefonoFi,telefonoMov,emailClien,estado,generoClien,tipoDocAcudien,numDocAcudien);
+INSERT INTO `tbldetalleusuario`(
+    `direccionUsuario`, 
+    `telefonoFijo`, 
+    `telefonoMovil`, 
+    `generoUsuario`
+) VALUES (
+    direccionUsuar,
+    telefonoFi,
+    telefonoMov,
+    generoUsuar
+);
+INSERT INTO `tblusuario`(
+    `documentoUsuario`, 
+    `fechaNacimiento`, 
+    `nombreUsuario`, 
+    `apellidoUsuario`, 
+    `emailUsuario`, 
+    `password`, 
+    `estadoUsuario`, 
+    `idrol`, 
+    `documentoAcudiente`,
+    `idDetalleUsuario`
+) VALUES (
+    documentoUsuar,
+    fechaNacimien,
+    nombreUsuar,
+    apellidoUsuar,
+    emailUsuar,
+    passwo,
+    estadoUsuar,
+    3,
+    documentoAcudien,
+    (SELECT MAX(idDetalleUsuario) FROM `tbldetalleusuario`));
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarFactura`(
@@ -564,17 +572,6 @@ BEGIN
 	end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarFicha`(
-    in id          int,
-    in cupos  int,  
-    in fecha       date,
-    in precio	   int,
-in estadoFich int
- )
-BEGIN
-		insert into tblFicha(tblcurso_idCurso,cuposDisponibles,fechaInicio, precioFicha,estado) Values(id,cupos,fecha, precio, estadoFich);
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarInscripcion`(
     in idIncripci       int,
     in idSeminar        int,
@@ -592,31 +589,6 @@ BEGIN
 		set msg="La inscripciï¿½ï¿½n se ha registrado exitosamente";
 		select msg as Respuesta; 
 	end if;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarMatricula`(
-	IN `idMatricu` INT, 
-	IN `idFic` INT, 
-	IN `fechaInic` DATETIME, 
-	IN `fechaF` DATETIME, 
-	IN `estadoMatricu` INT, 
-	IN `idVen` INT
-)
-BEGIN
-	declare msg varchar(40);    
-	if (exists(select idMatricula from tblMatricula where idMatricula=idMatricu)) then
-		set msg="Esta matricula ya existe";
-		select msg as Respuesta;
-	else
-		insert into tblMatricula (idFicha,fechaInicio,fechaFin,estadoMatricula,idVenta) Values(idFic,fechaInic,fechaF,estadoMatricu,idVen);
-		set msg="La matricula se ha registrado exitosamente";
-		select msg as Respuesta; 
-	end if;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSeminario`(IN `nombreSeminar` VARCHAR(50), IN `duracionSeminar` INT, IN `estadoSeminar` INT)
-BEGIN
-        insert into tblSeminario (nombreSeminario,duracionSeminario,estadoSeminario) Values(nombreSeminar,duracionSeminar,estadoSeminar);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSubsidio`(IN `idSubsid` INT, IN `nitEmpre` INT, IN `idClien` VARCHAR(30), IN `fechaAsignaci` DATETIME, IN `valorSubsid` int)
@@ -682,13 +654,11 @@ DELIMITER ;
 --
 
 CREATE TABLE IF NOT EXISTS `tblabono` (
-  `idAbono` int(11) NOT NULL AUTO_INCREMENT,
+`idAbono` int(11) NOT NULL,
   `valorAbono` int(11) NOT NULL DEFAULT '0',
   `fechaPago` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `idCredito` int(11) NOT NULL,
-  PRIMARY KEY (`idAbono`),
-  KEY `fk_tblabono_tblcredito1_idx` (`idCredito`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `idCredito` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -697,11 +667,10 @@ CREATE TABLE IF NOT EXISTS `tblabono` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblacudiente` (
-  `tipoDocumento` varchar(5) NOT NULL,
-  `numeroDocumento` varchar(15) NOT NULL,
+  `documentoAcudiente` varchar(20) NOT NULL,
   `nombreAcudiente` varchar(50) NOT NULL,
   `telefonoAcudiente` varchar(50) NOT NULL,
-  PRIMARY KEY (`tipoDocumento`,`numeroDocumento`)
+  `fechaNacimiento` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -711,23 +680,22 @@ CREATE TABLE IF NOT EXISTS `tblacudiente` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblarticulo` (
-  `idArticulo` int(11) NOT NULL AUTO_INCREMENT,
+`idArticulo` int(11) NOT NULL,
   `idCategoriaArticulo` int(11) NOT NULL,
   `descripcionArticulo` varchar(50) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `cantidadDisponible` mediumint(9) NOT NULL,
-  `precioUnitario` int(11) NOT NULL,
-  PRIMARY KEY (`idArticulo`),
-  KEY `FK_tblArticulo_idCategoriaArticulo` (`idCategoriaArticulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+  `precioCompra` int(11) NOT NULL,
+  `precioVenta` int(11) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblarticulo`
 --
 
-INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioUnitario`) VALUES
-(1, 5, 'Vinilo Aguamarina', 30, 1000),
-(2, 1, 'Vinilo Dorado', 30, 1200),
-(3, 5, 'Vinilo Plateado', 30, 1200);
+INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioCompra`, `precioVenta`) VALUES
+(1, 2, 'Vinilo Aguamarina', 30, 1000, 1200),
+(2, 1, 'Vinilo Dorado', 30, 1200, 1400),
+(3, 2, 'Vinilo Plateado', 30, 1200, 1400);
 
 -- --------------------------------------------------------
 
@@ -736,10 +704,9 @@ INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArti
 --
 
 CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
-  `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,
-  `nombreCategoriaArticulo` varchar(50) NOT NULL,
-  PRIMARY KEY (`idCategoriaArticulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+`idCategoriaArticulo` int(11) NOT NULL,
+  `nombreCategoriaArticulo` varchar(50) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblcategoriaarticulo`
@@ -749,8 +716,18 @@ INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArtic
 (1, 'Categoria A'),
 (2, 'Categoria B'),
 (3, 'Categoria C'),
-(4, 'Categoria D'),
-(5, 'Vinilos');
+(4, 'Categoria D');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tblcategoriacredito`
+--
+
+CREATE TABLE IF NOT EXISTS `tblcategoriacredito` (
+  `idCategoriaCredito` int(11) NOT NULL,
+  `nombreCategoria` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -759,37 +736,37 @@ INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArtic
 --
 
 CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
-  `idtblCategoriaCurso` tinyint(4) NOT NULL AUTO_INCREMENT,
-  `nombreCategoriaCurso` varchar(45) NOT NULL,
-  PRIMARY KEY (`idtblCategoriaCurso`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+`idCategoriaCurso` int(11) NOT NULL,
+  `nombreCategoriaCurso` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblcategoriacurso`
 --
 
-INSERT INTO `tblcategoriacurso` (`idtblCategoriaCurso`, `nombreCategoriaCurso`) VALUES
+INSERT INTO `tblcategoriacurso` (`idCategoriaCurso`, `nombreCategoriaCurso`) VALUES
 (1, 'Categoria A'),
 (2, 'Categoria B'),
 (3, 'Categoria C'),
 (4, 'Categoria D'),
-(5, 'Categoria E'),
-(6, 'sad234'),
-(7, '23asd4');
+(5, 'Categoria E');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tblcompra`
+-- Estructura de tabla para la tabla `tblclase`
 --
 
-CREATE TABLE IF NOT EXISTS `tblcompra` (
-  `numeroFactura` varchar(50) NOT NULL,
-  `nombreProveedor` varchar(50) NOT NULL,
-  `fechaCompra` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `totalCompra` int(11) NOT NULL,
-  PRIMARY KEY (`numeroFactura`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `tblclase` (
+`idClase` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `estadoPago` bit(1) DEFAULT NULL,
+  `estadoAsistencia` bit(1) DEFAULT NULL,
+  `creditoCreado` bit(1) DEFAULT NULL,
+  `precioClase` float DEFAULT NULL,
+  `idCurso` int(11) NOT NULL,
+  `documentoUsuario` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -798,16 +775,14 @@ CREATE TABLE IF NOT EXISTS `tblcompra` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblcredito` (
-  `idCredito` int(11) NOT NULL AUTO_INCREMENT,
+`idCredito` int(11) NOT NULL,
   `fechaInicio` datetime DEFAULT CURRENT_TIMESTAMP,
   `saldoInicial` int(11) NOT NULL DEFAULT '0',
   `saldoActual` int(11) NOT NULL DEFAULT '0',
   `estadoCredito` tinyint(4) NOT NULL,
-  `tblestudiante_tipoDocumento` varchar(5) NOT NULL,
-  `tblestudiante_numeroDocumento` varchar(15) NOT NULL,
-  PRIMARY KEY (`idCredito`),
-  KEY `fk_tblcredito_tblestudiante1_idx` (`tblestudiante_tipoDocumento`,`tblestudiante_numeroDocumento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `idCategoriaCredito` int(11) NOT NULL,
+  `documentoUsuario` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -816,59 +791,44 @@ CREATE TABLE IF NOT EXISTS `tblcredito` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblcurso` (
-  `idCurso` int(11) NOT NULL AUTO_INCREMENT,
+`idCurso` int(11) NOT NULL,
   `nombreCurso` varchar(50) NOT NULL,
-  `duracionCurso` int(11) NOT NULL,
+  `cantidadClases` int(11) NOT NULL,
+  `horasPorClase` int(11) NOT NULL,
   `estadoCurso` int(11) NOT NULL,
   `descripcionCurso` varchar(100) DEFAULT NULL,
-  `tblcategoriacurso_idtblCategoriaCurso` tinyint(4) NOT NULL,
-  PRIMARY KEY (`idCurso`),
-  KEY `fk_tblcurso_tblcategoriacurso1_idx` (`tblcategoriacurso_idtblCategoriaCurso`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Volcado de datos para la tabla `tblcurso`
---
-
-INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `duracionCurso`, `estadoCurso`, `descripcionCurso`, `tblcategoriacurso_idtblCategoriaCurso`) VALUES
-(1, 'Oleo', 30, 1, 'El Oleo es todo un arte, amen', 4),
-(2, 'PatchWork', 10, 1, 'asdasdasdasdasdasd', 1),
-(3, 'Vinilos', 10, 1, 'Es un curso sobre los vinilos', 4);
+  `precioCurso` int(11) DEFAULT NULL,
+  `idCategoriaCurso` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tbldetallecompra`
+-- Estructura de tabla para la tabla `tbldetallemovimiento`
 --
 
-CREATE TABLE IF NOT EXISTS `tbldetallecompra` (
-  `idDetalleCompra` int(11) NOT NULL AUTO_INCREMENT,
-  `numeroFactura` varchar(50) NOT NULL,
-  `idArticulo` int(11) NOT NULL,
-  `cantidadComprada` int(11) NOT NULL,
-  `valorUnitario` int(11) NOT NULL,
-  PRIMARY KEY (`idDetalleCompra`),
-  KEY `FK_tblDetalleCompra_idArticulo` (`idArticulo`),
-  KEY `FK_tblDetalleCompra_numeroFactura` (`numeroFactura`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tbldetalleventa`
---
-
-CREATE TABLE IF NOT EXISTS `tbldetalleventa` (
-  `idDetalleVenta` int(11) NOT NULL AUTO_INCREMENT,
-  `idVenta` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
+  `idDetalleMovimiento` int(11) NOT NULL,
   `idArticulo` int(11) NOT NULL,
   `cantidadVendida` int(11) NOT NULL,
   `descuento` int(11) NOT NULL DEFAULT '0',
-  `totalDetalleVenta` int(11) NOT NULL,
-  PRIMARY KEY (`idDetalleVenta`),
-  KEY `FK_tblDetalleVenta_idArticulo` (`idArticulo`),
-  KEY `FK_tblDetalleVenta_idVenta` (`idVenta`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `totalDetalleMovimiento` int(11) NOT NULL,
+  `idMovimiento` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbldetalleusuario`
+--
+
+CREATE TABLE IF NOT EXISTS `tbldetalleusuario` (
+  `idDetalleUsuario` int(11) NOT NULL,
+  `direccionUsuario` varchar(50) NOT NULL,
+  `telefonoFijo` varchar(11) NOT NULL,
+  `telefonoMovil` varchar(15) NOT NULL,
+  `generoUsuario` bit(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -882,8 +842,7 @@ CREATE TABLE IF NOT EXISTS `tblempresa` (
   `direccionEmpresa` varchar(50) NOT NULL,
   `nombreContacto` varchar(50) NOT NULL,
   `telefonoContacto` varchar(50) NOT NULL,
-  `emailContacto` varchar(50) NOT NULL,
-  PRIMARY KEY (`nitEmpresa`)
+  `emailContacto` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -896,123 +855,14 @@ INSERT INTO `tblempresa` (`nitEmpresa`, `nombreEmpresa`, `direccionEmpresa`, `no
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tblestudiante`
---
-
-CREATE TABLE IF NOT EXISTS `tblestudiante` (
-  `tipoDocumento` varchar(5) NOT NULL,
-  `numeroDocumento` varchar(15) NOT NULL,
-  `fechaNacimiento` date NOT NULL,
-  `nombreCliente` varchar(50) NOT NULL,
-  `apellidoCliente` varchar(50) NOT NULL,
-  `direccionCliente` varchar(50) NOT NULL,
-  `telefonoFijo` varchar(11) NOT NULL,
-  `telefonoMovil` varchar(15) NOT NULL,
-  `emailCliente` varchar(50) NOT NULL,
-  `estadoEstudiante` tinyint(4) NOT NULL,
-  `generoCliente` binary(1) NOT NULL,
-  `tblacudiente_tipoDocumento` varchar(5) DEFAULT NULL,
-  `tblacudiente_numeroDocumento` varchar(15) DEFAULT NULL,
-  PRIMARY KEY (`tipoDocumento`,`numeroDocumento`),
-  KEY `fk_tblcliente_tblacudiente1_idx` (`tblacudiente_tipoDocumento`,`tblacudiente_numeroDocumento`),
-  KEY `tblacudiente_tipoDocumento` (`tblacudiente_tipoDocumento`),
-  KEY `tblacudiente_numeroDocumento` (`tblacudiente_numeroDocumento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `tblestudiante`
---
-
-INSERT INTO `tblestudiante` (`tipoDocumento`, `numeroDocumento`, `fechaNacimiento`, `nombreCliente`, `apellidoCliente`, `direccionCliente`, `telefonoFijo`, `telefonoMovil`, `emailCliente`, `estadoEstudiante`, `generoCliente`, `tblacudiente_tipoDocumento`, `tblacudiente_numeroDocumento`) VALUES
-('CC', '1017225672', '1994-11-03', 'Juan', 'Montoya', 'Calle falsa 456', '65432198', '3218015236', 'jsmontoya@misena.edu.co', 0, '1', NULL, 'null'),
-('CC', '1017225673', '1994-11-03', 'Juan ', 'Montoya', 'Calle 24 # 65e25', '5861529', '03218016237', 'JuanSMM@outlook.com', 0, '1', NULL, 'null');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tblfactura`
---
-
-CREATE TABLE IF NOT EXISTS `tblfactura` (
-  `idFactura` int(11) NOT NULL AUTO_INCREMENT,
-  `fechaFactura` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `totalFactura` int(11) NOT NULL,
-  PRIMARY KEY (`idFactura`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tblficha`
---
-
-CREATE TABLE IF NOT EXISTS `tblficha` (
-  `idFicha` int(11) NOT NULL AUTO_INCREMENT,
-  `cuposDisponibles` int(11) NOT NULL,
-  `fechaInicio` date NOT NULL,
-  `tblcurso_idCurso` int(11) NOT NULL,
-  `precioFicha` int(11) NOT NULL,
-  `estado` int(11) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`idFicha`),
-  KEY `fk_tblficha_tblcurso1_idx` (`tblcurso_idCurso`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Volcado de datos para la tabla `tblficha`
---
-
-INSERT INTO `tblficha` (`idFicha`, `cuposDisponibles`, `fechaInicio`, `tblcurso_idCurso`, `precioFicha`, `estado`) VALUES
-(1, 15, '2011-03-04', 1, 50000, 1),
-(2, 15, '2015-05-15', 1, 10000, 1),
-(3, 15, '2016-08-19', 3, 50000, 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tblinscripcion`
---
-
-CREATE TABLE IF NOT EXISTS `tblinscripcion` (
-  `idInscripcion` int(11) NOT NULL AUTO_INCREMENT,
-  `idSeminario` int(11) NOT NULL,
-  `precioSeminario` int(20) NOT NULL,
-  `fechaAsistencia` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tblVenta_idVenta` int(11) NOT NULL,
-  PRIMARY KEY (`idInscripcion`),
-  KEY `FK_tblInscripcion_idSeminario` (`idSeminario`),
-  KEY `fk_tblInscripcion_tblVenta1_idx` (`tblVenta_idVenta`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tblmatricula`
---
-
-CREATE TABLE IF NOT EXISTS `tblmatricula` (
-  `idMatricula` int(11) NOT NULL AUTO_INCREMENT,
-  `fechaInicio` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `fechaFin` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `estadoMatricula` tinyint(4) NOT NULL,
-  `idVenta` int(11) NOT NULL,
-  `idFicha` int(11) NOT NULL,
-  PRIMARY KEY (`idMatricula`),
-  KEY `fk_tblmatricula_tblventa1_idx` (`idVenta`),
-  KEY `fk_tblmatricula_tblficha1_idx` (`idFicha`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `tblmodulo`
 --
 
 CREATE TABLE IF NOT EXISTS `tblmodulo` (
-  `idmodulo` int(11) NOT NULL AUTO_INCREMENT,
+`idmodulo` int(11) NOT NULL,
   `enlace` varchar(30) NOT NULL,
-  `nombre` varchar(30) NOT NULL,
-  PRIMARY KEY (`idmodulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+  `nombre` varchar(30) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblmodulo`
@@ -1035,9 +885,7 @@ INSERT INTO `tblmodulo` (`idmodulo`, `enlace`, `nombre`) VALUES
 
 CREATE TABLE IF NOT EXISTS `tblmodulorol` (
   `idmodulo` int(11) NOT NULL,
-  `idrol` int(11) NOT NULL,
-  PRIMARY KEY (`idmodulo`,`idrol`),
-  KEY `idrol` (`idrol`)
+  `idrol` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -1056,15 +904,41 @@ INSERT INTO `tblmodulorol` (`idmodulo`, `idrol`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tblmovimiento`
+--
+
+CREATE TABLE IF NOT EXISTS `tblmovimiento` (
+  `idMovimiento` int(11) NOT NULL,
+  `fechaMovimiento` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `totalMovimiento` int(11) NOT NULL,
+  `idtipoMovimiento` int(11) NOT NULL,
+  `documentoUsuario` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tblpreinscripcion`
+--
+
+CREATE TABLE IF NOT EXISTS `tblpreinscripcion` (
+`idPreinscripcion` int(11) NOT NULL,
+  `estado` bit(1) DEFAULT NULL,
+  `documentoUsuario` varchar(20) NOT NULL,
+  `idCurso` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tblrol`
 --
 
 CREATE TABLE IF NOT EXISTS `tblrol` (
   `nombre` varchar(20) NOT NULL,
   `descripcion` varchar(40) NOT NULL,
-  `idrol` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`idrol`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+`idrol` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblrol`
@@ -1078,43 +952,27 @@ INSERT INTO `tblrol` (`nombre`, `descripcion`, `idrol`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tblseminario`
---
-
-CREATE TABLE IF NOT EXISTS `tblseminario` (
-  `idSeminario` int(11) NOT NULL AUTO_INCREMENT,
-  `nombreSeminario` varchar(50) NOT NULL,
-  `duracionSeminario` int(11) NOT NULL,
-  `estadoSeminario` int(11) NOT NULL,
-  PRIMARY KEY (`idSeminario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Volcado de datos para la tabla `tblseminario`
---
-
-INSERT INTO `tblseminario` (`idSeminario`, `nombreSeminario`, `duracionSeminario`, `estadoSeminario`) VALUES
-(1, 'Seminario de PatchWork', 10, 1),
-(2, 'Seminario de Pintura', 10, 1),
-(3, 'Seminario de Oleo', 4, 1);
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `tblsubsidio`
 --
 
 CREATE TABLE IF NOT EXISTS `tblsubsidio` (
-  `idSubsidio` int(11) NOT NULL AUTO_INCREMENT,
+`idSubsidio` int(11) NOT NULL,
   `fechaAsignacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `valorSubsidio` int(11) NOT NULL,
-  `tblempresa_nitEmpresa` varchar(20) NOT NULL,
-  `tblestudiante_tipoDocumento` varchar(5) NOT NULL,
-  `tblestudiante_numeroDocumento` varchar(15) NOT NULL,
-  PRIMARY KEY (`idSubsidio`),
-  KEY `fk_tblsubsidio_tblempresa1_idx` (`tblempresa_nitEmpresa`),
-  KEY `fk_tblsubsidio_tblestudiante1_idx` (`tblestudiante_tipoDocumento`,`tblestudiante_numeroDocumento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `nitEmpresa` varchar(20) NOT NULL,
+  `documentoUsuario` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbltipomovimiento`
+--
+
+CREATE TABLE IF NOT EXISTS `tbltipomovimiento` (
+  `idtipoMovimiento` int(11) NOT NULL,
+  `descripcion` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1123,45 +981,209 @@ CREATE TABLE IF NOT EXISTS `tblsubsidio` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblusuario` (
-  `idUsuario` int(11) NOT NULL,
-  `nombreUsuario` varchar(45) NOT NULL,
+  `documentoUsuario` varchar(20) NOT NULL,
+  `fechaNacimiento` date NOT NULL,
+  `nombreUsuario` varchar(30) NOT NULL,
+  `apellidoUsuario` varchar(30) NOT NULL,
+  `emailUsuario` varchar(50) NOT NULL,
   `password` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `telefono` varchar(45) NOT NULL,
-  `idrol` int(1) NOT NULL,
-  PRIMARY KEY (`idUsuario`),
-  KEY `idrol` (`idrol`)
+  `estadoUsuario` int(11) NOT NULL,
+  `idDetalleUsuario` int(11) DEFAULT NULL,
+  `idrol` int(11) NOT NULL,
+  `documentoAcudiente` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblusuario`
 --
 
-INSERT INTO `tblusuario` (`idUsuario`, `nombreUsuario`, `password`, `email`, `telefono`, `idrol`) VALUES
-(1, 'admin', '123', 'admin@misena.edu.co', '5861529', 1),
-(2, 'usuario', '123', 'usuario@misena.edu.co', '3216545', 3),
-(3, 'cliente', '123', 'jsmontoya37@misena.edu.co', '5861529', 3);
-
--- --------------------------------------------------------
+INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`) VALUES
+('1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL),
+('94110325805', '1994-11-03', 'Juan', 'Montoya', 'JuanSMM@outlook.com', '123', 1, NULL, 3, NULL);
 
 --
--- Estructura de tabla para la tabla `tblventa`
+-- Índices para tablas volcadas
 --
 
-CREATE TABLE IF NOT EXISTS `tblventa` (
-  `idVenta` int(11) NOT NULL AUTO_INCREMENT,
-  `fechaVenta` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `totalVenta` int(11) NOT NULL,
-  `tblfactura_idFactura` int(11) NOT NULL,
-  `tblusuario_idUsuario` int(11) NOT NULL,
-  `tblestudiante_tipoDocumento` varchar(5) NOT NULL,
-  `tblestudiante_numeroDocumento` varchar(15) NOT NULL,
-  PRIMARY KEY (`idVenta`),
-  KEY `fk_tblventa_tblfactura1_idx` (`tblfactura_idFactura`),
-  KEY `fk_tblventa_tblusuario1_idx` (`tblusuario_idUsuario`),
-  KEY `fk_tblventa_tblestudiante1_idx` (`tblestudiante_tipoDocumento`,`tblestudiante_numeroDocumento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+--
+-- Indices de la tabla `tblabono`
+--
+ALTER TABLE `tblabono`
+ ADD PRIMARY KEY (`idAbono`), ADD KEY `fk_tblabono_tblcredito1_idx` (`idCredito`);
 
+--
+-- Indices de la tabla `tblacudiente`
+--
+ALTER TABLE `tblacudiente`
+ ADD PRIMARY KEY (`documentoAcudiente`);
+
+--
+-- Indices de la tabla `tblarticulo`
+--
+ALTER TABLE `tblarticulo`
+ ADD PRIMARY KEY (`idArticulo`), ADD KEY `FK_tblArticulo_idCategoriaArticulo` (`idCategoriaArticulo`);
+
+--
+-- Indices de la tabla `tblcategoriaarticulo`
+--
+ALTER TABLE `tblcategoriaarticulo`
+ ADD PRIMARY KEY (`idCategoriaArticulo`);
+
+--
+-- Indices de la tabla `tblcategoriacredito`
+--
+ALTER TABLE `tblcategoriacredito`
+ ADD PRIMARY KEY (`idCategoriaCredito`);
+
+--
+-- Indices de la tabla `tblcategoriacurso`
+--
+ALTER TABLE `tblcategoriacurso`
+ ADD PRIMARY KEY (`idCategoriaCurso`);
+
+--
+-- Indices de la tabla `tblclase`
+--
+ALTER TABLE `tblclase`
+ ADD PRIMARY KEY (`idClase`);
+
+--
+-- Indices de la tabla `tblcredito`
+--
+ALTER TABLE `tblcredito`
+ ADD PRIMARY KEY (`idCredito`), ADD KEY `fk_tblcredito_tblCategoriaCredito1_idx` (`idCategoriaCredito`), ADD KEY `fk_tblcredito_tblusuario1_idx` (`documentoUsuario`);
+
+--
+-- Indices de la tabla `tblcurso`
+--
+ALTER TABLE `tblcurso`
+ ADD PRIMARY KEY (`idCurso`), ADD KEY `fk_tblcurso_tblcategoriacurso1_idx` (`idCategoriaCurso`);
+
+--
+-- Indices de la tabla `tbldetallemovimiento`
+--
+ALTER TABLE `tbldetallemovimiento`
+ ADD PRIMARY KEY (`idDetalleMovimiento`), ADD KEY `FK_tblDetalleVenta_idArticulo` (`idArticulo`), ADD KEY `fk_tbldetallemovimiento_tblMovimiento1_idx` (`idMovimiento`);
+
+--
+-- Indices de la tabla `tbldetalleusuario`
+--
+ALTER TABLE `tbldetalleusuario`
+ ADD PRIMARY KEY (`idDetalleUsuario`);
+
+--
+-- Indices de la tabla `tblempresa`
+--
+ALTER TABLE `tblempresa`
+ ADD PRIMARY KEY (`nitEmpresa`);
+
+--
+-- Indices de la tabla `tblmodulo`
+--
+ALTER TABLE `tblmodulo`
+ ADD PRIMARY KEY (`idmodulo`);
+
+--
+-- Indices de la tabla `tblmodulorol`
+--
+ALTER TABLE `tblmodulorol`
+ ADD PRIMARY KEY (`idmodulo`,`idrol`), ADD KEY `idrol` (`idrol`);
+
+--
+-- Indices de la tabla `tblmovimiento`
+--
+ALTER TABLE `tblmovimiento`
+ ADD PRIMARY KEY (`idMovimiento`), ADD KEY `fk_tblMovimiento_tblTipoMovimiento1_idx` (`idtipoMovimiento`), ADD KEY `fk_tblMovimiento_tblusuario1_idx` (`documentoUsuario`);
+
+--
+-- Indices de la tabla `tblpreinscripcion`
+--
+ALTER TABLE `tblpreinscripcion`
+ ADD PRIMARY KEY (`idPreinscripcion`);
+
+--
+-- Indices de la tabla `tblrol`
+--
+ALTER TABLE `tblrol`
+ ADD PRIMARY KEY (`idrol`);
+
+--
+-- Indices de la tabla `tblsubsidio`
+--
+ALTER TABLE `tblsubsidio`
+ ADD PRIMARY KEY (`idSubsidio`), ADD KEY `fk_tblsubsidio_tblempresa1_idx` (`nitEmpresa`), ADD KEY `fk_tblsubsidio_tblusuario1_idx` (`documentoUsuario`);
+
+--
+-- Indices de la tabla `tbltipomovimiento`
+--
+ALTER TABLE `tbltipomovimiento`
+ ADD PRIMARY KEY (`idtipoMovimiento`);
+
+--
+-- Indices de la tabla `tblusuario`
+--
+ALTER TABLE `tblusuario`
+ ADD PRIMARY KEY (`documentoUsuario`), ADD UNIQUE KEY `emailUsuario_UNIQUE` (`emailUsuario`), ADD KEY `fk_tblestudiante_tblDetalleCliente1_idx` (`idDetalleUsuario`), ADD KEY `fk_tblusuario_tblrol1_idx` (`idrol`), ADD KEY `fk_tblusuario_tblacudiente1_idx` (`documentoAcudiente`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `tblabono`
+--
+ALTER TABLE `tblabono`
+MODIFY `idAbono` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tblarticulo`
+--
+ALTER TABLE `tblarticulo`
+MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `tblcategoriaarticulo`
+--
+ALTER TABLE `tblcategoriaarticulo`
+MODIFY `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `tblcategoriacurso`
+--
+ALTER TABLE `tblcategoriacurso`
+MODIFY `idCategoriaCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT de la tabla `tblclase`
+--
+ALTER TABLE `tblclase`
+MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tblcredito`
+--
+ALTER TABLE `tblcredito`
+MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tblcurso`
+--
+ALTER TABLE `tblcurso`
+MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tblmodulo`
+--
+ALTER TABLE `tblmodulo`
+MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT de la tabla `tblpreinscripcion`
+--
+ALTER TABLE `tblpreinscripcion`
+MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tblrol`
+--
+ALTER TABLE `tblrol`
+MODIFY `idrol` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `tblsubsidio`
+--
+ALTER TABLE `tblsubsidio`
+MODIFY `idSubsidio` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Restricciones para tablas volcadas
 --
@@ -1170,86 +1192,62 @@ CREATE TABLE IF NOT EXISTS `tblventa` (
 -- Filtros para la tabla `tblabono`
 --
 ALTER TABLE `tblabono`
-  ADD CONSTRAINT `tblabono_ibfk_1` FOREIGN KEY (`idCredito`) REFERENCES `tblcredito` (`idCredito`);
+ADD CONSTRAINT `tblabono_ibfk_1` FOREIGN KEY (`idCredito`) REFERENCES `tblcredito` (`idCredito`);
 
 --
 -- Filtros para la tabla `tblarticulo`
 --
 ALTER TABLE `tblarticulo`
-  ADD CONSTRAINT `FK_tblArticulo_idCategoriaArticulo` FOREIGN KEY (`idCategoriaArticulo`) REFERENCES `tblcategoriaarticulo` (`idCategoriaArticulo`);
+ADD CONSTRAINT `FK_tblArticulo_idCategoriaArticulo` FOREIGN KEY (`idCategoriaArticulo`) REFERENCES `tblcategoriaarticulo` (`idCategoriaArticulo`);
 
 --
 -- Filtros para la tabla `tblcredito`
 --
 ALTER TABLE `tblcredito`
-  ADD CONSTRAINT `fk_tblcredito_tblestudiante1` FOREIGN KEY (`tblestudiante_tipoDocumento`, `tblestudiante_numeroDocumento`) REFERENCES `tblestudiante` (`tipoDocumento`, `numeroDocumento`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `fk_tblcredito_tblCategoriaCredito1` FOREIGN KEY (`idCategoriaCredito`) REFERENCES `tblcategoriacredito` (`idCategoriaCredito`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_tblcredito_tblusuario1` FOREIGN KEY (`documentoUsuario`) REFERENCES `tblusuario` (`documentoUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `tblcurso`
 --
 ALTER TABLE `tblcurso`
-  ADD CONSTRAINT `fk_tblcurso_tblcategoriacurso1` FOREIGN KEY (`tblcategoriacurso_idtblCategoriaCurso`) REFERENCES `tblcategoriacurso` (`idtblCategoriaCurso`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `fk_tblcurso_tblcategoriacurso1` FOREIGN KEY (`idCategoriaCurso`) REFERENCES `tblcategoriacurso` (`idCategoriaCurso`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `tbldetalleventa`
+-- Filtros para la tabla `tbldetallemovimiento`
 --
-ALTER TABLE `tbldetalleventa`
-  ADD CONSTRAINT `FK_tblDetalleVenta_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`),
-  ADD CONSTRAINT `FK_tblDetalleVenta_idVenta` FOREIGN KEY (`idVenta`) REFERENCES `tblventa` (`idVenta`);
-
---
--- Filtros para la tabla `tblestudiante`
---
-ALTER TABLE `tblestudiante`
-  ADD CONSTRAINT `fk_tblcliente_tblacudiente1` FOREIGN KEY (`tblacudiente_tipoDocumento`, `tblacudiente_numeroDocumento`) REFERENCES `tblacudiente` (`tipoDocumento`, `numeroDocumento`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `tblficha`
---
-ALTER TABLE `tblficha`
-  ADD CONSTRAINT `fk_tblficha_tblcurso1` FOREIGN KEY (`tblcurso_idCurso`) REFERENCES `tblcurso` (`idCurso`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `tblinscripcion`
---
-ALTER TABLE `tblinscripcion`
-  ADD CONSTRAINT `FK_tblInscripcion_idSeminario` FOREIGN KEY (`idSeminario`) REFERENCES `tblseminario` (`idSeminario`),
-  ADD CONSTRAINT `fk_tblInscripcion_tblVenta1` FOREIGN KEY (`tblVenta_idVenta`) REFERENCES `tblventa` (`idVenta`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `tblmatricula`
---
-ALTER TABLE `tblmatricula`
-  ADD CONSTRAINT `fk_tblmatricula_tblventa1` FOREIGN KEY (`idVenta`) REFERENCES `tblventa` (`idVenta`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `tblmatricula_ibfk_1` FOREIGN KEY (`idFicha`) REFERENCES `tblficha` (`idFicha`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `tbldetallemovimiento`
+ADD CONSTRAINT `FK_tblDetalleVenta_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`),
+ADD CONSTRAINT `fk_tbldetallemovimiento_tblMovimiento1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `tblmodulorol`
 --
 ALTER TABLE `tblmodulorol`
-  ADD CONSTRAINT `tblmodulorol_ibfk_1` FOREIGN KEY (`idmodulo`) REFERENCES `tblmodulo` (`idmodulo`),
-  ADD CONSTRAINT `tblmodulorol_ibfk_2` FOREIGN KEY (`idrol`) REFERENCES `tblrol` (`idrol`);
+ADD CONSTRAINT `tblmodulorol_ibfk_1` FOREIGN KEY (`idmodulo`) REFERENCES `tblmodulo` (`idmodulo`),
+ADD CONSTRAINT `tblmodulorol_ibfk_2` FOREIGN KEY (`idrol`) REFERENCES `tblrol` (`idrol`);
+
+--
+-- Filtros para la tabla `tblmovimiento`
+--
+ALTER TABLE `tblmovimiento`
+ADD CONSTRAINT `fk_tblMovimiento_tblTipoMovimiento1` FOREIGN KEY (`idtipoMovimiento`) REFERENCES `tbltipomovimiento` (`idtipoMovimiento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_tblMovimiento_tblusuario1` FOREIGN KEY (`documentoUsuario`) REFERENCES `tblusuario` (`documentoUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `tblsubsidio`
 --
 ALTER TABLE `tblsubsidio`
-  ADD CONSTRAINT `fk_tblsubsidio_tblempresa1` FOREIGN KEY (`tblempresa_nitEmpresa`) REFERENCES `tblempresa` (`nitEmpresa`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_tblsubsidio_tblestudiante1` FOREIGN KEY (`tblestudiante_tipoDocumento`, `tblestudiante_numeroDocumento`) REFERENCES `tblestudiante` (`tipoDocumento`, `numeroDocumento`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `fk_tblsubsidio_tblempresa1` FOREIGN KEY (`nitEmpresa`) REFERENCES `tblempresa` (`nitEmpresa`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_tblsubsidio_tblusuario1` FOREIGN KEY (`documentoUsuario`) REFERENCES `tblusuario` (`documentoUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `tblusuario`
 --
 ALTER TABLE `tblusuario`
-  ADD CONSTRAINT `tblusuario_ibfk_1` FOREIGN KEY (`idrol`) REFERENCES `tblrol` (`idrol`);
-
---
--- Filtros para la tabla `tblventa`
---
-ALTER TABLE `tblventa`
-  ADD CONSTRAINT `fk_tblventa_tblestudiante1` FOREIGN KEY (`tblestudiante_tipoDocumento`, `tblestudiante_numeroDocumento`) REFERENCES `tblestudiante` (`tipoDocumento`, `numeroDocumento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_tblventa_tblfactura1` FOREIGN KEY (`tblfactura_idFactura`) REFERENCES `tblfactura` (`idFactura`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_tblventa_tblusuario1` FOREIGN KEY (`tblusuario_idUsuario`) REFERENCES `tblusuario` (`idUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `fk_tblestudiante_tblDetalleCliente1` FOREIGN KEY (`idDetalleUsuario`) REFERENCES `tbldetalleusuario` (`idDetalleUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_tblusuario_tblacudiente1` FOREIGN KEY (`documentoAcudiente`) REFERENCES `tblacudiente` (`documentoAcudiente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_tblusuario_tblrol1` FOREIGN KEY (`idrol`) REFERENCES `tblrol` (`idrol`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

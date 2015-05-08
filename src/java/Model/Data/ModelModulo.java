@@ -24,13 +24,13 @@ public class ModelModulo extends ConnectionDB {
         getConnection();
     }
 
-    public ResultSet ListByUser(int user) throws Exception {
+    public ResultSet ListByUser(String user) throws Exception {
         ResultSet rs = null;
         String sql = "CALL `spConsultarUsuarioModulo` (?)";
         pStmt = connection.prepareCall(sql);
         try {
             getStmt();
-            pStmt.setInt(1, user);
+            pStmt.setString(1, user);
             rs = pStmt.executeQuery();
         } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());

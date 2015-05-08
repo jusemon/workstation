@@ -1,15 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.DTO;
 
 /**
- *
- * @author Lorenzo
+ * @author Zack
+ * @version 1.0
+ * @created 08-may.-2015 12:13:13 a. m.
  */
 public class ObjCategoriaArticulo {
+
     private int idCategoriaArticulo;
     private String nombreCategoriaArticulo;
 
@@ -28,5 +25,5 @@ public class ObjCategoriaArticulo {
     public void setNombreCategoriaArticulo(String nombreCategoriaArticulo) {
         this.nombreCategoriaArticulo = nombreCategoriaArticulo;
     }
-    
-}
+
+}//end ObjCategoriaArticulo

@@ -1,20 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.DTO;
 
 /**
- *
- * @author David
+ * @author Zack
+ * @version 1.0
+ * @created 08-may.-2015 12:13:13 a. m.
  */
 public class ObjAbono {
+
     private int idAbono;
-    private double valorAbono;
-    private String fechaPago;
+    private int valorAbono = 0;
+    private String fechaPago = "";
     private int idCredito;
-    
+
     public int getIdAbono() {
         return idAbono;
     }
@@ -23,19 +20,11 @@ public class ObjAbono {
         this.idAbono = idAbono;
     }
 
-    public int getIdCredito() {
-        return idCredito;
-    }
-
-    public void setIdCredito(int idCredito) {
-        this.idCredito = idCredito;
-    }
-
-    public double getValorAbono() {
+    public int getValorAbono() {
         return valorAbono;
     }
 
-    public void setValorAbono(double valorAbono) {
+    public void setValorAbono(int valorAbono) {
         this.valorAbono = valorAbono;
     }
 
@@ -46,5 +35,13 @@ public class ObjAbono {
     public void setFechaPago(String fechaPago) {
         this.fechaPago = fechaPago;
     }
-    
-}
+
+    public int getIdCredito() {
+        return idCredito;
+    }
+
+    public void setIdCredito(int idCredito) {
+        this.idCredito = idCredito;
+    }
+
+}//end ObjAbono
