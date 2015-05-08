@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-05-2015 a las 05:41:34
+-- Tiempo de generación: 08-05-2015 a las 18:16:24
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -131,7 +131,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstudiante`(
     in emailUsuar       varchar(50),
     in passwo           varchar(45),
     in estadoUsuar      int,
-    in idrol            int,
     in documentoAcudien varchar(20),
     in direccionUsuar   varchar(50),
     in telefonoFi       varchar(11),
@@ -146,7 +145,6 @@ BEGIN
         `emailUsuario`=`emailUsuar`,
         password=passwo,
         `estadoUsuario`=`estadoUsuar`,
-        idrol=idr,
         `documentoAcudiente`=`documentoAcudien`
     WHERE `documentoUsuario`=`documentoUsuar`;
 
@@ -333,9 +331,8 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarUsuarioModulo`(
-    IN `idUser` INT
+    IN `idUser` varchar (30)
 )
-    COMMENT 'Hecho el 28/02/2015 - Juan Montoya'
 BEGIN
     SELECT 
         tblusuario.`emailUsuario` "id",
@@ -515,7 +512,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarEstudiante`(
     in emailUsuar       varchar(50),
     in passwo           varchar(45),
     in estadoUsuar      int,
-    in idrol            int,
     in documentoAcudien varchar(20),
     in direccionUsuar   varchar(50),
     in telefonoFi       varchar(11),
@@ -553,7 +549,7 @@ INSERT INTO `tblusuario`(
     emailUsuar,
     passwo,
     estadoUsuar,
-    idrol,
+    3,
     documentoAcudien,
     (SELECT MAX(idDetalleUsuario) FROM `tbldetalleusuario`));
 END$$
@@ -710,7 +706,7 @@ INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArti
 CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
 `idCategoriaArticulo` int(11) NOT NULL,
   `nombreCategoriaArticulo` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblcategoriaarticulo`
@@ -742,7 +738,7 @@ CREATE TABLE IF NOT EXISTS `tblcategoriacredito` (
 CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
 `idCategoriaCurso` int(11) NOT NULL,
   `nombreCategoriaCurso` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblcategoriacurso`
@@ -803,7 +799,7 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `descripcionCurso` varchar(100) DEFAULT NULL,
   `precioCurso` int(11) DEFAULT NULL,
   `idCategoriaCurso` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1147,12 +1143,12 @@ MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 -- AUTO_INCREMENT de la tabla `tblcategoriaarticulo`
 --
 ALTER TABLE `tblcategoriaarticulo`
-MODIFY `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+MODIFY `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `tblcategoriacurso`
 --
 ALTER TABLE `tblcategoriacurso`
-MODIFY `idCategoriaCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+MODIFY `idCategoriaCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `tblclase`
 --
@@ -1167,7 +1163,7 @@ MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tblcurso`
 --
 ALTER TABLE `tblcurso`
-MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tblmodulo`
 --
