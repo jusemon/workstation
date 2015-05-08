@@ -30,7 +30,7 @@
     </servlet>
     <servlet>
         <servlet-name>ControllerFicha</servlet-name>
-        <servlet-class>Controller.ControllerFicha</servlet-class>
+        <servlet-class>Controller.ControllerClase</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ControllerCategoriaCurso</servlet-name>

@@ -10,7 +10,7 @@ import Model.DTO.ObjUsuario;
 import Model.DTO.ObjDetalleUsuario;
 import Model.Data.ModelAcudiente;
 import Model.Data.ModelEstudiante;
-import Model.Data.ModelFicha;
+import Model.Data.ModelClase;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.Date;
@@ -41,7 +41,7 @@ public class ControllerEstudiante extends HttpServlet {
     public ObjDetalleUsuario _objDetalleUsuario = new ObjDetalleUsuario();
     public ModelAcudiente daoModelAcudiente = new ModelAcudiente();
     public ObjAcudiente _objAcudiente = new ObjAcudiente();
-    ModelFicha daoModelFicha = new ModelFicha();
+    ModelClase daoModelFicha = new ModelClase();
     SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -190,12 +190,11 @@ public class ControllerEstudiante extends HttpServlet {
                     break;
                 }
                 case "Seleccion": {
-                    daoModelFicha = new ModelFicha();
-                    String aux = request.getParameter("id");
-                    int id = Integer.parseInt(aux.trim());
+                    daoModelFicha = new ModelClase();
+                    String id = request.getParameter("id");
                     try {
                         respuesta = new LinkedHashMap<>();
-                        ResultSet result = daoModelFicha.buscarPorID(id);
+                        ResultSet result = daoModelFicha.buscarPorDocumentoUsuario(id);
                         while (result.next()) {
                             respuesta.put("idFicha", result.getString("idFicha"));
                             respuesta.put("estado", result.getString("estado"));
@@ -222,7 +221,7 @@ public class ControllerEstudiante extends HttpServlet {
                     break;
                 }
                 case "getOptionsFichas": {
-                    ControllerFicha controllerFicha = new ControllerFicha();
+                    ControllerClase controllerFicha = new ControllerClase();
                     response.setContentType("application/text");
                     response.getWriter().write(controllerFicha.getOptionsFichas());
                     break;

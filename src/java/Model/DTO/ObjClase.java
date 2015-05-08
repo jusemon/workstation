@@ -10,7 +10,7 @@ import java.sql.Date;
 public class ObjClase {
 
     private int idClase;
-    private Date fecha;
+    private String fecha;
     private int estadoPago;
     private int estadoAsistencia;
     private int creditoCreado;
@@ -26,11 +26,11 @@ public class ObjClase {
         this.idClase = idClase;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
