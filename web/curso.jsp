@@ -155,8 +155,8 @@
                             <tr>
                                 <th class="text-center">Código</th>
                                 <th class="text-center">Nombre</th>
-                                <th class="text-center">Duración</th>
                                 <th class="text-center">Estado</th>
+                                <th class="text-center">Consultar</th>
                                 <th class="text-center">Editar</th>
                             </tr>
                         </thead>
@@ -170,7 +170,7 @@
 </div>
 
 <!--
-    Emergente para registrar los cursos
+    Emergente para registrar los cursos y seminarios
 -->
 <div class="modal" id="miPopupCurso">
     <div class="modal-dialog ">
@@ -188,10 +188,11 @@
                                 </div>
                                 <div class="panel-body">
                                     <input type="hidden" name="idCurso" id="idCurso"/>
-                                    <div class="row">
+                                    <input type="hidden" name="tipo" id="tipo"/>
+                                    <div class="row" id="ContenedorCategoria">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="ddlCategoria">
+                                                <label for="ddlCategoria"> 
                                                     Categoría
                                                 </label>
                                                 <select name="ddlCategoria" id="ddlCategoria" class="form-control" required>
@@ -222,10 +223,30 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="dateDuracion">
-                                                    Duración (En dias)
+                                                <label for="txtPrecio">
+                                                    Precio
                                                 </label>
-                                                <input name="dateDuracion" id="dateDuracion" type="number" min="5" max="90" class="form-control" placeholder="Ejm: 10" required>
+                                                <input name="txtPrecio" id="txtPrecio" type="number" min="5000" max="100000" class="form-control" placeholder="Ejm: 100000" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtCantidadClases">
+                                                    Cantidad de Clases
+                                                </label>
+                                                <input name="txtCantidadClases" id="txtCantidadClases" type="number" min="5" max="90" class="form-control" placeholder="Ejm: 10" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtCantidadHoras">
+                                                    Cantidad de Horas (Por clase)
+                                                </label>
+                                                <input name="txtCantidadHoras" id="txtCantidadHoras" type="number" min="5" max="90" class="form-control" placeholder="Ejm: 10" required>
                                             </div>
                                         </div>
                                     </div>
@@ -295,76 +316,6 @@
                                         <div class="col-md-offset-3 col-md-6">
                                             <div class="form-group">
                                                 <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="submit" name="action" onclick="categoriaCurso.myAjax($('#btnCategoriaCurso').val())">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- 
-    Emergente para registrar Seminarios
--->
-<div class="modal" id="miPopupSeminario">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">                               
-                        <form id="formSeminario" action="ControllerSeminario" method="POST">
-                            <div class="panel">
-                                <div class="panel-heading estilo2">
-                                    <h3 class="panel-title">
-                                        <label id="titulo"></label>
-                                        <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
-                                    </h3>
-                                </div>
-                                <div class="panel-body">
-                                    <input type="hidden" id="idSeminario" name="idSeminario"/>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>
-                                                    Nombre
-                                                </label>
-                                                <input name="txtNombre" id="txtNombreSeminario" type="text" class="form-control" pattern="[ÁÉÍÓÚáéíóúñÑa-zA-Z ]{3,30}" title="Entre 3 y 30 letras y no se permiten numeros" placeholder="Ejem: Nueva tecnica de patchwork" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txtDuracion">
-                                                    Duración (En horas)
-                                                </label>
-                                                <input name="txtDuracion" id="txtDuracion" type="number" min="1" max="10" class="form-control" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="ddlEstado">
-                                                    Estado
-                                                </label>
-                                                <select name="ddlEstado" id="ddlEstado" class="form-control" required>
-                                                    <option value="1">Activo</option>
-                                                    <option value="0">Inactivo</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel-footer">
-                                    <div class="row">
-                                        <div class="col-md-offset-3 col-md-6">
-                                            <div class="form-group">
-                                                <input  class="btn btn-default btn-block" id="btnSeminario" type="submit" name="action" onclick="seminario.myAjax($('#btnSeminario').val())">
                                             </div>
                                         </div>
                                     </div>

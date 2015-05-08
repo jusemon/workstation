@@ -7,6 +7,7 @@ package Controller;
 
 import com.google.gson.Gson;
 import Model.DTO.ObjCurso;
+import Model.Data.ModelCategoriaCurso;
 import Model.Data.ModelCurso;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -27,6 +28,7 @@ public class ControllerCurso extends HttpServlet {
 
     ObjCurso _objCurso = new ObjCurso();
     ModelCurso daoModelCurso = new ModelCurso();
+    ModelCategoriaCurso daoModelCategoriaCurso = new ModelCategoriaCurso();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,20 +43,27 @@ public class ControllerCurso extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         if (request.getParameter("action") != null) {
-            String nombre, descripcion, aux, salida;
+            String nombre, descripcion, aux, salida, tipo;
             int estado = 0, cantidadClases, categoria, id, horasPorClase, precio;
             Map<String, String> respuesta;
             ResultSet result;
             switch (request.getParameter("action")) {
+
                 // <editor-fold defaultstate="collapsed" desc="Registrar un Curso">
                 case "Registrar": {
+                    tipo = request.getParameter("tipo");
                     nombre = request.getParameter("txtNombre").trim();
                     descripcion = request.getParameter("txtDescripcion").trim();
-                    cantidadClases = Integer.parseInt(request.getParameter("txtCantidadClases").trim());
-                    horasPorClase = Integer.parseInt(request.getParameter("txtCantidadHoras").trim());
-                    precio = Integer.parseInt(request.getParameter("precio").trim());
+                    precio = Integer.parseInt(request.getParameter("txtPrecio").trim());
                     estado = Integer.parseInt(request.getParameter("ddlEstado").trim());
-                    categoria = Integer.parseInt(request.getParameter("ddlCategoria").trim());
+                    horasPorClase = Integer.parseInt(request.getParameter("txtCantidadHoras").trim());
+                    if (tipo.equals("Seminario")) {
+                        cantidadClases = 1;
+                        categoria = daoModelCategoriaCurso.GetIDCategoriaSeminario();
+                    } else {
+                        cantidadClases = Integer.parseInt(request.getParameter("txtCantidadClases").trim());
+                        categoria = Integer.parseInt(request.getParameter("ddlCategoria").trim());
+                    }
                     _objCurso.setIdCategoriaCurso(categoria);
                     _objCurso.setDescripcionCurso(descripcion);
                     _objCurso.setNombreCurso(nombre);
@@ -74,16 +83,23 @@ public class ControllerCurso extends HttpServlet {
                 case "Consultar": {
                     aux = request.getParameter("id");
                     id = Integer.parseInt(aux.trim());
+                    tipo = request.getParameter("type");
                     try {
                         respuesta = new LinkedHashMap<>();
-                        result = daoModelCurso.buscarPorID(id);
+                        if (tipo.equals("Seminario")) {
+                            result = daoModelCurso.buscarSeminarioPorID(id);
+                        } else {
+                            result = daoModelCurso.buscarCursoPorID(id);
+                        }
                         while (result.next()) {
                             respuesta.put("idCurso", result.getString("idCurso"));
                             respuesta.put("nombreCurso", result.getString("nombreCurso"));
-                            respuesta.put("duracionCurso", result.getString("duracionCurso"));
+                            respuesta.put("cantidadClases", result.getString("cantidadClases"));
+                            respuesta.put("horasPorClase", result.getString("horasPorClase"));
                             respuesta.put("estadoCurso", result.getString("estadoCurso"));
+                            respuesta.put("precioCurso", result.getString("precioCurso"));
                             respuesta.put("descripcionCurso", result.getString("descripcionCurso"));
-                            respuesta.put("idtblCategoriaCurso", result.getString("idtblCategoriaCurso"));
+                            respuesta.put("idCategoriaCurso", result.getString("idCategoriaCurso"));
                             respuesta.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
                         }
                         salida = new Gson().toJson(respuesta);
@@ -102,7 +118,7 @@ public class ControllerCurso extends HttpServlet {
                     aux = request.getParameter("id");
                     id = Integer.parseInt(aux.trim());
                     try {
-                        result = daoModelCurso.buscarPorID(id);
+                        result = daoModelCurso.buscarCursoPorID(id);
                         while (result.next()) {
                             estado = Integer.parseInt(result.getString("estadoCurso"));
                         }
@@ -118,20 +134,25 @@ public class ControllerCurso extends HttpServlet {
                         System.err.println(e.getMessage());
                     }
                     break;
-                }                
+                }
                 //</editor-fold>
 
                 // <editor-fold defaultstate="collapsed" desc="Editar un Curso">
                 case "Editar": {
                     aux = request.getParameter("idCurso");
                     id = Integer.parseInt(aux.trim());
+                    tipo = request.getParameter("tipo");
                     nombre = request.getParameter("txtNombre").trim();
                     descripcion = request.getParameter("txtDescripcion").trim();
-                    cantidadClases = Integer.parseInt(request.getParameter("txtCantidadClases").trim());
-                    horasPorClase = Integer.parseInt(request.getParameter("txtCantidadHoras").trim());
-                    precio = Integer.parseInt(request.getParameter("precio").trim());
+                    precio = Integer.parseInt(request.getParameter("txtPrecio").trim());
                     estado = Integer.parseInt(request.getParameter("ddlEstado").trim());
-                    categoria = Integer.parseInt(request.getParameter("ddlCategoria").trim());
+                    horasPorClase = Integer.parseInt(request.getParameter("txtCantidadHoras").trim());
+                    cantidadClases = Integer.parseInt(request.getParameter("txtCantidadClases").trim());
+                    if (tipo.equals("Seminario")) {
+                        categoria = daoModelCategoriaCurso.GetIDCategoriaSeminario();
+                    } else {
+                        categoria = Integer.parseInt(request.getParameter("ddlCategoria").trim());
+                    }
                     _objCurso.setIdCurso(id);
                     _objCurso.setIdCategoriaCurso(categoria);
                     _objCurso.setDescripcionCurso(descripcion);
@@ -153,6 +174,15 @@ public class ControllerCurso extends HttpServlet {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableCursos());
+                    break;
+                }
+                //</editor-fold>
+
+                // <editor-fold defaultstate="collapsed" desc="Enlistar los Cursos">
+                case "EnlistarSeminarios": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getTableSeminarios());
                     break;
                 }
                 //</editor-fold>
@@ -189,6 +219,36 @@ public class ControllerCurso extends HttpServlet {
                 arreglo[3] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ")\">"
                         + "<span class=\"glyphicon glyphicon-search\"></span></a>";
                 arreglo[4] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ",'Editar')\">"
+                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
+                lista.add(arreglo);
+            }
+        } catch (Exception e) {
+            System.err.println("Ha Ocurrido un error en el controller " + e.toString());
+        }
+        String salida = new Gson().toJson(lista);
+        salida = "{\"data\":" + salida + "}";
+        return salida;
+    }
+
+    public String getTableSeminarios() {
+        ResultSet result;
+        List<String[]> lista = new ArrayList<>();
+        try {
+            result = daoModelCurso.ListAll("Seminarios");
+            while (result.next()) {
+                String[] estado = {"success", "ok"};
+                if (result.getInt("estadoCurso") == 0) {
+                    estado[0] = "danger";
+                    estado[1] = "remove";
+                }
+                String[] arreglo = new String[5];
+                arreglo[0] = result.getString("idCurso").trim();
+                arreglo[1] = result.getString("nombreCurso").trim();
+                arreglo[2] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"seminario.myAjax('Estado'," + arreglo[0] + ")\">"
+                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
+                arreglo[3] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"seminario.myAjax('Consultar'," + arreglo[0] + ", '','Seminario')\">"
+                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
+                arreglo[4] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\" onclick=\"seminario.myAjax('Consultar'," + arreglo[0] + ",'Editar','Seminario')\">"
                         + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
                 lista.add(arreglo);
             }

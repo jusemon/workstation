@@ -25,10 +25,6 @@
         <servlet-class>Controller.ControllerCurso</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ControllerSeminario</servlet-name>
-        <servlet-class>Controller.ControllerSeminario</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ControllerFicha</servlet-name>
         <servlet-class>Controller.ControllerClase</servlet-class>
     </servlet>
@@ -67,10 +63,6 @@
     <servlet-mapping>
         <servlet-name>ControllerCurso</servlet-name>
         <url-pattern>/ControllerCurso</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ControllerSeminario</servlet-name>
-        <url-pattern>/ControllerSeminario</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ControllerFicha</servlet-name>

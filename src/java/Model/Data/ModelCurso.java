@@ -25,7 +25,7 @@ public class ModelCurso extends ConnectionDB {
 
     public boolean Add(ObjCurso _objCurso) {
         boolean objReturn = false;
-        String sql = "call spIngresarCurso(?,?,?,?,?,?)";
+        String sql = "call spIngresarCurso(?,?,?,?,?,?,?)";
 
         try {
             getStmt();
@@ -35,7 +35,8 @@ public class ModelCurso extends ConnectionDB {
             pStmt.setInt(3, _objCurso.getHorasPorClase());
             pStmt.setInt(4, _objCurso.getEstadoCurso());
             pStmt.setString(5, _objCurso.getDescripcionCurso());
-            pStmt.setInt(6, _objCurso.getIdCategoriaCurso());
+            pStmt.setInt(6, _objCurso.getPrecioCurso());
+            pStmt.setInt(7, _objCurso.getIdCategoriaCurso());
 
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
@@ -48,20 +49,7 @@ public class ModelCurso extends ConnectionDB {
         return objReturn;
     }
 
-    public ResultSet ListAll() throws Exception {
-        ResultSet rs = null;
-        String sql = "call spConsultarCursos()";
-        try {
-            getStmt();
-            rs = stmt.executeQuery(sql);
-
-        } catch (SQLException e) {
-            System.err.println("SQLException:" + e.getMessage());
-        }
-        return rs;
-    }
-
-    public ResultSet buscarPorID(int ID) {
+    public ResultSet buscarCursoPorID(int ID) {
         ResultSet rs = null;
         String sql = "call spConsultarCursoPorID(?)";
         try {
@@ -76,9 +64,24 @@ public class ModelCurso extends ConnectionDB {
         return rs;
     }
 
+    public ResultSet buscarSeminarioPorID(int ID) {
+        ResultSet rs = null;
+        String sql = "call spConsultarSeminarioPorID(?)";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, ID);
+            rs = pStmt.executeQuery();
+
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }
+
     public boolean Edit(ObjCurso _objCurso) {
         boolean objReturn = false;
-        String sql = "call spActualizarCurso(?,?,?,?,?,?,?)";
+        String sql = "call spActualizarCurso(?,?,?,?,?,?,?,?)";
 
         try {
             getStmt();
@@ -89,7 +92,8 @@ public class ModelCurso extends ConnectionDB {
             pStmt.setInt(4, _objCurso.getHorasPorClase());
             pStmt.setInt(5, _objCurso.getEstadoCurso());
             pStmt.setString(6, _objCurso.getDescripcionCurso());
-            pStmt.setInt(7, _objCurso.getIdCategoriaCurso());
+            pStmt.setInt(7, _objCurso.getPrecioCurso());
+            pStmt.setInt(8, _objCurso.getIdCategoriaCurso());
 
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
@@ -131,6 +135,31 @@ public class ModelCurso extends ConnectionDB {
             pStmt = connection.prepareCall(sql);
             rs = pStmt.executeQuery();
 
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }
+
+    public ResultSet ListAll() throws Exception {
+        ResultSet rs = null;
+        String sql = "call spConsultarCursos()";
+        try {
+            getStmt();
+            rs = stmt.executeQuery(sql);
+
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }
+
+    public ResultSet ListAll(String seminarios) throws Exception {
+        ResultSet rs = null;
+        String sql = "call spConsultarSeminarios()";
+        try {
+            getStmt();
+            rs = stmt.executeQuery(sql);
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }

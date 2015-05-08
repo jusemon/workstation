@@ -100,7 +100,7 @@ public class ControllerCategoriaCurso extends HttpServlet {
             int contador = 0;
             while (result.next()) {
                 String[] arreglo = new String[3];
-                arreglo[0] = result.getString("idtblCategoriaCurso").trim();
+                arreglo[0] = result.getString("idCategoriaCurso").trim();
                 arreglo[1] = result.getString("nombreCategoriaCurso").trim();
                 arreglo[2] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"categoriaCurso.editar(" + contador + ")\"><span class=\"glyphicon glyphicon-edit\"></span></a>";
                 lista.add(arreglo);
@@ -123,7 +123,7 @@ public class ControllerCategoriaCurso extends HttpServlet {
         try {
             result = daoModelCategoriaCurso.ListAll();
             while (result.next()) {
-                lista += ("<option value=\"" + result.getString("idtblCategoriaCurso").trim() + "\">" + result.getString("nombreCategoriaCurso").trim() + "</option>");
+                lista += ("<option value=\"" + result.getString("idCategoriaCurso").trim() + "\">" + result.getString("nombreCategoriaCurso").trim() + "</option>");
             }
 
         } catch (Exception e) {
