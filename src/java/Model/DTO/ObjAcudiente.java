@@ -1,34 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.DTO;
 
+import java.sql.Date;
+
 /**
- *
- * @author Administrador
+ * @author Zack
+ * @version 1.0
+ * @created 08-may.-2015 12:13:13 a. m.
  */
 public class ObjAcudiente {
-    private String tipoDocumento;
-    private String numeroDocumento;
+
+    private String documentoAcudiente;
     private String nombreAcudiente;
-    private String telefonoAcudiante;
+    private String telefonoAcudiente;
+    private Date fechaNacimiento;
 
-    public String getTipoDocumento() {
-        return tipoDocumento;
+    public String getDocumentoAcudiente() {
+        return documentoAcudiente;
     }
 
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
-    }
-
-    public String getNumeroDocumento() {
-        return numeroDocumento;
-    }
-
-    public void setNumeroDocumento(String numeroDocumento) {
-        this.numeroDocumento = numeroDocumento;
+    public void setDocumentoAcudiente(String documentoAcudiente) {
+        this.documentoAcudiente = documentoAcudiente;
     }
 
     public String getNombreAcudiente() {
@@ -39,12 +30,20 @@ public class ObjAcudiente {
         this.nombreAcudiente = nombreAcudiente;
     }
 
-    public String getTelefonoAcudiante() {
-        return telefonoAcudiante;
+    public String getTelefonoAcudiente() {
+        return telefonoAcudiente;
     }
 
-    public void setTelefonoAcudiante(String telefonoAcudiante) {
-        this.telefonoAcudiante = telefonoAcudiante;
+    public void setTelefonoAcudiente(String telefonoAcudiente) {
+        this.telefonoAcudiente = telefonoAcudiente;
     }
-   
-}
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+}//end ObjAcudiente

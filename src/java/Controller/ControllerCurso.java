@@ -42,7 +42,7 @@ public class ControllerCurso extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         if (request.getParameter("action") != null) {
             String nombre, descripcion, aux, salida;
-            int estado = 0, duracion, categoria, id;
+            int estado = 0, cantidadClases, categoria, id, horasPorClase, precio;
             Map<String, String> respuesta;
             ResultSet result;
             switch (request.getParameter("action")) {
@@ -50,14 +50,18 @@ public class ControllerCurso extends HttpServlet {
                 case "Registrar": {
                     nombre = request.getParameter("txtNombre").trim();
                     descripcion = request.getParameter("txtDescripcion").trim();
-                    duracion = Integer.parseInt(request.getParameter("dateDuracion").trim());
+                    cantidadClases = Integer.parseInt(request.getParameter("txtCantidadClases").trim());
+                    horasPorClase = Integer.parseInt(request.getParameter("txtCantidadHoras").trim());
+                    precio = Integer.parseInt(request.getParameter("precio").trim());
                     estado = Integer.parseInt(request.getParameter("ddlEstado").trim());
                     categoria = Integer.parseInt(request.getParameter("ddlCategoria").trim());
-                    _objCurso.setIdCategoria(categoria);
-                    _objCurso.setDescripcion(descripcion);
+                    _objCurso.setIdCategoriaCurso(categoria);
+                    _objCurso.setDescripcionCurso(descripcion);
                     _objCurso.setNombreCurso(nombre);
-                    _objCurso.setDuracionCurso(duracion);
+                    _objCurso.setCantidadClases(cantidadClases);
+                    _objCurso.setHorasPorClase(horasPorClase);
                     _objCurso.setEstadoCurso(estado);
+                    _objCurso.setPrecioCurso(precio);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     salida = Mensaje(daoModelCurso.Add(_objCurso), "El Curso ha sido registrado", "Ha ocurrido un error al intentar registrar el Curso");
@@ -123,15 +127,19 @@ public class ControllerCurso extends HttpServlet {
                     id = Integer.parseInt(aux.trim());
                     nombre = request.getParameter("txtNombre").trim();
                     descripcion = request.getParameter("txtDescripcion").trim();
-                    duracion = Integer.parseInt(request.getParameter("dateDuracion").trim());
+                    cantidadClases = Integer.parseInt(request.getParameter("txtCantidadClases").trim());
+                    horasPorClase = Integer.parseInt(request.getParameter("txtCantidadHoras").trim());
+                    precio = Integer.parseInt(request.getParameter("precio").trim());
                     estado = Integer.parseInt(request.getParameter("ddlEstado").trim());
                     categoria = Integer.parseInt(request.getParameter("ddlCategoria").trim());
                     _objCurso.setIdCurso(id);
-                    _objCurso.setIdCategoria(categoria);
-                    _objCurso.setDescripcion(descripcion);
+                    _objCurso.setIdCategoriaCurso(categoria);
+                    _objCurso.setDescripcionCurso(descripcion);
                     _objCurso.setNombreCurso(nombre);
-                    _objCurso.setDuracionCurso(duracion);
+                    _objCurso.setCantidadClases(cantidadClases);
+                    _objCurso.setHorasPorClase(horasPorClase);
                     _objCurso.setEstadoCurso(estado);
+                    _objCurso.setPrecioCurso(precio);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     salida = Mensaje(daoModelCurso.Edit(_objCurso), "El Curso ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Curso");

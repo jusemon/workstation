@@ -52,14 +52,16 @@ public class ControllerArticulo extends HttpServlet {
                     case "Registrar": {
                         String descripcionArticulo = request.getParameter("txtDescripcion");
                         int cantidadDisponible = Integer.parseInt(request.getParameter("txtCantidad"));
-                        int precioUnitario = Integer.parseInt(request.getParameter("txtPrecio"));
+                        int precioCompra = Integer.parseInt(request.getParameter("txtPrecioCompra"));
+                        int precioVenta = Integer.parseInt(request.getParameter("txtPrecioVenta"));
                         int idCategoriaArticulo;
                         if (request.getParameter("idCategoria") != null) {
                             idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
                             _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
                             _objArticulo.setDescripcionArticulo(descripcionArticulo);
                             _objArticulo.setCantidadDisponible(cantidadDisponible);
-                            _objArticulo.setPrecioUnitario(precioUnitario);
+                            _objArticulo.setPrecioCompra(precioCompra);
+                            _objArticulo.setPrecioVenta(precioVenta);
                             String salida = Mensaje(daoModelArticulo.Add(_objArticulo), "Artículo registrado con exito", "Ha ocurrido un error al intentar registrar el artículo");
                             response.setContentType("application/json");
                             response.setCharacterEncoding("UTF-8");
@@ -74,13 +76,15 @@ public class ControllerArticulo extends HttpServlet {
                         int idArticulo = Integer.parseInt(request.getParameter("idArticulo"));
                         String descripcionArticulo = request.getParameter("txtDescripcion");
                         int cantidadDisponible = Integer.parseInt(request.getParameter("txtCantidad"));
-                        int precioUnitario = Integer.parseInt(request.getParameter("txtPrecio"));
+                        int precioCompra = Integer.parseInt(request.getParameter("txtPrecioCompra"));
+                        int precioVenta = Integer.parseInt(request.getParameter("txtPrecioVenta"));
                         int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
                         _objArticulo.setIdArticulo(idArticulo);
                         _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
                         _objArticulo.setDescripcionArticulo(descripcionArticulo);
                         _objArticulo.setCantidadDisponible(cantidadDisponible);
-                        _objArticulo.setPrecioUnitario(precioUnitario);
+                        _objArticulo.setPrecioCompra(precioCompra);
+                        _objArticulo.setPrecioVenta(precioVenta);
                         String salida = Mensaje(daoModelArticulo.Edit(_objArticulo), "Artículo actualizado con exito", "Ha ocurrido un error al intentar actualizar el artículo");
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");

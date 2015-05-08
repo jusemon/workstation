@@ -33,7 +33,8 @@ public class ModelArticulo extends ConnectionDB {
             pStmt.setInt(1, _objArticulo.getIdCategoriaArticulo());
             pStmt.setString(2, _objArticulo.getDescripcionArticulo());
             pStmt.setInt(3, _objArticulo.getCantidadDisponible());
-            pStmt.setDouble(4, _objArticulo.getPrecioUnitario());
+            pStmt.setDouble(4, _objArticulo.getPrecioCompra());
+            pStmt.setDouble(4, _objArticulo.getCompra());
 
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {

@@ -5,7 +5,8 @@
  */
 package Model.Data;
 
-import Model.DTO.ObjEstudiante;
+import Model.DTO.ObjUsuario;
+import Model.DTO.ObjDetalleUsuario;
 import Model.JDBC.ConnectionDB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,25 +24,12 @@ public class ModelEstudiante extends ConnectionDB {
         getConnection();
     }
 
-    public boolean Add(ObjEstudiante _objCliente) {
+    public boolean Add(ObjUsuario _objUsuario, ObjDetalleUsuario _objDetalleUsuario) {
         boolean objReturn = false;
         String sql = "call spIngresarEstudiante (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setString(1, _objCliente.getTipoDocumento());
-            pStmt.setInt(2, _objCliente.getNumeroDocumento());
-            pStmt.setString(3,_objCliente.getFechaNacimiento());
-            pStmt.setInt(4, _objCliente.getGeneroEstudiante());
-            pStmt.setString(5, _objCliente.getNombreEstudiante());
-            pStmt.setString(6, _objCliente.getApellidoEstudiente());
-            pStmt.setString(7, _objCliente.getDireccionEstudiante());
-            pStmt.setString(8, _objCliente.getTelefonoFijo());
-            pStmt.setString(9, _objCliente.getTelefonoMovil());
-            pStmt.setString(10, _objCliente.getEmailEstudiante());
-            pStmt.setInt(11, _objCliente.getEstadoEstudiante());
-            pStmt.setString(12, _objCliente.getTipoDocumentoAcudiente());
-            pStmt.setString(13, _objCliente.getNumeroDocumentoAcudiente());
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
@@ -83,25 +71,12 @@ public class ModelEstudiante extends ConnectionDB {
         return rs;
     }
 
-    public boolean Edit(ObjEstudiante _objCliente) {
+    public boolean Edit(ObjUsuario _objUsuario, ObjDetalleUsuario _objDetalleUsuario) {
         boolean objReturn = false;
         String sql = "call spActualizarEstudiante(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setString(1, _objCliente.getTipoDocumento());
-            pStmt.setInt(2, _objCliente.getNumeroDocumento());
-            pStmt.setString(3, _objCliente.getFechaNacimiento());
-            pStmt.setInt(4, _objCliente.getGeneroEstudiante());
-            pStmt.setString(5, _objCliente.getNombreEstudiante());
-            pStmt.setString(6, _objCliente.getApellidoEstudiente());
-            pStmt.setString(7, _objCliente.getDireccionEstudiante());
-            pStmt.setString(8, _objCliente.getTelefonoFijo());
-            pStmt.setString(9, _objCliente.getTelefonoMovil());
-            pStmt.setString(10, _objCliente.getEmailEstudiante());
-            pStmt.setInt(11, _objCliente.getEstadoEstudiante());
-            pStmt.setString(12, _objCliente.getTipoDocumentoAcudiente());
-            pStmt.setString(13, _objCliente.getNumeroDocumentoAcudiente());
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;

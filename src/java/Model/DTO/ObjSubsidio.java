@@ -1,43 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.DTO;
 
 /**
- *
- * @author Administrador
+ * @author Zack
+ * @version 1.0
+ * @created 08-may.-2015 12:13:15 a. m.
  */
 public class ObjSubsidio {
-    private int idSubsideo;
+
+    private int idSubsidio;
+    private String fechaAsignacion = "";
+    private int valorSubsidio;
     private String nitEmpresa;
-    private int idCliente;
-    private String fechaAsignacion;
-    private double valorAsignacion;
+    private String documentoUsuario;
 
-    public int getIdSubsideo() {
-        return idSubsideo;
+    public int getIdSubsidio() {
+        return idSubsidio;
     }
 
-    public void setIdSubsideo(int idSubsideo) {
-        this.idSubsideo = idSubsideo;
-    }
-
-    public String getNitEmpresa() {
-        return nitEmpresa;
-    }
-
-    public void setNitEmpresa(String nitEmpresa) {
-        this.nitEmpresa = nitEmpresa;
-    }
-
-    public int getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setIdSubsidio(int idSubsidio) {
+        this.idSubsidio = idSubsidio;
     }
 
     public String getFechaAsignacion() {
@@ -48,12 +29,28 @@ public class ObjSubsidio {
         this.fechaAsignacion = fechaAsignacion;
     }
 
-    public double getValorAsignacion() {
-        return valorAsignacion;
+    public int getValorSubsidio() {
+        return valorSubsidio;
     }
 
-    public void setValorAsignacion(double valorAsignacion) {
-        this.valorAsignacion = valorAsignacion;
+    public void setValorSubsidio(int valorSubsidio) {
+        this.valorSubsidio = valorSubsidio;
     }
-    
-}
+
+    public String getNitEmpresa() {
+        return nitEmpresa;
+    }
+
+    public void setNitEmpresa(String nitEmpresa) {
+        this.nitEmpresa = nitEmpresa;
+    }
+
+    public String getDocumentoUsuario() {
+        return documentoUsuario;
+    }
+
+    public void setDocumentoUsuario(String documentoUsuario) {
+        this.documentoUsuario = documentoUsuario;
+    }
+
+}//end ObjSubsidio

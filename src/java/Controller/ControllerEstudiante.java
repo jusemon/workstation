@@ -6,7 +6,8 @@
 package Controller;
 
 import Model.DTO.ObjAcudiente;
-import Model.DTO.ObjEstudiante;
+import Model.DTO.ObjUsuario;
+import Model.DTO.ObjDetalleUsuario;
 import Model.Data.ModelAcudiente;
 import Model.Data.ModelEstudiante;
 import Model.Data.ModelFicha;
@@ -36,7 +37,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ControllerEstudiante extends HttpServlet {
 
     ModelEstudiante daoModelEstudiante = new ModelEstudiante();
-    public ObjEstudiante _objEstudiente = new ObjEstudiante();
+    public ObjUsuario _objUsuario = new ObjUsuario();
+    public ObjDetalleUsuario _objDetalleUsuario = new ObjDetalleUsuario();
     public ModelAcudiente daoModelAcudiente = new ModelAcudiente();
     public ObjAcudiente _objAcudiente = new ObjAcudiente();
     ModelFicha daoModelFicha = new ModelFicha();
@@ -63,6 +65,7 @@ public class ControllerEstudiante extends HttpServlet {
                     try {
                         String tipoDocumento = request.getParameter("ddlIdentificacion").trim();
                         int numeroIdentificacion = Integer.parseInt(request.getParameter("txtIdentificacion").trim());
+                        String identificacion = tipoDocumento + numeroIdentificacion;
                         String nombre = request.getParameter("txtNombre").trim();
                         String apellido = request.getParameter("txtApellido").trim();
                         int genero = Integer.parseInt(request.getParameter("radioGenero").trim());
@@ -72,27 +75,30 @@ public class ControllerEstudiante extends HttpServlet {
                         String celular = request.getParameter("txtCelular").trim();
                         String correo = request.getParameter("txtCorreo").trim();
                         int estado = Integer.parseInt(request.getParameter("radioBeneficiario").trim());
+                        String pass = request.getParameter("pass").trim();
                         //Beneficiario 0->No Subvencionado 1->Subvencionado?
                         String tipoDocAcudiente = "";
                         int numeroDocAcudiente = 0;
                         if (request.getParameter("tipoDocAcudiente") != null && request.getParameter("numeroDocAcudiente") != null) {
                             tipoDocAcudiente = request.getParameter("tipoDocAcudiente").trim();
                             numeroDocAcudiente = Integer.parseInt(request.getParameter("numeroDocAcudiente").trim());
+                            String identificacionAcudiente = tipoDocAcudiente + numeroDocAcudiente;
+                            _objUsuario.setDocumentoAcudiente(identificacionAcudiente);
                         }
-                        _objEstudiente.setTipoDocumento(tipoDocumento);
-                        _objEstudiente.setNumeroDocumento(numeroIdentificacion);
-                        _objEstudiente.setNombreEstudiante(nombre);
-                        _objEstudiente.setApellidoEstudiente(apellido);
-                        _objEstudiente.setGeneroEstudiante(genero);
-                        _objEstudiente.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
-                        _objEstudiente.setDireccionEstudiante(direccion);
-                        _objEstudiente.setTelefonoFijo(telefono);
-                        _objEstudiente.setTelefonoMovil(celular);
-                        _objEstudiente.setEmailEstudiante(correo);
-                        _objEstudiente.setEstadoEstudiante(estado);
+                        _objUsuario.setDocumentoUsuario(identificacion);
+                        _objUsuario.setNombreUsuario(nombre);
+                        _objUsuario.setApellidoUsuario(apellido);
+                        _objDetalleUsuario.setGeneroUsuario(genero);
+                        _objUsuario.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
+                        _objDetalleUsuario.setDireccionUsuario(direccion);
+                        _objDetalleUsuario.setTelefonoFijo(telefono);
+                        _objDetalleUsuario.setTelefonoMovil(celular);
+                        _objUsuario.setEmailUsuario(correo);
+                        _objUsuario.setEstadoUsuario(estado);
+                        _objUsuario.setPassword(pass);
                         response.setContentType("application/json");
                         daoModelEstudiante = new ModelEstudiante();
-                        String salida = Mensaje(daoModelEstudiante.Add(_objEstudiente), "El estudiante ha sido registrado", "A ocurrido un error al intentar registrar al estudiante");
+                        String salida = Mensaje(daoModelEstudiante.Add(_objUsuario, _objDetalleUsuario), "El estudiante ha sido registrado", "A ocurrido un error al intentar registrar al estudiante");
                         response.getWriter().write(salida);
                     } catch (NumberFormatException | IOException e) {
                         System.out.println("Ha ocurrido un error en el Controller Estudiante" + e.getMessage());
@@ -139,6 +145,7 @@ public class ControllerEstudiante extends HttpServlet {
                     try {
                         String tipoDocumento = request.getParameter("ddlIdentificacion").trim();
                         int numeroIdentificacion = Integer.parseInt(request.getParameter("txtIdentificacion").trim());
+                        String identificacion = tipoDocumento + numeroIdentificacion;
                         String nombre = request.getParameter("txtNombre").trim();
                         String apellido = request.getParameter("txtApellido").trim();
                         int genero = Integer.parseInt(request.getParameter("radioGenero").trim());
@@ -148,26 +155,29 @@ public class ControllerEstudiante extends HttpServlet {
                         String celular = request.getParameter("txtCelular").trim();
                         String correo = request.getParameter("txtCorreo").trim();
                         int estado = Integer.parseInt(request.getParameter("radioBeneficiario").trim());
+                        String pass = request.getParameter("pass").trim();
                         //Beneficiario 0->No Subvencionado 1->Subvencionado?
                         String tipoDocAcudiente = "";
                         int numeroDocAcudiente = 0;
                         if (request.getParameter("tipoDocAcudiente") != null && request.getParameter("numeroDocAcudiente") != null) {
                             tipoDocAcudiente = request.getParameter("tipoDocAcudiente").trim();
                             numeroDocAcudiente = Integer.parseInt(request.getParameter("numeroDocAcudiente").trim());
+                            String identificacionAcudiente = tipoDocAcudiente + numeroDocAcudiente;
+                            _objUsuario.setDocumentoAcudiente(identificacionAcudiente);
                         }
-                        _objEstudiente.setTipoDocumento(tipoDocumento);
-                        _objEstudiente.setNumeroDocumento(numeroIdentificacion);
-                        _objEstudiente.setNombreEstudiante(nombre);
-                        _objEstudiente.setApellidoEstudiente(apellido);
-                        _objEstudiente.setGeneroEstudiante(genero);
-                        _objEstudiente.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
-                        _objEstudiente.setDireccionEstudiante(direccion);
-                        _objEstudiente.setTelefonoFijo(telefono);
-                        _objEstudiente.setTelefonoMovil(celular);
-                        _objEstudiente.setEmailEstudiante(correo);
-                        _objEstudiente.setEstadoEstudiante(estado);
+                        _objUsuario.setDocumentoUsuario(identificacion);
+                        _objUsuario.setNombreUsuario(nombre);
+                        _objUsuario.setApellidoUsuario(apellido);
+                        _objDetalleUsuario.setGeneroUsuario(genero);
+                        _objUsuario.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
+                        _objDetalleUsuario.setDireccionUsuario(direccion);
+                        _objDetalleUsuario.setTelefonoFijo(telefono);
+                        _objDetalleUsuario.setTelefonoMovil(celular);
+                        _objUsuario.setEmailUsuario(correo);
+                        _objUsuario.setEstadoUsuario(estado);
+                        _objUsuario.setPassword(pass);
                         response.setContentType("application/json");
-                        String salida = Mensaje(daoModelEstudiante.Edit(_objEstudiente), "El estudiante ha sido actualizado", "A ocurrido un error al intentar actualizar al estudiante");
+                        String salida = Mensaje(daoModelEstudiante.Edit(_objUsuario, _objDetalleUsuario), "El estudiante ha sido actualizado", "A ocurrido un error al intentar actualizar al estudiante");
                         response.getWriter().write(salida);
 
                     } catch (NumberFormatException | IOException e) {

@@ -1,21 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.DTO;
 
+
 /**
- *
- * @author David
+ * @author Zack
+ * @version 1.0
+ * @created 08-may.-2015 12:13:14 a. m.
  */
 public class ObjCredito {
+
     private int idCredito;
-    private int idCliente;
-    private String fechaInicio;
-    private double saldoInicial;
-    private double saldoActual;
+    private String fechaInicio = "";
+    private int saldoInicial = 0;
+    private int saldoActual = 0;
     private int estadoCredito;
+    private int idCategoriaCredito;
+    private String documentoUsuario;
 
     public int getIdCredito() {
         return idCredito;
@@ -23,14 +22,6 @@ public class ObjCredito {
 
     public void setIdCredito(int idCredito) {
         this.idCredito = idCredito;
-    }
-
-    public int getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
     }
 
     public String getFechaInicio() {
@@ -41,19 +32,19 @@ public class ObjCredito {
         this.fechaInicio = fechaInicio;
     }
 
-    public double getSaldoInicial() {
+    public int getSaldoInicial() {
         return saldoInicial;
     }
 
-    public void setSaldoInicial(double saldoInicial) {
+    public void setSaldoInicial(int saldoInicial) {
         this.saldoInicial = saldoInicial;
     }
 
-    public double getSaldoActual() {
+    public int getSaldoActual() {
         return saldoActual;
     }
 
-    public void setSaldoActual(double saldoActual) {
+    public void setSaldoActual(int saldoActual) {
         this.saldoActual = saldoActual;
     }
 
@@ -64,5 +55,21 @@ public class ObjCredito {
     public void setEstadoCredito(int estadoCredito) {
         this.estadoCredito = estadoCredito;
     }
-    
-}
+
+    public int getIdCategoriaCredito() {
+        return idCategoriaCredito;
+    }
+
+    public void setIdCategoriaCredito(int idCategoriaCredito) {
+        this.idCategoriaCredito = idCategoriaCredito;
+    }
+
+    public String getDocumentoUsuario() {
+        return documentoUsuario;
+    }
+
+    public void setDocumentoUsuario(String documentoUsuario) {
+        this.documentoUsuario = documentoUsuario;
+    }
+
+}//end ObjCredito

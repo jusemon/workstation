@@ -53,7 +53,7 @@ public class ControllerAbono extends HttpServlet {
                     daoModelAbono = new ModelAbono();
                     
                     int idCredito = Integer.parseInt(request.getParameter("txtIdCredito"));
-                    double valorAbono = Double.parseDouble(request.getParameter("txtValorAbono"));
+                    int valorAbono = Integer.parseInt(request.getParameter("txtValorAbono"));
                     String fechaPago = request.getParameter("dateFechaPago");
                     
                     _objAbono.setIdCredito(idCredito);

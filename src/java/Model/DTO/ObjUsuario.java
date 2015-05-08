@@ -1,44 +1,63 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.DTO;
 
+import java.sql.Date;
+
 /**
- *
- * @author Administrador
+ * @author Zack
+ * @version 1.0
+ * @created 08-may.-2015 12:13:16 a. m.
  */
 public class ObjUsuario {
-    private int id = 0;
-    private String nombre;
+
+    private String documentoUsuario;
+    private String fechaNacimiento;
+    private String nombreUsuario;
+    private String apellidoUsuario;
+    private String emailUsuario;
     private String password;
-    private String email;
-    private int telefono;
+    private int estadoUsuario;
+    private int idDetalleUsuario;
+    private int idrol;
+    private String documentoAcudiente;
 
-    public int getId() {
-        return id;
+    public String getDocumentoUsuario() {
+        return documentoUsuario;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-    
-    public int getTelefono() {
-        return telefono;
+    public void setDocumentoUsuario(String documentoUsuario) {
+        this.documentoUsuario = documentoUsuario;
     }
 
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
-    }
-    private int rol;
-
-    public String getNombre() {
-        return nombre;
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getApellidoUsuario() {
+        return apellidoUsuario;
+    }
+
+    public void setApellidoUsuario(String apellidoUsuario) {
+        this.apellidoUsuario = apellidoUsuario;
+    }
+
+    public String getEmailUsuario() {
+        return emailUsuario;
+    }
+
+    public void setEmailUsuario(String emailUsuario) {
+        this.emailUsuario = emailUsuario;
     }
 
     public String getPassword() {
@@ -49,20 +68,36 @@ public class ObjUsuario {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public int getEstadoUsuario() {
+        return estadoUsuario;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEstadoUsuario(int estadoUsuario) {
+        this.estadoUsuario = estadoUsuario;
     }
 
-    public int getRol() {
-        return rol;
+    public int getIdDetalleUsuario() {
+        return idDetalleUsuario;
     }
 
-    public void setRol(int rol) {
-        this.rol = rol;
+    public void setIdDetalleUsuario(int idDetalleUsuario) {
+        this.idDetalleUsuario = idDetalleUsuario;
     }
-    
-}
+
+    public int getIdrol() {
+        return idrol;
+    }
+
+    public void setIdrol(int idrol) {
+        this.idrol = idrol;
+    }
+
+    public String getDocumentoAcudiente() {
+        return documentoAcudiente;
+    }
+
+    public void setDocumentoAcudiente(String documentoAcudiente) {
+        this.documentoAcudiente = documentoAcudiente;
+    }
+
+}//end ObjUsuario
