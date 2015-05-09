@@ -86,7 +86,6 @@ public class ModelCategoriaCurso extends ConnectionDB {
             while (rs.next()) {
                 resultado=rs.getInt("idCategoriaCurso");
             }
-            System.out.println(resultado);
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }

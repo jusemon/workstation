@@ -18,7 +18,7 @@ public class ObjUsuario {
     private int estadoUsuario;
     private int idDetalleUsuario;
     private int idrol;
-    private String documentoAcudiente;
+    private String documentoAcudiente = null;
 
     public String getDocumentoUsuario() {
         return documentoUsuario;

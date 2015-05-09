@@ -67,7 +67,6 @@ public class ModelUsuario extends ConnectionDB {
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
-            System.out.println(rs);
         } catch (SQLException e) {
             System.err.println("SQLException: "+e.getMessage());
         }

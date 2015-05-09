@@ -75,7 +75,7 @@ public class ControllerEstudiante extends HttpServlet {
                         String celular = request.getParameter("txtCelular").trim();
                         String correo = request.getParameter("txtCorreo").trim();
                         int estado = Integer.parseInt(request.getParameter("radioBeneficiario").trim());
-                        String pass = request.getParameter("pass").trim();
+                        String pass = request.getParameter("txtPass").trim();
                         //Beneficiario 0->No Subvencionado 1->Subvencionado?
                         String tipoDocAcudiente = "";
                         int numeroDocAcudiente = 0;
@@ -110,26 +110,27 @@ public class ControllerEstudiante extends HttpServlet {
                     break;
                 }
                 case "Consultar": {
-                    String tipo = request.getParameter("id");
-                    String aux = request.getParameter("tipo");
-                    int id = Integer.parseInt(aux.trim());
+                    String id = request.getParameter("id");
                     try {
                         respuesta = new LinkedHashMap<>();
-                        ResultSet result = daoModelEstudiante.buscarPorID(id, tipo);
+                        ResultSet result = daoModelEstudiante.buscarPorID(id);
                         while (result.next()) {
-                            respuesta.put("tipoDocumento", result.getString("tipoDocumento"));
-                            respuesta.put("numeroDocumento", result.getString("numeroDocumento"));
+                            respuesta.put("tipoDocumento", result.getString("documentoUsuario").substring(0, 2));
+                            respuesta.put("numeroDocumento", result.getString("documentoUsuario").substring(2));
                             respuesta.put("fechaNacimiento", result.getString("fechaNacimiento"));
-                            respuesta.put("generoCliente", result.getString("generoCliente"));
-                            respuesta.put("nombreCliente", result.getString("nombreCliente"));
-                            respuesta.put("apellidoCliente", result.getString("apellidoCliente"));
-                            respuesta.put("direccionCliente", result.getString("direccionCliente"));
+                            respuesta.put("nombreUsuario", result.getString("nombreUsuario"));
+                            respuesta.put("apellidoUsuario", result.getString("apellidoUsuario"));
+                            respuesta.put("emailUsuario", result.getString("emailUsuario"));
+                            respuesta.put("password", result.getString("password"));
+                            respuesta.put("estadoUsuario", result.getString("estadoUsuario"));
+                            respuesta.put("idDetalleUsuario", result.getString("idDetalleUsuario"));
+                            respuesta.put("direccionUsuario", result.getString("direccionUsuario"));
                             respuesta.put("telefonoFijo", result.getString("telefonoFijo"));
                             respuesta.put("telefonoMovil", result.getString("telefonoMovil"));
-                            respuesta.put("emailCliente", result.getString("emailCliente"));
-                            respuesta.put("estadoEstudiante", result.getString("estadoEstudiante"));
-                            respuesta.put("tblacudiente_tipoDocumento", result.getString("tblacudiente_tipoDocumento"));
-                            respuesta.put("tblacudiente_numeroDocumento", result.getString("tblacudiente_numeroDocumento"));
+                            respuesta.put("generoUsuario", result.getString("generoUsuario"));
+                            respuesta.put("idrol", result.getString("idrol"));
+                            respuesta.put("documentoAcudiente", result.getString("documentoAcudiente"));
+                            respuesta.put("estadoBeneficiario", result.getString("estadoBeneficiario"));
                         }
                         String salida = new Gson().toJson(respuesta);
                         response.setContentType("application/json");
@@ -220,12 +221,7 @@ public class ControllerEstudiante extends HttpServlet {
                     response.getWriter().write(getTableEstudiantes());
                     break;
                 }
-                case "getOptionsFichas": {
-                    ControllerClase controllerFicha = new ControllerClase();
-                    response.setContentType("application/text");
-                    response.getWriter().write(controllerFicha.getOptionsFichas());
-                    break;
-                }
+
             }
         }
     }
@@ -238,22 +234,22 @@ public class ControllerEstudiante extends HttpServlet {
             String[] arreglo;
             while (result.next()) {
                 arreglo = new String[8];
-                arreglo[0] = result.getString("tipoDocumento").trim();
-                arreglo[1] = result.getString("numeroDocumento").trim();
-                arreglo[2] = result.getString("nombreCliente").trim();
-                arreglo[3] = result.getString("generoCliente").trim();
-                arreglo[4] = result.getString("estadoEstudiante").trim();
-                arreglo[5] = "<a class=\"btn-sm btn-success btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ")\">\n"
+                arreglo[0] = result.getString("documentoUsuario").trim();
+                arreglo[1] = result.getString("nombreUsuario").trim();
+                arreglo[2] = result.getString("fechaNacimiento").trim();
+                arreglo[3] = result.getString("emailUsuario").trim();
+                arreglo[4] = result.getString("estadoUsuario").trim();
+                arreglo[5] = "<a class=\"btn-sm btn-success btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + arreglo[0] + "')\">\n"
                         + "<span class=\"glyphicon glyphicon-search\"></span></a>";
-                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ", 'Editar')\">\n"
+                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + arreglo[0] + "', 'Editar')\">\n"
                         + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
-                arreglo[7] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + result.getString("tipoDocumento").trim() + "', " + result.getInt("numeroDocumento") + ", 'Matricular')\">\n"
+                arreglo[7] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + arreglo[0] + "', 'Matricular')\">\n"
                         + "<span class=\"glyphicon glyphicon-bookmark\"></span></a>";
                 lista.add(arreglo);
             }
 
         } catch (Exception e) {
-            System.err.println("Ha Ocurrido un error" + e.getMessage());
+            System.err.println("Ha Ocurrido un error enlistando" + e.getMessage());
         } finally {
         }
         String salida = new Gson().toJson(lista);

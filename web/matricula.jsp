@@ -298,7 +298,6 @@
 </div>
 
 <!--Emergete de Estudiante -->
-
 <div class="modal" id="miPopupEstudiante">
     <div class="modal-dialog ">
         <div class="modal-content">
@@ -360,7 +359,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -392,7 +390,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -414,7 +411,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="txtCorreo">
                                                     Correo Electrónico
@@ -422,7 +419,15 @@
                                                 <input name="txtCorreo" id="txtCorreo" type="email" class="form-control" placeholder="Ejm: juansmm@outlook.com" required>
                                             </div>
                                         </div>
-                                    </div>                             
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtPass">
+                                                    Contraseña                                                
+                                                </label>
+                                                <input name="txtPass" id="txtPass" type="password" class="form-control" required="">
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">

@@ -87,7 +87,7 @@ public class ControllerLogin extends HttpServlet {
         try {
             rs = _modelUsuario.Find(_objUsuario);
             while (rs.next()) {
-                if (rs.getString("emailUsuario").equals(email) && rs.getString("password").equals(pass)) {
+                if (rs.getString("emailUsuario").equalsIgnoreCase(email) && rs.getString("password").equals(pass)) {
                     _objUsuario.setNombreUsuario(rs.getString("nombreUsuario"));
                     return true;
                 }

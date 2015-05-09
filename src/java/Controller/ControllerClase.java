@@ -70,8 +70,8 @@ public class ControllerClase extends HttpServlet {
                     }
                     break;
                 }
-                //</editor-fold>                //</editor-fold>                //</editor-fold>                //</editor-fold>
-                                
+                //</editor-fold>   
+                
                 // <editor-fold defaultstate="collapsed" desc="Editar una Ficha">
                 case "Editar": {
                     response.setContentType("application/json");
@@ -88,8 +88,7 @@ public class ControllerClase extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
-                //</editor-fold>                //</editor-fold>                //</editor-fold>                //</editor-fold>
-                //</editor-fold>                //</editor-fold>                //</editor-fold>                //</editor-fold>
+                //</editor-fold>             
                 
                 // <editor-fold defaultstate="collapsed" desc="Cambiar el estado de una Ficha">
                 case "Estado": {
@@ -112,7 +111,7 @@ public class ControllerClase extends HttpServlet {
                     }
                     break;
                 }
-                //</editor-fold>                //</editor-fold>                //</editor-fold>                //</editor-fold>
+                //</editor-fold>
                 
                 // <editor-fold defaultstate="collapsed" desc="Enlistar todas las Fichas">
                 case "Enlistar": {
@@ -150,16 +149,8 @@ public class ControllerClase extends HttpServlet {
 
                     }
                 }
-                //</editor-fold>                //</editor-fold>
-                
-                // <editor-fold defaultstate="collapsed" desc="Obtener las opciones de Ficha">
-                case "getOptionsFichas": {
-                    response.setContentType("application/text");
-                    response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write(getOptionsFichas());
-                    break;
-                }
                 //</editor-fold>
+                
             }
         }
     }
@@ -212,21 +203,6 @@ public class ControllerClase extends HttpServlet {
         }
         String salida = new Gson().toJson(mensaje);
         return salida;
-    }
-
-    public String getOptionsFichas() {
-        ResultSet result;
-        String OptionsCursos = "";
-        try {
-            result = daoModelFicha.ListAll();
-            while (result.next()) {
-                OptionsCursos += "<option value=\"" + result.getString("idFicha").trim() + "\">" + result.getString("nombreCurso").trim() + " Ficha: " + result.getString("idFicha").trim() + "</option>";
-            }
-        } catch (Exception e) {
-            OptionsCursos = "Ha Ocurrido un error 2" + e.getMessage();
-        }
-
-        return OptionsCursos;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

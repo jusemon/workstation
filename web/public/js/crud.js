@@ -86,6 +86,52 @@ var curso = {
         $('#miPopupCurso').find('#ContenedorCategoria').show();
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
+    mostrarDisponibles: function () {
+        $('#cursosDisponibles').empty();
+        $.ajax({
+            type: 'POST',
+            url: 'ControllerCurso',
+            data: {
+                action: 'cursosDisponibles'
+            },
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var html = '<div class="col-md-6">'
+                            + '<div class="panel panel-default">'
+                            + '<div class="panelCursos-Heading">'
+                            + '<div class="panel-title text-center">'
+                            + data[i]['nombreCurso']
+                            + '</div>'
+                            + '</div>'
+                            + '<div class="panel-body">'
+                            + '<div class="row">'
+                            + '<div class="col-md-6">'
+                            + 'Precio:'
+                            + '<label id="precio">' + data[i]['precioFicha'] + '</label>'
+                            + '</div>'
+                            + '<div class="col-md-6">'
+                            + 'Fecha de Inicio:'
+                            + '<label id="fecha">' + data[i]['fechaInicio'] + '</label>'
+                            + '</div>'
+                            + '</div>'
+                            + '<div class="row">'
+                            + '<div class="col-md-6">'
+                            + 'Cupos:'
+                            + '<label id="cupos">' + data[i]['cuposDisponibles'] + '</label>'
+                            + '</div>'
+                            + '<div class="col-md-5">'
+                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="ficha.myAjax(\'Preinscripcion\', ' + data[i]['idFicha'] + ')">Preinscribirse</a>'
+                            + '</div>'
+                            + '</div>'
+                            + '</div>'
+                            + '</div>'
+                            + '</div';
+                    $("#cursosDisponibles").append(html);
+                }
+
+            }
+        });
+    },
     cargar: function () {
         curso.myAjax('getOptionsCursos');
         tablaCurso = $('#tblCursos').DataTable({
@@ -206,7 +252,7 @@ var clase = {
             $(form).off();
             return false;
         });
-        if (accion === 'Estado' || accion === 'Consultar' || accion === 'getOptionsFichas' || accion === 'fichasDisponibles') {
+        if (accion === 'Estado' || accion === 'Consultar') {
             $(form).submit();
         }
     },
@@ -229,52 +275,6 @@ var clase = {
         $('#miPopupFicha').find('#estadoFicha option').prop('selected', false).filter('[value="' + estado + '"]').prop('selected', true);
         $('#miPopupFicha').find('#btnFicha').val('Editar');
         $('#miPopupFicha').modal('show');
-    },
-    mostrarDisponibles: function () {
-        $('#cursosDisponibles').empty();
-        $.ajax({
-            type: 'POST',
-            url: 'ControllerCurso',
-            data: {
-                action: 'cursosDisponibles'
-            },
-            success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    var html = '<div class="col-md-6">'
-                            + '<div class="panel panel-default">'
-                            + '<div class="panelCursos-Heading">'
-                            + '<div class="panel-title text-center">'
-                            + data[i]['nombreCurso']
-                            + '</div>'
-                            + '</div>'
-                            + '<div class="panel-body">'
-                            + '<div class="row">'
-                            + '<div class="col-md-6">'
-                            + 'Precio:'
-                            + '<label id="precio">' + data[i]['precioFicha'] + '</label>'
-                            + '</div>'
-                            + '<div class="col-md-6">'
-                            + 'Fecha de Inicio:'
-                            + '<label id="fecha">' + data[i]['fechaInicio'] + '</label>'
-                            + '</div>'
-                            + '</div>'
-                            + '<div class="row">'
-                            + '<div class="col-md-6">'
-                            + 'Cupos:'
-                            + '<label id="cupos">' + data[i]['cuposDisponibles'] + '</label>'
-                            + '</div>'
-                            + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="ficha.myAjax(\'Preinscripcion\', ' + data[i]['idFicha'] + ')">Preinscribirse</a>'
-                            + '</div>'
-                            + '</div>'
-                            + '</div>'
-                            + '</div>'
-                            + '</div';
-                    $("#cursosDisponibles").append(html);
-                }
-
-            }
-        });
     },
     cargar: function () {
         clase.myAjax('getOptionsClases');
@@ -549,7 +549,7 @@ var estudiante = {
             $(form).off();
             return false;
         });
-        if (accion === 'Estado' || accion === 'Consultar' || accion === 'getOptionsFichas' || accion === 'Seleccion') {
+        if (accion === 'Estado' || accion === 'Consultar' || accion === 'Seleccion') {
             $(form).submit();
         }
     },
@@ -572,24 +572,42 @@ var estudiante = {
         $('#miPopupMatricula').modal('show');
     },
     consultar: function (data) {
+        /*
+         *
+         respuesta.put("documentoUsuario", result.getString("documentoUsuario"));
+         respuesta.put("fechaNacimiento", result.getString("fechaNacimiento"));
+         respuesta.put("nombreUsuario", result.getString("nombreUsuario"));
+         respuesta.put("apellidoUsuario", result.getString("apellidoUsuario"));
+         respuesta.put("emailUsuario", result.getString("emailUsuario"));
+         respuesta.put("password", result.getString("password"));
+         respuesta.put("estadoUsuario", result.getString("estadoUsuario"));
+         respuesta.put("idDetalleUsuario", result.getString("idDetalleUsuario"));
+         respuesta.put("direccionUsuario", result.getString("direccionUsuario"));
+         respuesta.put("telefonoFijo", result.getString("telefonoFijo"));
+         respuesta.put("telefonoMovil", result.getString("telefonoMovil"));
+         respuesta.put("generoUsuario", result.getString("generoUsuario"));
+         respuesta.put("idrol", result.getString("idrol"));
+         respuesta.put("documentoAcudiente", result.getString("documentoAcudiente"));
+         */
+
         limpiar("#form_estudiante");
         $('#miPopupEstudiante').find('#titulo').empty();
         $('#miPopupEstudiante').find('#titulo').append('Consultar Estudiante');
         $('#miPopupEstudiante').find('#txtIdentificacion').val(data['numeroDocumento']);
         $('#miPopupEstudiante').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + data['tipoDocumento'] + '"]').prop('selected', true);
-        $('#miPopupEstudiante').find('#txtNombre').val(data['nombreCliente']);
-        $('#miPopupEstudiante').find('#txtApellido').val(data['apellidoCliente']);
+        $('#miPopupEstudiante').find('#txtNombre').val(data['nombreUsuario']);
+        $('#miPopupEstudiante').find('#txtApellido').val(data['apellidoUsuario']);
         $('#miPopupEstudiante').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
-        $('#miPopupEstudiante').find('#txtDireccion').val(data['direccionCliente']);
+        $('#miPopupEstudiante').find('#txtDireccion').val(data['direccionUsuario']);
         $('#miPopupEstudiante').find('#txtTelefono').val(data['telefonoFijo']);
         $('#miPopupEstudiante').find('#txtCelular').val(data['telefonoMovil']);
-        $('#miPopupEstudiante').find('#txtCorreo').val(data['emailCliente']);
-        if (data['generoCliente'] == 0)
+        $('#miPopupEstudiante').find('#txtCorreo').val(data['emailUsuario']);
+        if (data['generoUsuario'] == 0)
             $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', true);
         else
             $('#miPopupEstudiante').find('#radioGeneroMasculino').prop('checked', true)
 
-        if (data['estadoEstudiante'] == 0)
+        if (data['estadoBeneficiario'] == 0)
             $('#miPopupEstudiante').find('#radioNoBeneficiario').prop('checked', true);
         else
             $('#miPopupEstudiante').find('#radioSiBeneficiario').prop('checked', true)
@@ -624,7 +642,6 @@ var estudiante = {
 
     },
     cargar: function () {
-        estudiante.myAjax('getOptionsFichas');
         tablaEstudiante = $('#tblEstudiantes').DataTable({
             "ajax": {
                 "url": "ControllerEstudiante",
