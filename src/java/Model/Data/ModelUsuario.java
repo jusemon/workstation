@@ -7,6 +7,7 @@ package Model.Data;
 
 import Model.DTO.ObjUsuario;
 import Model.JDBC.ConnectionDB;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,11 +26,11 @@ public class ModelUsuario extends ConnectionDB {
 
     public boolean Add(ObjUsuario _objUsuario) {
         boolean objReturn = false;
-        String sql = "INSERT INTO `tblusuario`(`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idrol`) VALUES (?,?,?,?,?,?,?,?)";
+        String sql = "call spIngresarUsuario (?,?,?,?,?,?,?,?)";
         try {
             pStmt = connection.prepareStatement(sql);
             pStmt.setString(1, _objUsuario.getDocumentoUsuario());
-            pStmt.setString(2, _objUsuario.getFechaNacimiento());
+            pStmt.setDate(2, Date.valueOf(_objUsuario.getFechaNacimiento()));
             pStmt.setString(3, _objUsuario.getNombreUsuario());
             pStmt.setString(4, _objUsuario.getApellidoUsuario());
             pStmt.setString(5, _objUsuario.getEmailUsuario());

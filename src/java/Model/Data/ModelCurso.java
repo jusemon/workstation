@@ -165,4 +165,18 @@ public class ModelCurso extends ConnectionDB {
         }
         return rs;
     }
+
+    public ResultSet ListSeminariosDisponibles() {
+        ResultSet rs = null;
+        String sql = "call spConsultarSeminariosDisponibles()";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            rs = pStmt.executeQuery();
+
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }
 }

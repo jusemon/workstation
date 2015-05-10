@@ -5,7 +5,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@include file="WEB-INF/jspf/superior.jspf" %>
+<%@include file="WEB-INF/jspf/header.jspf" %>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4">
@@ -59,7 +59,8 @@
                                 <th class="text-center">Categoría</th>
                                 <th class="text-center">Descripción</th>
                                 <th class="text-center">Cantidad</th>                                        
-                                <th class="text-center">Precio</th>
+                                <th class="text-center">Precio Compra</th>
+                                <th class="text-center">Precio Venta</th>
                                 <th class="text-center">Editar</th>
                             </tr>
                         </thead>
@@ -104,20 +105,26 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="txtNombreArticulo">
+                                                <label for="txtDescripcion">
                                                     Descripción Artículo:
                                                 </label>
-                                                <input name="txtDescripcion" id="txtNombreArticulo" type="text" pattern="[áéíóúÁÉÍÓÚñÑ.,:'&quot;0-9a-zA-Z ]{3,30}" class="form-control" title="Entre 3 y 30 letras, se permiten numeros y algunos caracteres como , y ."  placeholder="Ejm: Vinilo Rojo" required>
+                                                <input name="txtDescripcion" id="txtDescripcion" type="text" pattern="[áéíóúÁÉÍÓÚñÑ.,:'&quot;0-9a-zA-Z ]{3,30}" class="form-control" title="Entre 3 y 30 letras, se permiten numeros y algunos caracteres como , y ."  placeholder="Ejm: Vinilo Rojo" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="txtPrecio">
-                                                    Precio:
+                                                <label for="txtPrecioCompra">
+                                                    Precio Compra:
                                                 </label>
-                                                <input name="txtPrecio" id="txtPrecioArticulo" type="number" min="1" max="10000000" class="form-control" placeholder="Ejm: 10000" required>
+                                                <input name="txtPrecioCompra" id="txtPrecioCompra" type="number" min="1" max="10000000" class="form-control" placeholder="Ejm: 10000" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="txtPrecioVenta">
+                                                    Precio Venta:
+                                                </label>
+                                                <input name="txtPrecioVenta" id="txtPrecioVenta" type="number" min="1" max="10000000" class="form-control" placeholder="Ejm: 10000" required>
                                             </div>
                                         </div>
                                     </div>
@@ -201,4 +208,4 @@
         </div>
     </div>
 </div>
-<%@include file="WEB-INF/jspf/imports.jspf" %>
+<%@include file="WEB-INF/jspf/footer.jspf" %>

@@ -26,7 +26,7 @@
         <link href="public/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <%@include file="WEB-INF/jspf/superior.jspf" %>
+        <%@include file="WEB-INF/jspf/header.jspf" %>
         <!--
         Aquí se encuentra la barra superior, lo que se le llama navbar que es barra de navegación, 
         en ella esta el login y los botones para navegar a través del aplicativo.
@@ -806,5 +806,5 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         </div>
 
     </body>
-    <%@include file="WEB-INF/jspf/imports.jspf" %>
+    <%@include file="WEB-INF/jspf/footer.jspf" %>
 </html>

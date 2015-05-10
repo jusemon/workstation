@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@include file="WEB-INF/jspf/superior.jspf" %>
+<%@include file="WEB-INF/jspf/header.jspf" %>
 <div class="container-fluid">
     <div class="row col-md-10 col-md-offset-2">
         Acerca de Nosotros
@@ -22,5 +22,5 @@
 
     </div>
 </div>
-<%@include file="WEB-INF/jspf/imports.jspf" %>
+<%@include file="WEB-INF/jspf/footer.jspf" %>
 

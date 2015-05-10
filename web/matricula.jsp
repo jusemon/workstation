@@ -6,7 +6,7 @@
 <%@page import="Controller.ControllerLogin"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@include file="WEB-INF/jspf/superior.jspf" %>
+<%@include file="WEB-INF/jspf/header.jspf" %>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4 ">
@@ -44,12 +44,11 @@
                 <div class="tab-pane active" id="estudiantes">
                     <table id="tblEstudiantes" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
-                            <tr>
-                                <th class="text-center">Tipo Documento</th>
+                            <tr>                                
                                 <th class="text-center">Documento</th>
                                 <th class="text-center">Nombres</th>
-                                <th class="text-center">Género</th>
-                                <th class="text-center">Beneficiario</th>
+                                <th class="text-center">Fecha Nacimiento</th>
+                                <th class="text-center">Telefono</th>
                                 <th class="text-center">Consultar</th>
                                 <th class="text-center">Editar</th>
                                 <th class="text-center">Matricular</th>
@@ -455,4 +454,4 @@
         </div>
     </div>
 </div>
-<%@include file="WEB-INF/jspf/imports.jspf" %>
+<%@include file="WEB-INF/jspf/footer.jspf" %>

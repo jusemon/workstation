@@ -1,0 +1,124 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+<!--Emergete de Estudiante -->
+<div class="modal" id="miPopupUsuario">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="formUsuario" class="" action="ControllerUsuario" method="POST">
+                            <div class="panel">
+                                <div class="panel-heading estilo2">
+                                    <h3 class="panel-title">
+                                        <label id="titulo"></label>
+                                        <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="ddlIdentificacion">
+                                                    Tipo de Identificación
+                                                </label>
+                                                <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control" required>
+                                                    <option value="">Seleccionar...</option>
+                                                    <option value="CC" > Cédula </option>
+                                                    <option value="CE" > Cédula Extranjería </option>
+                                                    <option value="TI" > Tarjeta de Identidad </option>
+                                                    <option value="RC" > Registro Civil </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtIdentificacion">
+                                                    Número de Identificación
+                                                </label>
+                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" pattern="[0-9]{5,15}"  title="Solo se permiten numeros y no deben ser menos de 5 o mas de 15" class="form-control" placeholder="Ejm: 1017225673" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtNombre">
+                                                    Nombres
+                                                </label>
+                                                <input name="txtNombre" id="txtNombre" type="text" pattern="([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos nombres, Ejem: Maria Camila" class="form-control" placeholder="Ejm: Juan Sebastián" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtApellido">
+                                                    Apellidos
+                                                </label>
+                                                <input name="txtApellido" id="txtApellido" type="text" pattern="([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos apellidos, Ejem: Montoya Soto" class="form-control" placeholder="Ejm: Montoya Montoya" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="dateFechaNacimiento">
+                                                    Fecha de Nacimiento
+                                                </label>
+                                                <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" pattern="(0[1-9]|1[0-9]|3[01]).(0[1-9]|1[0-2]).([0-9]{4})" title="El formato de la fecha debe ser dd/mm/yyyy" class="form-control fecha" placeholder="Ejm: 10/10/2014" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtCorreo">
+                                                    Correo Electrónico
+                                                </label>
+                                                <input name="txtCorreo" id="txtCorreo" type="email" class="form-control" placeholder="Ejm: jsmontoya37@misena.edu.co" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtPass">
+                                                    Contraseña
+                                                </label>
+                                                <input name="txtPass" id="txtPass" type="password" class="form-control" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <div class="form-group">
+                                        <input class="btn btn-default btn-block" type="submit" id="btnUsuario" name="action" onclick="usuario.myAjax($('#btnUsuario').val())">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="public/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="public/js/bootstrap.min.js"></script>
+<script src="public/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="public/js/parsley.min.js" type="text/javascript"></script>
+<script src="public/js/locales/es.js" type="text/javascript"></script>
+<script src="public/js/dataTables.bootstrap.js" type="text/javascript"></script>
+<script src="public/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="public/js/locales/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
+<script src="public/js/notify.min.js" type="text/javascript"></script>
+<script src="public/js/funciones.js" type="text/javascript"></script>
+<script src="public/js/crud.js" type="text/javascript"></script>
+<script src="public/js/javascript.js" type="text/javascript"></script>
+© 2015. Todos los derechos reservados.
+</body>
+</html>

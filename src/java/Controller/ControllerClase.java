@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ControllerClase extends HttpServlet {
 
     ObjClase _objClase = new ObjClase();
-    ModelClase daoModelFicha = new ModelClase();
+    ModelClase daoModelClase = new ModelClase();
     ModelCurso daoModelCurso = new ModelCurso();
 
     /**
@@ -50,7 +50,7 @@ public class ControllerClase extends HttpServlet {
             SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
             switch (request.getParameter("action")) {
                 
-                // <editor-fold defaultstate="collapsed" desc="Registrar una Ficha">
+                // <editor-fold defaultstate="collapsed" desc="Registrar una Clase">
                 case "Registrar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -60,9 +60,9 @@ public class ControllerClase extends HttpServlet {
                         estado = Integer.parseInt(request.getParameter("estadoFicha"));
                         _objClase.setIdCurso(idCurso);
                         _objClase.setFecha(formatoFechaSalida.format(formatoFechaEntrada.parse(fecha)));
-                        daoModelFicha = new ModelClase();
-                        String salida = Mensaje(daoModelFicha.Add(_objClase), "La Ficha ha sido registrada", "Ha ocurrido un error al intentar registrar la ficha");
-                        daoModelFicha.Signout();
+                        daoModelClase = new ModelClase();
+                        String salida = Mensaje(daoModelClase.Add(_objClase), "La Ficha ha sido registrada", "Ha ocurrido un error al intentar registrar la ficha");
+                        daoModelClase.Signout();
                         response.getWriter().write(salida);
                     } catch (ParseException ex) {
                         String salida = Mensaje(false, "", "Ha ocurrido un error en el formato de la fecha");
@@ -70,9 +70,9 @@ public class ControllerClase extends HttpServlet {
                     }
                     break;
                 }
-                //</editor-fold>   
+                //</editor-fold>     
                 
-                // <editor-fold defaultstate="collapsed" desc="Editar una Ficha">
+                // <editor-fold defaultstate="collapsed" desc="Editar una Clase">
                 case "Editar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -82,21 +82,21 @@ public class ControllerClase extends HttpServlet {
                     int cupos = Integer.parseInt(request.getParameter("txtCupos"));
                     int precio = Integer.parseInt(request.getParameter("txtPrecio"));
                     estado = Integer.parseInt(request.getParameter("estadoFicha"));
-                    daoModelFicha = new ModelClase();
-                    String salida = Mensaje(daoModelFicha.Edit(_objClase), "La Ficha ha sido actualizada", "Ha ocurrido un error al intentar actualizar la ficha");
-                    daoModelFicha.Signout();
+                    daoModelClase = new ModelClase();
+                    String salida = Mensaje(daoModelClase.Edit(_objClase), "La Ficha ha sido actualizada", "Ha ocurrido un error al intentar actualizar la ficha");
+                    daoModelClase.Signout();
                     response.getWriter().write(salida);
                     break;
                 }
-                //</editor-fold>             
+                //</editor-fold>           
                 
-                // <editor-fold defaultstate="collapsed" desc="Cambiar el estado de una Ficha">
+                // <editor-fold defaultstate="collapsed" desc="Cambiar el estado de una Clase">
                 case "Estado": {
-                    daoModelFicha = new ModelClase();
+                    daoModelClase = new ModelClase();
                     String id = request.getParameter("id");
                     
                     try {
-                        ResultSet result = daoModelFicha.buscarPorDocumentoUsuario(id);
+                        ResultSet result = daoModelClase.buscarPorDocumentoUsuario(id);
                         while (result.next()) {
                             estado = Integer.parseInt(result.getString("estado"));
                         }
@@ -104,7 +104,7 @@ public class ControllerClase extends HttpServlet {
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
                         //String salida = Mensaje(daoModelFicha.cambiarEstado(_objClase), "El estado ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
-                        daoModelFicha.Signout();
+                        daoModelClase.Signout();
                         //response.getWriter().write(salida);
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
@@ -113,11 +113,11 @@ public class ControllerClase extends HttpServlet {
                 }
                 //</editor-fold>
                 
-                // <editor-fold defaultstate="collapsed" desc="Enlistar todas las Fichas">
-                case "Enlistar": {
+                // <editor-fold defaultstate="collapsed" desc="Enlistar las Clases según el Estudiante">
+                case "EnlistarClases": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write(getTableFichas());
+                    response.getWriter().write(getTableClases());
                     break;
                 }
                 //</editor-fold>
@@ -127,7 +127,7 @@ public class ControllerClase extends HttpServlet {
                     try {
                         List<Map> lista = new ArrayList<>();
                         Map<String, String> respuesta;
-                        daoModelFicha = new ModelClase();
+                        daoModelClase = new ModelClase();
                         ResultSet result = daoModelCurso.ListCursosDisponibles();
                         while (result.next()) {
                             respuesta = new LinkedHashMap<>();
@@ -138,7 +138,7 @@ public class ControllerClase extends HttpServlet {
                             respuesta.put("nombreCurso", result.getString("nombreCurso"));
                             lista.add(respuesta);
                         }
-                        daoModelFicha.Signout();
+                        daoModelClase.Signout();
                         String salida = new Gson().toJson(lista);
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
@@ -155,13 +155,13 @@ public class ControllerClase extends HttpServlet {
         }
     }
 
-    public String getTableFichas() {
+    public String getTableClases() {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
         try {
             int contador = 0;
-            daoModelFicha = new ModelClase();
-            result = daoModelFicha.ListAll();
+            daoModelClase = new ModelClase();
+            result = daoModelClase.ListAll();
             while (result.next()) {
                 String[] estado = {"success", "ok"};
                 if (result.getInt("estado") == 0) {
@@ -184,7 +184,7 @@ public class ControllerClase extends HttpServlet {
         } catch (SQLException e) {
             System.err.println("Ha Ocurrido un error de SQL " + e.getMessage());
         } finally {
-            daoModelFicha.Signout();
+            daoModelClase.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";

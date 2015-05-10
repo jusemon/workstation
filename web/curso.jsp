@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@include file="WEB-INF/jspf/superior.jspf" %>
+<%@include file="WEB-INF/jspf/header.jspf" %>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4">
@@ -93,9 +93,6 @@
                     <a href="#categoriaCursos" role="tab" data-toggle="tab">Categorías de los Cursos</a>
                 </li>
                 <li>
-                    <a href="#fichas" role="tab" data-toggle="tab">Listado de Fichas</a>
-                </li>
-                <li>
                     <a href="#seminarios" role="tab" data-toggle="tab">Listado de Seminarios</a>
                 </li>
             </ul>
@@ -121,23 +118,6 @@
                             <tr>
                                 <th class="text-center">Código</th>
                                 <th class="text-center">Nombre</th>
-                                <th class="text-center">Editar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="tab-pane" id="fichas">
-                    <table id="tblFichas" class="table table-responsive table-hover" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Código</th>
-                                <th class="text-center">Nombre</th>
-                                <th class="text-center">Cupos Disponibles</th>
-                                <th class="text-center">Precio</th>
-                                <th class="text-center">Fecha</th>
-                                <th class="text-center">Estado</th>                                        
                                 <th class="text-center">Editar</th>
                             </tr>
                         </thead>
@@ -222,7 +202,7 @@
                                                 <label for="txtPrecio">
                                                     Precio
                                                 </label>
-                                                <input name="txtPrecio" id="txtPrecio" type="number" min="5000" max="100000" class="form-control" placeholder="Ejm: 100000" required>
+                                                <input name="txtPrecio" id="txtPrecio" type="number" min="5000" max="300000" class="form-control" placeholder="Ejm: 100000" required>
                                             </div>
                                         </div>
                                     </div>
@@ -232,7 +212,7 @@
                                                 <label for="txtCantidadClases">
                                                     Cantidad de Clases
                                                 </label>
-                                                <input name="txtCantidadClases" id="txtCantidadClases" type="number" min="5" max="90" class="form-control" placeholder="Ejm: 10" required>
+                                                <input name="txtCantidadClases" id="txtCantidadClases" type="number" min="1" max="30" class="form-control" placeholder="Ejm: 10" required>
                                             </div>
                                         </div>
                                     </div>
@@ -242,7 +222,7 @@
                                                 <label for="txtCantidadHoras">
                                                     Cantidad de Horas (Por clase)
                                                 </label>
-                                                <input name="txtCantidadHoras" id="txtCantidadHoras" type="number" min="5" max="90" class="form-control" placeholder="Ejm: 10" required>
+                                                <input name="txtCantidadHoras" id="txtCantidadHoras" type="number" min="1" max="12" class="form-control" placeholder="Ejm: 10" required>
                                             </div>
                                         </div>
                                     </div>
@@ -415,4 +395,4 @@
         </div>
     </div>
 </div>
-<%@include file="WEB-INF/jspf/imports.jspf" %>
+<%@include file="WEB-INF/jspf/footer.jspf" %>

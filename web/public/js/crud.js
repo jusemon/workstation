@@ -10,7 +10,7 @@ $('.fecha').datepicker({
     orientation: "top left"
 });
 
-var tablaCurso, tablaCategoriaCurso, tablaClases, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra;
+var tablaCurso, tablaCategoriaCurso, tablaClases, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaUsuario;
 
 var curso = {
     myAjax: function (accion, id, aux) {
@@ -107,20 +107,20 @@ var curso = {
                             + '<div class="row">'
                             + '<div class="col-md-6">'
                             + 'Precio:'
-                            + '<label id="precio">' + data[i]['precioFicha'] + '</label>'
+                            + '<label id="precio">' + data[i]['precioCurso'] + '</label>'
                             + '</div>'
                             + '<div class="col-md-6">'
-                            + 'Fecha de Inicio:'
-                            + '<label id="fecha">' + data[i]['fechaInicio'] + '</label>'
+                            + 'Clases:'
+                            + '<label id="clases">' + data[i]['cantidadClases'] + '</label>'
                             + '</div>'
                             + '</div>'
                             + '<div class="row">'
                             + '<div class="col-md-6">'
-                            + 'Cupos:'
-                            + '<label id="cupos">' + data[i]['cuposDisponibles'] + '</label>'
+                            + 'Horas (Por Clase):'
+                            + '<label id="horas">' + data[i]['horasPorClase'] + '</label>'
                             + '</div>'
                             + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="ficha.myAjax(\'Preinscripcion\', ' + data[i]['idFicha'] + ')">Preinscribirse</a>'
+                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.myAjax(\'Preinscripcion\', ' + data[i]['idCurso'] + ')">Preinscribirse</a>'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -374,6 +374,7 @@ var seminario = {
         $.ajax({
             type: 'POST',
             url: 'ControllerCurso',
+            dataType: 'JSON',
             data: {
                 action: 'seminariosDisponibles'
             },
@@ -383,27 +384,27 @@ var seminario = {
                             + '<div class="panel panel-default">'
                             + '<div class="panelCursos-Heading">'
                             + '<div class="panel-title text-center">'
-                            + data[i]['nombreSeminario']
+                            + data[i]['nombreCurso']
                             + '</div>'
                             + '</div>'
                             + '<div class="panel-body">'
                             + '<div class="row">'
                             + '<div class="col-md-6">'
                             + 'Precio:'
-                            + '<label id="precio"></label>'
+                            + '<label id="precio">' + data[i]['precioCurso'] + '</label>'
                             + '</div>'
                             + '<div class="col-md-6">'
-                            + 'Duración:'
-                            + '<label id="fecha">' + data[i]['duracionSeminario'] + ' Horas </label>'
+                            + 'Clases:'
+                            + '<label id="clases">' + data[i]['cantidadClases'] + '</label>'
                             + '</div>'
                             + '</div>'
                             + '<div class="row">'
                             + '<div class="col-md-6">'
-                            + 'Cupos:'
-                            + '<label id="cupos"></label>'
+                            + 'Horas (Por Clase):'
+                            + '<label id="horas">' + data[i]['horasPorClase'] + '</label>'
                             + '</div>'
                             + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="seminario.myAjax(\'Preinscripcion\', ' + data[i]['idSeminario'] + ')">Preinscribirse</a>'
+                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.myAjax(\'Preinscripcion\', ' + data[i]['idCurso'] + ')">Preinscribirse</a>'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -572,23 +573,6 @@ var estudiante = {
         $('#miPopupMatricula').modal('show');
     },
     consultar: function (data) {
-        /*
-         *
-         respuesta.put("documentoUsuario", result.getString("documentoUsuario"));
-         respuesta.put("fechaNacimiento", result.getString("fechaNacimiento"));
-         respuesta.put("nombreUsuario", result.getString("nombreUsuario"));
-         respuesta.put("apellidoUsuario", result.getString("apellidoUsuario"));
-         respuesta.put("emailUsuario", result.getString("emailUsuario"));
-         respuesta.put("password", result.getString("password"));
-         respuesta.put("estadoUsuario", result.getString("estadoUsuario"));
-         respuesta.put("idDetalleUsuario", result.getString("idDetalleUsuario"));
-         respuesta.put("direccionUsuario", result.getString("direccionUsuario"));
-         respuesta.put("telefonoFijo", result.getString("telefonoFijo"));
-         respuesta.put("telefonoMovil", result.getString("telefonoMovil"));
-         respuesta.put("generoUsuario", result.getString("generoUsuario"));
-         respuesta.put("idrol", result.getString("idrol"));
-         respuesta.put("documentoAcudiente", result.getString("documentoAcudiente"));
-         */
 
         limpiar("#form_estudiante");
         $('#miPopupEstudiante').find('#titulo').empty();
@@ -625,7 +609,7 @@ var estudiante = {
         $('#miPopupEstudiante').modal('show');
     },
     editar: function (data) {
-        limpiar("#formCurso");
+        limpiar("#form_estudiante");
         estudiante.consultar(data);
         $('#miPopupEstudiante').find('#titulo').empty();
         $('#miPopupEstudiante').find('#titulo').append('Editar Estudiante');
@@ -656,6 +640,113 @@ var estudiante = {
     },
     actualizarTabla: function () {
         tablaEstudiante.ajax.reload();
+    }
+};
+
+var usuario = {
+    myAjax: function (accion, id, tipo, aux) {
+        var form = $('#formUsuario');
+        $(form).off();
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
+                success: function (data) {
+                    if (accion == 'Consultar') {
+                        if (aux == 'Editar') {
+                            usuario.editar(data);
+                        } else if (aux == 'Preinscribir') {
+                            usuario.preinscribir(data);
+                        } else
+                            usuario.consultar(data);
+                    }
+                    else if (accion == 'Registrar' || accion == 'Editar' || accion == 'Estado') {
+                        if (accion != 'Estado') {
+                            $('#miPopupUsuario').modal('hide');
+                        }
+                        mensaje(data);
+                        usuario.actualizarTabla();
+                    }
+                }
+            });
+            $(form).off();
+            return false;
+        });
+        if (accion === 'Estado' || accion === 'Consultar') {
+            $(form).submit();
+        }
+    },
+    preinscribir: function (data) {
+        limpiar("#formPreinscripcion");
+        $('#miPopupPreinscripcion').find('#titulo').empty();
+        $('#miPopupPreinscripcion').find('#titulo').append('Preinscribir al ' + data['tipo']);
+        ;
+        $('#miPopupPreinscripcion').find('#dateFinFicha').empty();
+        $('#miPopupPreinscripcion').modal('show');
+    },
+    consultar: function (data) {
+        usuario.habilitar();
+        limpiar("#formUsuario");
+        $('#miPopupUsuario').find('#titulo').empty();
+        $('#miPopupUsuario').find('#titulo').append('Consultar Usuario');
+        $('#miPopupUsuario').find('#txtIdentificacion').val(data['numeroDocumento']);
+        $('#miPopupUsuario').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + data['tipoDocumento'] + '"]').prop('selected', true);
+        $('#miPopupUsuario').find('#txtNombre').val(data['nombreUsuario']);
+        $('#miPopupUsuario').find('#txtApellido').val(data['apellidoUsuario']);
+        $('#miPopupUsuario').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
+        $('#miPopupUsuario').find('#txtCorreo').val(data['emailUsuario']);
+        $('#miPopupUsuario').find('#btnUsuario').attr('type', 'hidden').attr('disabled', true);
+        desabilitar('#formUsuario');
+        $('#miPopupUsuario').modal('show');
+    },
+    registrar: function () {
+        usuario.habilitar();
+        habilitar('#formUsuario');
+        limpiar("#formUsuario");
+        $('#miPopupUsuario').find('#titulo').empty();
+        $('#miPopupUsuario').find('#titulo').append('Registro');
+        $('#miPopupUsuario').find('#btnUsuario').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
+        $('#miPopupUsuario').modal('show');
+    },
+    editar: function (data) {
+        limpiar("#formUsuario");
+        usuario.consultar(data);
+        $('#miPopupUsuario').find('#titulo').empty();
+        $('#miPopupUsuario').find('#titulo').append('Actualizar Datos');
+        habilitar('#formUsuario');
+        $('#miPopupUsuario').find('#btnUsuario').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
+    },
+    cargar: function () {
+        tablaUsuario = $('#tblEstudiantes').DataTable({
+            "ajax": {
+                "url": "ControllerUsuario",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            }, "language": {
+                "url": "public/js/locales/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaUsuario.ajax.reload();
+    },
+    recuperarPass: function () {
+        limpiar('#formUsuario');
+        $('#miPopupUsuario').find('#titulo').empty();
+        $('#miPopupUsuario').find('#titulo').append('Recuperar Contraseña');
+        $('#miPopupUsuario').find('#txtNombre').attr('type', 'hidden').attr('disabled', true).parents('.row:first').hide();
+        $('#miPopupUsuario').find('#txtApellido').attr('type', 'hidden').attr('disabled', true).parents('.row:first').hide();
+        $('#miPopupUsuario').find('#dateFechaNacimiento').attr('type', 'hidden').attr('disabled', true).parents('.row:first').hide();
+        $('#miPopupUsuario').find('#btnUsuario').attr('type', 'submit').attr('value', 'Recuperar').attr('disabled', false);
+        $('#miPopupUsuario').modal('show');
+    },
+    habilitar: function () {
+        $('#miPopupUsuario').find('#txtNombre').attr('type', 'text').attr('disabled', false).parents('.row:first').show();
+        $('#miPopupUsuario').find('#txtApellido').attr('type', 'text').attr('disabled', false).parents('.row:first').show();
+        $('#miPopupUsuario').find('#dateFechaNacimiento').attr('type', 'text').attr('disabled', false).parents('.row:first').show();
     }
 };
 
@@ -971,7 +1062,6 @@ var compra = {
 }
 
 compra.cargar();
-clase.cargar();
 categoriaCurso.cargar();
 curso.cargar();
 seminario.cargar();
@@ -981,4 +1071,5 @@ categoriaArticulo.cargar();
 articulo.cargar();
 //matricula.cargar();
 empresa.cargar();
+usuario.cargar();
 //credito.cargar()
