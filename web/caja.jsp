@@ -460,7 +460,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtPrecio">
-                                                            Precio Unidad:
+                                                            Precio Unidad de compra:
                                                         </label>
                                                         <input name="txtPrecioArticulo" id="txtPrecioArticulo" type="number" class="form-control" placeholder="Ejm: 10000" required>
                                                     </div>
@@ -469,39 +469,31 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtCantidad">
-                                                            Descuento:
+                                                        <label for="txtPvp">
+                                                            Precio Unidad de Venta:
                                                         </label>
-                                                        <input name="txtDescuento" id="txtDescuento" type="number" class="form-control" placeholder="Ejm: 30" required>
+                                                        <input name="txtPvp" id="txtPvp" type="number" class="form-control" placeholder="Ejm: 30" required>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="txtCantidad">
-                                                            Total:
-                                                        </label>
-                                                        <input name="txtTotal" id="txtDescuento" type="number" class="form-control" placeholder="Ejm: 300000" required>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                      
 
                                         </div>
                                     </div>
 
                                     <div class="panel-footer">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input  class="btn btn-default btn-block" id="boton1" onclick="imprimir()" type="button" name="action" value="Añadir">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                         <div class="col-md-6">
+                                              <div class="form-group">
+                                                  <input id="btnArticulo"  class="btn btn-default btn-block" onclick="articulo.myAjax($('#btnArticulo').val())" type="submit" name="action">
+                                              </div>
+                                          </div>
+                                        <div  class=" col-md-6">
                                             <div class="form-group">
                                                 <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
                                             </div>
                                         </div>
                                     </div>
+                                    
                             </div>
                             </form>
                         </div>
