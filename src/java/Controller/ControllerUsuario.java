@@ -9,7 +9,8 @@ import Model.DTO.ObjUsuario;
 import Model.Data.ModelUsuario;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
@@ -45,7 +46,7 @@ public class ControllerUsuario extends HttpServlet {
             String action = request.getParameter("action");
             switch (action) {
                 case "Registrar": {
-                                        try {
+                    try {
                         String tipoDocumento = request.getParameter("ddlIdentificacion").trim();
                         long numeroIdentificacion = Long.parseLong(request.getParameter("txtIdentificacion").trim());
                         String identificacion = tipoDocumento + numeroIdentificacion;
@@ -54,8 +55,8 @@ public class ControllerUsuario extends HttpServlet {
                         String fechaNacimiento = request.getParameter("dateFechaNacimiento").trim();
                         String correo = request.getParameter("txtCorreo").trim();
                         int estado = 1;
-                        int rol = 3;
-                        String pass = request.getParameter("txtPass").trim();                        
+                        int rol = 4;
+                        String pass = request.getParameter("txtPass").trim();
                         _objUsuario.setDocumentoUsuario(identificacion);
                         _objUsuario.setNombreUsuario(nombre);
                         _objUsuario.setApellidoUsuario(apellido);
@@ -66,19 +67,38 @@ public class ControllerUsuario extends HttpServlet {
                         _objUsuario.setIdrol(rol);
                         response.setContentType("application/json");
                         daoModelUsuario = new ModelUsuario();
-                        String salida = Mensaje(daoModelUsuario.Add(_objUsuario), "El estudiante ha sido registrado", "A ocurrido un error al intentar registrar al estudiante");
+                        String salida = Mensaje(daoModelUsuario.Add(_objUsuario), nombre+" ha sido registrado existosamente", "A ocurrido un error al intentar registrar al estudiante");
                         response.getWriter().write(salida);
-                    } catch (NumberFormatException | IOException e) {
-                        System.out.println("Ha ocurrido un error en el Controller Usuario " + e.getMessage());
-                    } catch (ParseException ex) {
+                    } catch (NumberFormatException | IOException | ParseException e) {
                         response.setContentType("application/json");
-                        String salida = Mensaje(false, "", "A ocurrido un error con la fecha de nacimiento");
-                        response.getWriter().write(salida);
-                    }
+                        String salida = Mensaje(false, "", "A ocurrido un error" + e.getMessage());
+                        response.getWriter().write(salida);                    }
                     break;
                 }
                 case "Consultar": {
-
+                    String id = request.getParameter("id");
+                    try {
+                        Map<String, String> respuesta = new LinkedHashMap<>();
+                        ResultSet result = daoModelUsuario.buscarPorID(id);
+                        while (result.next()) {
+                            respuesta.put("tipoDocumento", result.getString("documentoUsuario").substring(0, 2));
+                            respuesta.put("numeroDocumento", result.getString("documentoUsuario").substring(2));
+                            respuesta.put("fechaNacimiento", result.getString("fechaNacimiento"));
+                            respuesta.put("nombreUsuario", result.getString("nombreUsuario"));
+                            respuesta.put("apellidoUsuario", result.getString("apellidoUsuario"));
+                            respuesta.put("emailUsuario", result.getString("emailUsuario"));
+                            respuesta.put("password", result.getString("password"));
+                            respuesta.put("estadoUsuario", result.getString("estadoUsuario"));
+                            respuesta.put("idrol", result.getString("idrol"));
+                        }
+                        String salida = new Gson().toJson(respuesta);
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write(salida);
+                    } catch (SQLException | IOException e) {
+                        response.setContentType("application/json");
+                        String salida = Mensaje(false, "", "A ocurrido un error" + e.getMessage());
+                        response.getWriter().write(salida);                      }
                     break;
                 }
                 case "Editar": {
@@ -104,7 +124,7 @@ public class ControllerUsuario extends HttpServlet {
             }
         }
     }
-    
+
     public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
         Map<String, String> mensaje = new LinkedHashMap<>();
         if (entrada) {
@@ -118,6 +138,7 @@ public class ControllerUsuario extends HttpServlet {
         String salida = new Gson().toJson(mensaje);
         return salida;
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

@@ -43,7 +43,7 @@ public class ControllerCurso extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         if (request.getParameter("action") != null) {
-            String nombre, descripcion, aux, salida, tipo;
+            String nombre, descripcion, aux, salida, tipo = "";
             int estado = 0, cantidadClases, categoria, id, horasPorClase, precio;
             Map<String, String> respuesta;
             ResultSet result;
@@ -83,32 +83,13 @@ public class ControllerCurso extends HttpServlet {
                 case "Consultar": {
                     aux = request.getParameter("id");
                     id = Integer.parseInt(aux.trim());
-                    tipo = request.getParameter("type");
-                    try {
-                        respuesta = new LinkedHashMap<>();
-                        if (tipo.equals("Seminario")) {
-                            result = daoModelCurso.buscarSeminarioPorID(id);
-                        } else {
-                            result = daoModelCurso.buscarCursoPorID(id);
-                        }
-                        while (result.next()) {
-                            respuesta.put("idCurso", result.getString("idCurso"));
-                            respuesta.put("nombreCurso", result.getString("nombreCurso"));
-                            respuesta.put("cantidadClases", result.getString("cantidadClases"));
-                            respuesta.put("horasPorClase", result.getString("horasPorClase"));
-                            respuesta.put("estadoCurso", result.getString("estadoCurso"));
-                            respuesta.put("precioCurso", result.getString("precioCurso"));
-                            respuesta.put("descripcionCurso", result.getString("descripcionCurso"));
-                            respuesta.put("idCategoriaCurso", result.getString("idCategoriaCurso"));
-                            respuesta.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
-                        }
-                        salida = new Gson().toJson(respuesta);
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
-                        response.getWriter().write(salida);
-                    } catch (Exception e) {
-                        System.err.println(e.getMessage());
+                    if (request.getParameter("type") != null) {
+                        tipo = request.getParameter("type");
                     }
+                    salida = consultar(id, tipo);
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(salida);
                     break;
                 }
                 //</editor-fold>
@@ -116,30 +97,12 @@ public class ControllerCurso extends HttpServlet {
                 // <editor-fold defaultstate="collapsed" desc="Cambiar el estado de un Curso o Seminario">
                 case "Estado": {
                     aux = request.getParameter("id");
-                    id = Integer.parseInt(aux.trim());
-                    try {
-                        tipo = request.getParameter("type");
-                        if (tipo == null) {
-                            result = daoModelCurso.buscarCursoPorID(id);
-                        } else if (tipo.equals("Seminario")) {
-                            result = daoModelCurso.buscarSeminarioPorID(id);
-                        } else {
-                            result = daoModelCurso.buscarCursoPorID(id);
-                        }
-                        while (result.next()) {
-                            estado = Integer.parseInt(result.getString("estadoCurso"));
-                        }
-                        estado = estado > 0 ? 0 : 1;
-                        _objCurso = new ObjCurso();
-                        _objCurso.setIdCurso(id);
-                        _objCurso.setEstadoCurso(estado);
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
-                        salida = Mensaje(daoModelCurso.cambiarEstado(_objCurso), "El estado ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
-                        response.getWriter().write(salida);
-                    } catch (Exception e) {
-                        System.err.println("Ha ocurrido un error en el controllerCurso : " + e.getMessage());
-                    }
+                    id = Integer.parseInt(aux);
+                    tipo = request.getParameter("type");
+                    salida = cambiarEstado(id, tipo);
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(salida);
                     break;
                 }
                 //</editor-fold>
@@ -194,7 +157,7 @@ public class ControllerCurso extends HttpServlet {
                 }
                 //</editor-fold>
 
-                // <editor-fold defaultstate="collapsed" desc="Enlistar los Cursos">
+                // <editor-fold defaultstate="collapsed" desc="Enlistar los Cursos Disponibles">
                 case "cursosDisponibles": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -203,7 +166,7 @@ public class ControllerCurso extends HttpServlet {
                 }
                 //</editor-fold>
 
-                // <editor-fold defaultstate="collapsed" desc="Enlistar los Seminarios">
+                // <editor-fold defaultstate="collapsed" desc="Enlistar los Seminarios Disponibles">
                 case "seminariosDisponibles": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -222,6 +185,64 @@ public class ControllerCurso extends HttpServlet {
                 //</editor-fold>
 
             }
+        }
+    }
+
+    public String consultar(int id, String tipo) {
+        String salida = null;
+        Map<String, String> respuesta = new LinkedHashMap<>();
+        ResultSet result = null;
+        try {
+            daoModelCurso = new ModelCurso();
+            if (tipo.equals("Seminario")) {
+                result = daoModelCurso.buscarSeminarioPorID(id);
+            } else {
+                result = daoModelCurso.buscarCursoPorID(id);
+            }
+            while (result.next()) {
+                respuesta.put("idCurso", result.getString("idCurso"));
+                respuesta.put("nombreCurso", result.getString("nombreCurso"));
+                respuesta.put("cantidadClases", result.getString("cantidadClases"));
+                respuesta.put("horasPorClase", result.getString("horasPorClase"));
+                respuesta.put("estadoCurso", result.getString("estadoCurso"));
+                respuesta.put("precioCurso", result.getString("precioCurso"));
+                respuesta.put("descripcionCurso", result.getString("descripcionCurso"));
+                respuesta.put("idCategoriaCurso", result.getString("idCategoriaCurso"));
+                respuesta.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
+            }
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            Mensaje(false, "", "Ha ocurrido un error en el Controller " + e.getMessage());
+
+        }
+        salida = new Gson().toJson(respuesta);
+        return salida;
+    }
+
+    public String cambiarEstado(int id, String tipo) {
+        ResultSet result;
+        int estado = 0;
+        try {
+            daoModelCurso = new ModelCurso();
+            if (tipo == null) {
+                result = daoModelCurso.buscarCursoPorID(id);
+            } else if (tipo.equals("Seminario")) {
+                result = daoModelCurso.buscarSeminarioPorID(id);
+            } else {
+                result = daoModelCurso.buscarCursoPorID(id);
+            }
+            while (result.next()) {
+                estado = Integer.parseInt(result.getString("estadoCurso"));
+            }
+            estado = estado > 0 ? 0 : 1;
+            _objCurso = new ObjCurso();
+            _objCurso.setIdCurso(id);
+            _objCurso.setEstadoCurso(estado);
+            return Mensaje(daoModelCurso.cambiarEstado(_objCurso), "El estado ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
+
+        } catch (Exception e) {
+            return Mensaje(false, "", "Ha ocurrido un error en el controller " + e.getMessage());
         }
     }
 
@@ -299,6 +320,7 @@ public class ControllerCurso extends HttpServlet {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
         try {
+            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListAll();
             while (result.next()) {
                 String[] estado = {"success", "ok"};
@@ -309,16 +331,18 @@ public class ControllerCurso extends HttpServlet {
                 String[] arreglo = new String[5];
                 arreglo[0] = result.getString("idCurso").trim();
                 arreglo[1] = result.getString("nombreCurso").trim();
-                arreglo[2] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"curso.myAjax('Estado'," + arreglo[0] + ")\">"
+                arreglo[2] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"curso.myAjax('Estado'," + arreglo[0] + ", '','Curso')\">"
                         + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
-                arreglo[3] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ")\">"
+                arreglo[3] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ", '', 'Curso')\">"
                         + "<span class=\"glyphicon glyphicon-search\"></span></a>";
-                arreglo[4] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ",'Editar')\">"
+                arreglo[4] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ",'Editar', 'Curso')\">"
                         + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
                 lista.add(arreglo);
             }
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error en el controller " + e.toString());
+        } finally {
+            daoModelCurso.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
@@ -329,6 +353,7 @@ public class ControllerCurso extends HttpServlet {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
         try {
+            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListAll("Seminarios");
             while (result.next()) {
                 String[] estado = {"success", "ok"};
@@ -349,6 +374,8 @@ public class ControllerCurso extends HttpServlet {
             }
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error en el controller " + e.toString());
+        } finally {
+            daoModelCurso.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
@@ -359,6 +386,7 @@ public class ControllerCurso extends HttpServlet {
         ResultSet result;
         String OptionsCursos = "";
         try {
+            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListAll();
             while (result.next()) {
                 OptionsCursos += "<option value=\"" + result.getString("idCurso").trim() + "\">" + result.getString("nombreCurso").trim() + "</option>";

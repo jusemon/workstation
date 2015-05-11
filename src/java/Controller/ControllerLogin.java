@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
  */
 public class ControllerLogin extends HttpServlet {
 
-    ObjUsuario _objUsuario = new ObjUsuario();
+    ObjUsuario _objUsuario = new  ObjUsuario();
     ModelUsuario _modelUsuario = new ModelUsuario();
     ModelModulo _modelModulo = new ModelModulo();
 
@@ -51,7 +51,9 @@ public class ControllerLogin extends HttpServlet {
                             session.setAttribute("usuario", email);
                             session.setAttribute("pass", pass);
                             session.setAttribute("correo", _objUsuario.getEmailUsuario());
-                            try {
+                            session.setAttribute("idRol", _objUsuario.getIdrol());
+                            session.setAttribute("objUsuario", _objUsuario);
+                            try {                                
                                 String[] aux = _modelModulo.convertirRSaArray(_modelModulo.ListByUser(_objUsuario.getEmailUsuario()));
                                 session.setAttribute("derechos", aux);
                                 session.setAttribute("isConsulta", false);
@@ -71,6 +73,7 @@ public class ControllerLogin extends HttpServlet {
                     {
                         HttpSession session = request.getSession();
                         session.invalidate();
+                        _objUsuario = null;
                         response.sendRedirect("index.jsp");
                         break;
                     }
@@ -81,14 +84,16 @@ public class ControllerLogin extends HttpServlet {
     }
 
     public boolean comprobarUsuario(String email, String pass) {
-        ResultSet rs;
+        ResultSet rs;        
         _objUsuario.setEmailUsuario(email);
         _objUsuario.setPassword(pass);
         try {
             rs = _modelUsuario.Find(_objUsuario);
             while (rs.next()) {
                 if (rs.getString("emailUsuario").equalsIgnoreCase(email) && rs.getString("password").equals(pass)) {
+                    _objUsuario.setDocumentoUsuario(rs.getString("documentoUsuario"));
                     _objUsuario.setNombreUsuario(rs.getString("nombreUsuario"));
+                    _objUsuario.setIdrol(rs.getInt("idRol"));
                     return true;
                 }
             }

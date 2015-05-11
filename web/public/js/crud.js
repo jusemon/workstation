@@ -718,7 +718,7 @@ var usuario = {
         $('#miPopupUsuario').find('#btnUsuario').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
     cargar: function () {
-        tablaUsuario = $('#tblEstudiantes').DataTable({
+        tablaUsuario = $('#tblUsuarios').DataTable({
             "ajax": {
                 "url": "ControllerUsuario",
                 "type": "POST",
@@ -1059,7 +1059,7 @@ var compra = {
     actualizarTabla: function () {
         tablaCompra.ajax.reload();
     }
-}
+};
 
 compra.cargar();
 categoriaCurso.cargar();

@@ -20,7 +20,7 @@
                                             <p class="text-left"><strong><%out.print(session.getAttribute("usuario")); %></strong></p>
                                             <p class="text-left small"><%out.print(session.getAttribute("correo")); %></p>
                                             <p class="text-left">
-                                                <a href="#" class="btn btn-primary btn-block btn-sm">Actualizar Datos</a>
+                                                <a href="javascript:void(0)" onclick="usuario.myAjax('Consultar', documentoUsuario, 'Editar')"  class="btn btn-primary btn-block btn-sm">Actualizar Datos</a>
                                             </p>
                                         </div>
                                     </div>

@@ -180,7 +180,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="txtNombre">
-                                                    Nombre Curso
+                                                    Nombre
                                                 </label>
                                                 <input name="txtNombre" id="txtNombreCurso" type="text" class="form-control" pattern="[ÁÉÍÓÚáéíóúañÑ-zA-Z ]{3,15}" title="Entre 3 y 15 letras y no se permiten numeros" placeholder="Ejm: Oleo" required>
                                             </div>
