@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-05-2015 a las 22:37:00
+-- Tiempo de generación: 12-05-2015 a las 22:47:35
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -69,8 +69,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCredito`(
 )
 BEGIN
 	UPDATE tblcredito SET
-             saldoActual = saldoActu ,estadoCredito = estadoCredi
-        WHERE idCredito = idCredi;
+             `saldoActual`=`saldoActu`,`estadoCredito`=`estadoCredi`
+        WHERE `idCredito`=`idCredi`;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCurso`(
@@ -425,6 +425,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarVentasDiarias`(
 BEGIN
 	select * from tblVenta
 	where fechaVenta = CURDATE();
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spContadorArticulos`()
+BEGIN
+
+SELECT MAX(idArticulo)+1 AS idArticulo FROM tblArticulo;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarAbono`(
