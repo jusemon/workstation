@@ -29,6 +29,8 @@ public class ControllerCurso extends HttpServlet {
     ObjCurso _objCurso = new ObjCurso();
     ModelCurso daoModelCurso = new ModelCurso();
     ModelCategoriaCurso daoModelCategoriaCurso = new ModelCategoriaCurso();
+    Map<String, String> respuesta;
+    ResultSet result;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,8 +47,6 @@ public class ControllerCurso extends HttpServlet {
         if (request.getParameter("action") != null) {
             String nombre, descripcion, aux, salida, tipo = "";
             int estado = 0, cantidadClases, categoria, id, horasPorClase, precio;
-            Map<String, String> respuesta;
-            ResultSet result;
             switch (request.getParameter("action")) {
 
                 // <editor-fold defaultstate="collapsed" desc="Registrar un Curso">
@@ -139,6 +139,25 @@ public class ControllerCurso extends HttpServlet {
                 }
                 //</editor-fold>
 
+                // <editor-fold defaultstate="collapsed" desc="Cambiar el estado de un Curso o Seminario">
+                case "Preinscripcion": {
+                    aux = request.getParameter("id");
+                    id = Integer.parseInt(aux);
+                    String documentoUsuario = "";
+                    tipo = request.getParameter("tipo");
+                    if (request.getParameter("aux") == null) {
+                        salida = Mensaje(false, null, "Debes estar registrado y con la sesion iniciada");
+                    } else {
+                        documentoUsuario = request.getParameter("aux");
+                        salida = presincribir(id, tipo, documentoUsuario);
+                    }
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(salida);
+                    break;
+                }
+                //</editor-fold>
+
                 // <editor-fold defaultstate="collapsed" desc="Enlistar los Cursos">
                 case "Enlistar": {
                     response.setContentType("application/json");
@@ -189,11 +208,10 @@ public class ControllerCurso extends HttpServlet {
     }
 
     public String consultar(int id, String tipo) {
-        String salida = null;
-        Map<String, String> respuesta = new LinkedHashMap<>();
-        ResultSet result = null;
+        String salida;
+        respuesta = new LinkedHashMap<>();
+        result = null;
         try {
-            daoModelCurso = new ModelCurso();
             if (tipo.equals("Seminario")) {
                 result = daoModelCurso.buscarSeminarioPorID(id);
             } else {
@@ -214,17 +232,14 @@ public class ControllerCurso extends HttpServlet {
         } catch (Exception e) {
             System.err.println(e.getMessage());
             Mensaje(false, "", "Ha ocurrido un error en el Controller " + e.getMessage());
-
         }
         salida = new Gson().toJson(respuesta);
         return salida;
     }
 
     public String cambiarEstado(int id, String tipo) {
-        ResultSet result;
         int estado = 0;
         try {
-            daoModelCurso = new ModelCurso();
             if (tipo == null) {
                 result = daoModelCurso.buscarCursoPorID(id);
             } else if (tipo.equals("Seminario")) {
@@ -246,35 +261,36 @@ public class ControllerCurso extends HttpServlet {
         }
     }
 
+    private String presincribir(int id, String tipo, String documentoUsuario) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public String getCursosDisponibles() {
-        ResultSet result = null;
         List<Map> lista = null;
-        Map<String, String> objeto = null;
+        respuesta = null;
         try {
-            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListCursosDisponibles();
             lista = new ArrayList<>();
             while (result.next()) {
-                objeto = new LinkedHashMap<>();
-                objeto.put("idCurso", result.getString("idCurso"));
-                objeto.put("nombreCurso", result.getString("nombreCurso"));
-                objeto.put("cantidadClases", result.getString("cantidadClases"));
-                objeto.put("horasPorClase", result.getString("horasPorClase"));
-                objeto.put("estadoCurso", result.getString("estadoCurso"));
-                objeto.put("descripcionCurso", result.getString("descripcionCurso"));
-                objeto.put("precioCurso", result.getString("precioCurso"));
-                objeto.put("idCategoriaCurso", result.getString("idCategoriaCurso"));
-                objeto.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
-                lista.add(objeto);
+                respuesta = new LinkedHashMap<>();
+                respuesta.put("idCurso", result.getString("idCurso"));
+                respuesta.put("nombreCurso", result.getString("nombreCurso"));
+                respuesta.put("cantidadClases", result.getString("cantidadClases"));
+                respuesta.put("horasPorClase", result.getString("horasPorClase"));
+                respuesta.put("estadoCurso", result.getString("estadoCurso"));
+                respuesta.put("descripcionCurso", result.getString("descripcionCurso"));
+                respuesta.put("precioCurso", result.getString("precioCurso"));
+                respuesta.put("idCategoriaCurso", result.getString("idCategoriaCurso"));
+                respuesta.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
+                lista.add(respuesta);
             }
         } catch (Exception e) {
-            objeto = new LinkedHashMap<>();
-            objeto.put("mensaje", "Ups, al parecer ha ocurrio un error: " + e + ".");
-            objeto.put("tipo", "error");
-            lista.add(objeto);
+            respuesta = new LinkedHashMap<>();
+            respuesta.put("mensaje", "Ups, al parecer ha ocurrio un error: " + e + ".");
+            respuesta.put("tipo", "error");
+            lista.add(respuesta);
 
         } finally {
-            daoModelCurso.Signout();
         }
         String salida = new Gson().toJson(lista);
         return salida;
@@ -282,34 +298,31 @@ public class ControllerCurso extends HttpServlet {
     }
 
     public String getSeminariosDisponibles() {
-        ResultSet result = null;
         List<Map> lista = null;
-        Map<String, String> objeto = null;
+        respuesta = null;
         try {
-            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListSeminariosDisponibles();
             lista = new ArrayList<>();
             while (result.next()) {
-                objeto = new LinkedHashMap<>();
-                objeto.put("idCurso", result.getString("idCurso"));
-                objeto.put("nombreCurso", result.getString("nombreCurso"));
-                objeto.put("cantidadClases", result.getString("cantidadClases"));
-                objeto.put("horasPorClase", result.getString("horasPorClase"));
-                objeto.put("estadoCurso", result.getString("estadoCurso"));
-                objeto.put("descripcionCurso", result.getString("descripcionCurso"));
-                objeto.put("precioCurso", result.getString("precioCurso"));
-                objeto.put("idCategoriaCurso", result.getString("idCategoriaCurso"));
-                objeto.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
-                lista.add(objeto);
+                respuesta = new LinkedHashMap<>();
+                respuesta.put("idCurso", result.getString("idCurso"));
+                respuesta.put("nombreCurso", result.getString("nombreCurso"));
+                respuesta.put("cantidadClases", result.getString("cantidadClases"));
+                respuesta.put("horasPorClase", result.getString("horasPorClase"));
+                respuesta.put("estadoCurso", result.getString("estadoCurso"));
+                respuesta.put("descripcionCurso", result.getString("descripcionCurso"));
+                respuesta.put("precioCurso", result.getString("precioCurso"));
+                respuesta.put("idCategoriaCurso", result.getString("idCategoriaCurso"));
+                respuesta.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
+                lista.add(respuesta);
             }
         } catch (Exception e) {
-            objeto = new LinkedHashMap<>();
-            objeto.put("mensaje", "Ups, al parecer ha ocurrio un error: " + e + ".");
-            objeto.put("tipo", "error");
-            lista.add(objeto);
+            respuesta = new LinkedHashMap<>();
+            respuesta.put("mensaje", "Ups, al parecer ha ocurrio un error: " + e + ".");
+            respuesta.put("tipo", "error");
+            lista.add(respuesta);
 
         } finally {
-            daoModelCurso.Signout();
         }
         String salida = new Gson().toJson(lista);
         return salida;
@@ -317,10 +330,8 @@ public class ControllerCurso extends HttpServlet {
     }
 
     public String getTableCursos() {
-        ResultSet result;
         List<String[]> lista = new ArrayList<>();
         try {
-            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListAll();
             while (result.next()) {
                 String[] estado = {"success", "ok"};
@@ -342,7 +353,6 @@ public class ControllerCurso extends HttpServlet {
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error en el controller " + e.toString());
         } finally {
-            daoModelCurso.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
@@ -350,10 +360,8 @@ public class ControllerCurso extends HttpServlet {
     }
 
     public String getTableSeminarios() {
-        ResultSet result;
         List<String[]> lista = new ArrayList<>();
         try {
-            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListAll("Seminarios");
             while (result.next()) {
                 String[] estado = {"success", "ok"};
@@ -375,7 +383,6 @@ public class ControllerCurso extends HttpServlet {
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error en el controller " + e.toString());
         } finally {
-            daoModelCurso.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
@@ -383,10 +390,8 @@ public class ControllerCurso extends HttpServlet {
     }
 
     public String getOptionsCursos() {
-        ResultSet result;
         String OptionsCursos = "";
         try {
-            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListAll();
             while (result.next()) {
                 OptionsCursos += "<option value=\"" + result.getString("idCurso").trim() + "\">" + result.getString("nombreCurso").trim() + "</option>";

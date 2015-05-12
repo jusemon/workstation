@@ -60,8 +60,9 @@ var curso = {
         $('#miPopupCurso').find('#txtNombreCurso').val(data['nombreCurso']);
         $('#miPopupCurso').find('#ContenedorCategoria').show();
         $('#miPopupCurso').find('#txtCantidadClases').val(data['cantidadClases']);
-        $('#miPopupCurso').find('#txtCantidadHoras').val(data['cantidadHoras']);
+        $('#miPopupCurso').find('#txtCantidadHoras').val(data['horasPorClase']);
         $('#miPopupCurso').find('#txtDescripcionCurso').val(data['descripcionCurso']);
+        $('#miPopupCurso').find('#txtPrecio').val(data['precioCurso']);
         $('#miPopupCurso').find('#ddlEstado option').prop('selected', false).filter('[value="' + data['estadoCurso'] + '"]').prop('selected', true);
         $('#miPopupCurso').find('#btnCurso').attr('type', 'hidden').attr('disabled', true);
         desabilitar('#formCurso');
@@ -120,7 +121,7 @@ var curso = {
                             + '<label id="horas">' + data[i]['horasPorClase'] + '</label>'
                             + '</div>'
                             + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.myAjax(\'Preinscripcion\', ' + data[i]['idCurso'] + ')">Preinscribirse</a>'
+                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.myAjax(\'Consultar\', ' + data[i]['idCurso'] + ', , \'Curso\')">Preinscribirse</a>'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -313,7 +314,9 @@ var seminario = {
                     if (accion == 'Consultar') {
                         if (aux == 'Editar') {
                             seminario.editar(data);
-                        } else
+                        } else if (aux == 'Preinscripcion')
+                            seminario.preinscripcion(data);
+                        else
                             seminario.consultar(data);
                     }
                     else if (accion == 'Editar' || accion == 'Estado') {
@@ -369,6 +372,16 @@ var seminario = {
         $('#miPopupCurso').find('#tipo').val('Seminario');
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
+    preinscripcion: function (data) {
+        seminario.consultar(data);
+        $('#miPopupCurso').find('#txtCantidadClases').attr('readOnly', true);
+        $('#miPopupCurso').find('#ContenedorCategoria').hide().find('#ddlCategoria').attr('disabled', true);
+        $('#miPopupCurso').find('#titulo').empty();
+        $('#miPopupCurso').find('#titulo').append('Preinscribirse');
+        $('#miPopupCurso').find('#tipo').val('Seminario');
+        $('#miPopupCurso').find('#aux').val(documentoUsuario);
+        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Preinscribirse').attr('disabled', false);
+    },
     mostrarDisponibles: function () {
         $('#seminariosDisponibles').empty();
         $.ajax({
@@ -404,7 +417,7 @@ var seminario = {
                             + '<label id="horas">' + data[i]['horasPorClase'] + '</label>'
                             + '</div>'
                             + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.myAjax(\'Preinscripcion\', ' + data[i]['idCurso'] + ')">Preinscribirse</a>'
+                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="seminario.myAjax(\'Consultar\', ' + data[i]['idCurso'] + ',\'Preinscripcion\',\'Seminario\')">Preinscribirse</a>'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -527,10 +540,10 @@ var estudiante = {
                         estudiante.cargarSeleccion(data);
                     }
                     if (accion == 'Consultar') {
-                        if (aux == 'Editar') {
+                        if (tipo == 'Editar') {
                             estudiante.editar(data);
 
-                        } else if (aux == 'Matricular') {
+                        } else if (tipo == 'Matricular') {
                             estudiante.matricular(data);
                         } else
                             estudiante.consultar(data);
@@ -900,9 +913,10 @@ var articulo = {
         $('#miPopupArticulo').find('#titulo').empty();
         $('#miPopupArticulo').find('#titulo').append('Editar Artículo');
         $('#miPopupArticulo').find('#idArticulo').val(data[0]);
-        $('#miPopupArticulo').find('#txtNombreArticulo').val(data[2]);
-        $('#miPopupArticulo').find('#txtPrecioArticulo').val(data[4]);
+        $('#miPopupArticulo').find('#txtDescripcion').val(data[2]);
         $('#miPopupArticulo').find('#txtCantidadArticulo').val(data[3]);
+        $('#miPopupArticulo').find('#txtPrecioCompra').val(data[4]);
+        $('#miPopupArticulo').find('#txtPrecioVenta').val(data[5]);
         $('#miPopupArticulo').find('#idCategoriaArticulo option').prop('selected', false).filter(function () {
             return ($(this).text() == data[1]);
         }).prop('selected', true);
