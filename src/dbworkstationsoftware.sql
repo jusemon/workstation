@@ -69,8 +69,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCredito`(
 )
 BEGIN
 	UPDATE tblcredito SET
-             `saldoActual`=`saldoActu`,`estadoCredito`=`estadoCredi`
-        WHERE `idCredito`=`idCredi`;
+             saldoActual = saldoActu ,estadoCredito = estadoCredi
+        WHERE idCredito = idCredi;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCurso`(
@@ -111,6 +111,17 @@ BEGIN
             `telefonoContacto`=`telefonoContac`,
             `emailContacto`=`emailContac`
 	WHERE `nitEmpresa`=`nitEmpre`;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstadoCredito`(
+    in idCredi          int,
+    in idCategoriaCredi int,
+    in estadoCredi      int
+)
+BEGIN
+	UPDATE tblCredito SET 
+            estadoCredito = estadoCredi 
+        WHERE idCredito = idCredi and idCategoriaCredito = idCategoriaCredi;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstadoCurso`(
@@ -178,6 +189,24 @@ BEGIN
 	select * from tblCompra
 	where fechaCompra BETWEEN fechaInici AND fechaFin;
 	
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByTipoCredito1`(
+    in idCredi int
+)
+BEGIN
+    select c.idCredito, c.idCategoriaCredito, c.documentoUsuario, c.fechaInicio, c.saldoInicial, c.saldoActual, c.estadoCredito
+    FROM tblCredito c INNER JOIN tblCategoriaCredito cc ON (c.idCategoriaCredito=cc.idCategoriaCredito) 
+    WHERE idCredito=idCredi AND idCategoriaCredito=1;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByTipoCredito2`(
+    in idCredi int
+)
+BEGIN
+    select c.idCredito, c.idCategoriaCredito, c.documentoUsuario, c.fechaInicio, c.saldoInicial, c.saldoActual, c.estadoCredito
+    FROM tblCredito c INNER JOIN tblCategoriaCredito cc ON (c.idCategoriaCredito=cc.idCategoriaCredito) 
+    WHERE idCredito=idCredi AND idCategoriaCredito=2;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursoPorID`(id int)
@@ -722,6 +751,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarCompras`(IN `numeroFactura`
 BEGIN
 SELECT * FROM tblCompra;
 END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarCreditos`()
+select c.idCredito, c.idCategoriaCredito, c.documentoUsuario, c.fechaInicio, c.saldoInicial, c.saldoActual, c.estadoCredito 
+from tblCredito c inner join tblUsuario u on(c.documentoUsuario=u.documentoUsuario)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarEmpresas`()
 BEGIN
