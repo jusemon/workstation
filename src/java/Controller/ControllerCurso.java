@@ -194,33 +194,6 @@ public class ControllerCurso extends HttpServlet {
                 }
                 //</editor-fold>
 
-                // <editor-fold defaultstate="collapsed" desc="Enlistar los Seminarios">
-                case "EnlistarSeminarios": {
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write(getTableSeminarios());
-                    break;
-                }
-                //</editor-fold>
-
-                // <editor-fold defaultstate="collapsed" desc="Enlistar los Cursos Disponibles">
-                case "cursosDisponibles": {
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write(getCursosDisponibles());
-                    break;
-                }
-                //</editor-fold>
-
-                // <editor-fold defaultstate="collapsed" desc="Enlistar los Seminarios Disponibles">
-                case "seminariosDisponibles": {
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write(getSeminariosDisponibles());
-                    break;
-                }
-                //</editor-fold>
-
                 // <editor-fold defaultstate="collapsed" desc="Obtener las opciones de los Cursos">
                 case "getOptionsCursos": {
                     response.setContentType("application/text");
