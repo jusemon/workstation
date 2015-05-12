@@ -5,12 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%     if (session.getAttribute("usuario") == null) {
-        response.sendRedirect("index.jsp");
-    };
-%>
 <!DOCTYPE html>
-<%@include file="WEB-INF/jspf/superior.jspf" %>
+<%@include file="WEB-INF/jspf/header.jspf" %>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-6">
@@ -40,5 +36,5 @@
 </div>
 <script>
 </script>
-<%@include file="WEB-INF/jspf/imports.jspf" %>
+<%@include file="WEB-INF/jspf/footer.jspf" %>
 

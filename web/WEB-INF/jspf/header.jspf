@@ -1,8 +1,17 @@
 <%-- any content can be specified here e.g.: --%>
-<%@page import="Controller.ControllerLogin"%>
+<%@page import="Model.DTO.ObjUsuario"%>
+<%@page import="Controller.ControllerLogin"%>    
 <%
+    ObjUsuario _objUsuario = new ObjUsuario();
+    String urlActual = request.getRequestURI();
     ControllerLogin controllerLogin = new ControllerLogin();
-    if (!controllerLogin.comprobarEntrada(session.getAttribute("derechos"), request.getRequestURI())) {
+    if (session.getAttribute("usuario") != null) {
+        if (!controllerLogin.comprobarEntrada(session.getAttribute("derechos"), urlActual)) {
+            response.sendRedirect("index.jsp");
+        }
+    } else if (urlActual.endsWith("index.jsp") || urlActual.endsWith("acerca.jsp") || urlActual.endsWith("nuestro.jsp")) {
+
+    } else {
         response.sendRedirect("index.jsp");
     }
 %>
@@ -54,8 +63,12 @@
                 </ul>
                 <%if (session != null) {
                         if (session.getAttribute("usuario") != null) {
+                            _objUsuario = (ObjUsuario) session.getAttribute("objUsuario");
                 %>
                 <%@include file="logueado.jspf" %>
+                <script>
+                    var documentoUsuario = '<%=_objUsuario.getDocumentoUsuario()%>';
+                </script>
                 <%
                 } else {
                 %>

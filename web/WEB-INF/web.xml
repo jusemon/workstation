@@ -25,10 +25,6 @@
         <servlet-class>Controller.ControllerCurso</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ControllerSeminario</servlet-name>
-        <servlet-class>Controller.ControllerSeminario</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ControllerFicha</servlet-name>
         <servlet-class>Controller.ControllerClase</servlet-class>
     </servlet>
@@ -43,6 +39,14 @@
     <servlet>
         <servlet-name>ControllerCompra</servlet-name>
         <servlet-class>Controller.ControllerCompra</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControllerClase</servlet-name>
+        <servlet-class>Controller.ControllerClase</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControllerUsuario</servlet-name>
+        <servlet-class>Controller.ControllerUsuario</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ControllerCliente</servlet-name>
@@ -69,10 +73,6 @@
         <url-pattern>/ControllerCurso</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ControllerSeminario</servlet-name>
-        <url-pattern>/ControllerSeminario</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ControllerFicha</servlet-name>
         <url-pattern>/ControllerFicha</url-pattern>
     </servlet-mapping>
@@ -87,6 +87,14 @@
     <servlet-mapping>
         <servlet-name>ControllerCompra</servlet-name>
         <url-pattern>/ControllerCompra</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControllerClase</servlet-name>
+        <url-pattern>/ControllerClase</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControllerUsuario</servlet-name>
+        <url-pattern>/ControllerUsuario</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

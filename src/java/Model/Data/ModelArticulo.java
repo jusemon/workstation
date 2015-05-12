@@ -102,4 +102,18 @@ public class ModelArticulo extends ConnectionDB {
         return rs;
     }
 
+    public ResultSet consultarCodigoSiguiente() {
+        ResultSet rs = null;
+        String sql = "call spContadorArticulos()";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            rs = pStmt.executeQuery();
+
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }
+
 }

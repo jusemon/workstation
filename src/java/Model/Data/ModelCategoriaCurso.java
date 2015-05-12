@@ -44,7 +44,7 @@ public class ModelCategoriaCurso extends ConnectionDB {
 
     public ResultSet ListAll() throws Exception {
         ResultSet rs = null;
-        String sql = "SELECT idtblCategoriaCurso, nombreCategoriaCurso FROM tblCategoriaCurso";
+        String sql = "call spConsultarCategoriaCursos()";
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
@@ -74,5 +74,21 @@ public class ModelCategoriaCurso extends ConnectionDB {
             System.out.println(e.getMessage());
         }
         return objReturn;
+    }
+
+    public int GetIDCategoriaSeminario() {
+        int resultado = 0;
+        ResultSet rs = null;
+        String sql = "call spConsultarIDCategoriaSeminario()";
+        try {
+            getStmt();
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                resultado=rs.getInt("idCategoriaCurso");
+            }
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return resultado;
     }
 }

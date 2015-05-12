@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-05-2015 a las 18:16:24
+-- Tiempo de generación: 09-05-2015 a las 08:06:34
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -161,6 +161,15 @@ select (a.idAbono, a.idCredito, a.valorAbono, a.fechaPago) from tblAbono a inner
 where a.idCredito like concat('%',idCredi,'%') 
 order by (a.idCredito,a.FechaPago)$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCategoriaCursos`()
+BEGIN
+    SELECT 
+        `idCategoriaCurso`,
+        `nombreCategoriaCurso` 
+    FROM `tblcategoriacurso` 
+    WHERE `nombreCategoriaCurso`!='Seminario';
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarComprasRangoFecha`(
 	in	fechaInici	datetime,
 	in	fechaFin	datetime
@@ -228,12 +237,12 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudiantePorID`(
-    in id int
+    in id varchar(30)
 )
 BEGIN
     SELECT 
         `documentoUsuario`, 
-        `fechaNacimiento`, 
+        DATE_FORMAT(`fechaNacimiento`,'%d/%m/%Y') as `fechaNacimiento`, 
         `nombreUsuario`, 
         `apellidoUsuario`, 
         `emailUsuario`, 
@@ -245,9 +254,10 @@ BEGIN
         `telefonoMovil`, 
         `generoUsuario`, 
         `idrol`, 
-        `documentoAcudiente` 
+        `documentoAcudiente`,
+        `estadoBeneficiario`
     FROM `tblusuario` u inner join `tbldetalleusuario` du on (u.`idDetalleUsuario`= du.`idDetalleUsuario`)
-    WHERE idrol='Estudiante' and u.`documentoUsuario`=id;
+    WHERE idrol=3 and u.`documentoUsuario`=id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudiantes`()
@@ -268,7 +278,15 @@ BEGIN
         `idrol`, 
         `documentoAcudiente` 
     FROM `tblusuario` u inner join `tbldetalleusuario` du on (u.`idDetalleUsuario`= du.`idDetalleUsuario`)
-    WHERE idrol='Estudiante';
+    WHERE idrol=3;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarIDCategoriaSeminario`()
+BEGIN
+    SELECT 
+        `idCategoriaCurso`
+    FROM `tblcategoriacurso` 
+    WHERE `nombreCategoriaCurso`='Seminario';
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarSeminarioPorID`(id int)
@@ -745,11 +763,11 @@ CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
 --
 
 INSERT INTO `tblcategoriacurso` (`idCategoriaCurso`, `nombreCategoriaCurso`) VALUES
-(1, 'Categoria A'),
-(2, 'Categoria B'),
-(3, 'Categoria C'),
-(4, 'Categoria D'),
-(5, 'Categoria E');
+(1, 'Seminario'),
+(2, 'Categoria A'),
+(3, 'Categoria B'),
+(4, 'Categoria C'),
+(5, 'Categoria D');
 
 -- --------------------------------------------------------
 
@@ -799,7 +817,14 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `descripcionCurso` varchar(100) DEFAULT NULL,
   `precioCurso` int(11) DEFAULT NULL,
   `idCategoriaCurso` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tblcurso`
+--
+
+INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorClase`, `estadoCurso`, `descripcionCurso`, `precioCurso`, `idCategoriaCurso`) VALUES
+(2, 'SeminarioPrueba', 1, 5, 1, 'Un Seminario de Prueba', 50000, 1);
 
 -- --------------------------------------------------------
 
@@ -823,12 +848,20 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
 --
 
 CREATE TABLE IF NOT EXISTS `tbldetalleusuario` (
-  `idDetalleUsuario` int(11) NOT NULL,
+`idDetalleUsuario` int(11) NOT NULL,
   `direccionUsuario` varchar(50) NOT NULL,
   `telefonoFijo` varchar(11) NOT NULL,
   `telefonoMovil` varchar(15) NOT NULL,
-  `generoUsuario` bit(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `generoUsuario` bit(1) NOT NULL,
+  `estadoBeneficiario` bit(1) NOT NULL DEFAULT b'0'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tbldetalleusuario`
+--
+
+INSERT INTO `tbldetalleusuario` (`idDetalleUsuario`, `direccionUsuario`, `telefonoFijo`, `telefonoMovil`, `generoUsuario`, `estadoBeneficiario`) VALUES
+(1, 'Calle 24 # 65 e 25', '5860529', '3218016237', b'1', b'0');
 
 -- --------------------------------------------------------
 
@@ -999,7 +1032,8 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
 
 INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`) VALUES
 ('1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL),
-('94110325805', '1994-11-03', 'Juan', 'Montoya', 'JuanSMM@outlook.com', '123', 1, NULL, 3, NULL);
+('94110325805', '1994-11-03', 'Juan', 'Montoya', 'JuanSMM@outlook.com', '123', 1, NULL, 3, NULL),
+('CC1017225673', '1994-11-03', 'Juan', 'Montoya', 'thejuansebas03@gmail.com', 'es120300', 1, 1, 3, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -1163,7 +1197,12 @@ MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tblcurso`
 --
 ALTER TABLE `tblcurso`
-MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `tbldetalleusuario`
+--
+ALTER TABLE `tbldetalleusuario`
+MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `tblmodulo`
 --
@@ -1245,9 +1284,9 @@ ADD CONSTRAINT `fk_tblsubsidio_tblusuario1` FOREIGN KEY (`documentoUsuario`) REF
 -- Filtros para la tabla `tblusuario`
 --
 ALTER TABLE `tblusuario`
-ADD CONSTRAINT `fk_tblestudiante_tblDetalleCliente1` FOREIGN KEY (`idDetalleUsuario`) REFERENCES `tbldetalleusuario` (`idDetalleUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_tblusuario_tblacudiente1` FOREIGN KEY (`documentoAcudiente`) REFERENCES `tblacudiente` (`documentoAcudiente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_tblusuario_tblrol1` FOREIGN KEY (`idrol`) REFERENCES `tblrol` (`idrol`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `fk_tblusuario_tblrol1` FOREIGN KEY (`idrol`) REFERENCES `tblrol` (`idrol`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `tblusuario_ibfk_1` FOREIGN KEY (`idDetalleUsuario`) REFERENCES `tbldetalleusuario` (`idDetalleUsuario`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -11,9 +11,9 @@ $(document).ready(function () {
         $('#btnindex').attr('class', 'active');
     } else if (URLactual.indexOf('nuestro') !== -1) {
         $('#btnnuestro').attr('class', 'active');
-        ficha.mostrarDisponibles();
+        curso.mostrarDisponibles();
         seminario.mostrarDisponibles();
-        setInterval(ficha.mostrarDisponibles, 60000);
+        setInterval(curso.mostrarDisponibles, 60000);
         setInterval(seminario.mostrarDisponibles, 60000);
         $.ajaxSetup({cache: false});
     } else if (URLactual.indexOf('acerca') !== -1) {

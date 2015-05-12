@@ -6,9 +6,6 @@
 <%@page import="Controller.ControllerLogin"%>  
 <%@page import="Controller.ControllerAbono"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% if (session.getAttribute("usuario") == null) {
-        response.sendRedirect("index.jsp");
-    };%>
 <!DOCTYPE html>
 <html>
     <!--
@@ -27,9 +24,14 @@
         <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
         <link href="public/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css"/>
         <link href="public/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
+        <style>
+            .modal-lg {
+                width: 900px;
+            }
+        </style>
     </head>
     <body>
-        <%@include file="WEB-INF/jspf/superior.jspf" %>
+        <%@include file="WEB-INF/jspf/header.jspf" %>
         <!--
         Aquí se encuentra la barra superior, lo que se le llama navbar que es barra de navegación, 
         en ella esta el login y los botones para navegar a través del aplicativo.
@@ -318,7 +320,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         -->
         <%--popup de compra--%> 
         <div class="modal" id="miPopupCompra">
-            <div class="modal-dialog ">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="row">
@@ -366,17 +368,17 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupRegistrar" data-dismiss="modal" name="regVenta" value="Registrar Artículo">
+                                                        <label for="txtTotalCompra">
+                                                            Total Compra:
+                                                        </label>
+                                                        <input name="txtTotalCompra" id="txtTotalCompra" type="number" class="form-control" placeholder="Ejm: 30000" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtTotalCompra">
-                                                            Total Compra:
-                                                        </label>
-                                                        <input name="txtTotalCompra" id="txtTotalCompra" type="number" class="form-control" placeholder="Ejm: 30000" required>
+                                                        <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupRegistrar" data-dismiss="modal" name="regVenta" value="Registrar Artículo">
                                                     </div>
                                                 </div>
                                             </div>
@@ -399,7 +401,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         </div>
         <!--popup de Registrar Articulo de Venta -->
         <div class="modal" id="miPopupRegistrar">
-            <div class="modal-dialog ">
+            <!-- <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="row">
@@ -434,18 +436,15 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                         <input name="txtCodigo" id="txtCodigo" type="number" class="form-control" placeholder="Ejm: 20000" required>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="txtDescripcionArticulo">
-                                                            Descripción Artículo:
-                                                        </label>
-                                                        <!-- <input name="txtDescripcionArticulo" id="txtDescripcionArticulo"type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>-->
-                                                        <input name="txtDescripcionArticulo" id="txtDescripcionArticulo" type="search" class="form-control input-sm" placeholder="" aria-controls="tblArticulo">
-                                                    </div>
+                                            </div>                                        
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="txtDescripcion">
+                                                        Descripción Artículo:
+                                                    </label>
+                                                    <input name="txtDescripcion" id="txtDescripcion" type="text" pattern="[áéíóúÁÉÍÓÚñÑ.,:'&quot;0-9a-zA-Z ]{3,30}" class="form-control" title="Entre 3 y 30 letras, se permiten numeros y algunos caracteres como , y ."  placeholder="Ejm: Vinilo Rojo" required>
                                                 </div>
-                                            </div>
+                                            </div>                                 
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
@@ -476,34 +475,59 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                                     </div>
                                                 </div>
                                             </div>
-                                      
+
 
                                         </div>
                                     </div>
 
                                     <div class="panel-footer">
-                                         <div class="col-md-6">
-                                              <div class="form-group">
-                                                  <input id="btnArticulo"  class="btn btn-default btn-block" onclick="articulo.myAjax($('#btnArticulo').val())" type="submit" name="action">
-                                              </div>
-                                          </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input id="btnArticulo"  class="btn btn-default btn-block" onclick="articulo.myAjax($('#btnArticulo').val())" type="submit" name="action">
+                                            </div>
+                                        </div>
                                         <div  class=" col-md-6">
                                             <div class="form-group">
                                                 <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                             </div>
                             </form>
                         </div>
                     </div>
                 </div>
+            </div>-->
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-"> 
+                                <div class="tab-pane active" id="articulos">
+                                    <table id="tblArticulos" class="table table-responsive table-hover" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Código</th>
+                                                <th class="text-center">Categoría</th>
+                                                <th class="text-center">Descripción</th>
+                                                <th class="text-center">Cantidad</th>                                        
+                                                <th class="text-center">Precio Compra</th>
+                                                <th class="text-center">Precio Venta</th>
+                                                <th class="text-center">Editar</th>
+                                            </tr>
+                                        </thead>                                       
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!--popup RegistroVenta -->
+        <!--popup RegistroVenta --> 
         <div class="modal" id="miPopupRegistroVenta">
-            <div class="modal-dialog ">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="row">
@@ -617,7 +641,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         </div>
         <!--Popup Abono-->
         <div class="modal" id="miPopupAbono">
-            <div class="modal-dialog ">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="row">
@@ -680,7 +704,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         </div>
         <!--Popup Diario de Caja-->
         <div class="modal" id="miPopupDiario">
-            <div class="modal-dialog ">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="row">
@@ -747,7 +771,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         </div>
         <!--Popup Busqueda de Diario de Caja-->
         <div class="modal" id="miPopupBusqueda">
-            <div class="modal-dialog ">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="row">
@@ -801,5 +825,5 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         </div>
 
     </body>
-    <%@include file="WEB-INF/jspf/imports.jspf" %>
+    <%@include file="WEB-INF/jspf/footer.jspf" %>
 </html>

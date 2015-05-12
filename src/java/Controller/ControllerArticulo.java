@@ -55,18 +55,17 @@ public class ControllerArticulo extends HttpServlet {
                         int precioCompra = Integer.parseInt(request.getParameter("txtPrecioCompra"));
                         int precioVenta = Integer.parseInt(request.getParameter("txtPrecioVenta"));
                         int idCategoriaArticulo;
-                        if (request.getParameter("idCategoria") != null) {
-                            idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
-                            _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
-                            _objArticulo.setDescripcionArticulo(descripcionArticulo);
-                            _objArticulo.setCantidadDisponible(cantidadDisponible);
-                            _objArticulo.setPrecioCompra(precioCompra);
-                            _objArticulo.setPrecioVenta(precioVenta);
-                            String salida = Mensaje(daoModelArticulo.Add(_objArticulo), "Artículo registrado con exito", "Ha ocurrido un error al intentar registrar el artículo");
-                            response.setContentType("application/json");
-                            response.setCharacterEncoding("UTF-8");
-                            response.getWriter().write(salida);
-                        }
+                        idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
+                        _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
+                        _objArticulo.setDescripcionArticulo(descripcionArticulo);
+                        _objArticulo.setCantidadDisponible(cantidadDisponible);
+                        _objArticulo.setPrecioCompra(precioCompra);
+                        _objArticulo.setPrecioVenta(precioVenta);
+                        String salida = Mensaje(daoModelArticulo.Add(_objArticulo), "Artículo registrado con exito", "Ha ocurrido un error al intentar registrar el artículo");
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write(salida);
+
                         break;
                     }
                     //</editor-fold>
@@ -104,6 +103,25 @@ public class ControllerArticulo extends HttpServlet {
                     }
                     //</editor-fold>
 
+                    //<editor-fold defaultstate="collapsed" desc="Consultar un Articulo por ID">
+                    case "ConsultarCodigo": {
+                        int codigo = 0;
+                        daoModelArticulo = new ModelArticulo();
+                        ResultSet result = daoModelArticulo.consultarCodigoSiguiente();
+                        try {
+                            while (result.next()) {
+                                codigo = result.getInt("idArticulo");
+                            }
+                        } catch (Exception e) {
+                        }
+                        String respuesta = new Gson().toJson(codigo);
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write(respuesta);
+                        break;
+                    }
+                    //</editor-fold>
+
                     //<editor-fold defaultstate="collapsed" desc="Enlistar todos los Articulos">
                     case "Enlistar": {
                         response.setContentType("application/json");
@@ -130,13 +148,14 @@ public class ControllerArticulo extends HttpServlet {
         try {
             result = daoModelArticulo.ListAll();
             while (result.next()) {
-                String[] arreglo = new String[6];
+                String[] arreglo = new String[7];
                 arreglo[0] = result.getString("idArticulo").trim();
                 arreglo[1] = result.getString("nombreCategoriaArticulo").trim();
                 arreglo[2] = result.getString("descripcionArticulo").trim();
                 arreglo[3] = result.getString("cantidadDisponible").trim();
-                arreglo[4] = result.getString("precioUnitario").trim();
-                arreglo[5] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"articulo.editar(" + contador + ")\">\n"
+                arreglo[4] = result.getString("precioCompra").trim();
+                arreglo[5] = result.getString("precioVenta").trim();
+                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"articulo.editar(" + contador + ")\">\n"
                         + "                                                <span class=\"glyphicon glyphicon-pencil\"></span></a>";
                 lista.add(arreglo);
                 contador++;

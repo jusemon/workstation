@@ -6,12 +6,10 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@include file="WEB-INF/jspf/superior.jspf" %>
-
+<%@include file="WEB-INF/jspf/header.jspf" %>
 <!--
 Este contenedor tiene el contenido de la pagina, en este caso un carrusel que pasa productos de Stellarte Decoracion
 -->
-
 <div class="container-fluid">
     <div class="row col-md-10 col-md-offset-2">
         <div id="ejemplo_carrusel" class="carousel slide thumbnail col-md-10 " style="margin: 0 auto">
@@ -58,4 +56,4 @@ Este contenedor tiene el contenido de la pagina, en este caso un carrusel que pa
         </div>    
     </div>
 </div>
-<%@include file="WEB-INF/jspf/imports.jspf" %>
+<%@include file="WEB-INF/jspf/footer.jspf" %>

@@ -26,6 +26,7 @@ function habilitar(miForm) {
         if (type == 'checkbox' || type == 'radio' || tag == 'select')
             this.disabled = false;
         else
+            this.disabled = false;
             this.readOnly = false;
     });
 }

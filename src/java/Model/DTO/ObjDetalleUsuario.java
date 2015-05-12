@@ -12,6 +12,7 @@ public class ObjDetalleUsuario {
     private String telefonoFijo;
     private String telefonoMovil;
     private int generoUsuario;
+    private int estadoBeneficiario;
 
     public int getIdDetalleUsuario() {
         return idDetalleUsuario;
@@ -51,6 +52,14 @@ public class ObjDetalleUsuario {
 
     public void setGeneroUsuario(int generoUsuario) {
         this.generoUsuario = generoUsuario;
+    }
+
+    public int getEstadoBeneficiario() {
+        return estadoBeneficiario;
+    }
+
+    public void setEstadoBeneficiario(int estadoBeneficiario) {
+        this.estadoBeneficiario = estadoBeneficiario;
     }
 
 }//end ObjDetalleUsuario

@@ -5,7 +5,7 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@include file="WEB-INF/jspf/superior.jspf" %>
+<%@include file="WEB-INF/jspf/header.jspf" %>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4">
@@ -23,7 +23,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <input class="btn btn-default btn-block" type="button" onclick="articulo.registrar()" value="Registrar Artículo">
+                                        <input class="btn btn-default btn-block" type="button" onclick="articulo.myAjax('ConsultarCodigo')" value="Registrar Artículo">
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +59,8 @@
                                 <th class="text-center">Categoría</th>
                                 <th class="text-center">Descripción</th>
                                 <th class="text-center">Cantidad</th>                                        
-                                <th class="text-center">Precio</th>
+                                <th class="text-center">Precio Compra</th>
+                                <th class="text-center">Precio Venta</th>
                                 <th class="text-center">Editar</th>
                             </tr>
                         </thead>
@@ -79,165 +80,6 @@
                         <tbody> 
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal" id="miPopupArticulo">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form id="formArticulo" action="ControllerArticulo" method="POST">
-                            <div class="panel">
-                                <div class="panel-body">
-                                    <div class="panel-heading estilo2">
-                                        <h3 class="panel-title">
-                                            Registrar Articulo
-                                            <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
-                                        </h3>
-                                    </div>
-                                    <input type="hidden" name="idArticulo" id="idArticulo"/>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txtCodigoArticulo">
-                                                    Código Artículo:
-                                                </label>
-                                                <input name="txtCodigo" id="txtCodigo" type="number" class="form-control" placeholder="Ejm: 20000" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="idCategoria">
-                                                    Categoría:
-                                                </label>
-                                                <select name="idCategoria" id="idCategoriaArticulo" class="form-control" required>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>                                      
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txtDescripcionArticulo">
-                                                    Descripción Artículo:
-                                                </label>
-                                                <!-- <input name="txtDescripcionArticulo" id="txtDescripcionArticulo"type="text" class="form-control" placeholder="Ejm: Vinilo Rojo" required>-->
-                                                <input name="txtDescripcionArticulo" id="txtDescripcionArticulo" type="search" class="form-control input-sm" placeholder="" aria-controls="tblArticulo">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txtPrecio">
-                                                    Cantidad:
-                                                </label>
-                                                <input name="txtCantidad" id="txtCantidad" type="number" class="form-control" placeholder="Ejm: 10000" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txtPrecio">
-                                                    Precio Unidad de compra:
-                                                </label>
-                                                <input name="txtPrecioArticulo" id="txtPrecioArticulo" type="number" class="form-control" placeholder="Ejm: 10000" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txtPvp">
-                                                    Precio Unidad de Venta:
-                                                </label>
-                                                <input name="txtPvp" id="txtPvp" type="number" class="form-control" placeholder="Ejm: 30" required>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                                <div class="panel-footer">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input id="btnArticulo"  class="btn btn-default btn-block" onclick="articulo.myAjax($('#btnArticulo').val())" type="submit" name="action">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">  
-                                            <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--        <div class="panel">
-                                     <div class="panel-heading estilo2">
-                                         <h3 class="panel-title">
-                                             <label id="titulo"></label>
-                                             <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                                         </h3>
-                                     </div>
-                                  <div class="panel-body"> 
-                                               <input type="hidden" name="idArticulo" id="idArticulo"/>
-                                               <div class="row">
-                                                   <div class="col-md-12">
-                                                       <div class="form-group">
-                                                           <label for="txtNombreArticulo">
-                                                               Descripción Artículo:
-                                                           </label>
-                                                           <input name="txtDescripcion" id="txtNombreArticulo" type="text" pattern="[áéíóúÁÉÍÓÚñÑ.,:'&quot;0-9a-zA-Z ]{3,30}" class="form-control" title="Entre 3 y 30 letras, se permiten numeros y algunos caracteres como , y ."  placeholder="Ejm: Vinilo Rojo" required>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                                               <div class="row">
-                                                   <div class="col-md-12">
-                                                       <div class="form-group">
-                                                           <label for="txtPrecio">
-                                                               Precio:
-                                                           </label>
-                                                           <input name="txtPrecio" id="txtPrecioArticulo" type="number" min="1" max="10000000" class="form-control" placeholder="Ejm: 10000" required>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                                               <div class="row">
-                                                   <div class="col-md-12">
-                                                       <div class="form-group">
-                                                           <label for="txtCantidad">
-                                                               Cantidad disponible:
-                                                           </label>
-                                                           <input name="txtCantidad" id="txtCantidadArticulo" type="number" min="0" max="1000" class="form-control" placeholder="Ejm: 30" required>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                                               <div class="row">
-                                                   <div class="col-md-12">
-                                                       <div class="form-group">
-                                                           <label for="idCategoria">
-                                                               Categoría:
-                                                           </label>
-                                                           <select name="idCategoria" id="idCategoriaArticulo" class="form-control" required>
-                                                           </select>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                                           </div>
-                                           <div class="panel-footer">
-                                               <div class="col-md-offset-3 col-md-6">
-                                                   <div class="form-group">
-                                                       <input id="btnArticulo"  class="btn btn-default btn-block" onclick="articulo.myAjax($('#btnArticulo').val())" type="submit" name="action">
-                                                   </div>
-                                               </div>
-                                           </div>
-                                       </div> -->
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
@@ -286,4 +128,4 @@
         </div>
     </div>
 </div>
-<%@include file="WEB-INF/jspf/imports.jspf" %>
+<%@include file="WEB-INF/jspf/footer.jspf" %>
