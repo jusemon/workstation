@@ -1,6 +1,6 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
-<!--Emergete de Estudiante -->
+<!-- Emergete de Estudiante -->
 <div class="modal" id="miPopupUsuario">
     <div class="modal-dialog ">
         <div class="modal-content">
@@ -106,90 +106,107 @@
         </div>
     </div>
 </div>
-<!--Emergete Articulo -->
-<div class="modal" id="miPopupArticulo">
+
+<!-- Emergente para registrar los cursos y seminarios -->
+<div class="modal" id="miPopupCurso">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
-                        <form id="formArticulo" action="ControllerArticulo" method="POST">
+                    <div class="col-md-12">                               
+                        <form id="formCurso" action="ControllerCurso" method="POST">
                             <div class="panel">
+                                <div class="panel-heading estilo2">
+                                    <h3 class="panel-title">
+                                        <label id="titulo"></label>
+                                        <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                    </h3>
+                                </div>
                                 <div class="panel-body">
-                                    <div class="panel-heading estilo2">
-                                        <h3 class="panel-title">
-                                            Registrar Articulo
-                                            <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
-                                        </h3>
-                                    </div>
-                                    <input type="hidden" name="idArticulo" id="idArticulo"/>
-                                    <div class="row">
+                                    <input type="hidden" name="idCurso" id="idCurso"/>
+                                    <input type="hidden" name="tipo" id="tipo"/>
+                                    <input type="hidden" name="aux" id="aux"/>
+                                    <div class="row" id="ContenedorCategoria">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="idCategoria">
-                                                    Categoría:
+                                                <label for="ddlCategoria"> 
+                                                    Categoría
                                                 </label>
-                                                <select name="idCategoria" id="idCategoriaArticulo" class="form-control" required>
+                                                <select name="ddlCategoria" id="ddlCategoria" class="form-control" required>
                                                 </select>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="txtCodigoArticulo">
-                                                    Código Artículo:
+                                                <label for="txtNombre">
+                                                    Nombre
                                                 </label>
-                                                <input name="txtCodigo" id="txtCodigo" type="number" class="form-control" placeholder="Ejm: 20000" required>
+                                                <input name="txtNombre" id="txtNombreCurso" type="text" class="form-control" pattern="[ÁÉÍÓÚáéíóúañÑ-zA-Z ]{3,15}" title="Entre 3 y 15 letras y no se permiten numeros" placeholder="Ejm: Oleo" required>
                                             </div>
                                         </div>
-                                    </div> 
-                                    <div class="row"> 
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="txtDescripcion">
-                                                    Descripción Artículo:
+                                                    Descripción
                                                 </label>
-                                                <input name="txtDescripcion" id="txtDescripcion" type="text" pattern="[áéíóúÁÉÍÓÚñÑ.,:'&quot;0-9a-zA-Z ]{3,30}" class="form-control" title="Entre 3 y 30 letras, se permiten numeros y algunos caracteres como , y ."  placeholder="Ejm: Vinilo Rojo" required>                                     
+                                                <textarea rows="2" name="txtDescripcion" id="txtDescripcionCurso"  class="form-control" pattern="{3,100}" title="Entre 3 y 100 letras" placeholder="Ejm: El oleo es un curso dedicado al..." required></textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="txtPrecioCompra">
-                                                    Precio Compra:
+                                                <label for="txtPrecio">
+                                                    Precio
                                                 </label>
-                                                <input name="txtPrecioCompra" id="txtPrecioCompra" type="number" min="1" max="10000000" class="form-control" placeholder="Ejm: 10000" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="txtPrecioVenta">
-                                                    Precio Venta:
-                                                </label>
-                                                <input name="txtPrecioVenta" id="txtPrecioVenta" type="number" min="1" max="10000000" class="form-control" placeholder="Ejm: 10000" required>
+                                                <input name="txtPrecio" id="txtPrecio" type="number" min="5000" max="300000" class="form-control" placeholder="Ejm: 100000" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="txtCantidad">
-                                                    Cantidad disponible:
+                                                <label for="txtCantidadClases">
+                                                    Cantidad de Clases
                                                 </label>
-                                                <input name="txtCantidad" id="txtCantidadArticulo" type="number" min="0" max="1000" class="form-control" placeholder="Ejm: 30" required>
+                                                <input name="txtCantidadClases" id="txtCantidadClases" type="number" min="1" max="30" class="form-control" placeholder="Ejm: 10" required>
                                             </div>
                                         </div>
-                                    </div>                       
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtCantidadHoras">
+                                                    Cantidad de Horas (Por clase)
+                                                </label>
+                                                <input name="txtCantidadHoras" id="txtCantidadHoras" type="number" min="1" max="12" class="form-control" placeholder="Ejm: 10" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="ddlEstado">
+                                                    Estado
+                                                </label>
+                                                <select name="ddlEstado" id="ddlEstado" class="form-control" required>
+                                                    <option value="1">Activo</option>
+                                                    <option value="0">Inactivo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="panel-footer">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input id="btnArticulo"  class="btn btn-default btn-block" onclick="articulo.myAjax($('#btnArticulo').val())" type="submit" name="action">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">  
-                                            <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cancelar">
+                                    <div class="row">
+                                        <div class="col-md-offset-3 col-md-6">
+                                            <div class="form-group">
+                                                <input class="btn btn-default btn-block" id="btnCurso" type="submit" name="action" onclick="curso.myAjax($('#btnCurso').val())">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

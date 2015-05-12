@@ -45,3 +45,18 @@ function desabilitar(miForm) {
 function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
+var $contenedor = $('#contenedor').html();
+var $otroContenedor = $('#otroContenedor').html();
+function cambiarPantalla() {
+    if ($('#contenedor').data('tipo') == 'tablas') {
+        $('#contenedor').empty();
+        $('#contenedor').append($otroContenedor);
+        $('#contenedor').data('tipo', 'compra');
+    }
+    else if ($('#contenedor').data('tipo') == 'compra') {
+        $('#contenedor').empty();
+        $('#contenedor').append($contenedor);
+        $('#contenedor').data('tipo', 'tablas');
+        compra.cargar();
+    }
+}

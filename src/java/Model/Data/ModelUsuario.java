@@ -28,7 +28,7 @@ public class ModelUsuario extends ConnectionDB {
         boolean objReturn = false;
         String sql = "call spIngresarUsuario (?,?,?,?,?,?,?,?)";
         try {
-            pStmt = connection.prepareStatement(sql);
+            pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objUsuario.getDocumentoUsuario());
             pStmt.setDate(2, Date.valueOf(_objUsuario.getFechaNacimiento()));
             pStmt.setString(3, _objUsuario.getNombreUsuario());
@@ -37,46 +37,55 @@ public class ModelUsuario extends ConnectionDB {
             pStmt.setString(6, _objUsuario.getPassword());
             pStmt.setInt(7, _objUsuario.getEstadoUsuario());
             pStmt.setInt(8, _objUsuario.getIdrol());
-            
+
             int updateCount = pStmt.executeUpdate();
-            if (updateCount>0) {
-                objReturn= true;
+            if (updateCount > 0) {
+                objReturn = true;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return objReturn;
     }
-    
-    public ResultSet ListAll() throws Exception{
-        ResultSet rs= null;
+
+    public ResultSet ListAll() throws Exception {
+        ResultSet rs = null;
         String sql = "SELECT `documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente` FROM `tblusuario` ";
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
         } catch (SQLException e) {
-            System.err.println("SQLException: "+e.getMessage());
+            System.err.println("SQLException: " + e.getMessage());
         }
         return rs;
     }
-    
+
     //Busca el usuario en la base de datos segun su nombre  de usuario y contraseña
-    public ResultSet Find (ObjUsuario _objUsuario){
-    ResultSet rs = null;
-    String query = "SELECT `documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente` FROM `tblusuario`  WHERE `emailUsuario` = '%s' and `password` = '%s'";
-    String sql = String.format(query, _objUsuario.getEmailUsuario(), _objUsuario.getPassword());
+    public ResultSet Find(ObjUsuario _objUsuario) {
+        ResultSet rs = null;
+        String sql = "call spConsultarUsuarioPorPassYCorreo (?,?)";
         try {
-            getStmt();
-            rs = stmt.executeQuery(sql);
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, _objUsuario.getEmailUsuario());
+            pStmt.setString(2, _objUsuario.getPassword());
+            rs = pStmt.executeQuery();
         } catch (SQLException e) {
-            System.err.println("SQLException: "+e.getMessage());
+            System.err.println("SQLException: " + e.getMessage());
         }
-        return  rs;
+        return rs;
     }
 
     public ResultSet buscarPorID(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ResultSet rs = null;
+        String sql = "call spConsultarUsuarioPorID(?)";
+
+        try {
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, id);
+            rs = pStmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("SQLException: " + e.getMessage());
+        }
+        return rs;
     }
-    
-    
 }
