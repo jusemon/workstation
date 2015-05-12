@@ -13,14 +13,14 @@ $('.fecha').datepicker({
 var tablaCurso, tablaCategoriaCurso, tablaClases, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaUsuario;
 
 var curso = {
-    myAjax: function (accion, id, aux) {
+    myAjax: function (accion, id, aux, typo) {
         var form = $('#formCurso');
         $(form).off();
         $(form).on('submit', function () {
             $.ajax({
                 type: $(form).attr('method'),
                 url: $(form).attr('action'),
-                data: $(form).serialize() + '&action=' + accion + '&id=' + id,
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id  + '&type=' + typo,
                 success: function (data) {
                     if (accion == 'Consultar') {
                         if (aux == 'Editar') {
@@ -121,7 +121,7 @@ var curso = {
                             + '<label id="horas">' + data[i]['horasPorClase'] + '</label>'
                             + '</div>'
                             + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.myAjax(\'Consultar\', ' + data[i]['idCurso'] + ', , \'Curso\')">Preinscribirse</a>'
+                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.myAjax(\'Consultar\', ' + data[i]['idCurso'] + ',\'Preinscripcion\', \'Curso\')">Preinscribirse</a>'
                             + '</div>'
                             + '</div>'
                             + '</div>'
