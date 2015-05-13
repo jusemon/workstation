@@ -8,23 +8,23 @@
 <%@include file="WEB-INF/jspf/header.jspf" %>
 
 <!--
-Este contenedor tiene el contenido de la pagina, en este caso un accordion que contendr� 
-un par de paneles, uno para la gesti�n de Compras, otro para la gestion de Ventas.
+Este contenedor tiene el contenido de la pagina, en este caso un accordion que contendrá 
+un par de paneles, uno para la gestión de Compras, otro para la gestion de Ventas.
 -->
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
             <div class="panel-group" id="accordion">
-                <!--Gesti�n de Compras-->
+                <!--Gestión de Compras-->
                 <div class="panel panel-default">
                     <!--
-                    Aqui el bot�n que desplegara la gestion de Compras
+                    Aqui el botón que desplegara la gestion de Compras
                     -->
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a  data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                Gesti�n de Compras 
+                                Gestión de Compras 
                             </a>
                         </h4>
                     </div>
@@ -45,15 +45,15 @@ un par de paneles, uno para la gesti�n de Compras, otro para la gestion de Ven
                         </div>
                     </div>
                 </div>
-                <!--Gesti�n de Ventas-->
+                <!--Gestión de Ventas-->
                 <div class="panel panel-default">
                     <!--
-                    Aqui el boton que desplegara la gesti�n Ventas
+                    Aqui el boton que desplegara la gestión Ventas
                     -->
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                Gesti�n de Ventas
+                                Gestión de Ventas
                             </a>
                         </h4>
                     </div>
@@ -82,21 +82,21 @@ un par de paneles, uno para la gesti�n de Compras, otro para la gestion de Ven
                         </div>
                     </div>
                 </div>
-                <!--Gesti�n de Abonos-->
+                <!--Gestión de Abonos-->
                 <div class="panel panel-default">
                     <!--
-                    Aqu� el bot�n que desplegar� la gesti�n de Abonos
+                    Aquí el botón que desplegará la gestión de Abonos
                     -->
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                                Gesti�n de Abonos
+                                Gestión de Abonos
                             </a>
                         </h4>
                     </div>
                     <!--
-                    Aqu� el contenido de la gesti�n de abonos, en este caso habr� un bot�n para registrar un abono
-                    y otro para consultar abonos por cr�dito
+                    Aquí el contenido de la gestión de abonos, en este caso habrá un botón para registrar un abono
+                    y otro para consultar abonos por crédito
                     -->                              
                     <div id="collapseThree" class="panel-collapse collapse">
                         <div class="panel-body">
@@ -111,7 +111,7 @@ un par de paneles, uno para la gesti�n de Compras, otro para la gestion de Ven
                                 <div class="col-md-12">
                                     <div class="panel-group" id="accordion2">
                                         <div class="panel panel-default">
-                                            <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Abono por cr�dito" data-parent="#accordion2" href="#collapseConsultaAbono"/>                                                           
+                                            <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Abono por crédito" data-parent="#accordion2" href="#collapseConsultaAbono"/>                                                           
                                         </div>
                                     </div>
                                     <div class="panel-collapse collapse" id="collapseConsultaAbono">
@@ -121,7 +121,7 @@ un par de paneles, uno para la gesti�n de Compras, otro para la gestion de Ven
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label for="txtIdCredito">
-                                                                Id. del Cr�dito
+                                                                Id. del Crédito
                                                             </label>
                                                             <input name="txtIdCredito" id="txtIdCredito" type="text" class="form-control" placeholder="Ej: 12345" required>
                                                         </div>
@@ -147,17 +147,17 @@ un par de paneles, uno para la gesti�n de Compras, otro para la gestion de Ven
                 <!-- Gestion de Diario de Caja-->
                 <div class="panel panel-default">
                     <!--
-                    Aqu� el bot�n que desplegara la gesti�n Diario de Caja
+                    Aquí el botón que desplegara la gestión Diario de Caja
                     -->
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-                                Gesti�n de Diario de Caja
+                                Gestión de Diario de Caja
                             </a>
                         </h4>
                     </div>
                     <!--
-                    Aqu� el contenido de la gesti�n de Diario de Caja, en este caso un boton para registrar  Movimientos diarios
+                    Aquí el contenido de la gestión de Diario de Caja, en este caso un boton para registrar  Movimientos diarios
                     
                     -->                              
                     <div id="collapseFour" class="panel-collapse collapse">
@@ -212,7 +212,7 @@ un par de paneles, uno para la gesti�n de Compras, otro para la gestion de Ven
                     <table id="tblVentas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th class="text-center">N�mero Venta</th>
+                                <th class="text-center">Número Venta</th>
                                 <th class="text-center">Fecha</th>
                                 <th class="text-center">Cod Cliente</th>
                                 <th class="text-center">Nombre Cliente</th>
@@ -238,7 +238,7 @@ un par de paneles, uno para la gesti�n de Compras, otro para la gestion de Ven
                         <thead>
                             <tr>
                                 <th class="text-center">Id. Abono</th>
-                                <th class="text-center">Id. Cr�dito</th>
+                                <th class="text-center">Id. Crédito</th>
                                 <th class="text-center">Valor Abono ($)</th>                                
                                 <th class="text-center">Fecha Pago</th>                                        
                             </tr>
@@ -251,7 +251,7 @@ un par de paneles, uno para la gesti�n de Compras, otro para la gestion de Ven
                     <table id="tblDiario" class="table table-hover tabla" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th class="text-center">C�digo</th>
+                                <th class="text-center">Código</th>
                                 <th class="text-center">Total Compras</th>
                                 <th class="text-center">Total Ventas</th>
                                 <th class="text-center">Fecha</th>
@@ -282,7 +282,7 @@ un par de paneles, uno para la gesti�n de Compras, otro para la gestion de Ven
 Los Popup son ventanas emergentes que estan formadas por la clase modal, a su vez esta clase
 tiene categorias, en este caso este es un modal-dialog que permite ingresar informacion al usuario
 el modal tiene un contenido que es el modal-content y este contenido esta separado por una cabeza (modal-header)
-un cuerpo (modal-body) y un pie (modal-footer), en mi caso solo le puse el cuerpo y dentro de el puse el panel con la informaci�n
+un cuerpo (modal-body) y un pie (modal-footer), en mi caso solo le puse el cuerpo y dentro de el puse el panel con la información
 referente al detalle de la compra
 
 El panel que se encuentra en el Popup Detalle compra, esta dividido en cabeza cuerpo y pie, la capeza a su vez tiene un titulo.
@@ -311,7 +311,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="txtNumero">
-                                                        C�digo Cliente:
+                                                        Código Cliente:
                                                     </label>
                                                     <input name="txtNumero" id="txtNumero" type="text" class="form-control" placeholder="00001" required>
                                                 </div>
@@ -340,14 +340,14 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupRegistrar" data-dismiss="modal" name="regVenta" value="Registrar Art�culo">
+                                                    <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupRegistrar" data-dismiss="modal" name="regVenta" value="Registrar Artículo">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="L�neas de detalle">
-                                                    L�neas de detalle
+                                                <label for="Líneas de detalle">
+                                                    Líneas de detalle
                                                 </label>
                                             </div>
                                         </div>
@@ -356,8 +356,8 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                     <table id="tblArticulosVenta" class="table table-hover" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th class="text-center">C�digo</th>
-                                                <th class="text-center">Art�culo</th>
+                                                <th class="text-center">Código</th>
+                                                <th class="text-center">Artículo</th>
                                                 <th class="text-center">Cantidad</th>
                                                 <th class="text_center">Precio Unidad</th>
                                                 <th class="text_center">Descuento</th>
@@ -420,12 +420,11 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
                                     </h3>
                                 </div>
                                 <div class="panel-body">
-
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="txtIdCredito">
-                                                    Id. del cr�dito
+                                                    Id. del crédito
                                                 </label>
                                                 <input name="txtIdCredito" id="txtIdCredito" type="text" class="form-control" placeholder="Ej: 0001" required>
                                             </div>
@@ -468,4 +467,23 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
     </div>
 </div>
 
+
+<div class="hidden">
+    <div id="compras" class="row">
+        <div class="col-md-12 panel">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <label id='titulo'>Registrar Compra</label>
+                </div>
+            </div>
+            <div class="panel-body">
+
+            </div>
+
+            <div class="panel-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
 <%@include file="WEB-INF/jspf/footer.jspf" %>

@@ -46,7 +46,7 @@ function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
 var $contenedor = $('#contenedor').html();
-var $otroContenedor = $('#otroContenedor').html();
+var $otroContenedor = $('#compras').html();
 function cambiarPantalla() {
     if ($('#contenedor').data('tipo') == 'tablas') {
         $('#contenedor').empty();
