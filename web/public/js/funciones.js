@@ -27,7 +27,7 @@ function habilitar(miForm) {
             this.disabled = false;
         else
             this.disabled = false;
-            this.readOnly = false;
+        this.readOnly = false;
     });
 }
 
@@ -45,9 +45,11 @@ function desabilitar(miForm) {
 function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
-var $contenedor = $('#contenedor').html();
+articulo.listarArticulos();
 var $otroContenedor = $('#compras').html();
+var $contenedor = $('#contenedor').html();
 function cambiarPantalla() {
+
     if ($('#contenedor').data('tipo') == 'tablas') {
         $('#contenedor').empty();
         $('#contenedor').append($otroContenedor);

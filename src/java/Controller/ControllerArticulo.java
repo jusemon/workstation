@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -122,6 +124,14 @@ public class ControllerArticulo extends HttpServlet {
                     }
                     //</editor-fold>
 
+                    case "getOptionsArticulos": {
+                        String resultado = getOptionsArticulos();
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write(resultado);
+                        break;
+                    }
+
                     //<editor-fold defaultstate="collapsed" desc="Enlistar todos los Articulos">
                     case "Enlistar": {
                         response.setContentType("application/json");
@@ -220,5 +230,25 @@ public class ControllerArticulo extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String getOptionsArticulos() {
+        ResultSet result = null;
+        List<Map> salida = new ArrayList<>();
+        Map <String, String> articulo = null;
+        try {
+            result =  daoModelArticulo.ListAll();
+            while (result.next()) {
+                articulo = new LinkedHashMap<>();
+                articulo.put("id", result.getString("idArticulo"));
+                articulo.put("text", result.getString("descripcionArticulo"));
+                salida.add(articulo);
+                
+            }
+        } catch (Exception ex) {
+           
+        }
+        String respuesta = new Gson().toJson(salida);
+        return respuesta;
+    }
 
 }
