@@ -174,103 +174,196 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                 </div>
             </div>
         </div>
+        <div id="contenedor" class="col-md-9">
+            <div class="tab-content" id="contenidoDinamico">
+                <div class="tab-pane active" id="tabListas">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active">
+                            <a href="#compra" role="tab" data-toggle="tab">Listado de Compras</a>
+                        </li>
+                        <li>
+                            <a href="#ventas" role="tab" data-toggle="tab">Listado de Ventas</a>
+                        </li>
+                        <li>
+                            <a href="#abonos" role="tab" data-toggle="tab">Listado de Abonos</a>                            
+                        </li>                            
+                        <li>
+                            <a href="#diario" role="tab" data-toggle="tab">Diario de caja</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="compra">
+                            <table id="tblCompra" class="table table-responsive table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Factura Proveedor</th>
+                                        <th class="text-center">Nombre Proveedor</th>
+                                        <th class="text-center">Fecha de Compra</th>
+                                        <th class="text-center">Total Compra</th>
+                                        <th class="text-center">Editar</th>
 
-        <div data-tipo="tablas" id="contenedor" class="col-md-9">
-            <ul class="nav nav-tabs" role="tablist">
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="ventas">
+                            <table id="tblVentas" class="table table-responsive table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Número Venta</th>
+                                        <th class="text-center">Fecha</th>
+                                        <th class="text-center">Cod Cliente</th>
+                                        <th class="text-center">Nombre Cliente</th>
+                                        <th class="text-center">Total </th>                                
+                                        <th class="text-center">Consultar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">0001</td>
+                                        <td class="text-center">21/11/2014</td>
+                                        <td class="text-center">0001</td>
+                                        <td class="text-center">Manolo</td>
+                                        <td class="text-center">56000</td>
+                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)"> <span class="glyphicon glyphicon-search"></span></a>
+                                        </td>  
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="abonos">
+                            <table id="tblAbono" class="table table-responsive table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Id. Abono</th>
+                                        <th class="text-center">Id. Crédito</th>
+                                        <th class="text-center">Valor Abono ($)</th>                                
+                                        <th class="text-center">Fecha Pago</th>                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="diario">
+                            <table id="tblDiario" class="table table-hover tabla" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Código</th>
+                                        <th class="text-center">Total Compras</th>
+                                        <th class="text-center">Total Ventas</th>
+                                        <th class="text-center">Fecha</th>
+                                        <th class="text-center">Total </th>                                
+                                        <th class="text-center">Consultar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">0001</td>
+                                        <td class="text-center">10000</td>
+                                        <td class="text-center">30000</td>
+                                        <td class="text-center">21/11/2014</td>
+                                        <td class="text-center">30000</td>
+                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupBusqueda" href="javascript:void(0)">                                                <span class="glyphicon glyphicon-search"></span></a>
+                                        </td>  
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="tabCompras">
+                    <div id="compras" class="row">
+                        <div class="col-md-12 panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <label id='titulo'>Registrar Compra</label>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="txtNombre">
+                                                        Nombre del Proveedor
+                                                    </label>
+                                                    <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="txtNnumeroFactura">
+                                                        Numero de Factura
+                                                    </label>
+                                                    <input name="txtNnumeroFactura" id="txtNnumeroFactura" type="text" class="form-control" placeholder="" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="ddlArticulos">
+                                                        Articulos:
+                                                    </label>
+                                                    <select class="form-group" id="ddlArticulos" onchange="articulo.seleccionar($('#ddlArticulos').val())">
 
-                <li class="active">
-                    <a href="#compra" role="tab" data-toggle="tab">Listado de Compras</a>
-                </li>
-                <li>
-                    <a href="#ventas" role="tab" data-toggle="tab">Listado de Ventas</a>
-                </li>
-                <li>
-                    <a href="#abonos" role="tab" data-toggle="tab">Listado de Abonos</a>                            
-                </li>                            
-                <li>
-                    <a href="#diario" role="tab" data-toggle="tab">Diario de caja</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="compra">
-                    <table id="tblCompra" class="table table-responsive table-hover" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Factura Proveedor</th>
-                                <th class="text-center">Nombre Proveedor</th>
-                                <th class="text-center">Fecha de Compra</th>
-                                <th class="text-center">Total Compra</th>
-                                <th class="text-center">Editar</th>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-md-offset-9 col-md-3">
+                                                <div class="form-group">
+                                                    <label for="txtNnumeroFactura">
+                                                        Fecha: 13/05/2015
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 table-responsive">
+                                                <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+                                                    <thead>
+                                                        <tr >
+                                                            <th class="text-center">
+                                                                Id
+                                                            </th>
+                                                            <th class="text-center">
+                                                                Nombre
+                                                            </th>
+                                                            <th class="text-center">
+                                                                Cantidad
+                                                            </th>
+                                                            <th class="text-center">
+                                                                Valor
+                                                            </th>
+                                                            <th class="text-center" style="border-top: 1px solid #ffffff; border-right: 1px solid #ffffff;">
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tbodyCompra"> 
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="tab-pane" id="ventas">
-                    <table id="tblVentas" class="table table-responsive table-hover" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Número Venta</th>
-                                <th class="text-center">Fecha</th>
-                                <th class="text-center">Cod Cliente</th>
-                                <th class="text-center">Nombre Cliente</th>
-                                <th class="text-center">Total </th>                                
-                                <th class="text-center">Consultar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">0001</td>
-                                <td class="text-center">21/11/2014</td>
-                                <td class="text-center">0001</td>
-                                <td class="text-center">Manolo</td>
-                                <td class="text-center">56000</td>
-                                <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)"> <span class="glyphicon glyphicon-search"></span></a>
-                                </td>  
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="tab-pane" id="abonos">
-                    <table id="tblAbono" class="table table-responsive table-hover" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Id. Abono</th>
-                                <th class="text-center">Id. Crédito</th>
-                                <th class="text-center">Valor Abono ($)</th>                                
-                                <th class="text-center">Fecha Pago</th>                                        
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="tab-pane" id="diario">
-                    <table id="tblDiario" class="table table-hover tabla" cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Código</th>
-                                <th class="text-center">Total Compras</th>
-                                <th class="text-center">Total Ventas</th>
-                                <th class="text-center">Fecha</th>
-                                <th class="text-center">Total </th>                                
-                                <th class="text-center">Consultar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">0001</td>
-                                <td class="text-center">10000</td>
-                                <td class="text-center">30000</td>
-                                <td class="text-center">21/11/2014</td>
-                                <td class="text-center">30000</td>
-                                <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupBusqueda" href="javascript:void(0)">                                                <span class="glyphicon glyphicon-search"></span></a>
-                                </td>  
-                            </tr>
-                        </tbody>
-                    </table>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-footer">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -467,118 +560,4 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
     </div>
 </div>
 
-
-<div class="hidden">
-    <div id="compras" class="row">
-        <div class="col-md-12 panel panel-default">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    <label id='titulo'>Registrar Compra</label>
-                </div>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="txtNombre">
-                                        Nombre del Proveedor
-                                    </label>
-                                    <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="txtNnumeroFactura">
-                                        Numero de Factura
-                                    </label>
-                                    <input name="txtNnumeroFactura" id="txtNnumeroFactura" type="text" class="form-control" placeholder="" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="ddlArticulos">
-                                        Articulos:
-                                    </label>
-                                    <select class="form-group" id="ddlArticulos">
-
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="row">
-                            <div class="col-md-offset-9 col-md-3">
-                                <div class="form-group">
-                                    <label for="txtNnumeroFactura">
-                                        Fecha: 13/05/2015
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 table-responsive">
-                                <table class="table table-bordered table-hover table-sortable" id="tab_logic">
-                                    <thead>
-                                        <tr >
-                                            <th class="text-center">
-                                                Id
-                                            </th>
-                                            <th class="text-center">
-                                                Nombre
-                                            </th>
-                                            <th class="text-center">
-                                                Cantidad
-                                            </th>
-                                            <th class="text-center">
-                                                Valor
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr id='addr0' data-id="0" class="hidden">
-                                            <td data-name="name">
-                                                <input type="text" name='name0'  placeholder='Name' class="form-control"/>
-                                            </td>
-                                            <td data-name="mail">
-                                                <input type="text" name='mail0' placeholder='Email' class="form-control"/>
-                                            </td>
-                                            <td data-name="desc">
-                                                <textarea name="desc0" placeholder="Description" class="form-control"></textarea>
-                                            </td>
-                                            <td data-name="notes">
-                                                <textarea name="notes0" placeholder="Description" class="form-control"></textarea>
-                                            </td>
-                                            <td data-name="sel">
-                                                <select name="sel0">
-                                                    <option value"">Select Option</option>
-                                                    <option value"1">Option 1</option>
-                                                    <option value"2">Option 2</option>
-                                                    <option value"3">Option 3</option>
-                                                </select>
-                                            </td>
-                                            <td data-name="del">
-                                                <button nam"del0" class='btn btn-danger glyphicon glyphicon-remove row-remove'></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel-footer">
-
-            </div>
-        </div>
-    </div>
-</div>
 <%@include file="WEB-INF/jspf/footer.jspf" %>

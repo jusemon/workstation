@@ -70,6 +70,7 @@ public class ConnectionDB {
         try {
             stmt.close();
             connection.close();
+            System.out.println("Desconectado");
         } catch (SQLException e) {
             errorString = "Ha ocurrido un error inesperado al desconectarse de la base de datos.";
             System.out.println(errorString);

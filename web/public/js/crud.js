@@ -929,6 +929,45 @@ var articulo = {
         $('#miPopupArticulo').find('#btnArticulo').val('Editar');
         $('#miPopupArticulo').modal('show');
     },
+    seleccionar: function (id){
+        $.ajax({
+            type: 'POST',
+            url: "ControllerArticulo",
+            dataType: 'JSON',
+            data: {
+                action: 'Consultar',
+                id: id
+            },
+            success: function(data) {
+                var fila = '<tr>';
+                fila += '<td>'+data['idArticulo']+'</td>'
+                fila += '<td>'+data['descripcionArticulo']+'</td>'
+                fila += '<td>'+'<input type="number" id="cantidad" name="cantidad" min="1">'+'</td>'
+                fila += '<td>'+'<input type="number" id="valor" name="valor" min="50">'+'</td>'
+                fila += '<td>'+'<button class="btn btn-danger glyphicon glyphicon-remove row-remove"></button>'+'</td>'
+                fila += '</tr>';
+                $('#tbodyCompra').append(fila);
+                /**
+                 *                                                         <tr id='addr0' data-id="0" class="hidden">
+                                                            <td data-name="idArticulo">
+                                                                
+                                                            </td>
+                                                            <td data-name="descripcionArticulo">
+                                                                
+                                                            </td>
+                                                            <td data-name="cantidadArticulo">
+                                                                <input type="number" id="cantidad" name="cantidad" min="1">
+                                                            </td>
+                                                            <td data-name="valorArticulo">
+                                                                <input type="number" id="valor" name="valor" min="50">
+                                                            </td>
+                                                        </tr>
+                 * @returns {undefined}
+                 */
+            }
+            
+        });
+    },
     cargar: function () {
         tablaArticulo = $('#tblArticulos').DataTable({
             "ajax": {
@@ -956,7 +995,6 @@ var articulo = {
                 $("#ddlArticulos").select2({
                     data: data,
                     language: "es"
-                          
                 });
             }
         });

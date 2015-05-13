@@ -116,4 +116,19 @@ public class ModelArticulo extends ConnectionDB {
         return rs;
     }
 
+    public ResultSet consultarPorID(int id) {
+        ResultSet rs = null;
+        String sql = "call spConsultarArticuloPorID(?)";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, id);
+            rs = pStmt.executeQuery();
+                    
+        } catch (Exception e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }
+
 }

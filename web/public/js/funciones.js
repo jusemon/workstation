@@ -5,7 +5,7 @@
  */
 
 function limpiar(miForm) {
-    $(':input', miForm).each(function () {
+    $(':input', miForm).each(function() {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
         if (type == 'text' || type == 'password' || tag == 'textarea' || type == 'number' || type == 'hidden' || type == 'date' || type == 'email')
@@ -20,7 +20,7 @@ function limpiar(miForm) {
 }
 
 function habilitar(miForm) {
-    $(':input', miForm).each(function () {
+    $(':input', miForm).each(function() {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
         if (type == 'checkbox' || type == 'radio' || tag == 'select')
@@ -32,7 +32,7 @@ function habilitar(miForm) {
 }
 
 function desabilitar(miForm) {
-    $(':input', miForm).each(function () {
+    $(':input', miForm).each(function() {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
         if (type == 'checkbox' || type == 'radio' || tag == 'select')
@@ -46,19 +46,12 @@ function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
 articulo.listarArticulos();
-var $otroContenedor = $('#compras').html();
-var $contenedor = $('#contenedor').html();
 function cambiarPantalla() {
-
-    if ($('#contenedor').data('tipo') == 'tablas') {
-        $('#contenedor').empty();
-        $('#contenedor').append($otroContenedor);
-        $('#contenedor').data('tipo', 'compra');
-    }
-    else if ($('#contenedor').data('tipo') == 'compra') {
-        $('#contenedor').empty();
-        $('#contenedor').append($contenedor);
-        $('#contenedor').data('tipo', 'tablas');
-        compra.cargar();
+    if ($('#tabListas').hasClass('active')) {
+        $('#tabListas').removeClass('active');
+        $('#tabCompras').addClass('active');
+    } else {
+        $('#tabListas').addClass('active');
+        $('#tabCompras').removeClass('active');
     }
 }
