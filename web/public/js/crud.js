@@ -929,28 +929,44 @@ var articulo = {
         $('#miPopupArticulo').find('#btnArticulo').val('Editar');
         $('#miPopupArticulo').modal('show');
     },
-    seleccionar: function (id){
-        $.ajax({
-            type: 'POST',
-            url: "ControllerArticulo",
-            dataType: 'JSON',
-            data: {
-                action: 'Consultar',
-                id: id
-            },
-            success: function(data) {
-                
-                var fila = '<tr>';
-                fila += '<td data-id="'+data['idArticulo']+'">'+data['idArticulo']+'</td>'
-                fila += '<td>'+data['descripcionArticulo']+'</td>'
-                fila += '<td>'+'<input type="number" id="cantidad" name="cantidad" min="1">'+'</td>'
-                fila += '<td>'+'<input type="number" id="valor" name="valor" min="50">'+'</td>'
-                fila += '<td>'+'<button class="btn btn-danger glyphicon glyphicon-remove row-remove"></button>'+'</td>'
-                fila += '</tr>';
-                $('#tbodyCompra').append(fila);
-                
+    seleccionar: function (id) {
+        var x = articulo.noExiste(id);
+        if (x) {
+            $.ajax({
+                type: 'POST',
+                url: "ControllerArticulo",
+                dataType: 'JSON',
+                data: {
+                    action: 'Consultar',
+                    id: id
+                },
+                success: function (data) {
+                    var fila = '<tr  data-id="' + data['idArticulo'] + '">';
+                    fila += '<td>' + data['idArticulo'] + '</td>'
+                    fila += '<td>' + data['descripcionArticulo'] + '</td>'
+                    fila += '<td>' + '<input type="number" id="cantidad" name="cantidad" min="1">' + '</td>'
+                    fila += '<td>' + '<input type="number" id="valor" name="valor" min="50">' + '</td>'
+                    fila += '<td>' + '<button class="btn btn-danger glyphicon glyphicon-remove row-remove" onclick="articulo.remover(' + data['idArticulo'] + ')"></button>' + '</td>'
+                    fila += '</tr>';
+                    $('#tablaDetalleCompra tbody').append(fila);
+                }
+            });
+        }
+    },
+    noExiste: function (id) {
+        var flag = true;
+        $('#tablaDetalleCompra tbody tr').each(function () {
+            if ($(this).data('id') == id) {
+                flag = false;
             }
-            
+        });
+        return flag;
+    },
+    remover: function (id) {
+        $('#tablaDetalleCompra tbody tr').each(function () {
+            if ($(this).data('id') == id) {
+                $(this).remove();
+            }
         });
     },
     cargar: function () {
@@ -968,7 +984,9 @@ var articulo = {
         });
     },
     listarArticulos: function () {
-        $('#ddlArticulos').empty();
+        var f = new Date();
+        var fechaActual = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
+        $('#tabCompras').find('#txtFechaCompra').append('Fecha: '+fechaActual);
         $.ajax({
             type: 'POST',
             url: 'ControllerArticulo',
@@ -979,7 +997,9 @@ var articulo = {
             success: function (data) {
                 $("#ddlArticulos").select2({
                     data: data,
-                    language: "es"
+                    language: "es",
+                    placeholder: "Selecciona los articulos",
+                    allowClear: true
                 });
             }
         });

@@ -5,7 +5,7 @@
  */
 
 function limpiar(miForm) {
-    $(':input', miForm).each(function() {
+    $(':input', miForm).each(function () {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
         if (type == 'text' || type == 'password' || tag == 'textarea' || type == 'number' || type == 'hidden' || type == 'date' || type == 'email')
@@ -20,7 +20,7 @@ function limpiar(miForm) {
 }
 
 function habilitar(miForm) {
-    $(':input', miForm).each(function() {
+    $(':input', miForm).each(function () {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
         if (type == 'checkbox' || type == 'radio' || tag == 'select')
@@ -32,7 +32,7 @@ function habilitar(miForm) {
 }
 
 function desabilitar(miForm) {
-    $(':input', miForm).each(function() {
+    $(':input', miForm).each(function () {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
         if (type == 'checkbox' || type == 'radio' || tag == 'select')
@@ -45,6 +45,7 @@ function desabilitar(miForm) {
 function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
+
 articulo.listarArticulos();
 function cambiarPantalla() {
     if ($('#tabListas').hasClass('active')) {
@@ -55,3 +56,13 @@ function cambiarPantalla() {
         $('#tabCompras').removeClass('active');
     }
 }
+
+
+var $eventSelect = $("#ddlArticulos");
+
+$eventSelect.on("select2:select", function (e) {
+    var id = e.params.data.id;
+    if (id != '-1') {
+        articulo.seleccionar(id);
+    }
+});

@@ -307,14 +307,14 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="ddlArticulos">
-                                                        Articulos:
-                                                    </label>
-                                                    <select class="form-group" id="ddlArticulos" onchange="articulo.seleccionar($('#ddlArticulos').val())">
-
-                                                    </select>
-                                                </div>
+                                                <label for="ddlArticulos">
+                                                    Articulos:
+                                                </label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <select class="form-control" style="width: 100%" id="ddlArticulos">
+                                                    <option></option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -322,15 +322,15 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                         <div class="row">
                                             <div class="col-md-offset-9 col-md-3">
                                                 <div class="form-group">
-                                                    <label for="txtNnumeroFactura">
-                                                        Fecha: 13/05/2015
+                                                    <label for="txtFechaCompra" id="txtFechaCompra">
+                                                        
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12 table-responsive">
-                                                <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+                                                <table id="tablaDetalleCompra" class="table table-bordered table-hover table-sortable" id="tab_logic">
                                                     <thead>
                                                         <tr >
                                                             <th class="text-center">

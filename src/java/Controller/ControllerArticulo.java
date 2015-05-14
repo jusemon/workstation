@@ -238,12 +238,12 @@ public class ControllerArticulo extends HttpServlet {
         Map<String, String> articulo = null;
         try {
             result = daoModelArticulo.ListAll();
+            salida.add(articulo);
             while (result.next()) {
                 articulo = new LinkedHashMap<>();
                 articulo.put("id", result.getString("idArticulo"));
                 articulo.put("text", result.getString("descripcionArticulo"));
                 salida.add(articulo);
-
             }
         } catch (Exception ex) {
 
@@ -257,7 +257,7 @@ public class ControllerArticulo extends HttpServlet {
         Map<String, String> salida = new LinkedHashMap<>();
         try {
             result = daoModelArticulo.consultarPorID(id);
-            while (result.next()) {                
+            while (result.next()) {
                 salida.put("idArticulo", result.getString("idArticulo"));
                 salida.put("descripcionArticulo", result.getString("descripcionArticulo"));
             }
