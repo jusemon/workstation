@@ -73,7 +73,6 @@ public class ControllerLogin extends HttpServlet {
                     {
                         HttpSession session = request.getSession();
                         session.invalidate();
-                        _objUsuario = null;
                         response.sendRedirect("index.jsp");
                         break;
                     }

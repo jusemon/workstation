@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-05-2015 a las 22:47:35
+-- Tiempo de generación: 14-05-2015 a las 00:31:21
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -171,6 +171,19 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarAbonoByCredito`(IN `idCr
 select (a.idAbono, a.idCredito, a.valorAbono, a.fechaPago) from tblAbono a inner join tblCredito c on(a.idCredito=c.idCredito) 
 where a.idCredito like concat('%',idCredi,'%') 
 order by (a.idCredito,a.FechaPago)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarArticuloPorID`(id int)
+BEGIN
+    SELECT 
+        `idArticulo`,
+        `idCategoriaArticulo`, 
+        `descripcionArticulo`, 
+        `cantidadDisponible`, 
+        `precioCompra`, 
+        `precioVenta` 
+    FROM `tblarticulo` 
+    WHERE `idArticulo` = id;
+END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCategoriaCursos`()
 BEGIN
