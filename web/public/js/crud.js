@@ -20,7 +20,7 @@ var curso = {
             $.ajax({
                 type: $(form).attr('method'),
                 url: $(form).attr('action'),
-                data: $(form).serialize() + '&action=' + accion + '&id=' + id  + '&type=' + typo,
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&type=' + typo,
                 success: function (data) {
                     if (accion == 'Consultar') {
                         if (aux == 'Editar') {
@@ -890,7 +890,7 @@ var articulo = {
                         $('#miPopupArticulo').modal('hide');
                         mensaje(data);
                         articulo.actualizarTabla();
-                    }else if (accion=='ConsultarCodigo'){
+                    } else if (accion == 'ConsultarCodigo') {
                         articulo.registrar(data);
                     }
                     else if (accion === 'getOptionsArticulos') {
@@ -902,11 +902,11 @@ var articulo = {
             $(form).off();
             return false;
         });
-        if (accion === 'getOptionsCategorias'||accion=='ConsultarCodigo') {
+        if (accion === 'getOptionsCategorias' || accion == 'ConsultarCodigo') {
             $(form).submit();
         }
     },
-    registrar: function (data) {     
+    registrar: function (data) {
         limpiar('#formArticulo');
         $('#miPopupArticulo').find('#titulo').empty();
         $('#miPopupArticulo').find('#titulo').append('Registrar Artículo');
@@ -929,6 +929,30 @@ var articulo = {
         $('#miPopupArticulo').find('#btnArticulo').val('Editar');
         $('#miPopupArticulo').modal('show');
     },
+    seleccionar: function (id){
+        $.ajax({
+            type: 'POST',
+            url: "ControllerArticulo",
+            dataType: 'JSON',
+            data: {
+                action: 'Consultar',
+                id: id
+            },
+            success: function(data) {
+                
+                var fila = '<tr>';
+                fila += '<td data-id="'+data['idArticulo']+'">'+data['idArticulo']+'</td>'
+                fila += '<td>'+data['descripcionArticulo']+'</td>'
+                fila += '<td>'+'<input type="number" id="cantidad" name="cantidad" min="1">'+'</td>'
+                fila += '<td>'+'<input type="number" id="valor" name="valor" min="50">'+'</td>'
+                fila += '<td>'+'<button class="btn btn-danger glyphicon glyphicon-remove row-remove"></button>'+'</td>'
+                fila += '</tr>';
+                $('#tbodyCompra').append(fila);
+                
+            }
+            
+        });
+    },
     cargar: function () {
         tablaArticulo = $('#tblArticulos').DataTable({
             "ajax": {
@@ -940,6 +964,23 @@ var articulo = {
             },
             "language": {
                 "url": "public/js/locales/Spanish.json"
+            }
+        });
+    },
+    listarArticulos: function () {
+        $('#ddlArticulos').empty();
+        $.ajax({
+            type: 'POST',
+            url: 'ControllerArticulo',
+            dataType: 'JSON',
+            data: {
+                action: 'getOptionsArticulos'
+            },
+            success: function (data) {
+                $("#ddlArticulos").select2({
+                    data: data,
+                    language: "es"
+                });
             }
         });
     },
