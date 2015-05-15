@@ -132,3 +132,7 @@ div.dataTables_wrapper {
     background-color: #AEAEAE;
     border-color: #AEAEAE;
 }
+
+.table-sortable tbody tr {
+    cursor: move;
+}

@@ -139,7 +139,7 @@ public class ControllerCurso extends HttpServlet {
                 }
                 //</editor-fold>
 
-                // <editor-fold defaultstate="collapsed" desc="Cambiar el estado de un Curso o Seminario">
+                // <editor-fold defaultstate="collapsed" desc="Preinscribir a un Curso o Seminario">
                 case "Preinscripcion": {
                     aux = request.getParameter("id");
                     id = Integer.parseInt(aux);

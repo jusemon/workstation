@@ -382,8 +382,8 @@ var seminario = {
         $('#miPopupCurso').find('#titulo').empty();
         $('#miPopupCurso').find('#titulo').append('Preinscribirse');
         $('#miPopupCurso').find('#tipo').val('Seminario');
-        $('#miPopupCurso').find('#aux').val(documentoUsuario);
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Preinscribirse').attr('disabled', false);
+        $('#miPopupCurso').find('#aux').val(documentoUsuario);
     },
     mostrarDisponibles: function () {
         $('#seminariosDisponibles').empty();
@@ -986,7 +986,7 @@ var articulo = {
     listarArticulos: function () {
         var f = new Date();
         var fechaActual = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
-        $('#tabCompras').find('#txtFechaCompra').append('Fecha: '+fechaActual);
+        $('#tabCompras').find('#txtFechaCompra').append('Fecha: ' + fechaActual);
         $.ajax({
             type: 'POST',
             url: 'ControllerArticulo',

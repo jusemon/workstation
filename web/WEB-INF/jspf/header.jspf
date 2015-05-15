@@ -29,6 +29,7 @@
     <head>
         <title>WorkStation</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="public/css/jquery-ui.min.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" type="text/css" href="public/css/stylesheet.css">
         <link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
         <link href="public/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css"/>
