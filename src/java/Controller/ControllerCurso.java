@@ -140,16 +140,14 @@ public class ControllerCurso extends HttpServlet {
                 //</editor-fold>
 
                 // <editor-fold defaultstate="collapsed" desc="Preinscribir a un Curso o Seminario">
-                case "Preinscripcion": {
-                    aux = request.getParameter("id");
-                    id = Integer.parseInt(aux);
-                    String documentoUsuario = "";
+                case "Preinscribir": {
+                    int idCurso = Integer.parseInt(request.getParameter("idCurso"));
+                    String documentoUsuario = request.getParameter("documentoUsuario");
                     tipo = request.getParameter("tipo");
-                    if (request.getParameter("aux") == null) {
+                    if (documentoUsuario == null) {
                         salida = Mensaje(false, null, "Debes estar registrado y con la sesion iniciada");
                     } else {
-                        documentoUsuario = request.getParameter("aux");
-                        salida = presincribir(id, tipo, documentoUsuario);
+                        salida = presincribir(idCurso, tipo, documentoUsuario);
                     }
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -262,7 +260,11 @@ public class ControllerCurso extends HttpServlet {
     }
 
     private String presincribir(int id, String tipo, String documentoUsuario) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (tipo.equals("Seminario")) {
+            return Mensaje(daoModelCurso.Preincribir(id, documentoUsuario), "Has sido preincrito al Seminario.", "Ha ocurrido un error durante la preinscripcion");
+        } else {
+            return Mensaje(daoModelCurso.Preincribir(id, documentoUsuario), "Has sido preincrito al Curso.", "Ha ocurrido un error durante la preinscripcion");
+        }
     }
 
     public String getCursosDisponibles() {

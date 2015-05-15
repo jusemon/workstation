@@ -45,7 +45,6 @@ function desabilitar(miForm) {
 function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
-
 articulo.listarArticulos();
 function cambiarPantalla() {
     if ($('#tabListas').hasClass('active')) {
@@ -85,3 +84,15 @@ $(".table-sortable tbody").sortable({
 $(".table-sortable thead").disableSelection();
 });
 
+$.notify.addStyle('foo', {
+  html: 
+    "<div>" +
+      "<div class='clearfix'>" +
+        "<div class='title' data-notify-html='title'/>" +
+        "<div class='buttons'>" +
+          "<button class='no'>Cancelar</button>" +
+          "<button id='btnConfirmarPreSeminario' data-tipo='' data-idCurso='' data-documentoUsuario='' class='yes' data-notify-text='button'></button>" +
+        "</div>" +
+      "</div>" +
+    "</div>"
+});
