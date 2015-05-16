@@ -46,16 +46,14 @@ function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
 articulo.listarArticulos();
-function cambiarPantalla() {
-    if ($('#tabListas').hasClass('active')) {
-        $('#tabListas').removeClass('active');
-        $('#tabCompras').addClass('active');
+$('#tabListas').tab('show');
+$('#btnGestionCompras').on('click', function () {
+    if ($(this).data('target')==='#tabListas') {
+        $(this).data('target','#tabCompras');
     } else {
-        $('#tabListas').addClass('active');
-        $('#tabCompras').removeClass('active');
+        $(this).data('target','#tabListas');
     }
-}
-
+});
 
 var $eventSelect = $("#ddlArticulos");
 
@@ -65,34 +63,35 @@ $eventSelect.on("select2:select", function (e) {
         articulo.seleccionar(id);
     }
 });
-$(document).ready(function() {
-var fixHelperModified = function (e, tr) {
-    var $originals = tr.children();
-    var $helper = tr.clone();
+$(document).ready(function () {
+    var fixHelperModified = function (e, tr) {
+        var $originals = tr.children();
+        var $helper = tr.clone();
 
-    $helper.children().each(function (index) {
-        $(this).width($originals.eq(index).width())
-    });
+        $helper.children().each(function (index) {
+            $(this).width($originals.eq(index).width())
+        });
 
-    return $helper;
-};
+        return $helper;
+    };
 
-$(".table-sortable tbody").sortable({
-    helper: fixHelperModified
-}).disableSelection();
+    $(".table-sortable tbody").sortable({
+        helper: fixHelperModified
+    }).disableSelection();
 
-$(".table-sortable thead").disableSelection();
+    $(".table-sortable thead").disableSelection();
 });
 
 $.notify.addStyle('foo', {
-  html: 
-    "<div>" +
-      "<div class='clearfix'>" +
-        "<div class='title' data-notify-html='title'/>" +
-        "<div class='buttons'>" +
-          "<button class='no'>Cancelar</button>" +
-          "<button id='btnConfirmarPreSeminario' data-tipo='' data-idCurso='' data-documentoUsuario='' class='yes' data-notify-text='button'></button>" +
-        "</div>" +
-      "</div>" +
-    "</div>"
+    html:
+            "<div>" +
+            "<div class='clearfix'>" +
+            "<div class='title' data-notify-html='title'/>" +
+            "<div class='buttons'>" +
+            "<button class='no'>Cancelar</button>" +
+            "<button id='btnConfirmarPreSeminario' data-tipo='' data-idCurso='' data-documentoUsuario='' class='yes' data-notify-text='button'></button>" +
+            "</div>" +
+            "</div>" +
+            "</div>"
 });
+var actual = $('#tabCompras').find('#txtTotalCompra').val();

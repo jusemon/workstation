@@ -23,7 +23,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                     -->
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a  data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <a id="btnGestionCompras" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas">
                                 Gestión de Compras 
                             </a>
                         </h4>
@@ -176,7 +176,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
         </div>
         <div id="contenedor" class="col-md-9">
             <div class="tab-content" id="contenidoDinamico">
-                <div class="tab-pane active" id="tabListas">
+                <div role="tabpanel" class="tab-pane fade in active" id="tabListas">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="active">
                             <a href="#compra" role="tab" data-toggle="tab">Listado de Compras</a>
@@ -192,7 +192,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="compra">
+                        <div class="tab-pane fade in active" id="compra">
                             <table id="tblCompra" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
@@ -208,7 +208,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane" id="ventas">
+                        <div class="tab-pane fade" id="ventas">
                             <table id="tblVentas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
@@ -233,7 +233,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane" id="abonos">
+                        <div class="tab-pane fade" id="abonos">
                             <table id="tblAbono" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
@@ -247,7 +247,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane" id="diario">
+                        <div class="tab-pane fade" id="diario">
                             <table id="tblDiario" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
@@ -274,7 +274,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="tabCompras">
+                <div role="tabpanel" class="tab-pane fade in" id="tabCompras">
                     <div id="compras" class="row">
                         <div class="col-md-12 panel panel-default">
                             <div class="panel-heading">
@@ -298,10 +298,10 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="txtNnumeroFactura">
+                                                    <label for="txtNumeroFactura">
                                                         Numero de Factura
                                                     </label>
-                                                    <input name="txtNnumeroFactura" id="txtNnumeroFactura" type="text" class="form-control" placeholder="" required>
+                                                    <input name="txtNumeroFactura" id="txtNumeroFactura" type="text" class="form-control" placeholder="" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -323,7 +323,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                             <div class="col-md-offset-9 col-md-3">
                                                 <div class="form-group">
                                                     <label for="txtFechaCompra" id="txtFechaCompra">
-                                                        
+
                                                     </label>
                                                 </div>
                                             </div>
@@ -353,6 +353,17 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
 
                                                     </tbody>
                                                 </table>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="col-md-offset-3 col-md-6">
+                                                    <input type="button" class="btn btn-default" value="Efectuar Compra" onclick="compra.efectuarCompra()">
+                                                </div>
+                                                <div class="col-md-offset-1 col-md-2">
+                                                    <label for="txtTotalCompra">
+                                                        Total Compra
+                                                        <input type="number" value="0" id="txtTotalCompra" class="form-control" readonly="true">
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

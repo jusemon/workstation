@@ -976,15 +976,16 @@ var articulo = {
                     var fila = '<tr  data-id="' + data['idArticulo'] + '">';
                     fila += '<td>' + data['idArticulo'] + '</td>'
                     fila += '<td>' + data['descripcionArticulo'] + '</td>'
-                    fila += '<td>' + '<input type="number" id="cantidad" name="cantidad" min="1">' + '</td>'
-                    fila += '<td>' + '<input type="number" id="valor" name="valor" min="50">' + '</td>'
+                    fila += '<td>' + '<input type="number" id="cantidad" onchange="compra.actualizarTotal("cantidad") name="cantidad" min="1">' + '</td>'
+                    fila += '<td>' + '<input type="number" id="valor" onchange="compra.actualizarTotal("valor")" name="valor" min="50">' + '</td>'
                     fila += '<td>' + '<button class="btn btn-danger glyphicon glyphicon-remove row-remove" onclick="articulo.remover(' + data['idArticulo'] + ')"></button>' + '</td>'
                     fila += '</tr>';
-                    $('#tablaDetalleCompra tbody').append(fila);
+                    $('#tablaDetalleCompra tbody').append(fila);                                       
                 }
             });
         }
     },
+    actualizarTotal:function (){},
     noExiste: function (id) {
         var flag = true;
         $('#tablaDetalleCompra tbody tr').each(function () {
@@ -1155,6 +1156,28 @@ var compra = {
         habilitar('#form_compra');
         $('#miPopupCompra').find('#btnCompra').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupCompra').modal('show');
+    },
+    efectuarCompra: function () {
+        var lista = Array();
+        $('#tablaDetalleCompra tbody tr').each(function () {
+            var elementos = {idArticulo: '', cantidad: '', precioArticulo: ''};
+            elementos.idArticulo = $(this).data('id');
+            elementos.cantidad = $(this).find('#cantidad').val();
+            elementos.precioArticulo = $(this).find('#valor').val();
+            lista.push(elementos);
+        });
+        $('#tabCompras').find('#txtNombre');
+        $('#tabCompras').find('#txtNumeroFactura');
+        $('#tabCompras').find('#txtNombre');
+        $.ajax({
+            type: 'POST',
+            url: "ControllerCompra",
+            data: {
+                action: 'Probar',
+                lista: lista,
+                size: lista.length
+            }
+        });
     },
     cargar: function () {
         tablaCompra = $('#tblCompra').DataTable({

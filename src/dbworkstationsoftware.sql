@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-05-2015 a las 17:43:41
+-- Tiempo de generación: 16-05-2015 a las 06:41:30
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -477,18 +477,35 @@ BEGIN
 insert into tblCategoriaCurso (nombreCategoriaCurso) values (nombre);
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCompra`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
-    NO SQL
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCompra`(
+    IN `facturaProveed` VARCHAR(50), 
+    IN `nombreProveed` VARCHAR(50), 
+    IN `totalMovimien` INT,
+    IN `documentoUsuar` VARCHAR(30)
+)
 BEGIN
-	declare msg varchar(40);    
-	if (exists(select numeroFactura from tblCompra where numeroFactura=numeroFactura)) then
-		set msg="Esta compra ya fue registrada.";
-		select msg as Respuesta;
-	else
-		insert into tblCompra (numeroFactura,nombreProveedor,fechaCompra,totalCompra) Values(numeroFactu,nombreProveed,fechaComp,totalComp);
-		set msg="La compra se ha registrado correctamente.";
-		select msg as Respuesta; 
-	end if;
+    declare msg varchar(40);    
+    if (exists(select facturaProveedor from tblMovimiento where facturaProveedor=`facturaProveed`)) then
+            set msg="Esta compra ya fue registrada.";
+            select msg as Respuesta;
+    else
+        INSERT INTO `tblmovimiento`
+        (
+            `fechaMovimiento`, 
+            `totalMovimiento`, 
+            `idtipoMovimiento`, 
+            `documentoUsuario`, 
+            `facturaProveedor`, 
+            `nombreProveedor`
+        ) VALUES (
+            curdate(),
+            `totalMovimien`,
+            1,
+            `documentoUsuar`, 
+            `facturaProveed`, 
+            `nombreProveed`
+        );
+    end if;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCredito`(
@@ -542,22 +559,30 @@ INSERT INTO `tblcurso`(
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleCompra`(
-    in idDetalleComp	int,
-    in idcomp		    int,
-    in idarticu	        int,
-    in cantidadComp		int ,
-    in valorUnitar		int 
+    IN `idArticu` INT, 
+    IN `cantid` INT, 
+    IN `descuen` INT, 
+    IN `totalDetalleMovimien` INT,
+    IN `precioArticu` INT
 )
 BEGIN
-	declare msg varchar(40);    
-	if (exists(select idDetalleCompra from tblDetalleCompra where idDetalleCompra=idDetalleComp)) then
-		set msg="Este detalle de compra ya existe";
-		select msg as Respuesta;
-	else
-		insert into tblDetalleCompra (idCompra,idArticulo,cantidadCompra,valorUnitario) Values(idcomp,idarticu,cantidadComp,valorUnitar);
-		set msg="detalla de compra registrado exitosamente";
-		select msg as Respuesta; 
-	end if;
+    INSERT INTO `tbldetallemovimiento`
+    (
+        `idArticulo`, 
+        `cantidad`, 
+        `descuento`, 
+        `totalDetalleMovimiento`, 
+        `idMovimiento`, 
+        `precioArticulo`
+    ) VALUES 
+    (
+        `idArticu`, 
+        `cantid`, 
+        `descuen`, 
+        `totalDetalleMovimien`,
+        (SELECT MAX(`idMovimiento`) FROM tblMovimiento),
+        `precioArticu`
+    );
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleVenta`(
@@ -974,7 +999,7 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
   `idDetalleMovimiento` int(11) NOT NULL,
   `idArticulo` int(11) NOT NULL,
   `cantidad` int(11) NOT NULL,
-  `descuento` int(11) NOT NULL DEFAULT '0',
+  `descuento` int(11) DEFAULT NULL,
   `totalDetalleMovimiento` int(11) NOT NULL,
   `idMovimiento` int(11) NOT NULL,
   `precioArticulo` int(11) NOT NULL
@@ -1150,6 +1175,13 @@ CREATE TABLE IF NOT EXISTS `tbltipomovimiento` (
   `idtipoMovimiento` int(11) NOT NULL,
   `descripcion` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tbltipomovimiento`
+--
+
+INSERT INTO `tbltipomovimiento` (`idtipoMovimiento`, `descripcion`) VALUES
+(1, 'Compra a Proveedor');
 
 -- --------------------------------------------------------
 
