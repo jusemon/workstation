@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
  */
 public class ControllerLogin extends HttpServlet {
 
-    ObjUsuario _objUsuario = new  ObjUsuario();
+    ObjUsuario _objUsuario = new ObjUsuario();
     ModelUsuario _modelUsuario = new ModelUsuario();
     ModelModulo _modelModulo = new ModelModulo();
 
@@ -42,48 +42,48 @@ public class ControllerLogin extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             switch (request.getParameter("Action")) {
-                case "Iniciar Sesion":
-                    {
-                        HttpSession session = request.getSession();
-                        String email = request.getParameter("nom");
-                        String pass = request.getParameter("pass");
-                        if (comprobarUsuario(email, pass)) {
-                            session.setAttribute("usuario", email);
-                            session.setAttribute("pass", pass);
-                            session.setAttribute("correo", _objUsuario.getEmailUsuario());
-                            session.setAttribute("idRol", _objUsuario.getIdrol());
-                            session.setAttribute("objUsuario", _objUsuario);
-                            try {                                
-                                String[] aux = _modelModulo.convertirRSaArray(_modelModulo.ListByUser(_objUsuario.getEmailUsuario()));
-                                session.setAttribute("derechos", aux);
-                                session.setAttribute("isConsulta", false);
-                                session.setAttribute("resultado", null);
-                            } catch (Exception e) {
-                                System.err.println(e.getMessage());
-                            }
-                            
-                            response.sendRedirect("index.jsp?mensaje=1");
-                            
-                        } else {
-                            response.sendRedirect("index.jsp?mensaje=2");
-                            
-                        }       break;
+                case "Iniciar Sesion": {
+                    _modelModulo = new ModelModulo();
+                    HttpSession session = request.getSession();
+                    String email = request.getParameter("nom");
+                    String pass = request.getParameter("pass");
+                    if (comprobarUsuario(email, pass)) {
+                        session.setAttribute("usuario", email);
+                        session.setAttribute("pass", pass);
+                        session.setAttribute("correo", _objUsuario.getEmailUsuario());
+                        session.setAttribute("idRol", _objUsuario.getIdrol());
+                        session.setAttribute("objUsuario", _objUsuario);
+                        try {
+                            String[] aux = _modelModulo.convertirRSaArray(_modelModulo.ListByUser(_objUsuario.getEmailUsuario()));
+                            session.setAttribute("derechos", aux);
+                            session.setAttribute("isConsulta", false);
+                            session.setAttribute("resultado", null);
+                        } catch (Exception e) {
+                            System.err.println(e.getMessage());
+                        }
+
+                        response.sendRedirect("index.jsp?mensaje=1");
+
+                    } else {
+                        response.sendRedirect("index.jsp?mensaje=2");
+
                     }
-                case "Cerrar Sesion":
-                    {
-                        HttpSession session = request.getSession();
-                        session.invalidate();
-                        response.sendRedirect("index.jsp");
-                        break;
-                    }
+                    break;
+                }
+                case "Cerrar Sesion": {
+                    HttpSession session = request.getSession();
+                    session.invalidate();
+                    response.sendRedirect("index.jsp");
+                    break;
+                }
             }
-        } catch(IOException e){
+        } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }
 
     public boolean comprobarUsuario(String email, String pass) {
-        ResultSet rs;        
+        ResultSet rs;
         _objUsuario.setEmailUsuario(email);
         _objUsuario.setPassword(pass);
         try {

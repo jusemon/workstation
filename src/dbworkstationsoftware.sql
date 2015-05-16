@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-05-2015 a las 06:41:30
+-- Tiempo de generación: 16-05-2015 a las 21:23:46
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -996,7 +996,7 @@ INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorCla
 --
 
 CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
-  `idDetalleMovimiento` int(11) NOT NULL,
+`idDetalleMovimiento` int(11) NOT NULL,
   `idArticulo` int(11) NOT NULL,
   `cantidad` int(11) NOT NULL,
   `descuento` int(11) DEFAULT NULL,
@@ -1107,7 +1107,7 @@ INSERT INTO `tblmodulorol` (`idmodulo`, `idrol`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `tblmovimiento` (
-  `idMovimiento` int(11) NOT NULL,
+`idMovimiento` int(11) NOT NULL,
   `fechaMovimiento` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `totalMovimiento` int(11) NOT NULL,
   `idtipoMovimiento` int(11) NOT NULL,
@@ -1375,6 +1375,11 @@ MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `tblcurso`
 MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
+-- AUTO_INCREMENT de la tabla `tbldetallemovimiento`
+--
+ALTER TABLE `tbldetallemovimiento`
+MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT de la tabla `tbldetalleusuario`
 --
 ALTER TABLE `tbldetalleusuario`
@@ -1384,6 +1389,11 @@ MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 ALTER TABLE `tblmodulo`
 MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT de la tabla `tblmovimiento`
+--
+ALTER TABLE `tblmovimiento`
+MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --
@@ -1432,8 +1442,8 @@ ADD CONSTRAINT `fk_tblcurso_tblcategoriacurso1` FOREIGN KEY (`idCategoriaCurso`)
 -- Filtros para la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-ADD CONSTRAINT `FK_tblDetalleVenta_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`),
-ADD CONSTRAINT `fk_tbldetallemovimiento_tblMovimiento1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `FK_tblDetalleVenta_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `fk_tbldetallemovimiento_tblMovimiento1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tblmodulorol`

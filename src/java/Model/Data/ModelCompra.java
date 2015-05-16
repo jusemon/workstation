@@ -33,7 +33,7 @@ public class ModelCompra extends ConnectionDB {
     public boolean Add(ObjCompra _objCompra, ObjUsuario _objUsuario, List<ObjDetalleMovimiento> _listObjDetalleMovimientos) {
         boolean objReturn = false;
         String sql1 = "call spIngresarCompra (?,?,?,?)";
-        String sql2 = "call spIngresarDetalleCompra (?,?,?,?,?,?)";
+        String sql2 = "call spIngresarDetalleCompra (?,?,?,?,?)";
 
         try {
             getStmt();

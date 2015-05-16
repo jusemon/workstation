@@ -3,6 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/* global documentoUsuario */
+
 $('.fecha').datepicker({
     format: "dd/mm/yyyy",
     language: "es",
@@ -974,18 +976,17 @@ var articulo = {
                 },
                 success: function (data) {
                     var fila = '<tr  data-id="' + data['idArticulo'] + '">';
-                    fila += '<td>' + data['idArticulo'] + '</td>'
-                    fila += '<td>' + data['descripcionArticulo'] + '</td>'
-                    fila += '<td>' + '<input type="number" id="cantidad" onchange="compra.actualizarTotal("cantidad") name="cantidad" min="1">' + '</td>'
-                    fila += '<td>' + '<input type="number" id="valor" onchange="compra.actualizarTotal("valor")" name="valor" min="50">' + '</td>'
-                    fila += '<td>' + '<button class="btn btn-danger glyphicon glyphicon-remove row-remove" onclick="articulo.remover(' + data['idArticulo'] + ')"></button>' + '</td>'
+                    fila += '<td>' + data['idArticulo'] + '</td>';
+                    fila += '<td>' + data['descripcionArticulo'] + '</td>';
+                    fila += '<td>' + '<input type="number" id="cantidad" onchange="compra.actualizarTotal(\'cantidad\')" name="cantidad" min="1" required>' + '</td>';
+                    fila += '<td>' + '<input type="number" id="valor" onchange="compra.actualizarTotal(\'valor\')" name="valor" min="50" required>' + '</td>';
+                    fila += '<td>' + '<button class="btn btn-danger glyphicon glyphicon-remove row-remove" onclick="articulo.remover(' + data['idArticulo'] + ')"></button>' + '</td>';
                     fila += '</tr>';
-                    $('#tablaDetalleCompra tbody').append(fila);                                       
+                    $('#tablaDetalleCompra tbody').append(fila);
                 }
             });
         }
     },
-    actualizarTotal:function (){},
     noExiste: function (id) {
         var flag = true;
         $('#tablaDetalleCompra tbody tr').each(function () {
@@ -1138,46 +1139,49 @@ var compra = {
             $(form).submit();
         }
     },
-    editar: function (tr) {
-        var data = tablaCompra.row(tr).data();
-        $('#miPopupCompra').find('#titulo').empty();
-        $('#miPopupCompra').find('#titulo').append('Editar Compra');
-        $('#miPopupCompra').find('#txtFacturaProveedor').val(data[0]);
-        $('#miPopupCompra').find('#txtNombreProveedor').val(data[1]);
-        $('#miPopupCompra').find('#dateFechaCompra').val(data[2]);
-        $('#miPopupCompra').find('#txtTotalCompra').val(data[3]);
-        $('#miPopupCompra').find('#btnCompra').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
-        $('#miPopupCompra').modal('show');
-    },
-    registrar: function () {
-        limpiar('#formCompra');
-        $('#miPopupCompra').find('#titulo').empty();
-        $('#miPopupCompra').find('#titulo').append('Registrar Compra');
-        habilitar('#form_compra');
-        $('#miPopupCompra').find('#btnCompra').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
-        $('#miPopupCompra').modal('show');
+    actualizarTotal: function () {
     },
     efectuarCompra: function () {
-        var lista = Array();
-        $('#tablaDetalleCompra tbody tr').each(function () {
-            var elementos = {idArticulo: '', cantidad: '', precioArticulo: ''};
-            elementos.idArticulo = $(this).data('id');
-            elementos.cantidad = $(this).find('#cantidad').val();
-            elementos.precioArticulo = $(this).find('#valor').val();
-            lista.push(elementos);
-        });
-        $('#tabCompras').find('#txtNombre');
-        $('#tabCompras').find('#txtNumeroFactura');
-        $('#tabCompras').find('#txtNombre');
-        $.ajax({
-            type: 'POST',
-            url: "ControllerCompra",
-            data: {
-                action: 'Probar',
-                lista: lista,
-                size: lista.length
+        var form = $('#formCompra');
+        $(form).off();
+        $(form).on('submit', function () {
+            var lista = Array();
+            $('#tablaDetalleCompra tbody tr').each(function () {
+                var elementos = {idArticulo: '', cantidad: '', precioArticulo: ''};
+                elementos.idArticulo = $(this).data('id');
+                elementos.cantidad = $(this).find('#cantidad').val();
+                elementos.precioArticulo = $(this).find('#valor').val();
+                lista.push(elementos);
+            });
+            if (lista.length > 0) {
+                var nombre = $('#tabCompras').find('#txtNombre').val();
+                var numeroFactura = $('#tabCompras').find('#txtNumeroFactura').val();
+                var total = $('#tabCompras').find('#txtTotalCompra').val();
+                $.ajax({
+                    type: 'POST',
+                    url: "ControllerCompra",
+                    data: {
+                        action: 'Registrar',
+                        lista: lista,
+                        size: lista.length,
+                        txtNombre: nombre,
+                        txtNumeroFactura: numeroFactura,
+                        txtTotalCompra: total,
+                        documentoUsuario: documentoUsuario
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        mensaje(data);
+                    }
+                });
+            } else {
+                $.notify('Una compra debe contener almenos un artículo', 'error');
+                $(form).off();
+                return false;
             }
+            $(form).off();
+            return false;
         });
+
     },
     cargar: function () {
         tablaCompra = $('#tblCompra').DataTable({

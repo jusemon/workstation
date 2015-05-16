@@ -56,8 +56,8 @@ public class ControllerCompra extends HttpServlet {
             switch (action) {
                 case "Registrar": {
                     String documentoUsuario = (request.getParameter("documentoUsuario"));
-                    String facturaProveedor = (request.getParameter("txtFacturaProveedor"));
-                    String nombreProveedor = (request.getParameter("txtNombreProveedor"));
+                    String facturaProveedor = (request.getParameter("txtNumeroFactura"));
+                    String nombreProveedor = (request.getParameter("txtNombre"));
                     int lenght = Integer.parseInt(request.getParameter("size"));
                     int totalCompra = Integer.parseInt(request.getParameter("txtTotalCompra"));
                     System.out.println(lenght);
@@ -76,8 +76,11 @@ public class ControllerCompra extends HttpServlet {
                     _objCompra.setNombreProveedor(nombreProveedor);
                     _objCompra.setTotalCompra(totalCompra);
                     daoModelCompra = new ModelCompra();
-                    daoModelCompra.Add(_objCompra, _objUsuario, listObjDetalleMovimientos);
+                    String salida = Mensaje(daoModelCompra.Add(_objCompra, _objUsuario, listObjDetalleMovimientos), "La compra ha sido registrada", "Ha ocurrido un error");
                     daoModelCompra.Signout();
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(salida);
                     break;
                 }
                 case "Editar": {
