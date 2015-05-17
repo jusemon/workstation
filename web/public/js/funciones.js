@@ -45,8 +45,11 @@ function desabilitar(miForm) {
 function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
+
 articulo.listarArticulos();
+
 $('#tabListas').tab('show');
+
 $('#btnGestionCompras').on('click', function () {
     if ($(this).data('target')==='#tabListas') {
         $(this).data('target','#tabCompras');
@@ -63,6 +66,7 @@ $eventSelect.on("select2:select", function (e) {
         articulo.seleccionar(id);
     }
 });
+
 $(document).ready(function () {
     var fixHelperModified = function (e, tr) {
         var $originals = tr.children();
@@ -94,4 +98,5 @@ $.notify.addStyle('foo', {
             "</div>" +
             "</div>"
 });
+
 var actual = $('#tabCompras').find('#txtTotalCompra').val();

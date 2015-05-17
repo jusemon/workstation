@@ -978,8 +978,8 @@ var articulo = {
                     var fila = '<tr  data-id="' + data['idArticulo'] + '">';
                     fila += '<td>' + data['idArticulo'] + '</td>';
                     fila += '<td>' + data['descripcionArticulo'] + '</td>';
-                    fila += '<td>' + '<input type="number" id="cantidad" onchange="compra.actualizarTotal(\'cantidad\')" name="cantidad" min="1" required>' + '</td>';
-                    fila += '<td>' + '<input type="number" id="valor" onchange="compra.actualizarTotal(\'valor\')" name="valor" min="50" required>' + '</td>';
+                    fila += '<td>' + '<input type="number" id="cantidad" onblur="compra.actualizarTotal(\'cantidad\')" name="cantidad" min="1" required>' + '</td>';
+                    fila += '<td>' + '<input type="number" id="valor" onblur="compra.actualizarTotal(\'valor\')" name="valor" min="50" required>' + '</td>';
                     fila += '<td>' + '<button class="btn btn-danger glyphicon glyphicon-remove row-remove" onclick="articulo.remover(' + data['idArticulo'] + ')"></button>' + '</td>';
                     fila += '</tr>';
                     $('#tablaDetalleCompra tbody').append(fila);
@@ -1129,6 +1129,8 @@ var compra = {
                     }
                     else if (accion === 'getOptionsCompra') {
                         compra.cargarOpciones(data);
+                        $("#ddlArticulos").destroy();
+                        articulo.listarArticulos();
                     }
                 }
             });
@@ -1140,6 +1142,14 @@ var compra = {
         }
     },
     actualizarTotal: function () {
+        var salida = 0;
+        $('#tablaDetalleCompra tbody tr').each(function () {
+            var elementos = {cantidad: 0, precioArticulo: 0};
+            elementos.cantidad = $(this).find('#cantidad').val();
+            elementos.precioArticulo = $(this).find('#valor').val();
+            salida += elementos.cantidad * elementos.precioArticulo;
+        });
+        $('#tabCompras').find('#txtTotalCompra').val(salida);
     },
     efectuarCompra: function () {
         var form = $('#formCompra');
@@ -1170,6 +1180,11 @@ var compra = {
                         documentoUsuario: documentoUsuario
                     },
                     success: function (data, textStatus, jqXHR) {
+                        $('#tablaDetalleCompra tbody tr').each(function () {
+                            $(this).remove();
+                        });
+                        $("#ddlArticulos").val(null);
+                        limpiar('#formCompra');
                         mensaje(data);
                     }
                 });

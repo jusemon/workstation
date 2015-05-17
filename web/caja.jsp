@@ -359,11 +359,13 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                     <div class="col-md-offset-3 col-md-6">
                                                         <input type="submit" class="btn btn-default" value="Efectuar Compra" onclick="compra.efectuarCompra()">
                                                     </div>
-                                                    <div class="col-md-offset-1 col-md-2">
-                                                        <label for="txtTotalCompra">
-                                                            Total Compra
+                                                    <div class="row">
+                                                        <div class="col-md-offset-1 col-md-2">
+                                                            <label for="txtTotalCompra">
+                                                                Total Compra
+                                                            </label>
                                                             <input type="number" value="0" id="txtTotalCompra" class="form-control" readonly="true">
-                                                        </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
