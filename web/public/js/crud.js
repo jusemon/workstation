@@ -419,6 +419,7 @@ var seminario = {
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
     preinscripcion: function (idCurso, btn) {
+        $('.notifyjs-foo-base ').trigger('notify-hide');
         $(document).off('click', '.notifyjs-foo-base .no');
         $(document).off('click', '.notifyjs-foo-base .yes');
         if (typeof (documentoUsuario) !== "undefined") {
@@ -434,7 +435,6 @@ var seminario = {
             //listen for click events from this style
             $(document).on('click', '.notifyjs-foo-base .no', function () {
                 $(this).trigger('notify-hide');
-                $(document).off('click', '.notifyjs-foo-base .no');
             });
             $(document).on('click', '.notifyjs-foo-base .yes', function () {
                 $.ajax({
@@ -454,9 +454,6 @@ var seminario = {
                 $(this).trigger('notify-hide');
                 $(document).off('click', '.notifyjs-foo-base .yes');
             });
-            $('#btnConfirmarPreSeminario').data("idcurso", idCurso);
-            $('#btnConfirmarPreSeminario').data("documentousuario", documentoUsuario);
-            $('#btnConfirmarPreSeminario').data("tipo", 'Seminario');
         }
         else {
             $.notify('Lo siento, primero debes registrarte', 'error');

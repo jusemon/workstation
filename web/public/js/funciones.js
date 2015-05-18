@@ -93,7 +93,7 @@ $.notify.addStyle('foo', {
             "<div class='title' data-notify-html='title'/>" +
             "<div class='buttons'>" +
             "<button class='no'>Cancelar</button>" +
-            "<button id='btnConfirmarPreSeminario' data-tipo='' data-idCurso='' data-documentoUsuario='' class='yes' data-notify-text='button'></button>" +
+            "<button class='yes' data-notify-text='button'></button>" +
             "</div>" +
             "</div>" +
             "</div>"
