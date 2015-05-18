@@ -2,7 +2,6 @@
 <%@page import="Model.DTO.ObjUsuario"%>
 <%@page import="Controller.ControllerLogin"%>    
 <%
-    ObjUsuario _objUsuario = new ObjUsuario();
     String urlActual = request.getRequestURI();
     ControllerLogin controllerLogin = new ControllerLogin();
     if (session.getAttribute("usuario") != null) {
@@ -65,12 +64,8 @@
                 </ul>
                 <%if (session != null) {
                         if (session.getAttribute("usuario") != null) {
-                            _objUsuario = (ObjUsuario) session.getAttribute("objUsuario");
                 %>
                 <%@include file="logueado.jspf" %>
-                <script>
-                    var documentoUsuario = '<%=_objUsuario.getDocumentoUsuario()%>';
-                </script>
                 <%
                 } else {
                 %>

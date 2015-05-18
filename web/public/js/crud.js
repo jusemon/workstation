@@ -92,6 +92,48 @@ var curso = {
         $('#miPopupCurso').find('#ContenedorCategoria').show();
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
+    preinscripcion: function (idCurso) {
+        alert(this);
+        if (typeof (documentoUsuario) !== "undefined") {
+            $('#btnPreincripcion').notify({
+                title: '¿Estas seguro?',
+                button: 'Confirmar'
+            }, {
+                style: 'foo',
+                autoHide: false,
+                clickToHide: false
+            });
+            //listen for click events from this style
+            $(document).on('click', '.notifyjs-foo-base .no', function () {
+                $(this).trigger('notify-hide');
+                $(document).off('click', '.notifyjs-foo-base .no');
+            });
+            $(document).on('click', '.notifyjs-foo-base .yes', function () {
+                $.ajax({
+                    type: 'POST',
+                    url: "ControllerCurso",
+                    dataType: 'JSON',
+                    data: {
+                        action: 'Preinscribir',
+                        idCurso: idCurso,
+                        documentoUsuario: documentoUsuario,
+                        tipo: 'Seminario'
+                    },
+                    success: function (data) {
+                        mensaje(data);
+                    }
+                });
+                $(this).trigger('notify-hide');
+                $(document).off('click', '.notifyjs-foo-base .yes');
+            });
+            $('#btnConfirmarPreSeminario').data("idcurso", idCurso);
+            $('#btnConfirmarPreSeminario').data("documentousuario", documentoUsuario);
+            $('#btnConfirmarPreSeminario').data("tipo", 'Seminario');
+        }
+        else {
+            $.notify('Lo siento, primero debes registrarte', 'error');
+        }
+    },
     mostrarDisponibles: function () {
         $('#cursosDisponibles').empty();
         $.ajax({
@@ -376,22 +418,25 @@ var seminario = {
         $('#miPopupCurso').find('#tipo').val('Seminario');
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
-    preinscripcion: function (idCurso) {
-        var asd = $('#btnPreincripcion').notify({
-            title: '¿Estas seguro?',
-            button: 'Confirmar'
-        }, {
-            style: 'foo',
-            autoHide: false,
-            clickToHide: false
-        });
-        //listen for click events from this style
-        $(document).on('click', '.notifyjs-foo-base .no', function () {
-            $(this).trigger('notify-hide');
-            $(document).off('click', '.notifyjs-foo-base .no');
-        });
-        $(document).on('click', '.notifyjs-foo-base .yes', function () {
-            if (typeof (documentoUsuario) !== "undefined") {
+    preinscripcion: function (idCurso, btn) {
+        $(document).off('click', '.notifyjs-foo-base .no');
+        $(document).off('click', '.notifyjs-foo-base .yes');
+        if (typeof (documentoUsuario) !== "undefined") {
+            $(btn).notify({
+                title: '¿Estas seguro?',
+                button: 'Confirmar',
+            }, {
+                style: 'foo',
+                autoHide: false,
+                clickToHide: false,
+                position: 'botton center'
+            });
+            //listen for click events from this style
+            $(document).on('click', '.notifyjs-foo-base .no', function () {
+                $(this).trigger('notify-hide');
+                $(document).off('click', '.notifyjs-foo-base .no');
+            });
+            $(document).on('click', '.notifyjs-foo-base .yes', function () {
                 $.ajax({
                     type: 'POST',
                     url: "ControllerCurso",
@@ -406,63 +451,28 @@ var seminario = {
                         mensaje(data);
                     }
                 });
-            }
-            else {
-                $.notify('Lo siento, primero debes registrarte', 'error');
-            }
-            $(this).trigger('notify-hide');
-            $(document).off('click', '.notifyjs-foo-base .yes');
-        });
-
-
-        $('#btnConfirmarPreSeminario').data("idcurso", idCurso);
-        $('#btnConfirmarPreSeminario').data("documentousuario", documentoUsuario);
-        $('#btnConfirmarPreSeminario').data("tipo", 'Seminario');
+                $(this).trigger('notify-hide');
+                $(document).off('click', '.notifyjs-foo-base .yes');
+            });
+            $('#btnConfirmarPreSeminario').data("idcurso", idCurso);
+            $('#btnConfirmarPreSeminario').data("documentousuario", documentoUsuario);
+            $('#btnConfirmarPreSeminario').data("tipo", 'Seminario');
+        }
+        else {
+            $.notify('Lo siento, primero debes registrarte', 'error');
+        }
     },
     mostrarDisponibles: function () {
         $('#seminariosDisponibles').empty();
         $.ajax({
             type: 'POST',
             url: 'ControllerCurso',
-            dataType: 'JSON',
             data: {
                 action: 'seminariosDisponibles'
             },
             success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    var html = '<div class="col-md-6">'
-                            + '<div class="panel panel-default">'
-                            + '<div class="panelCursos-Heading">'
-                            + '<div class="panel-title text-center">'
-                            + data[i]['nombreCurso']
-                            + '</div>'
-                            + '</div>'
-                            + '<div class="panel-body">'
-                            + '<div class="row">'
-                            + '<div class="col-md-6">'
-                            + 'Precio:'
-                            + '<label id="precio">' + data[i]['precioCurso'] + '</label>'
-                            + '</div>'
-                            + '<div class="col-md-6">'
-                            + 'Clases:'
-                            + '<label id="clases">' + data[i]['cantidadClases'] + '</label>'
-                            + '</div>'
-                            + '</div>'
-                            + '<div class="row">'
-                            + '<div class="col-md-6">'
-                            + 'Horas (Por Clase):'
-                            + '<label id="horas">' + data[i]['horasPorClase'] + '</label>'
-                            + '</div>'
-                            + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" id="btnPreincripcion" href="javascript:void(0)" onclick="seminario.preinscripcion(' + data[i]['idCurso'] + ')">Preinscribirse</a>'
-                            + '</div>'
-                            + '</div>'
-                            + '</div>'
-                            + '</div>'
-                            + '</div';
-                    $("#seminariosDisponibles").append(html);
-                }
-
+                var html = data;
+                $("#seminariosDisponibles").append(html);
             }
         });
     },
@@ -623,7 +633,6 @@ var estudiante = {
         $('#miPopupMatricula').modal('show');
     },
     consultar: function (data) {
-
         limpiar("#form_estudiante");
         $('#miPopupEstudiante').find('#titulo').empty();
         $('#miPopupEstudiante').find('#titulo').append('Consultar Estudiante');

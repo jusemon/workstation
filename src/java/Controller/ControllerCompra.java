@@ -129,7 +129,7 @@ public class ControllerCompra extends HttpServlet {
                 arreglo[2] = result.getString("fechaCompra").trim();
                 arreglo[3] = result.getString("totalCompra").trim();
                 arreglo[4] = "<a class=\"btn-sm btn-primary btn-block\" href=\"javascript:void(0)\" onclick=\"compra.editar(" + contador + ")\">"
-                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
+                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
                 lista.add(arreglo);
                 contador++;
             }

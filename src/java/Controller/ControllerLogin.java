@@ -52,7 +52,7 @@ public class ControllerLogin extends HttpServlet {
                         session.setAttribute("pass", pass);
                         session.setAttribute("correo", _objUsuario.getEmailUsuario());
                         session.setAttribute("idRol", _objUsuario.getIdrol());
-                        session.setAttribute("objUsuario", _objUsuario);
+                        session.setAttribute("documentoUsuario", _objUsuario.getDocumentoUsuario());
                         try {
                             String[] aux = _modelModulo.convertirRSaArray(_modelModulo.ListByUser(_objUsuario.getEmailUsuario()));
                             session.setAttribute("derechos", aux);
