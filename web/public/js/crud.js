@@ -1222,6 +1222,66 @@ var compra = {
     }
 };
 
+var venta = {
+    actualizarTotal: function () {
+        var salida = 0;
+        $('#tablaDetalleVenta tbody tr').each(function () {
+            var elementos = {cantidad: 0, precioArticulo: 0};
+            elementos.cantidad = $(this).find('#cantidad').val();
+            elementos.precioArticulo = $(this).find('#valor').val();
+            salida += elementos.cantidad * elementos.precioArticulo;
+        });
+        $('#tabCompras').find('#txtTotalCompra').val(salida);
+    },
+    efectuarVenta: function () {
+        var form = $('#formVenta');
+        $(form).off();
+        $(form).on('submit', function () {
+            var lista = Array();
+            $('#tablaDetalleVenta tbody tr').each(function () {
+                var elementos = {idArticulo: '', cantidad: '', precioArticulo: ''};
+                elementos.idArticulo = $(this).data('id');
+                elementos.cantidad = $(this).find('#cantidad').val();
+                elementos.precioArticulo = $(this).find('#valor').val();
+                lista.push(elementos);
+            });
+            if (lista.length > 0) {
+                var nombre = $('#tabVentas').find('#txtNombreCliente').val();
+                var numeroVenta = $('#tabVentas').find('#txtNumeroVenta').val();
+                var total = $('#tabVentas').find('#txtTotalVenta').val();
+                $.ajax({
+                    type: 'POST',
+                    url: "ControllerVenta",
+                    data: {
+                        action: 'Registrar',
+                        lista: lista,
+                        size: lista.length,
+                        txtNombreCliente: nombre,
+                        txtNumeroVenta: numeroVenta,
+                        txtTotalVenta: total,
+                        documentoUsuario: documentoUsuario
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        $('#tablaDetalleVenta tbody tr').each(function () {
+                            $(this).remove();
+                        });
+                        $("#ddlArticulos").val(null);
+                        limpiar('#formVenta');
+                        mensaje(data);
+                    }
+                });
+            } else {
+                $.notify('Una venta debe contener almenos un artículo', 'error');
+                $(form).off();
+                return false;
+            }
+            $(form).off();
+            return false;
+        });
+
+    },
+};
+
 compra.cargar();
 categoriaCurso.cargar();
 curso.cargar();
