@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-05-2015 a las 21:23:46
+-- Tiempo de generación: 18-05-2015 a las 20:53:15
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -192,6 +192,20 @@ BEGIN
         `nombreCategoriaCurso` 
     FROM `tblcategoriacurso` 
     WHERE `nombreCategoriaCurso`!='Seminario';
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCompras`()
+BEGIN
+    SELECT  
+        `idMovimiento`, 
+        `fechaMovimiento` as fechaCompra, 
+        `totalMovimiento` as totalCompra, 
+        `idtipoMovimiento`, 
+        `documentoUsuario`, 
+        `facturaProveedor`, 
+        `nombreProveedor` 
+    FROM `tblmovimiento` 
+    WHERE `idtipoMovimiento` = 1;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarComprasRangoFecha`(
@@ -498,7 +512,7 @@ BEGIN
             `facturaProveedor`, 
             `nombreProveedor`
         ) VALUES (
-            curdate(),
+            NOW(),
             `totalMovimien`,
             1,
             `documentoUsuar`, 
@@ -583,6 +597,7 @@ BEGIN
         (SELECT MAX(`idMovimiento`) FROM tblMovimiento),
         `precioArticu`
     );
+    UPDATE `tblarticulo` SET `cantidadDisponible`=`cantidadDisponible` + `cantid`,`precioCompra`= `precioArticu` WHERE `idArticulo` = `idArticu`;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleVenta`(
@@ -873,9 +888,9 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
 --
 
 INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioCompra`, `precioVenta`) VALUES
-(1, 4, 'Vinilo Aguamarina', 30, 1000, 1200),
-(2, 1, 'Vinilo Dorado', 30, 1200, 1400),
-(3, 1, 'Vinilo Plateado', 30, 1200, 1400);
+(1, 2, 'Vinilo Aguamarina', 125, 2000, 1200),
+(2, 2, 'Vinilo Dorado', 101, 1000, 1400),
+(3, 2, 'Vinilo Plateado', 94, 1500, 1400);
 
 -- --------------------------------------------------------
 
@@ -893,8 +908,8 @@ CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
 --
 
 INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArticulo`) VALUES
-(1, 'Categoria A'),
-(2, 'Categoria B'),
+(1, 'Pinceles'),
+(2, 'Vinilos'),
 (3, 'Categoria C'),
 (4, 'Categoria D');
 
@@ -979,15 +994,8 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `descripcionCurso` varchar(100) DEFAULT NULL,
   `precioCurso` int(11) DEFAULT NULL,
   `idCategoriaCurso` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `tblcurso`
---
-
-INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorClase`, `estadoCurso`, `descripcionCurso`, `precioCurso`, `idCategoriaCurso`) VALUES
-(2, 'SeminarioPrueba', 1, 5, 1, 'Un Seminario de Prueba', 50000, 1),
-(3, 'Oleo', 6, 3, 1, 'El oleo es un curso muy interesante', 120000, 3);
 
 -- --------------------------------------------------------
 
@@ -1373,12 +1381,12 @@ MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tblcurso`
 --
 ALTER TABLE `tblcurso`
-MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT de la tabla `tbldetalleusuario`
 --
@@ -1393,12 +1401,12 @@ MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 -- AUTO_INCREMENT de la tabla `tblmovimiento`
 --
 ALTER TABLE `tblmovimiento`
-MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --
 ALTER TABLE `tblpreinscripcion`
-MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT de la tabla `tblrol`
 --
