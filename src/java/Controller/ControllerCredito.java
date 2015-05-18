@@ -13,9 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Model.DTO.ObjCredito;
 import Model.Data.ModelCredito;
-
 import com.google.gson.Gson;
-import com.sun.xml.internal.fastinfoset.EncodingConstants;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
