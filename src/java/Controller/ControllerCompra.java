@@ -6,6 +6,8 @@
 package Controller;
 
 import Model.DTO.ObjCompra;
+import Model.DTO.ObjDetalleMovimiento;
+import Model.DTO.ObjUsuario;
 import Model.Data.ModelCompra;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -29,6 +31,9 @@ public class ControllerCompra extends HttpServlet {
 
     ModelCompra daoModelCompra;
     ObjCompra _objCompra = new ObjCompra();
+    ObjUsuario _objUsuario = new ObjUsuario();
+    List<ObjDetalleMovimiento> listObjDetalleMovimientos = new ArrayList<>();
+    ObjDetalleMovimiento _objDetalleMovimiento = new ObjDetalleMovimiento();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,23 +53,35 @@ public class ControllerCompra extends HttpServlet {
             //int estado = 0;
 
             String action = request.getParameter("action");
-            switch (request.getParameter("action")) {
+            switch (action) {
                 case "Registrar": {
-                    try {
-                        String facturaProveedor = (request.getParameter("txtFacturaProveedor"));
-                        String nombreProveedor = (request.getParameter("txtNombreProveedor"));
-                        String fechaCompra = request.getParameter("dateFechaCompra");
-                        int totalCompra = Integer.parseInt(request.getParameter("txtTotalCompra"));
-                        _objCompra.setFacturaProveedor(facturaProveedor);
-                        _objCompra.setNombreProveedor(nombreProveedor);
-                        _objCompra.setFechaCompra(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaCompra)));
-                        _objCompra.setTotalCompra(totalCompra);
-                        daoModelCompra = new ModelCompra();
-                        daoModelCompra.Add(_objCompra);
-                        daoModelCompra.Signout();
-                        break;
-                    } catch (ParseException ex) {
+                    String documentoUsuario = (request.getParameter("documentoUsuario"));
+                    String facturaProveedor = (request.getParameter("txtNumeroFactura"));
+                    String nombreProveedor = (request.getParameter("txtNombre"));
+                    int lenght = Integer.parseInt(request.getParameter("size"));
+                    int totalCompra = Integer.parseInt(request.getParameter("txtTotalCompra"));
+                    System.out.println(lenght);
+                    listObjDetalleMovimientos = new ArrayList<>();
+                    for (int i = 0; i < lenght; i++) {
+                        _objDetalleMovimiento = new ObjDetalleMovimiento();
+                        _objDetalleMovimiento.setIdArticulo(Integer.parseInt(request.getParameter("lista[" + i + "][idArticulo]")));
+                        _objDetalleMovimiento.setCantidad(Integer.parseInt(request.getParameter("lista[" + i + "][cantidad]")));
+                        _objDetalleMovimiento.setPrecioArticulo(Integer.parseInt(request.getParameter("lista[" + i + "][precioArticulo]")));
+                        _objDetalleMovimiento.setTotalDetalleMovimiento(_objDetalleMovimiento.getCantidad() * _objDetalleMovimiento.getPrecioArticulo());
+                        _objDetalleMovimiento.setDescuento(lenght);
+                        listObjDetalleMovimientos.add(_objDetalleMovimiento);
                     }
+                    _objUsuario.setDocumentoUsuario(documentoUsuario);
+                    _objCompra.setFacturaProveedor(facturaProveedor);
+                    _objCompra.setNombreProveedor(nombreProveedor);
+                    _objCompra.setTotalCompra(totalCompra);
+                    daoModelCompra = new ModelCompra();
+                    String salida = Mensaje(daoModelCompra.Add(_objCompra, _objUsuario, listObjDetalleMovimientos), "La compra ha sido registrada", "Ha ocurrido un error");
+                    daoModelCompra.Signout();
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(salida);
+                    break;
                 }
                 case "Editar": {
                     try {
@@ -88,6 +105,9 @@ public class ControllerCompra extends HttpServlet {
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableCompra());
                     break;
+                }
+                case "Probar": {
+
                 }
 
             }

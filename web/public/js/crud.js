@@ -3,6 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/* global documentoUsuario */
+
 $('.fecha').datepicker({
     format: "dd/mm/yyyy",
     language: "es",
@@ -10,7 +12,7 @@ $('.fecha').datepicker({
     orientation: "top left"
 });
 
-var tablaCurso, tablaCategoriaCurso, tablaClases, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaUsuario;
+var tablaCurso, tablaCategoriaCurso, tablaClases, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaUsuario, idCurso;
 
 var curso = {
     myAjax: function (accion, id, aux, typo) {
@@ -317,8 +319,7 @@ var seminario = {
                     if (accion == 'Consultar') {
                         if (aux == 'Editar') {
                             seminario.editar(data);
-                        } else if (aux == 'Preinscripcion')
-                            seminario.preinscripcion(data);
+                        }
                         else
                             seminario.consultar(data);
                     }
@@ -375,15 +376,48 @@ var seminario = {
         $('#miPopupCurso').find('#tipo').val('Seminario');
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
-    preinscripcion: function (data) {
-        seminario.consultar(data);
-        $('#miPopupCurso').find('#txtCantidadClases').attr('readOnly', true);
-        $('#miPopupCurso').find('#ContenedorCategoria').hide().find('#ddlCategoria').attr('disabled', true);
-        $('#miPopupCurso').find('#titulo').empty();
-        $('#miPopupCurso').find('#titulo').append('Preinscribirse');
-        $('#miPopupCurso').find('#tipo').val('Seminario');
-        $('#miPopupCurso').find('#aux').val(documentoUsuario);
-        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Preinscribirse').attr('disabled', false);
+    preinscripcion: function (idCurso) {
+        var asd = $('#btnPreincripcion').notify({
+            title: '¿Estas seguro?',
+            button: 'Confirmar'
+        }, {
+            style: 'foo',
+            autoHide: false,
+            clickToHide: false
+        });
+        //listen for click events from this style
+        $(document).on('click', '.notifyjs-foo-base .no', function () {
+            $(this).trigger('notify-hide');
+            $(document).off('click', '.notifyjs-foo-base .no');
+        });
+        $(document).on('click', '.notifyjs-foo-base .yes', function () {
+            if (typeof (documentoUsuario) !== "undefined") {
+                $.ajax({
+                    type: 'POST',
+                    url: "ControllerCurso",
+                    dataType: 'JSON',
+                    data: {
+                        action: 'Preinscribir',
+                        idCurso: idCurso,
+                        documentoUsuario: documentoUsuario,
+                        tipo: 'Seminario'
+                    },
+                    success: function (data) {
+                        mensaje(data);
+                    }
+                });
+            }
+            else {
+                $.notify('Lo siento, primero debes registrarte', 'error');
+            }
+            $(this).trigger('notify-hide');
+            $(document).off('click', '.notifyjs-foo-base .yes');
+        });
+
+
+        $('#btnConfirmarPreSeminario').data("idcurso", idCurso);
+        $('#btnConfirmarPreSeminario').data("documentousuario", documentoUsuario);
+        $('#btnConfirmarPreSeminario').data("tipo", 'Seminario');
     },
     mostrarDisponibles: function () {
         $('#seminariosDisponibles').empty();
@@ -420,7 +454,7 @@ var seminario = {
                             + '<label id="horas">' + data[i]['horasPorClase'] + '</label>'
                             + '</div>'
                             + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="seminario.myAjax(\'Consultar\', ' + data[i]['idCurso'] + ',\'Preinscripcion\',\'Seminario\')">Preinscribirse</a>'
+                            + '<a class="btn btn-sm btn-default" id="btnPreincripcion" href="javascript:void(0)" onclick="seminario.preinscripcion(' + data[i]['idCurso'] + ')">Preinscribirse</a>'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -929,28 +963,44 @@ var articulo = {
         $('#miPopupArticulo').find('#btnArticulo').val('Editar');
         $('#miPopupArticulo').modal('show');
     },
-    seleccionar: function (id){
-        $.ajax({
-            type: 'POST',
-            url: "ControllerArticulo",
-            dataType: 'JSON',
-            data: {
-                action: 'Consultar',
-                id: id
-            },
-            success: function(data) {
-                
-                var fila = '<tr>';
-                fila += '<td data-id="'+data['idArticulo']+'">'+data['idArticulo']+'</td>'
-                fila += '<td>'+data['descripcionArticulo']+'</td>'
-                fila += '<td>'+'<input type="number" id="cantidad" name="cantidad" min="1">'+'</td>'
-                fila += '<td>'+'<input type="number" id="valor" name="valor" min="50">'+'</td>'
-                fila += '<td>'+'<button class="btn btn-danger glyphicon glyphicon-remove row-remove"></button>'+'</td>'
-                fila += '</tr>';
-                $('#tbodyCompra').append(fila);
-                
+    seleccionar: function (id) {
+        var x = articulo.noExiste(id);
+        if (x) {
+            $.ajax({
+                type: 'POST',
+                url: "ControllerArticulo",
+                dataType: 'JSON',
+                data: {
+                    action: 'Consultar',
+                    id: id
+                },
+                success: function (data) {
+                    var fila = '<tr  data-id="' + data['idArticulo'] + '">';
+                    fila += '<td>' + data['idArticulo'] + '</td>';
+                    fila += '<td>' + data['descripcionArticulo'] + '</td>';
+                    fila += '<td>' + '<input type="number" id="cantidad" onblur="compra.actualizarTotal(\'cantidad\')" name="cantidad" min="1" required>' + '</td>';
+                    fila += '<td>' + '<input type="number" id="valor" onblur="compra.actualizarTotal(\'valor\')" name="valor" min="50" required>' + '</td>';
+                    fila += '<td>' + '<button class="btn btn-danger glyphicon glyphicon-remove row-remove" onclick="articulo.remover(' + data['idArticulo'] + ')"></button>' + '</td>';
+                    fila += '</tr>';
+                    $('#tablaDetalleCompra tbody').append(fila);
+                }
+            });
+        }
+    },
+    noExiste: function (id) {
+        var flag = true;
+        $('#tablaDetalleCompra tbody tr').each(function () {
+            if ($(this).data('id') == id) {
+                flag = false;
             }
-            
+        });
+        return flag;
+    },
+    remover: function (id) {
+        $('#tablaDetalleCompra tbody tr').each(function () {
+            if ($(this).data('id') == id) {
+                $(this).remove();
+            }
         });
     },
     cargar: function () {
@@ -968,7 +1018,9 @@ var articulo = {
         });
     },
     listarArticulos: function () {
-        $('#ddlArticulos').empty();
+        var f = new Date();
+        var fechaActual = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
+        $('#tabCompras').find('#txtFechaCompra').append('Fecha: ' + fechaActual);
         $.ajax({
             type: 'POST',
             url: 'ControllerArticulo',
@@ -979,7 +1031,9 @@ var articulo = {
             success: function (data) {
                 $("#ddlArticulos").select2({
                     data: data,
-                    language: "es"
+                    language: "es",
+                    placeholder: "Selecciona los articulos",
+                    allowClear: true
                 });
             }
         });
@@ -1075,6 +1129,8 @@ var compra = {
                     }
                     else if (accion === 'getOptionsCompra') {
                         compra.cargarOpciones(data);
+                        $("#ddlArticulos").destroy();
+                        articulo.listarArticulos();
                     }
                 }
             });
@@ -1085,24 +1141,62 @@ var compra = {
             $(form).submit();
         }
     },
-    editar: function (tr) {
-        var data = tablaCompra.row(tr).data();
-        $('#miPopupCompra').find('#titulo').empty();
-        $('#miPopupCompra').find('#titulo').append('Editar Compra');
-        $('#miPopupCompra').find('#txtFacturaProveedor').val(data[0]);
-        $('#miPopupCompra').find('#txtNombreProveedor').val(data[1]);
-        $('#miPopupCompra').find('#dateFechaCompra').val(data[2]);
-        $('#miPopupCompra').find('#txtTotalCompra').val(data[3]);
-        $('#miPopupCompra').find('#btnCompra').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
-        $('#miPopupCompra').modal('show');
+    actualizarTotal: function () {
+        var salida = 0;
+        $('#tablaDetalleCompra tbody tr').each(function () {
+            var elementos = {cantidad: 0, precioArticulo: 0};
+            elementos.cantidad = $(this).find('#cantidad').val();
+            elementos.precioArticulo = $(this).find('#valor').val();
+            salida += elementos.cantidad * elementos.precioArticulo;
+        });
+        $('#tabCompras').find('#txtTotalCompra').val(salida);
     },
-    registrar: function () {
-        limpiar('#formCompra');
-        $('#miPopupCompra').find('#titulo').empty();
-        $('#miPopupCompra').find('#titulo').append('Registrar Compra');
-        habilitar('#form_compra');
-        $('#miPopupCompra').find('#btnCompra').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
-        $('#miPopupCompra').modal('show');
+    efectuarCompra: function () {
+        var form = $('#formCompra');
+        $(form).off();
+        $(form).on('submit', function () {
+            var lista = Array();
+            $('#tablaDetalleCompra tbody tr').each(function () {
+                var elementos = {idArticulo: '', cantidad: '', precioArticulo: ''};
+                elementos.idArticulo = $(this).data('id');
+                elementos.cantidad = $(this).find('#cantidad').val();
+                elementos.precioArticulo = $(this).find('#valor').val();
+                lista.push(elementos);
+            });
+            if (lista.length > 0) {
+                var nombre = $('#tabCompras').find('#txtNombre').val();
+                var numeroFactura = $('#tabCompras').find('#txtNumeroFactura').val();
+                var total = $('#tabCompras').find('#txtTotalCompra').val();
+                $.ajax({
+                    type: 'POST',
+                    url: "ControllerCompra",
+                    data: {
+                        action: 'Registrar',
+                        lista: lista,
+                        size: lista.length,
+                        txtNombre: nombre,
+                        txtNumeroFactura: numeroFactura,
+                        txtTotalCompra: total,
+                        documentoUsuario: documentoUsuario
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        $('#tablaDetalleCompra tbody tr').each(function () {
+                            $(this).remove();
+                        });
+                        $("#ddlArticulos").val(null);
+                        limpiar('#formCompra');
+                        mensaje(data);
+                    }
+                });
+            } else {
+                $.notify('Una compra debe contener almenos un artículo', 'error');
+                $(form).off();
+                return false;
+            }
+            $(form).off();
+            return false;
+        });
+
     },
     cargar: function () {
         tablaCompra = $('#tblCompra').DataTable({

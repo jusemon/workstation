@@ -49,8 +49,8 @@
         <servlet-class>Controller.ControllerUsuario</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ControllerVenta</servlet-name>
-        <servlet-class>Controller.ControllerVenta</servlet-class>
+        <servlet-name>ControllerPreinscripcion</servlet-name>
+        <servlet-class>Controller.ControllerPreinscripcion</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ControllerCliente</servlet-name>
@@ -101,6 +101,8 @@
         <url-pattern>/ControllerUsuario</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>ControllerPreinscripcion</servlet-name>
+        <url-pattern>/ControllerPreinscripcion</url-pattern>
         <servlet-name>ControllerVenta</servlet-name>
         <url-pattern>/ControllerVenta</url-pattern>
     </servlet-mapping>

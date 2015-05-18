@@ -24,13 +24,13 @@ public class ModelPreinscripcion extends ConnectionDB {
 
     public boolean Add(int idCurso, String documentoUsuario) {
         boolean objReturn = false;
-        String sql = "call spPreinscribirUsuario(?,?)";
+        String sql = "call spIngresarPreinscripcion(?,?)";
 
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setInt(1, idCurso);
-            pStmt.setString(2, documentoUsuario);
+            pStmt.setString(1, documentoUsuario);
+            pStmt.setInt(2, idCurso);
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
@@ -40,7 +40,7 @@ public class ModelPreinscripcion extends ConnectionDB {
             System.out.println(e.getMessage());
         }
         return objReturn;
-    }   
+    }
 
     public boolean cambiarEstado(String documentoUsuario, int idCurso) {
         boolean objReturn = false;

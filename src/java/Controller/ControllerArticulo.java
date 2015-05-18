@@ -19,9 +19,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -233,9 +230,9 @@ public class ControllerArticulo extends HttpServlet {
     }// </editor-fold>
 
     private String getOptionsArticulos() {
-        ResultSet result = null;
+        ResultSet result;
         List<Map> salida = new ArrayList<>();
-        Map<String, String> articulo = null;
+        Map<String, String> articulo;
         try {
             result = daoModelArticulo.ListAll();
             while (result.next()) {
@@ -243,7 +240,6 @@ public class ControllerArticulo extends HttpServlet {
                 articulo.put("id", result.getString("idArticulo"));
                 articulo.put("text", result.getString("descripcionArticulo"));
                 salida.add(articulo);
-
             }
         } catch (Exception ex) {
 
@@ -257,7 +253,7 @@ public class ControllerArticulo extends HttpServlet {
         Map<String, String> salida = new LinkedHashMap<>();
         try {
             result = daoModelArticulo.consultarPorID(id);
-            while (result.next()) {                
+            while (result.next()) {
                 salida.put("idArticulo", result.getString("idArticulo"));
                 salida.put("descripcionArticulo", result.getString("descripcionArticulo"));
             }

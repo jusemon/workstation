@@ -179,4 +179,25 @@ public class ModelCurso extends ConnectionDB {
         }
         return rs;
     }
+
+    public boolean Preincribir(int id, String documentoUsuario) {
+        boolean objReturn = false;
+        String sql = "call spIngresarPreinscripcion(?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, documentoUsuario);
+            pStmt.setInt(2, id);
+
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
 }

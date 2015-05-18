@@ -9,10 +9,19 @@ public class ObjDetalleMovimiento {
 
     private int idDetalleMovimiento;
     private int idArticulo;
-    private int cantidadVendida;
+    private int cantidad;
     private int descuento = 0;
     private int totalDetalleMovimiento;
     private int idMovimiento;
+    private int precioArticulo;
+
+    public int getPrecioArticulo() {
+        return precioArticulo;
+    }
+
+    public void setPrecioArticulo(int precioArticulo) {
+        this.precioArticulo = precioArticulo;
+    }
 
     public int getIdDetalleMovimiento() {
         return idDetalleMovimiento;
@@ -30,12 +39,12 @@ public class ObjDetalleMovimiento {
         this.idArticulo = idArticulo;
     }
 
-    public int getCantidadVendida() {
-        return cantidadVendida;
+    public int getCantidad() {
+        return cantidad;
     }
 
-    public void setCantidadVendida(int cantidadVendida) {
-        this.cantidadVendida = cantidadVendida;
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     public int getDescuento() {

@@ -23,7 +23,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                     -->
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a  data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <a id="btnGestionCompras" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas">
                                 Gestión de Compras 
                             </a>
                         </h4>
@@ -176,7 +176,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
         </div>
         <div id="contenedor" class="col-md-9">
             <div class="tab-content" id="contenidoDinamico">
-                <div class="tab-pane active" id="tabListas">
+                <div role="tabpanel" class="tab-pane fade in active" id="tabListas">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="active">
                             <a href="#compra" role="tab" data-toggle="tab">Listado de Compras</a>
@@ -192,7 +192,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane active" id="compra">
+                        <div class="tab-pane fade in active" id="compra">
                             <table id="tblCompra" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
@@ -208,7 +208,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane" id="ventas">
+                        <div class="tab-pane fade" id="ventas">
                             <table id="tblVentas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
@@ -233,7 +233,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane" id="abonos">
+                        <div class="tab-pane fade" id="abonos">
                             <table id="tblAbono" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
@@ -247,7 +247,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane" id="diario">
+                        <div class="tab-pane fade" id="diario">
                             <table id="tblDiario" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
@@ -274,7 +274,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="tabCompras">
+                <div role="tabpanel" class="tab-pane fade in" id="tabCompras">
                     <div id="compras" class="row">
                         <div class="col-md-12 panel panel-default">
                             <div class="panel-heading">
@@ -283,82 +283,96 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="txtNombre">
-                                                        Nombre del Proveedor
-                                                    </label>
-                                                    <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="" required>
+                                <form id="formCompra" method="POST">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNombre">
+                                                            Nombre del Proveedor
+                                                        </label>
+                                                        <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="" required>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="txtNnumeroFactura">
-                                                        Numero de Factura
-                                                    </label>
-                                                    <input name="txtNnumeroFactura" id="txtNnumeroFactura" type="text" class="form-control" placeholder="" required>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNumeroFactura">
+                                                            Numero de Factura
+                                                        </label>
+                                                        <input name="txtNumeroFactura" id="txtNumeroFactura" type="text" class="form-control" placeholder="" required>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-12">
                                                     <label for="ddlArticulos">
                                                         Articulos:
                                                     </label>
-                                                    <select class="form-group" id="ddlArticulos" onchange="articulo.seleccionar($('#ddlArticulos').val())">
-
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <select class="form-control" style="width: 100%" id="ddlArticulos">
+                                                        <option></option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="row">
-                                            <div class="col-md-offset-9 col-md-3">
-                                                <div class="form-group">
-                                                    <label for="txtNnumeroFactura">
-                                                        Fecha: 13/05/2015
-                                                    </label>
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                <div class="col-md-offset-9 col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="txtFechaCompra" id="txtFechaCompra">
+
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 table-responsive">
+                                                    <table id="tablaDetalleCompra" class="table table-bordered table-hover table-sortable" id="tab_logic">
+                                                        <thead>
+                                                            <tr >
+                                                                <th class="text-center">
+                                                                    Id
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Nombre
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Cantidad
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Valor
+                                                                </th>
+                                                                <th class="text-center" style="border-top: 1px solid #ffffff; border-right: 1px solid #ffffff;">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tbodyCompra"> 
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="col-md-offset-3 col-md-6">
+                                                        <input type="submit" class="btn btn-default" value="Efectuar Compra" onclick="compra.efectuarCompra()">
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-offset-1 col-md-2">
+                                                            <label for="txtTotalCompra">
+                                                                Total Compra
+                                                            </label>
+                                                            <input type="number" value="0" id="txtTotalCompra" class="form-control" readonly="true">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12 table-responsive">
-                                                <table class="table table-bordered table-hover table-sortable" id="tab_logic">
-                                                    <thead>
-                                                        <tr >
-                                                            <th class="text-center">
-                                                                Id
-                                                            </th>
-                                                            <th class="text-center">
-                                                                Nombre
-                                                            </th>
-                                                            <th class="text-center">
-                                                                Cantidad
-                                                            </th>
-                                                            <th class="text-center">
-                                                                Valor
-                                                            </th>
-                                                            <th class="text-center" style="border-top: 1px solid #ffffff; border-right: 1px solid #ffffff;">
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="tbodyCompra"> 
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
-
                             <div class="panel-footer">
 
                             </div>
