@@ -60,7 +60,6 @@ public class ControllerCompra extends HttpServlet {
                     String nombreProveedor = (request.getParameter("txtNombre"));
                     int lenght = Integer.parseInt(request.getParameter("size"));
                     int totalCompra = Integer.parseInt(request.getParameter("txtTotalCompra"));
-                    System.out.println(lenght);
                     listObjDetalleMovimientos = new ArrayList<>();
                     for (int i = 0; i < lenght; i++) {
                         _objDetalleMovimiento = new ObjDetalleMovimiento();

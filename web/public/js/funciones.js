@@ -60,6 +60,14 @@ $('#btnGestionCompras').on('click', function () {
     }
 });
 
+$('#btnGestionVentas').on('click', function () {
+    if ($(this).data('target') === '#tabListas') {
+        $(this).data('target', '#tabVentas');
+    } else {
+        $(this).data('target', '#tabListas');
+    }
+});
+
 var $eventSelect = $("#ddlArticulos");
 
 $eventSelect.on("select2:select", function (e) {
