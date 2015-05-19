@@ -28,22 +28,6 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                             </a>
                         </h4>
                     </div>
-                    <!--
-                    Aqui el contenido de la gestion de Compras, en este caso un boton para registrar  una compra
-                    y otro para consultar el registro de comrpas
-                    -->                            
-                    <div id="collapseOne" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input class="btn btn-default btn-block" type="button" value="Registrar Compra" onclick="cambiarPantalla()">
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
                 </div>
                 <!--Gestión de Ventas-->
                 <div class="panel panel-default">
@@ -52,7 +36,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                     -->
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                            <a id="btnGestionVentas" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas">
                                 Gestión de Ventas
                             </a>
                         </h4>
@@ -363,6 +347,111 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                         <div class="col-md-offset-1 col-md-2">
                                                             <label for="txtTotalCompra">
                                                                 Total Compra
+                                                            </label>
+                                                            <input type="number" value="0" id="txtTotalCompra" class="form-control" readonly="true">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="panel-footer">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade in" id="tabVentas">
+                    <div id="compras" class="row">
+                        <div class="col-md-12 panel panel-default">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <label id='titulo'>Registrar Venta</label>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <form id="formVenta" method="POST">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNombreCliente">
+                                                            Nombre del Cliente
+                                                        </label>
+                                                        <input name="txtNombreCliente" id="txtNombre" type="text" class="form-control" placeholder="" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="txtNumeroFactura">
+                                                            Número de Venta
+                                                        </label>
+                                                        <input name="txtNumeroFactura" id="txtNumeroFactura" type="text" class="form-control" placeholder="" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="ddlArticulos">
+                                                        Articulos:
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <select class="form-control" style="width: 100%" id="ddlArticulos">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                <div class="col-md-offset-9 col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="txtFechaCompra" id="txtFechaCompra">
+
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 table-responsive">
+                                                    <table id="tablaDetalleCompra" class="table table-bordered table-hover table-sortable" id="tab_logic">
+                                                        <thead>
+                                                            <tr >
+                                                                <th class="text-center">
+                                                                    Id
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Nombre
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Cantidad
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Valor
+                                                                </th>
+                                                                <th class="text-center" style="border-top: 1px solid #ffffff; border-right: 1px solid #ffffff;">
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tbodyCompra"> 
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="col-md-offset-3 col-md-6">
+                                                        <input type="submit" class="btn btn-default" value="Efectuar Venta" onclick="venta.efectuarVenta()">
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-offset-1 col-md-2">
+                                                            <label for="txtTotalCompra">
+                                                                Total Venta
                                                             </label>
                                                             <input type="number" value="0" id="txtTotalCompra" class="form-control" readonly="true">
                                                         </div>

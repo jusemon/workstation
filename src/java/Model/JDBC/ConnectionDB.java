@@ -38,6 +38,7 @@ public class ConnectionDB {
 
     /**
      * Permite retornar la conexión
+     *
      * @return La conexion
      */
     public Connection getConnection() {
@@ -81,4 +82,13 @@ public class ConnectionDB {
         return this.stmt;
     }
 
+    public void closeConection() {
+        try {
+            connection.close();
+            System.out.println("Desconectado Forma 2");
+        } catch (SQLException ex) {
+            errorString = "Ha ocurrido un error inesperado al desconectarse de la base de datos. " + ex;
+            System.out.println(errorString);
+        }
+    }
 }

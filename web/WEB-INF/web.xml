@@ -103,8 +103,6 @@
     <servlet-mapping>
         <servlet-name>ControllerPreinscripcion</servlet-name>
         <url-pattern>/ControllerPreinscripcion</url-pattern>
-        <servlet-name>ControllerVenta</servlet-name>
-        <url-pattern>/ControllerVenta</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -92,6 +92,47 @@ var curso = {
         $('#miPopupCurso').find('#ContenedorCategoria').show();
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
+    preinscripcion: function (idCurso, btn) {
+        $('.notifyjs-foo-base ').trigger('notify-hide');
+        $(document).off('click', '.notifyjs-foo-base .no');
+        $(document).off('click', '.notifyjs-foo-base .yes');
+        if (typeof (documentoUsuario) !== "undefined") {
+            $(btn).notify({
+                title: '¿Estas seguro?',
+                button: 'Confirmar',
+            }, {
+                style: 'foo',
+                autoHide: false,
+                clickToHide: false,
+                position: 'botton center'
+            });
+            //listen for click events from this style
+            $(document).on('click', '.notifyjs-foo-base .no', function () {
+                $(this).trigger('notify-hide');
+            });
+            $(document).on('click', '.notifyjs-foo-base .yes', function () {
+                $.ajax({
+                    type: 'POST',
+                    url: "ControllerCurso",
+                    dataType: 'JSON',
+                    data: {
+                        action: 'Preinscribir',
+                        idCurso: idCurso,
+                        documentoUsuario: documentoUsuario,
+                        tipo: 'Curso'
+                    },
+                    success: function (data) {
+                        mensaje(data);
+                    }
+                });
+                $(this).trigger('notify-hide');
+                $(document).off('click', '.notifyjs-foo-base .yes');
+            });
+        }
+        else {
+            $.notify('Lo siento, primero debes registrarte', 'error');
+        }
+    },
     mostrarDisponibles: function () {
         $('#cursosDisponibles').empty();
         $.ajax({
@@ -126,7 +167,7 @@ var curso = {
                             + '<label id="horas">' + data[i]['horasPorClase'] + '</label>'
                             + '</div>'
                             + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.myAjax(\'Consultar\', ' + data[i]['idCurso'] + ',\'Preinscripcion\', \'Curso\')">Preinscribirse</a>'
+                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.preinscripcion(' + data[i]['idCurso'] + ',\'Curso\')">Preinscribirse</a>'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -376,6 +417,46 @@ var seminario = {
         $('#miPopupCurso').find('#tipo').val('Seminario');
         $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
+    preinscripcion: function (idCurso, btn) {
+        $('.notifyjs-foo-base ').trigger('notify-hide');
+        $(document).off('click', '.notifyjs-foo-base .no');
+        $(document).off('click', '.notifyjs-foo-base .yes');
+        if (typeof (documentoUsuario) !== "undefined") {
+            $(btn).notify({
+                title: '¿Estas seguro?',
+                button: 'Confirmar',
+            }, {
+                style: 'foo',
+                autoHide: false,
+                clickToHide: false,
+                position: 'botton center'
+            });
+            //listen for click events from this style
+            $(document).on('click', '.notifyjs-foo-base .no', function () {
+                $(this).trigger('notify-hide');
+            });
+            $(document).on('click', '.notifyjs-foo-base .yes', function () {
+                $.ajax({
+                    type: 'POST',
+                    url: "ControllerCurso",
+                    dataType: 'JSON',
+                    data: {
+                        action: 'Preinscribir',
+                        idCurso: idCurso,
+                        documentoUsuario: documentoUsuario,
+                        tipo: 'Seminario'
+                    },
+                    success: function (data) {
+                        mensaje(data);
+                    }
+                });
+                $(this).trigger('notify-hide');
+                $(document).off('click', '.notifyjs-foo-base .yes');
+            });
+        }
+        else {
+            $.notify('Lo siento, primero debes registrarte', 'error');
+        }
     preinscripcion: function (idCurso) {
         var asd = $('#btnPreincripcion').notify({
             title: '¿Estas seguro?',
@@ -424,45 +505,12 @@ var seminario = {
         $.ajax({
             type: 'POST',
             url: 'ControllerCurso',
-            dataType: 'JSON',
             data: {
                 action: 'seminariosDisponibles'
             },
             success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    var html = '<div class="col-md-6">'
-                            + '<div class="panel panel-default">'
-                            + '<div class="panelCursos-Heading">'
-                            + '<div class="panel-title text-center">'
-                            + data[i]['nombreCurso']
-                            + '</div>'
-                            + '</div>'
-                            + '<div class="panel-body">'
-                            + '<div class="row">'
-                            + '<div class="col-md-6">'
-                            + 'Precio:'
-                            + '<label id="precio">' + data[i]['precioCurso'] + '</label>'
-                            + '</div>'
-                            + '<div class="col-md-6">'
-                            + 'Clases:'
-                            + '<label id="clases">' + data[i]['cantidadClases'] + '</label>'
-                            + '</div>'
-                            + '</div>'
-                            + '<div class="row">'
-                            + '<div class="col-md-6">'
-                            + 'Horas (Por Clase):'
-                            + '<label id="horas">' + data[i]['horasPorClase'] + '</label>'
-                            + '</div>'
-                            + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" id="btnPreincripcion" href="javascript:void(0)" onclick="seminario.preinscripcion(' + data[i]['idCurso'] + ')">Preinscribirse</a>'
-                            + '</div>'
-                            + '</div>'
-                            + '</div>'
-                            + '</div>'
-                            + '</div';
-                    $("#seminariosDisponibles").append(html);
-                }
-
+                var html = data;
+                $("#seminariosDisponibles").append(html);
             }
         });
     },
@@ -623,7 +671,6 @@ var estudiante = {
         $('#miPopupMatricula').modal('show');
     },
     consultar: function (data) {
-
         limpiar("#form_estudiante");
         $('#miPopupEstudiante').find('#titulo').empty();
         $('#miPopupEstudiante').find('#titulo').append('Consultar Estudiante');
@@ -1213,6 +1260,66 @@ var compra = {
     },
     actualizarTabla: function () {
         tablaCompra.ajax.reload();
+    }
+};
+
+var venta = {
+    actualizarTotal: function () {
+        var salida = 0;
+        $('#tablaDetalleVenta tbody tr').each(function () {
+            var elementos = {cantidad: 0, precioArticulo: 0};
+            elementos.cantidad = $(this).find('#cantidad').val();
+            elementos.precioArticulo = $(this).find('#valor').val();
+            salida += elementos.cantidad * elementos.precioArticulo;
+        });
+        $('#tabCompras').find('#txtTotalCompra').val(salida);
+    },
+    efectuarVenta: function () {
+        var form = $('#formVenta');
+        $(form).off();
+        $(form).on('submit', function () {
+            var lista = Array();
+            $('#tablaDetalleVenta tbody tr').each(function () {
+                var elementos = {idArticulo: '', cantidad: '', precioArticulo: ''};
+                elementos.idArticulo = $(this).data('id');
+                elementos.cantidad = $(this).find('#cantidad').val();
+                elementos.precioArticulo = $(this).find('#valor').val();
+                lista.push(elementos);
+            });
+            if (lista.length > 0) {
+                var nombre = $('#tabVentas').find('#txtNombreCliente').val();
+                var numeroVenta = $('#tabVentas').find('#txtNumeroVenta').val();
+                var total = $('#tabVentas').find('#txtTotalVenta').val();
+                $.ajax({
+                    type: 'POST',
+                    url: "ControllerVenta",
+                    data: {
+                        action: 'Registrar',
+                        lista: lista,
+                        size: lista.length,
+                        txtNombreCliente: nombre,
+                        txtNumeroVenta: numeroVenta,
+                        txtTotalVenta: total,
+                        documentoUsuario: documentoUsuario
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        $('#tablaDetalleVenta tbody tr').each(function () {
+                            $(this).remove();
+                        });
+                        $("#ddlArticulos").val(null);
+                        limpiar('#formVenta');
+                        mensaje(data);
+                    }
+                });
+            } else {
+                $.notify('Una venta debe contener almenos un artículo', 'error');
+                $(form).off();
+                return false;
+            }
+            $(form).off();
+            return false;
+        });
+
     }
 };
 

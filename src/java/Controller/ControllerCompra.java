@@ -60,7 +60,6 @@ public class ControllerCompra extends HttpServlet {
                     String nombreProveedor = (request.getParameter("txtNombre"));
                     int lenght = Integer.parseInt(request.getParameter("size"));
                     int totalCompra = Integer.parseInt(request.getParameter("txtTotalCompra"));
-                    System.out.println(lenght);
                     listObjDetalleMovimientos = new ArrayList<>();
                     for (int i = 0; i < lenght; i++) {
                         _objDetalleMovimiento = new ObjDetalleMovimiento();
@@ -129,7 +128,7 @@ public class ControllerCompra extends HttpServlet {
                 arreglo[2] = result.getString("fechaCompra").trim();
                 arreglo[3] = result.getString("totalCompra").trim();
                 arreglo[4] = "<a class=\"btn-sm btn-primary btn-block\" href=\"javascript:void(0)\" onclick=\"compra.editar(" + contador + ")\">"
-                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
+                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
                 lista.add(arreglo);
                 contador++;
             }

@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+/* global articulo */
+
 function limpiar(miForm) {
     $(':input', miForm).each(function () {
         var type = this.type;
@@ -51,10 +53,19 @@ articulo.listarArticulos();
 $('#tabListas').tab('show');
 
 $('#btnGestionCompras').on('click', function () {
-    if ($(this).data('target')==='#tabListas') {
-        $(this).data('target','#tabCompras');
+    if ($(this).data('target') === '#tabListas') {
+        $(this).data('target', '#tabCompras');
     } else {
+        $(this).data('target', '#tabListas');
         $(this).data('target','#tabListas');
+    }
+});
+
+$('#btnGestionVentas').on('click', function () {
+    if ($(this).data('target') === '#tabListas') {
+        $(this).data('target', '#tabVentas');
+    } else {
+        $(this).data('target', '#tabListas');
     }
 });
 
@@ -73,7 +84,7 @@ $(document).ready(function () {
         var $helper = tr.clone();
 
         $helper.children().each(function (index) {
-            $(this).width($originals.eq(index).width())
+            $(this).width($originals.eq(index).width());
         });
 
         return $helper;
@@ -93,7 +104,7 @@ $.notify.addStyle('foo', {
             "<div class='title' data-notify-html='title'/>" +
             "<div class='buttons'>" +
             "<button class='no'>Cancelar</button>" +
-            "<button id='btnConfirmarPreSeminario' data-tipo='' data-idCurso='' data-documentoUsuario='' class='yes' data-notify-text='button'></button>" +
+            "<button class='yes' data-notify-text='button'></button>" +
             "</div>" +
             "</div>" +
             "</div>"
