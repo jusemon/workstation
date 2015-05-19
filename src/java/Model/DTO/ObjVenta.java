@@ -6,8 +6,6 @@
 
 package Model.DTO;
 
-import java.sql.Date;
-
 /**
  *
  * @author lorenzo

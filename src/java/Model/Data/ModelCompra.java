@@ -5,7 +5,6 @@
  */
 package Model.Data;
 
-import Model.DTO.ObjArticulo;
 import Model.JDBC.ConnectionDB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,10 +12,7 @@ import java.sql.SQLException;
 import Model.DTO.ObjCompra;
 import Model.DTO.ObjDetalleMovimiento;
 import Model.DTO.ObjUsuario;
-import java.sql.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

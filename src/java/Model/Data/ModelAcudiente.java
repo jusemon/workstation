@@ -7,7 +7,6 @@ package Model.Data;
 
 import Model.DTO.ObjAcudiente;
 import Model.JDBC.ConnectionDB;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

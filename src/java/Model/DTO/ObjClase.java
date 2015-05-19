@@ -1,7 +1,5 @@
 package Model.DTO;
 
-import java.sql.Date;
-
 /**
  * @author Zack
  * @version 1.0
