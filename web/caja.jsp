@@ -420,7 +420,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 table-responsive">
-                                                    <table id="tablaDetalleCompra" class="table table-bordered table-hover table-sortable" id="tab_logic">
+                                                    <table id="tablaDetalleVenta" class="table table-bordered table-hover table-sortable" id="tab_logic">
                                                         <thead>
                                                             <tr >
                                                                 <th class="text-center">

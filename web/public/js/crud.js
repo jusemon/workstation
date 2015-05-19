@@ -457,48 +457,6 @@ var seminario = {
         else {
             $.notify('Lo siento, primero debes registrarte', 'error');
         }
-    preinscripcion: function (idCurso) {
-        var asd = $('#btnPreincripcion').notify({
-            title: '¿Estas seguro?',
-            button: 'Confirmar'
-        }, {
-            style: 'foo',
-            autoHide: false,
-            clickToHide: false
-        });
-        //listen for click events from this style
-        $(document).on('click', '.notifyjs-foo-base .no', function () {
-            $(this).trigger('notify-hide');
-            $(document).off('click', '.notifyjs-foo-base .no');
-        });
-        $(document).on('click', '.notifyjs-foo-base .yes', function () {
-            if (typeof (documentoUsuario) !== "undefined") {
-                $.ajax({
-                    type: 'POST',
-                    url: "ControllerCurso",
-                    dataType: 'JSON',
-                    data: {
-                        action: 'Preinscribir',
-                        idCurso: idCurso,
-                        documentoUsuario: documentoUsuario,
-                        tipo: 'Seminario'
-                    },
-                    success: function (data) {
-                        mensaje(data);
-                    }
-                });
-            }
-            else {
-                $.notify('Lo siento, primero debes registrarte', 'error');
-            }
-            $(this).trigger('notify-hide');
-            $(document).off('click', '.notifyjs-foo-base .yes');
-        });
-
-
-        $('#btnConfirmarPreSeminario').data("idcurso", idCurso);
-        $('#btnConfirmarPreSeminario').data("documentousuario", documentoUsuario);
-        $('#btnConfirmarPreSeminario').data("tipo", 'Seminario');
     },
     mostrarDisponibles: function () {
         $('#seminariosDisponibles').empty();
