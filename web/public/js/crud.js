@@ -1039,6 +1039,11 @@ var articulo = {
                     language: "es",
                     placeholder: "Selecciona los articulos",
                     allowClear: true
+                });                $("#ddlArticulos2").select2({
+                    data: data,
+                    language: "es",
+                    placeholder: "Selecciona los articulos",
+                    allowClear: true
                 });
             }
         });
@@ -1191,13 +1196,14 @@ var compra = {
                         $("#ddlArticulos").val(null);
                         limpiar('#formCompra');
                         mensaje(data);
+                        compra.actualizarTabla();
                     }
                 });
             } else {
                 $.notify('Una compra debe contener almenos un artículo', 'error');
                 $(form).off();
                 return false;
-            }
+            }            
             $(form).off();
             return false;
         });

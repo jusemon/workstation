@@ -54,22 +54,34 @@ $('#tabListas').tab('show');
 
 $('#btnGestionCompras').on('click', function () {
     if ($(this).data('target') === '#tabListas') {
-        $(this).data('target', '#tabCompras');
+        $(this).data('target', '#tabMovimientos');
+        $('#tabMovimientos').find('#titulo').text('Registrar Compra');
+        $('#tabMovimientos').find('#nombre').text('Nombre del Proveedor');
     } else {
         $(this).data('target', '#tabListas');
-        $(this).data('target','#tabListas');
     }
 });
 
 $('#btnGestionVentas').on('click', function () {
     if ($(this).data('target') === '#tabListas') {
-        $(this).data('target', '#tabVentas');
+        $(this).data('target', '#tabMovimientos');
+        $('#tabMovimientos').find('#titulo').text('Registrar Venta');
+        $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
     } else {
         $(this).data('target', '#tabListas');
     }
 });
 
 var $eventSelect = $("#ddlArticulos");
+
+$eventSelect.on("select2:select", function (e) {
+    var id = e.params.data.id;
+    if (id != '-1') {
+        articulo.seleccionar(id);
+    }
+});
+
+var $eventSelect = $("#ddlArticulos2");
 
 $eventSelect.on("select2:select", function (e) {
     var id = e.params.data.id;
