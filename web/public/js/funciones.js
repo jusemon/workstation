@@ -57,6 +57,7 @@ $('#btnGestionCompras').on('click', function () {
         $(this).data('target', '#tabMovimientos');
         $('#tabMovimientos').find('#titulo').text('Registrar Compra');
         $('#tabMovimientos').find('#nombre').text('Nombre del Proveedor');
+        $('#tabMovimientos').find('#numero').text('Numero de Factura ');
     } else {
         $(this).data('target', '#tabListas');
     }
@@ -67,6 +68,7 @@ $('#btnGestionVentas').on('click', function () {
         $(this).data('target', '#tabMovimientos');
         $('#tabMovimientos').find('#titulo').text('Registrar Venta');
         $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
+        $('#tabMovimientos').find('#numero').text('Numero de Venta');
     } else {
         $(this).data('target', '#tabListas');
     }

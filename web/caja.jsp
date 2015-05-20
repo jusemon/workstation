@@ -260,7 +260,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="txtNumeroFactura">
-                                                            Numero de Factura
+                                                            Número de Factura
                                                         </label>
                                                         <input name="txtNumeroFactura" id="txtNumeroFactura" type="text" class="form-control" placeholder="" required>
                                                     </div>
@@ -269,7 +269,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="ddlArticulos">
-                                                        Articulos:
+                                                        Artículos:
                                                     </label>
                                                 </div>
                                                 <div class="col-md-12">
