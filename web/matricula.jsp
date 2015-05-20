@@ -41,7 +41,7 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane active" id="estudiantes">
+                <div class="tab-pane fade in active" id="estudiantes">
                     <table id="tblEstudiantes" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>                                
@@ -58,7 +58,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="tab-pane" id="matriculas">
+                <div class="tab-pane fade" id="matriculas">
                     <table id="tblMatriculas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>

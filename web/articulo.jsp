@@ -51,7 +51,7 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane active" id="articulos">
+                <div class="tab-pane fade in active" id="articulos">
                     <table id="tblArticulos" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -68,7 +68,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="tab-pane" id="categorias">
+                <div class="tab-pane fade" id="categorias">
                     <table id="tblCategoriaArticulos" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>

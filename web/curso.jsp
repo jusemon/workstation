@@ -97,7 +97,7 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane active" id="cursos">
+                <div class="tab-pane fade in active" id="cursos">
                     <table id="tblCursos" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -112,7 +112,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="tab-pane" id="categoriaCursos">
+                <div class="tab-pane fade" id="categoriaCursos">
                     <table id="tblCategoriaCursos" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -125,7 +125,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="tab-pane" id="seminarios">
+                <div class="tab-pane fade" id="seminarios">
                     <table id="tblSeminarios" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
