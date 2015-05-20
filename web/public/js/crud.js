@@ -1159,7 +1159,7 @@ var compra = {
             elementos.precioArticulo = $(this).find('#valor').val();
             salida += elementos.cantidad * elementos.precioArticulo;
         });
-        $('#tabCompras').find('#txtTotalCompra').val(salida);
+        $('#tabMovimientos').find('#txtTotalCompra').val(salida);
     },
     efectuarCompra: function () {
         var form = $('#formCompra');
