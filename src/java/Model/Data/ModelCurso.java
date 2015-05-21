@@ -134,7 +134,6 @@ public class ModelCurso extends ConnectionDB {
             getStmt();
             pStmt = connection.prepareCall(sql);
             rs = pStmt.executeQuery();
-
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
@@ -145,8 +144,8 @@ public class ModelCurso extends ConnectionDB {
         ResultSet rs = null;
         String sql = "call spConsultarCursos()";
         try {
-            getStmt();
-            rs = stmt.executeQuery(sql);
+            pStmt = connection.prepareCall(sql);
+            rs = pStmt.executeQuery();
 
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
@@ -159,7 +158,8 @@ public class ModelCurso extends ConnectionDB {
         String sql = "call spConsultarSeminarios()";
         try {
             getStmt();
-            rs = stmt.executeQuery(sql);
+            pStmt = connection.prepareCall(sql);
+            rs = pStmt.executeQuery();
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
@@ -200,6 +200,5 @@ public class ModelCurso extends ConnectionDB {
         }
         return objReturn;
     }
-
 
 }

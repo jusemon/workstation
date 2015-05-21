@@ -259,7 +259,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtNumeroFactura">
+                                                        <label id="numero" for="txtNumeroFactura">
                                                             Número de Factura
                                                         </label>
                                                         <input name="txtNumeroFactura" id="txtNumeroFactura" type="text" class="form-control" placeholder="" required>
