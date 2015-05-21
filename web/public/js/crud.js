@@ -23,6 +23,7 @@ var curso = {
                 type: $(form).attr('method'),
                 url: $(form).attr('action'),
                 data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&type=' + typo,
+                async: false,
                 success: function (data) {
                     if (accion == 'Consultar') {
                         if (aux == 'Editar') {
@@ -180,7 +181,6 @@ var curso = {
         });
     },
     cargar: function () {
-        curso.myAjax('getOptionsCursos');
         tablaCurso = $('#tblCursos').DataTable({
             "ajax": {
                 "url": "ControllerCurso",
@@ -194,12 +194,7 @@ var curso = {
         });
     },
     actualizarTabla: function () {
-        curso.myAjax('getOptionsCursos');
         tablaCurso.ajax.reload();
-    },
-    cargarOpciones: function (data) {
-        $('#miPopupFicha').find('#idCursoFicha').empty();
-        $('#miPopupFicha').find('#idCursoFicha').append(data);
     }
 };
 

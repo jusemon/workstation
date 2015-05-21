@@ -51,6 +51,7 @@ public class ControllerCurso extends HttpServlet {
 
                 // <editor-fold defaultstate="collapsed" desc="Registrar un Curso">
                 case "Registrar": {
+                    daoModelCurso.getConnection();
                     tipo = request.getParameter("tipo");
                     nombre = request.getParameter("txtNombre").trim();
                     descripcion = request.getParameter("txtDescripcion").trim();
@@ -74,6 +75,7 @@ public class ControllerCurso extends HttpServlet {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     salida = Mensaje(daoModelCurso.Add(_objCurso), "El Curso ha sido registrado", "Ha ocurrido un error al intentar registrar el Curso");
+                    daoModelCurso.Signout();
                     response.getWriter().write(salida);
                     break;
                 }
@@ -210,6 +212,7 @@ public class ControllerCurso extends HttpServlet {
         respuesta = new LinkedHashMap<>();
         result = null;
         try {
+            daoModelCurso.getConnection();
             if (tipo.equals("Seminario")) {
                 result = daoModelCurso.buscarSeminarioPorID(id);
             } else {
@@ -231,6 +234,8 @@ public class ControllerCurso extends HttpServlet {
             System.err.println(e.getMessage());
             Mensaje(false, "", "Ha ocurrido un error en el Controller " + e.getMessage());
         } finally {
+
+            daoModelCurso.Signout();
         }
         salida = new Gson().toJson(respuesta);
         return salida;
@@ -239,6 +244,7 @@ public class ControllerCurso extends HttpServlet {
     public String cambiarEstado(int id, String tipo) {
         int estado = 0;
         try {
+            daoModelCurso.getConnection();
             result = null;
             if (tipo == null) {
                 result = daoModelCurso.buscarCursoPorID(id);
@@ -259,11 +265,13 @@ public class ControllerCurso extends HttpServlet {
         } catch (Exception e) {
             return Mensaje(false, "", "Ha ocurrido un error en el controller " + e.getMessage());
         } finally {
+            daoModelCurso.Signout();
         }
     }
 
     private String presincribir(int id, String tipo, String documentoUsuario) {
         try {
+            daoModelCurso.getConnection();
             if (tipo.equals("Seminario")) {
                 return Mensaje(daoModelCurso.Preincribir(id, documentoUsuario), "Has sido preincrito al Seminario.", "Ha ocurrido un error durante la preinscripcion");
             } else {
@@ -272,6 +280,7 @@ public class ControllerCurso extends HttpServlet {
         } catch (Exception e) {
             return Mensaje(false, "", "Ha Ocurrido un Error");
         } finally {
+            daoModelCurso.Signout();
         }
     }
 
@@ -280,6 +289,7 @@ public class ControllerCurso extends HttpServlet {
         respuesta = null;
         result = null;
         try {
+            daoModelCurso.getConnection();
             result = daoModelCurso.ListCursosDisponibles();
             while (result.next()) {
                 respuesta = new LinkedHashMap<>();
@@ -299,7 +309,9 @@ public class ControllerCurso extends HttpServlet {
             respuesta.put("mensaje", "Ups, al parecer ha ocurrio un error: " + e + ".");
             respuesta.put("tipo", "error");
             lista.add(respuesta);
+
         } finally {
+            daoModelCurso.Signout();
         }
         String salida = new Gson().toJson(lista);
         return salida;
@@ -310,7 +322,9 @@ public class ControllerCurso extends HttpServlet {
         String resultado = "";
         respuesta = null;
         result = null;
+
         try {
+            daoModelCurso.getConnection();
             result = daoModelCurso.ListSeminariosDisponibles();
             while (result.next()) {
                 resultado += "<div class=\"col-md-6\">\n"
@@ -346,6 +360,7 @@ public class ControllerCurso extends HttpServlet {
             String salida = new Gson().toJson(respuesta);
             return salida;
         } finally {
+            daoModelCurso.Signout();
         }
         return resultado;
     }
@@ -354,6 +369,7 @@ public class ControllerCurso extends HttpServlet {
         List<String[]> lista = new ArrayList<>();
         result = null;
         try {
+            daoModelCurso.getConnection();
             result = daoModelCurso.ListAll();
             while (result.next()) {
                 String[] estado = {"success", "ok"};
@@ -378,6 +394,7 @@ public class ControllerCurso extends HttpServlet {
                 System.err.println(lista1);
             }
         } finally {
+            daoModelCurso.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
@@ -388,6 +405,7 @@ public class ControllerCurso extends HttpServlet {
         List<String[]> lista = new ArrayList<>();
         result = null;
         try {
+            daoModelCurso.getConnection();
             result = daoModelCurso.ListAll("Seminarios");
             while (result.next()) {
                 String[] estado = {"success", "ok"};
@@ -409,6 +427,7 @@ public class ControllerCurso extends HttpServlet {
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error en el controller " + e.toString());
         } finally {
+            daoModelCurso.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
@@ -419,6 +438,7 @@ public class ControllerCurso extends HttpServlet {
         String OptionsCursos = "";
         result = null;
         try {
+            daoModelCurso.getConnection();
             result = daoModelCurso.ListAll();
             while (result.next()) {
                 OptionsCursos += "<option value=\"" + result.getString("idCurso").trim() + "\">" + result.getString("nombreCurso").trim() + "</option>";
@@ -427,6 +447,7 @@ public class ControllerCurso extends HttpServlet {
         } catch (Exception e) {
             OptionsCursos = "Ha Ocurrido un error 2" + e.getMessage();
         } finally {
+            daoModelCurso.Signout();
         }
         return OptionsCursos;
     }
