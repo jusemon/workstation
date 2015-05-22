@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerCategoriaCurso extends HttpServlet {
 
-    ModelCategoriaCurso daoModelCategoriaCurso;
+    ModelCategoriaCurso daoModelCategoriaCurso  = new ModelCategoriaCurso();
     ObjCategoriaCurso _objCategoriaCurso = new ObjCategoriaCurso();
 
     /**
@@ -45,10 +45,11 @@ public class ControllerCategoriaCurso extends HttpServlet {
 
                 //<editor-fold defaultstate="collapsed" desc="Registrar una Categoría de Curso">
                 case "Registrar": {
-                    daoModelCategoriaCurso = new ModelCategoriaCurso();
+                    daoModelCategoriaCurso.getConnection();
                     String nombre = request.getParameter("txtNombre");
                     _objCategoriaCurso.setNombreCategoriaCurso(nombre);
                     String salida = Mensaje(daoModelCategoriaCurso.Add(_objCategoriaCurso), "La categoría ha sido registrada", "Ha ocurrido un error al intentar registrar la categoría");
+                    daoModelCategoriaCurso.Signout();
                     response.setContentType("application/json");
                     response.getWriter().write(salida);
                     break;
@@ -57,12 +58,13 @@ public class ControllerCategoriaCurso extends HttpServlet {
 
                 //<editor-fold defaultstate="collapsed" desc="Editar una Categoría de Curso">
                 case "Editar": {
-                    daoModelCategoriaCurso = new ModelCategoriaCurso();
+                    daoModelCategoriaCurso.getConnection();
                     int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoriaCurso"));
                     String nombre = request.getParameter("txtNombre");
                     _objCategoriaCurso.setIdCategoriaCurso(idCategoriaArticulo);
                     _objCategoriaCurso.setNombreCategoriaCurso(nombre);;
                     String salida = Mensaje(daoModelCategoriaCurso.Edit(_objCategoriaCurso), "La categoría ha sido actualizada", "Ha ocurrido un error al intentar actualizar la categoría");
+                    daoModelCategoriaCurso.Signout();
                     response.setContentType("application/json");
                     response.getWriter().write(salida);
                     break;
@@ -94,7 +96,7 @@ public class ControllerCategoriaCurso extends HttpServlet {
 
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
-        daoModelCategoriaCurso = new ModelCategoriaCurso();
+        daoModelCategoriaCurso.getConnection();
         try {
             result = daoModelCategoriaCurso.ListAll();
             int contador = 0;
@@ -119,7 +121,7 @@ public class ControllerCategoriaCurso extends HttpServlet {
     public String getOptionsCategorias() {
         ResultSet result;
         String lista = "";
-        daoModelCategoriaCurso = new ModelCategoriaCurso();
+        daoModelCategoriaCurso.getConnection();
         try {
             result = daoModelCategoriaCurso.ListAll();
             while (result.next()) {

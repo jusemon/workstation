@@ -278,6 +278,13 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <input class="btn btn-default btn-block" type="button" onclick="articulo.registrar()" value="Registrar Artículo">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="row">
@@ -533,5 +540,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         </div>
     </div>
 </div>
+<!-- pop up Articulo -->
+<%@include file="WEB-INF/jspf/modalArticulo.jspf" %>
 
 <%@include file="WEB-INF/jspf/footer.jspf" %>

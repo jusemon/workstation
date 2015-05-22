@@ -94,12 +94,10 @@ public class ModelCurso extends ConnectionDB {
             pStmt.setString(6, _objCurso.getDescripcionCurso());
             pStmt.setInt(7, _objCurso.getPrecioCurso());
             pStmt.setInt(8, _objCurso.getIdCategoriaCurso());
-
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
             }
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

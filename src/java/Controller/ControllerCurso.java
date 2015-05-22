@@ -111,6 +111,7 @@ public class ControllerCurso extends HttpServlet {
 
                 // <editor-fold defaultstate="collapsed" desc="Editar un Curso">
                 case "Editar": {
+                    daoModelCurso.getConnection();
                     aux = request.getParameter("idCurso");
                     id = Integer.parseInt(aux.trim());
                     tipo = request.getParameter("tipo");
@@ -136,6 +137,7 @@ public class ControllerCurso extends HttpServlet {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     salida = Mensaje(daoModelCurso.Edit(_objCurso), "El Curso ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Curso");
+                    daoModelCurso.Signout();
                     response.getWriter().write(salida);
                     break;
                 }
