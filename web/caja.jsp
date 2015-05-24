@@ -23,7 +23,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                     -->
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a id="btnGestionCompras" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas">
+                            <a id="btnGestionCompras" role="tab" data-toggle="tab" href="javascript:void(0)" data-tipo="" data-target="#tabListas">
                                 Gestión de Compras 
                             </a>
                         </h4>
@@ -36,7 +36,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                     -->
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a id="btnGestionVentas" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas">
+                            <a id="btnGestionVentas" role="tab" data-toggle="tab" href="javascript:void(0)" data-tipo="" data-target="#tabListas">
                                 Gestión de Ventas
                             </a>
                         </h4>
@@ -135,7 +135,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
             </div>
         </div>
         <div id="contenedor" class="col-md-9">
-            <div class="tab-content" id="contenidoDinamico">
+            <div class="tab-content" id="contenidoDinamico" data-actual="listas">
                 <div role="tabpanel" class="tab-pane fade in active" id="tabListas">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="active">
@@ -235,22 +235,21 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade in" id="tabMovimientos">
-                    <div id="compras" class="row">
+                    <div id="movimientos" class="row">
                         <div class="col-md-12 panel panel-default">
                             <div class="panel-heading">
                                 <div class="panel-title">
-                                    <label id='titulo'>Registrar Compra</label>
+                                    <label id='titulo'></label>
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <form id="formCompra" method="POST">
+                                <form id="formMovimiento" method="POST">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label id="nombre" for="txtNombre">
-                                                            Nombre del Proveedor
                                                         </label>
                                                         <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="" required>
                                                     </div>
@@ -260,7 +259,6 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label id="numero" for="txtNumeroFactura">
-                                                            Número de Factura
                                                         </label>
                                                         <input name="txtNumeroFactura" id="txtNumeroFactura" type="text" class="form-control" placeholder="" required>
                                                     </div>
@@ -298,7 +296,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 table-responsive">
-                                                    <table id="tablaDetalleCompra" class="table table-bordered table-hover table-sortable" id="tab_logic">
+                                                    <table id="tablaDetalleMovimiento" class="table table-bordered table-hover table-sortable" id="tab_logic">
                                                         <thead>
                                                             <tr >
                                                                 <th class="text-center">
@@ -317,7 +315,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                                 </th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="tbodyCompra"> 
+                                                        <tbody> 
 
                                                         </tbody>
                                                     </table>
@@ -328,10 +326,9 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-offset-1 col-md-2">
-                                                            <label for="txtTotalCompra">
-                                                                Total Compra
+                                                            <label for="txtTotalMovimiento" id="total">
                                                             </label>
-                                                            <input type="number" value="0" id="txtTotalCompra" class="form-control" readonly="true">
+                                                            <input type="number" value="0" id="txtTotalMovimiento" class="form-control" readonly="true">
                                                         </div>
                                                     </div>
                                                 </div>

@@ -1143,13 +1143,13 @@ var compra = {
     },
     actualizarTotal: function () {
         var salida = 0;
-        $('#tablaDetalleCompra tbody tr').each(function () {
+        $('##tablaDetalleMovimiento tbody tr').each(function () {
             var elementos = {cantidad: 0, precioArticulo: 0};
             elementos.cantidad = $(this).find('#cantidad').val();
             elementos.precioArticulo = $(this).find('#valor').val();
             salida += elementos.cantidad * elementos.precioArticulo;
         });
-        $('#tabMovimientos').find('#txtTotalCompra').val(salida);
+        $('#tabMovimientos').find('#txtTotalMovimiento').val(salida);
     },
     efectuarCompra: function () {
         var form = $('#formCompra');
@@ -1166,7 +1166,7 @@ var compra = {
             if (lista.length > 0) {
                 var nombre = $('#tabCompras').find('#txtNombre').val();
                 var numeroFactura = $('#tabCompras').find('#txtNumeroFactura').val();
-                var total = $('#tabCompras').find('#txtTotalCompra').val();
+                var total = $('#tabCompras').find('#txtTotalMovimiento').val();
                 $.ajax({
                     type: 'POST',
                     url: "ControllerCompra",
@@ -1180,7 +1180,7 @@ var compra = {
                         documentoUsuario: documentoUsuario
                     },
                     success: function (data, textStatus, jqXHR) {
-                        $('#tablaDetalleCompra tbody tr').each(function () {
+                        $('#tablaDetalleMovimiento tbody tr').each(function () {
                             $(this).remove();
                         });
                         $("#ddlArticulos").val(null);

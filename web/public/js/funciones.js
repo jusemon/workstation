@@ -53,23 +53,35 @@ articulo.listarArticulos();
 $('#tabListas').tab('show');
 
 $('#btnGestionCompras').on('click', function () {
-    if ($(this).data('target') === '#tabListas') {
+    var actual = $('#contenidoDinamico').data('actual');
+    if (actual == 'listas' || actual == 'venta') {
         $(this).data('target', '#tabMovimientos');
+        $('#contenidoDinamico').data('actual', 'compra');
+        $('#btnGestionVentas').data('target', '#tabMovimientos');
         $('#tabMovimientos').find('#titulo').text('Registrar Compra');
         $('#tabMovimientos').find('#nombre').text('Nombre del Proveedor');
         $('#tabMovimientos').find('#numero').text('Numero de Factura ');
+        $('#tabMovimientos').find('#total').text('Total compra');
     } else {
+        $('#contenidoDinamico').data('actual', 'listas');
+        $('#btnGestionVentas').data('target', '#tabListas');
         $(this).data('target', '#tabListas');
     }
 });
 
 $('#btnGestionVentas').on('click', function () {
-    if ($(this).data('target') === '#tabListas') {
+    var actual = $('#contenidoDinamico').data('actual');
+    if (actual == 'listas' || actual == 'compra') {
         $(this).data('target', '#tabMovimientos');
+        $('#contenidoDinamico').data('actual', 'venta');
+        $('#btnGestionCompras').data('target', '#tabMovimientos');
         $('#tabMovimientos').find('#titulo').text('Registrar Venta');
         $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
         $('#tabMovimientos').find('#numero').text('Numero de Venta');
+        $('#tabMovimientos').find('#total').text('Total venta');
     } else {
+        $('#contenidoDinamico').data('actual', 'listas');
+        $('#btnGestionCompras').data('target', '#tabListas');
         $(this).data('target', '#tabListas');
     }
 });
