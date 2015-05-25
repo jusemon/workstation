@@ -25,16 +25,15 @@ public class ModelArticulo extends ConnectionDB {
 
     public boolean Add(ObjArticulo _objArticulo) {
         boolean objReturn = false;
-        String sql = "call spIngresarArticulo(?,?,?,?,?)";
+        String sql = "call spIngresarArticulo(?,?,?,?)";
 
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, _objArticulo.getIdCategoriaArticulo());
             pStmt.setString(2, _objArticulo.getDescripcionArticulo());
-            pStmt.setInt(3, _objArticulo.getCantidadDisponible());
-            pStmt.setInt(4, _objArticulo.getPrecioCompra());
-            pStmt.setInt(5, _objArticulo.getPrecioVenta());
+            pStmt.setInt(3, _objArticulo.getPrecioCompra());
+            pStmt.setInt(4, _objArticulo.getPrecioVenta());
 
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {

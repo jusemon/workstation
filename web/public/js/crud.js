@@ -945,6 +945,7 @@ var articulo = {
         $('#miPopupArticulo').find('#titulo').empty();
         $('#miPopupArticulo').find('#titulo').append('Registrar Artículo');
         $('#miPopupArticulo').find('#btnArticulo').attr('value', 'Registrar');
+        $('#miPopupArticulo').find('#txtPrecioCompra').val(data[4]).attr('readOnly', false);
         $('#miPopupArticulo').find('#txtCodigo').val(data).attr('readOnly', true);
         $('#miPopupArticulo').modal('show');
     },
@@ -955,7 +956,7 @@ var articulo = {
         $('#miPopupArticulo').find('#idArticulo').val(data[0]);
         $('#miPopupArticulo').find('#txtDescripcion').val(data[2]);
         $('#miPopupArticulo').find('#txtCantidadArticulo').val(data[3]);
-        $('#miPopupArticulo').find('#txtPrecioCompra').val(data[4]);
+        $('#miPopupArticulo').find('#txtPrecioCompra').val(data[4]).attr('readOnly', true);
         $('#miPopupArticulo').find('#txtPrecioVenta').val(data[5]);
         $('#miPopupArticulo').find('#idCategoriaArticulo option').prop('selected', false).filter(function () {
             return ($(this).text() == data[1]);
@@ -982,14 +983,14 @@ var articulo = {
                     fila += '<td>' + '<input type="number" id="valor" onblur="compra.actualizarTotal(\'valor\')" name="valor" min="50" required>' + '</td>';
                     fila += '<td>' + '<button class="btn btn-danger glyphicon glyphicon-remove row-remove" onclick="articulo.remover(' + data['idArticulo'] + ')"></button>' + '</td>';
                     fila += '</tr>';
-                    $('#tablaDetalleCompra tbody').append(fila);
+                    $('#tablaDetalleMovimiento tbody').append(fila);
                 }
             });
         }
     },
     noExiste: function (id) {
         var flag = true;
-        $('#tablaDetalleCompra tbody tr').each(function () {
+        $('#tablaDetalleMovimiento tbody tr').each(function () {
             if ($(this).data('id') == id) {
                 flag = false;
             }
@@ -997,7 +998,7 @@ var articulo = {
         return flag;
     },
     remover: function (id) {
-        $('#tablaDetalleCompra tbody tr').each(function () {
+        $('#tablaDetalleMovimiento tbody tr').each(function () {
             if ($(this).data('id') == id) {
                 $(this).remove();
             }

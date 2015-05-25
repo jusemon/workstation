@@ -172,4 +172,5 @@
         </div>
     </div>
 </div>
+<%@include file="WEB-INF/jspf/modalCurso.jspf" %>
 <%@include file="WEB-INF/jspf/footer.jspf" %>

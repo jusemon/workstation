@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-05-2015 a las 20:53:15
+-- Tiempo de generación: 25-05-2015 a las 02:54:25
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -478,9 +478,28 @@ BEGIN
 	end if;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarArticulo`(IN `idCategoriaArticulo` INT, IN `descripcionArticulo` VARCHAR(50) CHARSET utf8, IN `cantidadDisponible` INT, IN `precioUnitario` INT)
-    NO SQL
-INSERT INTO `tblarticulo`(`idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioUnitario`) VALUES (idCategoriaArticulo,descripcionArticulo,cantidadDisponible,precioUnitario)$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarArticulo`(
+    IN `idCategoriaArticu` int, 
+    IN `descripcionArticu` varchar(50), 
+    IN `precioComp` int, 
+    IN `precioVen` int
+)
+BEGIN
+INSERT INTO `tblarticulo`(
+    `idCategoriaArticulo`, 
+    `descripcionArticulo`, 
+    `cantidadDisponible`,   
+    `precioCompra`, 
+    `precioVenta`
+) 
+VALUES (
+    `idCategoriaArticu`, 
+    `descripcionArticu`, 
+     0,   
+    `precioComp`, 
+    `precioVen`
+);
+END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCategoriaArticulo`(IN `nombre` VARCHAR(30))
     NO SQL
@@ -732,7 +751,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarPreinscripcion`(
     `documentoUsuar` varchar(45), 
     `idCur` int
 )
-BEGIN
+BEGIN	
+
+declare msg varchar(40);    
+    if (exists(SELECT `documentoUsuario`, `idCurso` FROM `tblpreinscripcion` WHERE `documentoUsuario` = `documentoUsuar` and `idCurso` = `idCur`)) then
+		set msg="Este cliente ya se ha registrado";
+		select msg as Respuesta;
+   	else    
     INSERT INTO `tblpreinscripcion`
     (
         `estado`, 
@@ -745,6 +770,7 @@ BEGIN
         `documentoUsuar`, 
         `idCur`
     );
+end if;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSubsidio`(IN `idSubsid` INT, IN `nitEmpre` INT, IN `idClien` VARCHAR(30), IN `fechaAsignaci` DATETIME, IN `valorSubsid` int)
@@ -881,16 +907,17 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
   `cantidadDisponible` mediumint(9) NOT NULL,
   `precioCompra` int(11) NOT NULL,
   `precioVenta` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblarticulo`
 --
 
 INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioCompra`, `precioVenta`) VALUES
-(1, 2, 'Vinilo Aguamarina', 125, 2000, 1200),
-(2, 2, 'Vinilo Dorado', 101, 1000, 1400),
-(3, 2, 'Vinilo Plateado', 94, 1500, 1400);
+(1, 1, 'Vinilo Aguamarina', 165, 1200, 1200),
+(2, 2, 'Vinilo Dorado', 120, 2100, 1400),
+(3, 2, 'Vinilo Plateado', 124, 1000, 1400),
+(4, 1, 'Pincel delgado', 20, 1200, 1300);
 
 -- --------------------------------------------------------
 
@@ -941,7 +968,7 @@ CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
 
 INSERT INTO `tblcategoriacurso` (`idCategoriaCurso`, `nombreCategoriaCurso`) VALUES
 (1, 'Seminario'),
-(2, 'Categoria A'),
+(2, 'Ads'),
 (3, 'Categoria B'),
 (4, 'Categoria C'),
 (5, 'Categoria D');
@@ -994,8 +1021,15 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `descripcionCurso` varchar(100) DEFAULT NULL,
   `precioCurso` int(11) DEFAULT NULL,
   `idCategoriaCurso` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `tblcurso`
+--
+
+INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorClase`, `estadoCurso`, `descripcionCurso`, `precioCurso`, `idCategoriaCurso`) VALUES
+(5, 'Oleo', 10, 3, 1, 'Asd', 120000, 2),
+(6, 'Loquesea', 1, 5, 1, 'Seminario de lo que sea', 120000, 1);
 
 -- --------------------------------------------------------
 
@@ -1011,7 +1045,18 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
   `totalDetalleMovimiento` int(11) NOT NULL,
   `idMovimiento` int(11) NOT NULL,
   `precioArticulo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tbldetallemovimiento`
+--
+
+INSERT INTO `tbldetallemovimiento` (`idDetalleMovimiento`, `idArticulo`, `cantidad`, `descuento`, `totalDetalleMovimiento`, `idMovimiento`, `precioArticulo`) VALUES
+(19, 2, 10, 3, 20000, 14, 2000),
+(20, 1, 10, 3, 25000, 14, 2500),
+(21, 3, 30, 3, 30000, 14, 1000),
+(22, 2, 9, 1, 18900, 15, 2100),
+(23, 1, 30, 1, 36000, 16, 1200);
 
 -- --------------------------------------------------------
 
@@ -1122,7 +1167,16 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
   `documentoUsuario` varchar(20) NOT NULL,
   `facturaProveedor` varchar(45) DEFAULT NULL,
   `nombreProveedor` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tblmovimiento`
+--
+
+INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento`, `idtipoMovimiento`, `documentoUsuario`, `facturaProveedor`, `nombreProveedor`) VALUES
+(14, '2015-05-18 14:14:07', 75000, 1, '1017225673', '123', 'Sebas'),
+(15, '2015-05-18 14:26:23', 18900, 1, '1017225673', '256', 'Sebas'),
+(16, '2015-05-18 14:44:49', 36000, 1, '1017225673', 'asdasd', 'asd');
 
 -- --------------------------------------------------------
 
@@ -1135,7 +1189,14 @@ CREATE TABLE IF NOT EXISTS `tblpreinscripcion` (
   `estado` bit(1) DEFAULT NULL,
   `documentoUsuario` varchar(20) NOT NULL,
   `idCurso` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tblpreinscripcion`
+--
+
+INSERT INTO `tblpreinscripcion` (`idPreinscripcion`, `estado`, `documentoUsuario`, `idCurso`) VALUES
+(22, b'1', 'CC94110325805', 6);
 
 -- --------------------------------------------------------
 
@@ -1189,7 +1250,9 @@ CREATE TABLE IF NOT EXISTS `tbltipomovimiento` (
 --
 
 INSERT INTO `tbltipomovimiento` (`idtipoMovimiento`, `descripcion`) VALUES
-(1, 'Compra a Proveedor');
+(1, 'Compra a Proveedor'),
+(2, 'Ingreso de producto propio'),
+(3, 'Venta a cliente');
 
 -- --------------------------------------------------------
 
@@ -1217,7 +1280,8 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
 INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`) VALUES
 ('1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL),
 ('CC1017225673', '1994-11-03', 'Juan', 'Montoya', 'thejuansebas03@gmail.com', 'es120300', 1, 1, 3, NULL),
-('CC32466217', '1999-02-03', 'Maria Dolly', 'Montoya Puerta', 'micorreo@correo.com', '123', 1, NULL, 4, NULL);
+('CC32466217', '1999-02-03', 'Maria Dolly', 'Montoya Puerta', 'micorreo@correo.com', '123', 1, NULL, 4, NULL),
+('CC94110325805', '1990-03-02', 'Juan', 'Olla', 'nuevocorrep@correo.com', '123', 1, NULL, 4, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -1356,7 +1420,7 @@ MODIFY `idAbono` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tblarticulo`
 --
 ALTER TABLE `tblarticulo`
-MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `tblcategoriaarticulo`
 --
@@ -1381,12 +1445,12 @@ MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tblcurso`
 --
 ALTER TABLE `tblcurso`
-MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
+MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT de la tabla `tbldetalleusuario`
 --
@@ -1401,12 +1465,12 @@ MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 -- AUTO_INCREMENT de la tabla `tblmovimiento`
 --
 ALTER TABLE `tblmovimiento`
-MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --
 ALTER TABLE `tblpreinscripcion`
-MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
+MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT de la tabla `tblrol`
 --
