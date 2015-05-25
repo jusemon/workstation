@@ -16,10 +16,7 @@ package Model.DTO;
 public class ObjVenta {
     
     private int idVenta;
-    private String fechaVenta;
-    private String cedulaCliente;
-    private String nombreCliente;
-    private int totalVenta;
+    private int idMovimiento;
 
     public int getIdVenta() {
         return idVenta;
@@ -29,41 +26,14 @@ public class ObjVenta {
         this.idVenta = idVenta;
     }
 
-    public String getFechaVenta() {
-        return fechaVenta;
+    public int getIdMovimiento() {
+        return idMovimiento;
     }
 
-    public void setFechaVenta(String fechaVenta) {
-        this.fechaVenta = fechaVenta;
-    }
-
-    public int getTotalVenta() {
-        return totalVenta;
-    }
-
-    public void setTotalVenta(int totalVenta) {
-        this.totalVenta = totalVenta;
-    }
-
-    public String getCedulaCliente() {
-        return cedulaCliente;
-    }
-
-    public void setCedulaCliente(String cedulaCliente) {
-        this.cedulaCliente = cedulaCliente;
-    }
-
-    public String getNombreCliente() {
-        return nombreCliente;
-    }
-
-    public void setNombreCliente(String nombreCliente) {
-        this.nombreCliente = nombreCliente;
+    public void setIdMovimiento(int idMovimiento) {
+        this.idMovimiento = idMovimiento;
     }
     
-   
-
-   
+    
  
-    
 }

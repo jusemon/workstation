@@ -1162,6 +1162,7 @@ var compra = {
         $('#tabMovimientos').find('#txtTotalCompra').val(salida);
     },
     efectuarCompra: function () {
+        limpiar ('#formCompra');
         var form = $('#formCompra');
         $(form).off();
         $(form).on('submit', function () {

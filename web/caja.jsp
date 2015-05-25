@@ -259,7 +259,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="txtNumeroFactura">
+                                                        <label id="numero" for="txtNumero">
                                                             Número de Factura
                                                         </label>
                                                         <input name="txtNumeroFactura" id="txtNumeroFactura" type="text" class="form-control" placeholder="" required>
@@ -317,7 +317,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="col-md-offset-3 col-md-6">
-                                                        <input type="submit" class="btn btn-default" value="Efectuar Compra" onclick="compra.efectuarCompra()">
+                                                        <input id="btnChange" type="submit" class="btn btn-default" value="Efectuar Compra" onclick="compra.efectuarCompra()">
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-offset-1 col-md-2">
