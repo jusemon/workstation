@@ -63,7 +63,7 @@ public class ModelArticulo extends ConnectionDB {
 
     public boolean Edit(ObjArticulo _objArticulo) {
         boolean objReturn = false;
-        String sql = "call spActualizarArticulo(?,?,?,?,?,?)";
+        String sql = "call spActualizarArticulo(?,?,?,?)";
 
         try {
             getStmt();
@@ -71,9 +71,7 @@ public class ModelArticulo extends ConnectionDB {
             pStmt.setInt(1, _objArticulo.getIdArticulo());
             pStmt.setInt(2, _objArticulo.getIdCategoriaArticulo());
             pStmt.setString(3, _objArticulo.getDescripcionArticulo());
-            pStmt.setInt(4, _objArticulo.getCantidadDisponible());
-            pStmt.setInt(5, _objArticulo.getPrecioCompra());
-            pStmt.setInt(6, _objArticulo.getPrecioVenta());
+            pStmt.setInt(4, _objArticulo.getPrecioVenta());
 
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
