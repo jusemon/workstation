@@ -50,14 +50,12 @@ public class ControllerArticulo extends HttpServlet {
                     //<editor-fold defaultstate="collapsed" desc="Registrar un Articulo">
                     case "Registrar": {
                         String descripcionArticulo = request.getParameter("txtDescripcion");
-                        int cantidadDisponible = Integer.parseInt(request.getParameter("txtCantidad"));
                         int precioCompra = Integer.parseInt(request.getParameter("txtPrecioCompra"));
                         int precioVenta = Integer.parseInt(request.getParameter("txtPrecioVenta"));
                         int idCategoriaArticulo;
                         idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
                         _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
                         _objArticulo.setDescripcionArticulo(descripcionArticulo);
-                        _objArticulo.setCantidadDisponible(cantidadDisponible);
                         _objArticulo.setPrecioCompra(precioCompra);
                         _objArticulo.setPrecioVenta(precioVenta);
                         String salida = Mensaje(daoModelArticulo.Add(_objArticulo), "Artículo registrado con exito", "Ha ocurrido un error al intentar registrar el artículo");

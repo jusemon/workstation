@@ -1,3 +1,4 @@
+
 <%-- 
     Document   : caja
     Created on : 23-oct-2014, 12:19:52
@@ -535,3 +536,4 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
 </div>
 
 <%@include file="WEB-INF/jspf/footer.jspf" %>
+

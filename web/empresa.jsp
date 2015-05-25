@@ -38,7 +38,7 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane active" id="empresa">
+                <div class="tab-pane fade in active" id="empresa">
                     <table id="tblEmpresas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>

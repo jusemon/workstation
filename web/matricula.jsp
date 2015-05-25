@@ -41,7 +41,7 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane active" id="estudiantes">
+                <div class="tab-pane fade in active" id="estudiantes">
                     <table id="tblEstudiantes" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>                                
@@ -58,7 +58,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="tab-pane" id="matriculas">
+                <div class="tab-pane fade" id="matriculas">
                     <table id="tblMatriculas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -313,33 +313,36 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="ddlIdentificacion">
-                                                    Tipo de Identificación
-                                                </label>
-                                                <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control" required>
-                                                    <option value="">Seleccionar...</option>
-                                                    <option value="CC" > Cédula </option>
-                                                    <option value="CE" > Cédula Extranjería </option>
-                                                    <option value="TI" > Tarjeta de Identidad </option>
-                                                    <option value="RC" > Registro Civil </option>
-                                                </select>
+                                        <div class="form-group">
+                                            <label class="col-md-12" for="identificacion">
+                                                Identificación
+                                            </label>
+                                            <div class="col-md-3" id="identificacion">
+                                                <div class="form-group">
+                                                    <label for="ddlIdentificacion">
+                                                        Tipo
+                                                    </label>
+                                                    <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control" required>
+                                                        <option value="">Seleccionar...</option>
+                                                        <option value="CC" > Cédula </option>
+                                                        <option value="CE" > Cédula Extranjería </option>
+                                                        <option value="TI" > Tarjeta de Identidad </option>
+                                                        <option value="RC" > Registro Civil </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="form-group">
+                                                    <label for="txtIdentificacion">
+                                                        Número
+                                                    </label>
+                                                    <input name="txtIdentificacion" id="txtIdentificacion" type="text" pattern="[0-9]{5,15}"  title="Solo se permiten numeros y no deben ser menos de 5 o mas de 15" class="form-control" placeholder="Ejm: 1017225673" required>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txtIdentificacion">
-                                                    Número de Identificación
-                                                </label>
-                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" pattern="[0-9]{5,15}"  title="Solo se permiten numeros y no deben ser menos de 5 o mas de 15" class="form-control" placeholder="Ejm: 1017225673" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="txtNombre">
                                                     Nombres
@@ -347,25 +350,12 @@
                                                 <input name="txtNombre" id="txtNombre" type="text" pattern="([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos nombres, Ejem: Maria Camila" class="form-control" placeholder="Ejm: Juan Sebastián" required>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="txtApellido">
                                                     Apellidos
                                                 </label>
                                                 <input name="txtApellido" id="txtApellido" type="text" pattern="([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos apellidos, Ejem: Montoya Soto" class="form-control" placeholder="Ejm: Montoya Montoya" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="radioGenero">
-                                                    Género: 
-                                                </label>
-                                                <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroFemenino" class="radio-inline" value="0">Femenino</label>
-                                                <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroMasculino" class="radio-inline" value="1">Masculino</label>
                                             </div>
                                         </div>
                                     </div>
@@ -380,7 +370,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="txtDireccion">
                                                     Dirección
@@ -388,9 +378,7 @@
                                                 <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="txtTelefono">
                                                     Teléfono
@@ -398,9 +386,7 @@
                                                 <input name="txtTelefono" id="txtTelefono" type="text" pattern="([0-9 ]{7,12})" title="Numeros, se permiten espacios, ejem: 5 86 15 29" class="form-control" placeholder="Ejm: 5 65 85 45" required>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="txtCelular">
                                                     Celular
@@ -428,7 +414,16 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="radioGenero">
+                                                    Género: 
+                                                </label>
+                                                <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroFemenino" class="radio-inline" value="0">Femenino</label>
+                                                <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroMasculino" class="radio-inline" value="1">Masculino</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="radioBeneficiario">
                                                     Beneficiario: 
@@ -436,7 +431,7 @@
                                                 <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioSiBeneficiario" class="radio-inline" value="1">Si</label>
                                                 <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioNoBeneficiario" class="radio-inline" value="0">No</label>
                                             </div>
-                                        </div>
+                                        </div>                                       
                                     </div>
                                 </div>
                             </div>

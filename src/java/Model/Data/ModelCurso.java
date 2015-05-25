@@ -94,12 +94,10 @@ public class ModelCurso extends ConnectionDB {
             pStmt.setString(6, _objCurso.getDescripcionCurso());
             pStmt.setInt(7, _objCurso.getPrecioCurso());
             pStmt.setInt(8, _objCurso.getIdCategoriaCurso());
-
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
             }
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -134,7 +132,6 @@ public class ModelCurso extends ConnectionDB {
             getStmt();
             pStmt = connection.prepareCall(sql);
             rs = pStmt.executeQuery();
-
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
@@ -145,8 +142,8 @@ public class ModelCurso extends ConnectionDB {
         ResultSet rs = null;
         String sql = "call spConsultarCursos()";
         try {
-            getStmt();
-            rs = stmt.executeQuery(sql);
+            pStmt = connection.prepareCall(sql);
+            rs = pStmt.executeQuery();
 
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
@@ -159,7 +156,8 @@ public class ModelCurso extends ConnectionDB {
         String sql = "call spConsultarSeminarios()";
         try {
             getStmt();
-            rs = stmt.executeQuery(sql);
+            pStmt = connection.prepareCall(sql);
+            rs = pStmt.executeQuery();
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
@@ -200,6 +198,5 @@ public class ModelCurso extends ConnectionDB {
         }
         return objReturn;
     }
-
 
 }
