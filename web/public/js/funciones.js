@@ -7,7 +7,7 @@
 /* global articulo */
 
 function limpiar(miForm) {
-    $(':input', miForm).each(function () {
+    $(':input', miForm).each(function() {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
         if (type == 'text' || type == 'password' || tag == 'textarea' || type == 'number' || type == 'hidden' || type == 'date' || type == 'email')
@@ -22,7 +22,7 @@ function limpiar(miForm) {
 }
 
 function habilitar(miForm) {
-    $(':input', miForm).each(function () {
+    $(':input', miForm).each(function() {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
         if (type == 'checkbox' || type == 'radio' || tag == 'select')
@@ -34,7 +34,7 @@ function habilitar(miForm) {
 }
 
 function desabilitar(miForm) {
-    $(':input', miForm).each(function () {
+    $(':input', miForm).each(function() {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
         if (type == 'checkbox' || type == 'radio' || tag == 'select')
@@ -52,9 +52,7 @@ articulo.listarArticulos();
 
 $('#tabListas').tab('show');
 
-$('#btnGestionCompras').on('click', function () {
-    $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
-    $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
+$('#btnGestionCompras').on('click', function() {
     var actual = $('#contenidoDinamico').data('actual');
     if (actual == 'listas' || actual == 'venta') {
         $(this).data('target', '#tabMovimientos');
@@ -71,11 +69,11 @@ $('#btnGestionCompras').on('click', function () {
         $('#btnGestionVentas').data('target', '#tabListas');
         $(this).data('target', '#tabListas');
     }
-});
-
-$('#btnGestionVentas').on('click', function () {
     $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
     $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
+});
+
+$('#btnGestionVentas').on('click', function() {
     var actual = $('#contenidoDinamico').data('actual');
     if (actual == 'listas' || actual == 'compra') {
         $(this).data('target', '#tabMovimientos');
@@ -92,23 +90,25 @@ $('#btnGestionVentas').on('click', function () {
         $('#btnGestionCompras').data('target', '#tabListas');
         $(this).data('target', '#tabListas');
     }
+    $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
+    $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
 });
 
 var $eventSelect = $("#ddlArticulos");
 
-$eventSelect.on("select2:select", function (e) {
+$eventSelect.on("select2:select", function(e) {
     var id = e.params.data.id;
     if (id != '-1') {
         articulo.seleccionar(id);
     }
 });
 
-$(document).ready(function () {
-    var fixHelperModified = function (e, tr) {
+$(document).ready(function() {
+    var fixHelperModified = function(e, tr) {
         var $originals = tr.children();
         var $helper = tr.clone();
 
-        $helper.children().each(function (index) {
+        $helper.children().each(function(index) {
             $(this).width($originals.eq(index).width());
         });
 

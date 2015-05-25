@@ -46,11 +46,8 @@ public class ControllerCompra extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
         if (request.getParameter("action") != null) {
             //int estado = 0;
-
             String action = request.getParameter("action");
             switch (action) {
                 case "Registrar": {
@@ -183,11 +180,10 @@ public class ControllerCompra extends HttpServlet {
     }// </editor-fold>
 
     private String consultarDetalle(int id) {
-        String tablas = null;
         List<Map> lista = new ArrayList<>();
         List<Map> lista2 = new ArrayList<>();
         Map<String, String> resultado = null;
-        List[] listas = new List[2];
+        Map<String,List> listas = new LinkedHashMap<>();
         daoModelCompra = new ModelCompra();
         try {
             ResultSet[] result = daoModelCompra.ConsultarCompra(id);
@@ -213,8 +209,8 @@ public class ControllerCompra extends HttpServlet {
                 resultado.put("precioArticulo", result[1].getString("precioArticulo"));
                 lista2.add(resultado);
             }
-            listas[0] = lista;
-            listas[1] = lista2;
+            listas.put("Compra",lista);
+            listas.put("Detalle", lista2);
         } catch (Exception e) {
         }
         daoModelCompra.Signout();
