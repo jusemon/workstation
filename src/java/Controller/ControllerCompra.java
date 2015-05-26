@@ -10,17 +10,29 @@ import Model.DTO.ObjDetalleMovimiento;
 import Model.DTO.ObjUsuario;
 import Model.Data.ModelCompra;
 import com.google.gson.Gson;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 
 /**
  *
@@ -91,7 +103,27 @@ public class ControllerCompra extends HttpServlet {
                     response.getWriter().write(getTableCompra());
                     break;
                 }
-                case "Probar": {
+                case "Imprimir": {
+                    response.setContentType("application/pdf");
+                    try {
+                        String text = "Hola Mundo";
+                        int id = Integer.parseInt(request.getParameter("id"));
+                        Map material = reporte(id);
+                        Map compra = (Map) material.get("Compra");
+                        List detalle =  (List) material.get("Detalle");
+                        Document document = new Document();
+                        OutputStream os = response.getOutputStream();
+                        PdfWriter.getInstance(document, os);
+                        document.open();
+                        document.add(new Paragraph("Nombre del Proveedor: "+compra.get("nombreProveedor")));
+                        document.close();
+                        response.setHeader("Content-Disposition", "attachment;filename=\"reporte.pdf\"");
+                        response.setContentType("application/pdf");
+                        os.flush();
+                        os.close();
+                    } catch (DocumentException de) {
+                        throw new IOException(de.getMessage());
+                    }
 
                 }
 
@@ -104,7 +136,6 @@ public class ControllerCompra extends HttpServlet {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
         try {
-            int contador = 0;
             daoModelCompra = new ModelCompra();
             result = daoModelCompra.ListAll();
             while (result.next()) {
@@ -116,7 +147,6 @@ public class ControllerCompra extends HttpServlet {
                 arreglo[4] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"compra.consultar(" + result.getString("idMovimiento") + ")\">"
                         + "<span class=\"glyphicon glyphicon-search\"></span></a>";
                 lista.add(arreglo);
-                contador++;
             }
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error en el controller compra " + e.toString());
@@ -180,10 +210,9 @@ public class ControllerCompra extends HttpServlet {
     }// </editor-fold>
 
     private String consultarDetalle(int id) {
-        List<Map> lista = new ArrayList<>();
+        Map<String, Object> lista = new LinkedHashMap<>();
         List<Map> lista2 = new ArrayList<>();
         Map<String, String> resultado = null;
-        Map<String,List> listas = new LinkedHashMap<>();
         daoModelCompra = new ModelCompra();
         try {
             ResultSet[] result = daoModelCompra.ConsultarCompra(id);
@@ -195,7 +224,7 @@ public class ControllerCompra extends HttpServlet {
                 resultado.put("documentoUsuario", result[0].getString("documentoUsuario"));
                 resultado.put("facturaProveedor", result[0].getString("facturaProveedor"));
                 resultado.put("nombreProveedor", result[0].getString("nombreProveedor"));
-                lista.add(resultado);
+                lista.put("Compra", resultado);
             }
             while (result[1].next()) {
                 resultado = new LinkedHashMap<>();
@@ -209,13 +238,50 @@ public class ControllerCompra extends HttpServlet {
                 resultado.put("precioArticulo", result[1].getString("precioArticulo"));
                 lista2.add(resultado);
             }
-            listas.put("Compra",lista);
-            listas.put("Detalle", lista2);
+            //listas.put("Compra",lista);
+            lista.put("Detalle", lista2);
         } catch (Exception e) {
         }
         daoModelCompra.Signout();
-        String salida = new Gson().toJson(listas);
+        String salida = new Gson().toJson(lista);
         return salida;
     }
+    private Map reporte(int id) {
+        Map<String, Object> lista = new LinkedHashMap<>();
+        List<Map> lista2 = new ArrayList<>();
+        Map<String, String> resultado = null;
+        daoModelCompra = new ModelCompra();
+        try {
+            ResultSet[] result = daoModelCompra.ConsultarCompra(id);
+            while (result[0].next()) {
+                resultado = new LinkedHashMap<>();
+                resultado.put("idMovimiento", result[0].getString("idMovimiento"));
+                resultado.put("fechaCompra", result[0].getString("fechaCompra"));
+                resultado.put("totalCompra", result[0].getString("totalCompra"));
+                resultado.put("documentoUsuario", result[0].getString("documentoUsuario"));
+                resultado.put("facturaProveedor", result[0].getString("facturaProveedor"));
+                resultado.put("nombreProveedor", result[0].getString("nombreProveedor"));
+                lista.put("Compra", resultado);
+            }
+            while (result[1].next()) {
+                resultado = new LinkedHashMap<>();
+                resultado.put("idDetalleMovimiento", result[1].getString("idDetalleMovimiento"));
+                resultado.put("idArticulo", result[1].getString("idArticulo"));
+                resultado.put("descripcionArticulo", result[1].getString("descripcionArticulo"));
+                resultado.put("cantidad", result[1].getString("cantidad"));
+                resultado.put("descuento", result[1].getString("descuento"));
+                resultado.put("totalDetalleMovimiento", result[1].getString("totalDetalleMovimiento"));
+                resultado.put("idMovimiento", result[1].getString("idMovimiento"));
+                resultado.put("precioArticulo", result[1].getString("precioArticulo"));
+                lista2.add(resultado);
+            }
+            //listas.put("Compra",lista);
+            lista.put("Detalle", lista2);
+        } catch (Exception e) {
+        }
+        daoModelCompra.Signout();
+        return lista;
+    }
+    
 
 }
