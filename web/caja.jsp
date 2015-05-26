@@ -14,9 +14,9 @@ Este contenedor tiene el contenido de la pagina, en este caso un accordion que c
 un par de paneles, uno para la gestión de Compras, otro para la gestion de Ventas.
 -->
 
-<div class="container-fluid">
+<div class="container-fluid" style="height: 100%">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3" style="height: 100%">
             <div class="panel-group" id="accordion">
                 <!--Gestión de Compras-->
                 <div class="panel panel-default">
@@ -137,8 +137,8 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
             </div>
         </div>
         <div id="contenedor" class="col-md-9">
-            <div class="tab-content" id="contenidoDinamico">
-                <div role="tabpanel" class="tab-pane fade in active" id="tabListas">
+            <div class="tab-content" id="contenidoDinamico" data-actual="listas" style="height: 100%">
+                <div role="tabpanel" class="tab-pane fade in active" id="tabListas" style="height: 100%">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="active">
                             <a href="#compra" role="tab" data-toggle="tab">Listado de Compras</a>
@@ -162,8 +162,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                         <th class="text-center">Nombre Proveedor</th>
                                         <th class="text-center">Fecha de Compra</th>
                                         <th class="text-center">Total Compra</th>
-                                        <th class="text-center">Editar</th>
-
+                                        <th class="text-center">Consultar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -236,8 +235,8 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         </div>
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane fade in" id="tabMovimientos">
-                    <div id="compras" class="row">
+                <div role="tabpanel" class="tab-pane fade in" id="tabMovimientos" style="height: 100%">
+                    <div id="movimientos" class="row" style="height: 100%">
                         <div class="col-md-12 panel panel-default">
                             <div class="panel-heading">
                                 <div class="panel-title">
@@ -270,22 +269,29 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
+                                                <div class="form-group">
                                                     <label for="ddlArticulos">
                                                         Artículos:
                                                     </label>
-                                                </div>
-                                                <div class="col-md-12">
                                                     <select class="form-control" style="width: 100%" id="ddlArticulos">
                                                         <option></option>
                                                     </select>
                                                 </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <input id="btnArticulo" class="btn btn-default btn-block" type="button" onclick="articulo.registrar()" value="Registrar Artículo">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-8" style="height: 100%">
                                             <div class="row">
                                                 <div class="col-md-offset-9 col-md-3">
                                                     <div class="form-group">
-                                                        <label for="txtFechaCompra" id="txtFechaCompra">
+                                                        <label for="txtFechaMovimiento" id="txtFechaMovimiento">
 
                                                         </label>
                                                     </div>
@@ -317,18 +323,17 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <div class="col-md-offset-3 col-md-6">
-                                                        <input id="btnChange" type="submit" class="btn btn-default" value="Efectuar Compra" onclick="compra.efectuarCompra()">
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-offset-1 col-md-2">
-                                                            <label for="txtTotalCompra">
-                                                                Total Compra
-                                                            </label>
-                                                            <input type="number" value="0" id="txtTotalCompra" class="form-control" readonly="true">
-                                                        </div>
-                                                    </div>
+                                            </div>
+                                            <div class="row bottom">
+                                                <div class="col-md-offset-2 col-md-5">
+                                                    <input id="btnMovimiento" type="submit" class="btn btn-default" value="Efectuar Compra" onclick="compra.efectuarCompra()">
+                                                </div>
+                                                <div class="col-md-2 text-center">
+                                                    <label for="txtTotalMovimiento" id="total">
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="number" value="0" id="txtTotalMovimiento" class="form-control" readonly="true">
                                                 </div>
                                             </div>
                                         </div>
@@ -359,120 +364,6 @@ dentro del cuerpo del panel se encuentra el formulario para agregar elementos y 
 finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
 -->
 
-<!--popup RegistroVenta -->
-<div class="modal" id="miPopupRegistroVenta">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">                               
-                        <form>
-                            <div class="panel">
-                                <div class="panel-heading estilo2">
-                                    <h3 class="panel-title">
-                                        Ventas
-                                        <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
-                                    </h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="txtNumero">
-                                                        Código Cliente:
-                                                    </label>
-                                                    <input name="txtNumero" id="txtNumero" type="text" class="form-control" placeholder="00001" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="txtCliente">
-                                                        Cliente:
-                                                    </label>
-                                                    <input name="txtCliente" id="txtCliente" type="text" class="form-control" placeholder="calle" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="dateFechaCompra">
-                                                        Fecha :
-                                                    </label>
-                                                    <input name="dateFecha" id="dateFecha" type="text" class="form-control fecha" placeholder="Ejm: 10/04/2015" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupRegistrar" data-dismiss="modal" name="regVenta" value="Registrar Artículo">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="Líneas de detalle">
-                                                    Líneas de detalle
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <table id="tblArticulosVenta" class="table table-hover" cellspacing="0" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center">Código</th>
-                                                <th class="text-center">Artículo</th>
-                                                <th class="text-center">Cantidad</th>
-                                                <th class="text_center">Precio Unidad</th>
-                                                <th class="text_center">Descuento</th>
-                                                <th class="text_center">% I.V.A </th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-center">00001</td>
-                                                <td class="text-center">Vinilo Azul Mediano</td>
-                                                <td class="text-center">15</td>
-                                                <td class="text-center">1000</td>
-                                                <td class="text-center">0</td>
-                                                <td class="text-center">16</td>
-
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="col-md-12">
-                                        <div class="col-sm-4 pull-right">
-                                            Total: 15000
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="panel-footer">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input  class="btn btn-default btn-block" id="boton1"type="button" name="action" value="Registrar">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <input class="btn btn-primary btn-block" type="button" data-dismiss="modal" name="cerrar" value="Cerrar">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <!--Popup Abono-->
 <div class="modal" id="miPopupAbono">
     <div class="modal-dialog ">

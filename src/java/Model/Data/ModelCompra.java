@@ -105,5 +105,22 @@ public class ModelCompra extends ConnectionDB {
         }
         return objReturn;
     }
+    
+    public ResultSet[] ConsultarCompra(int idCompra) throws Exception {
+        ResultSet[] rs = new ResultSet[2];
+        String sql = " call spConsultarCompraPorID(?)";
+        String sql2 = " call spConsultarDetallesCompraPorID(?)";
+        try {
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, idCompra);
+            rs[0] = pStmt.executeQuery();
+            pStmt = connection.prepareCall(sql2);
+            pStmt.setInt(1, idCompra);
+            rs[1] = pStmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }
 
 }

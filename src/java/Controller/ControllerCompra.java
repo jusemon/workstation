@@ -12,7 +12,6 @@ import Model.Data.ModelCompra;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -82,22 +81,12 @@ public class ControllerCompra extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
-                case "Editar": {
-                    try {
-                        String facturaProveedor = (request.getParameter("txtFacturaProveedor"));
-                        String nombreProveedor = (request.getParameter("txtNombreProveedor"));
-                        String fechaCompra = request.getParameter("dateFechaCompra");
-                        int totalCompra = Integer.parseInt(request.getParameter("txtTotalCompra"));
-                        _objCompra.setFacturaProveedor(facturaProveedor);
-                        _objCompra.setNombreProveedor(nombreProveedor);
-                        _objCompra.setFechaCompra(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaCompra)));
-                        _objCompra.setTotalCompra(totalCompra);
-                        daoModelCompra = new ModelCompra();
-                        daoModelCompra.Edit(_objCompra);
-                        daoModelCompra.Signout();
-                        break;
-                    } catch (ParseException ex) {
-                    }
+                case "Consultar": {
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(consultarDetalle(id));
+                    break;
                 }
                 case "Enlistar": {
                     response.setContentType("application/json");
@@ -127,7 +116,7 @@ public class ControllerCompra extends HttpServlet {
                 arreglo[1] = result.getString("nombreProveedor").trim();
                 arreglo[2] = result.getString("fechaCompra").trim();
                 arreglo[3] = result.getString("totalCompra").trim();
-                arreglo[4] = "<a class=\"btn-sm btn-primary btn-block\" href=\"javascript:void(0)\" onclick=\"compra.editar(" + contador + ")\">"
+                arreglo[4] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"compra.consultar(" + result.getString("idMovimiento") + ")\">"
                         + "<span class=\"glyphicon glyphicon-search\"></span></a>";
                 lista.add(arreglo);
                 contador++;
@@ -192,5 +181,45 @@ public class ControllerCompra extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String consultarDetalle(int id) {
+        String tablas = null;
+        List<Map> lista = new ArrayList<>();
+        List<Map> lista2 = new ArrayList<>();
+        Map<String, String> resultado = null;
+        List[] listas = new List[2];
+        daoModelCompra = new ModelCompra();
+        try {
+            ResultSet[] result = daoModelCompra.ConsultarCompra(id);
+            while (result[0].next()) {
+                resultado = new LinkedHashMap<>();
+                resultado.put("idMovimiento", result[0].getString("idMovimiento"));
+                resultado.put("fechaCompra", result[0].getString("fechaCompra"));
+                resultado.put("totalCompra", result[0].getString("totalCompra"));
+                resultado.put("documentoUsuario", result[0].getString("documentoUsuario"));
+                resultado.put("facturaProveedor", result[0].getString("facturaProveedor"));
+                resultado.put("nombreProveedor", result[0].getString("nombreProveedor"));
+                lista.add(resultado);
+            }
+            while (result[1].next()) {
+                resultado = new LinkedHashMap<>();
+                resultado.put("idDetalleMovimiento", result[1].getString("idDetalleMovimiento"));
+                resultado.put("idArticulo", result[1].getString("idArticulo"));
+                resultado.put("descripcionArticulo", result[1].getString("descripcionArticulo"));
+                resultado.put("cantidad", result[1].getString("cantidad"));
+                resultado.put("descuento", result[1].getString("descuento"));
+                resultado.put("totalDetalleMovimiento", result[1].getString("totalDetalleMovimiento"));
+                resultado.put("idMovimiento", result[1].getString("idMovimiento"));
+                resultado.put("precioArticulo", result[1].getString("precioArticulo"));
+                lista2.add(resultado);
+            }
+            listas[0] = lista;
+            listas[1] = lista2;
+        } catch (Exception e) {
+        }
+        daoModelCompra.Signout();
+        String salida = new Gson().toJson(listas);
+        return salida;
+    }
 
 }

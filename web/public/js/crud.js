@@ -177,7 +177,9 @@ var curso = {
                             + '</div';
                     $("#cursosDisponibles").append(html);
                 }
-
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.notify(errorThrown, textStatus);
             }
         });
     },
@@ -471,6 +473,9 @@ var seminario = {
             success: function (data) {
                 var html = data;
                 $("#seminariosDisponibles").append(html);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                $.notify(errorThrown, textStatus);
             }
         });
     },
@@ -952,6 +957,9 @@ var articulo = {
         $('#miPopupArticulo').find('#titulo').empty();
         $('#miPopupArticulo').find('#titulo').append('Registrar Artículo');
         $('#miPopupArticulo').find('#btnArticulo').attr('value', 'Registrar');
+        $('#miPopupArticulo').find('#txtPrecioCompra').attr('readOnly', false);
+        $('#miPopupArticulo').find('#txtPrecioVenta');
+        $('#miPopupArticulo').find('#txtCantidadArticulo').attr('readOnly', false);
         $('#miPopupArticulo').find('#txtCodigo').val(data).attr('readOnly', true);
         $('#miPopupArticulo').modal('show');
     },
@@ -961,9 +969,9 @@ var articulo = {
         $('#miPopupArticulo').find('#titulo').append('Editar Artículo');
         $('#miPopupArticulo').find('#idArticulo').val(data[0]);
         $('#miPopupArticulo').find('#txtDescripcion').val(data[2]);
-        $('#miPopupArticulo').find('#txtCantidadArticulo').val(data[3]);
-        $('#miPopupArticulo').find('#txtPrecioCompra').val(data[4]);
-        $('#miPopupArticulo').find('#txtPrecioVenta').val(data[5]);
+        $('#miPopupArticulo').find('#txtCantidadArticulo').val(data[3]).attr('readOnly', true);
+        $('#miPopupArticulo').find('#txtPrecioCompra').val(data[4]).attr('readOnly', true);
+        $('#miPopupArticulo').find('#txtPrecioVenta');
         $('#miPopupArticulo').find('#idCategoriaArticulo option').prop('selected', false).filter(function () {
             return ($(this).text() == data[1]);
         }).prop('selected', true);
@@ -1134,10 +1142,10 @@ var compra = {
                 url: $(form).attr('action'),
                 data: $(form).serialize() + '&action=' + accion + '&id=' + id,
                 success: function (data) {
-                    if (accion == 'Registrar' || accion == 'Editar') {
-                        $('#miPopupCompra').modal('hide');
-                        compra.actualizarTabla();
-                        mensaje(data);
+                    if (accion == 'Consultar') {
+                        $('#btnGestionCompras').tab('show')
+                        compra.consultar(data);
+
                     }
                     else if (accion === 'getOptionsCompra') {
                         compra.cargarOpciones(data);
@@ -1149,19 +1157,18 @@ var compra = {
             $(form).off();
             return false;
         });
-        if (accion === 'Estado' || accion === 'Consultar' || accion === 'getOptionsCompra') {
+        if (accion === 'Estado' || accion == 'Consultar' || accion === 'getOptionsCompra') {
             $(form).submit();
         }
     },
     actualizarTotal: function () {
         var salida = 0;
-        $('#tablaDetalleCompra tbody tr').each(function () {
             var elementos = {cantidad: 0, precioArticulo: 0};
             elementos.cantidad = $(this).find('#cantidad').val();
             elementos.precioArticulo = $(this).find('#valor').val();
             salida += elementos.cantidad * elementos.precioArticulo;
         });
-        $('#tabMovimientos').find('#txtTotalCompra').val(salida);
+        $('#tablaDetalleMovimiento tbody tr').each(function () {
     },
     efectuarCompra: function () {
         limpiar ('#formCompra');
@@ -1211,19 +1218,6 @@ var compra = {
             return false;
         });
 
-    },
-    cargar: function () {
-        tablaCompra = $('#tblCompra').DataTable({
-            "ajax": {
-                "url": "ControllerCompra",
-                "type": "POST",
-                "data": {
-                    action: 'Enlistar'
-                }
-            }, "language": {
-                "url": "public/js/locales/Spanish.json"
-            }
-        });
     },
     actualizarTabla: function () {
         tablaCompra.ajax.reload();
@@ -1302,3 +1296,42 @@ articulo.cargar();
 empresa.cargar();
 usuario.cargar();
 //credito.cargar()
+        $('#tabMovimientos').find('#txtTotalMovimiento').val(salida);
+    },
+    cargar: function () {
+        tablaCompra = $('#tblCompra').DataTable({
+            "ajax": {
+                "url": "ControllerCompra",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            }, "language": {
+                "url": "public/js/locales/Spanish.json"
+            }
+        });
+    },
+    consultar: function (id) {
+        $.ajax({
+            type: 'POST',
+            url: "ControllerCompra",
+            data: {
+                id: id,
+                action: 'Consultar'
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#tabMovimientos').find('#titulo').text('Consultar Compra');
+                $('#tabMovimientos').find('#nombre').text('Nombre del Proveedor');
+                $('#tabMovimientos').find('#numero').text('Numero de Factura ');
+                $('#tabMovimientos').find('#total').text('Total compra');
+                $('#tabMovimientos').find('#txtNombre').val(data[0]);
+                $('#tabMovimientos').find('#txtNumeroFactura').val(data[1]);
+                $('#tabMovimientos').find('#ddlArticulos').attr('disabled', true).parents('.row:first').hide();
+                $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide();
+                $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'compra.imprimir()').val('Imprimir Compra');
+                $.each(data['articulos'], function (index, element) {
+                    alert(data['articulos'][index]['id']);
+                    alert(element.toString());
+                });
+            }
+        });

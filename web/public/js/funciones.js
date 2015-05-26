@@ -54,6 +54,8 @@ articulo.listarArticulos();
 $('#tabListas').tab('show');
 
 $('#btnGestionCompras').on('click', function () {
+    $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
+    $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
     var actual = $('#contenidoDinamico').data('actual');
     if (actual == 'listas' || actual == 'venta') {
         $(this).data('target', '#tabMovimientos');
@@ -61,8 +63,10 @@ $('#btnGestionCompras').on('click', function () {
         $('#btnGestionVentas').data('target', '#tabMovimientos');
         $('#tabMovimientos').find('#titulo').text('Registrar Compra');
         $('#tabMovimientos').find('#nombre').text('Nombre del Proveedor');
-        $('#tabMovimientos').find('#numero').text('Numero de Factura ');
+        $('#tabMovimientos').find('#numero').text('Numero de Factura');
+        $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + fecha());
         $('#tabMovimientos').find('#total').text('Total compra');
+        $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'compra.efectuarCompra()').val('Efectuar Compra');
     } else {
         $('#contenidoDinamico').data('actual', 'listas');
         $('#btnGestionVentas').data('target', '#tabListas');
@@ -71,6 +75,8 @@ $('#btnGestionCompras').on('click', function () {
 });
 
 $('#btnGestionVentas').on('click', function () {
+    $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
+    $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
     var actual = $('#contenidoDinamico').data('actual');
     if (actual == 'listas' || actual == 'compra') {
         $(this).data('target', '#tabMovimientos');
@@ -79,7 +85,9 @@ $('#btnGestionVentas').on('click', function () {
         $('#tabMovimientos').find('#titulo').text('Registrar Venta');
         $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
         $('#tabMovimientos').find('#numero').text('Numero de Venta');
+        $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + fecha());
         $('#tabMovimientos').find('#total').text('Total venta');
+        $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'venta.efectuarVenta()').val('Efectuar Venta');
     } else {
         $('#contenidoDinamico').data('actual', 'listas');
         $('#btnGestionCompras').data('target', '#tabListas');
@@ -127,6 +135,13 @@ $.notify.addStyle('foo', {
             "</div>" +
             "</div>"
 });
+
+function fecha() {
+    var fullDate = new Date();
+    var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
+    var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
+    return currentDate;
+}
 
 var actual = $('#tabCompras').find('#txtTotalCompra').val();
 /* 
