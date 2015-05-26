@@ -10,29 +10,27 @@ import Model.DTO.ObjDetalleMovimiento;
 import Model.DTO.ObjUsuario;
 import Model.Data.ModelCompra;
 import com.google.gson.Gson;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 
 /**
  *
@@ -106,19 +104,62 @@ public class ControllerCompra extends HttpServlet {
                 case "Imprimir": {
                     response.setContentType("application/pdf");
                     try {
-                        String text = "Hola Mundo";
+                        Locale loc = Locale.getDefault();
+                        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(loc);
+                        //Primero obtengo el id del Movimiento
                         int id = Integer.parseInt(request.getParameter("id"));
+                        //Obtengo el reporte a manera de Map
                         Map material = reporte(id);
-                        Map compra = (Map) material.get("Compra");
-                        List detalle =  (List) material.get("Detalle");
+                        //Topo ese reporte y lo divido, primero en la compra y luego el detalle
+                        Map<String, String> compra = (Map) material.get("Compra");
+                        List<Map> detalle = (List) material.get("Detalle");
+                        //Creo el documento y obtengo el canal de comunicacion con el servidor, para luego enviar el documento.
                         Document document = new Document();
                         OutputStream os = response.getOutputStream();
+                        //Creo una instancia a partir del documento y del canal
                         PdfWriter.getInstance(document, os);
+                        //Abro el documento
                         document.open();
-                        document.add(new Paragraph("Nombre del Proveedor: "+compra.get("nombreProveedor")));
+                        //Escribo y agrego un primer parrafo con los datos basicos de la compra
+                        Paragraph primero = new Paragraph("Nombre del Proveedor: " + compra.get("nombreProveedor") + "\n" + "Numero de la Factura: " + compra.get("facturaProveedor") + "\n" + "Fecha Compra: " + compra.get("fechaCompra"));
+                        primero.setSpacingAfter(20);
+                        document.add(primero);
+                        //Creo la tabla del detalle
+                        PdfPTable tablaDetalle = new PdfPTable(new float[]{1, 3, 2, 2});
+                        tablaDetalle.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+                        //Creo el titulo, le quito el borde, le digo que ocupara cuatro columnas y que serà centrado
+                        PdfPCell tituloCell = new PdfPCell(new Paragraph("Detalle de Compra"));
+                        tituloCell.setBorder(0);
+                        tituloCell.setColspan(4);
+                        tituloCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        tablaDetalle.addCell(tituloCell);
+                        //Aqui creo cada cabecera
+                        tablaDetalle.getDefaultCell().setBackgroundColor(BaseColor.LIGHT_GRAY);
+                        tablaDetalle.addCell("ID");
+                        tablaDetalle.addCell("Nombre");
+                        tablaDetalle.addCell("Cantidad");
+                        tablaDetalle.addCell("Valor");
+                        tablaDetalle.getDefaultCell().setBackgroundColor(null);
+                        //Aqui agrego la tabla cada articulo.
+                        for (Map<String, String> next : detalle) {
+                            tablaDetalle.addCell(next.get("idArticulo"));
+                            tablaDetalle.addCell(next.get("descripcionArticulo"));
+                            tablaDetalle.addCell(next.get("cantidad"));
+                            tablaDetalle.addCell(currencyFormatter.format(Integer.parseInt(next.get("precioArticulo"))));
+                        }
+                        //Creo el Footer
+                        PdfPCell footerCell = new PdfPCell(new Paragraph("Total: " + currencyFormatter.format(Integer.parseInt(compra.get("totalCompra")))));
+                        footerCell.setBorder(0);
+                        footerCell.setColspan(4);
+                        footerCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                        tablaDetalle.addCell(footerCell);
+                        //Establesco el tamaño  y posicion de la tabla, luego la agrego al documento
+                        tablaDetalle.setWidthPercentage(100f);
+                        tablaDetalle.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                        document.add(tablaDetalle);
+                        //Cierro el documento y lo envio con flush.
                         document.close();
                         response.setHeader("Content-Disposition", "attachment;filename=\"reporte.pdf\"");
-                        response.setContentType("application/pdf");
                         os.flush();
                         os.close();
                     } catch (DocumentException de) {
@@ -246,6 +287,7 @@ public class ControllerCompra extends HttpServlet {
         String salida = new Gson().toJson(lista);
         return salida;
     }
+
     private Map reporte(int id) {
         Map<String, Object> lista = new LinkedHashMap<>();
         List<Map> lista2 = new ArrayList<>();
@@ -282,6 +324,5 @@ public class ControllerCompra extends HttpServlet {
         daoModelCompra.Signout();
         return lista;
     }
-    
 
 }
