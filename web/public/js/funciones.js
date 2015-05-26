@@ -20,6 +20,11 @@ function limpiar(miForm) {
         else if (false)
             this.value = 0;
     });
+    if (miForm === '#formMovimiento') {
+        $('#tablaDetalleMovimiento tbody tr').each(function () {
+            $(this).remove();
+        });
+    }
 }
 
 function habilitar(miForm) {
@@ -30,7 +35,9 @@ function habilitar(miForm) {
             this.disabled = false;
         else
             this.disabled = false;
-        this.readOnly = false;
+        if (this.id !== 'txtTotalMovimiento') {
+            this.readOnly = false;
+        }
     });
 }
 
@@ -54,8 +61,9 @@ articulo.listarArticulos();
 $('#tabListas').tab('show');
 
 $('#btnGestionCompras').on('click', function () {
-    $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
-    $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
+    $('#tabMovimientos').find('#btnMovimiento').show();
+    habilitar('#formMovimiento');
+    limpiar('#formMovimiento');
     var actual = $('#contenidoDinamico').data('actual');
     if (actual == 'listas' || actual == 'venta') {
         $(this).data('target', '#tabMovimientos');
@@ -72,11 +80,14 @@ $('#btnGestionCompras').on('click', function () {
         $('#btnGestionVentas').data('target', '#tabListas');
         $(this).data('target', '#tabListas');
     }
+    $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
+    $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
 });
 
 $('#btnGestionVentas').on('click', function () {
-    $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
-    $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
+    $('#tabMovimientos').find('#btnMovimiento').show();
+    habilitar('#formMovimiento');
+    limpiar('#formMovimiento');
     var actual = $('#contenidoDinamico').data('actual');
     if (actual == 'listas' || actual == 'compra') {
         $(this).data('target', '#tabMovimientos');
@@ -93,6 +104,8 @@ $('#btnGestionVentas').on('click', function () {
         $('#btnGestionCompras').data('target', '#tabListas');
         $(this).data('target', '#tabListas');
     }
+    $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
+    $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
 });
 
 var $eventSelect = $("#ddlArticulos");

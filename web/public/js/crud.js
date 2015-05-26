@@ -931,24 +931,43 @@ format: "dd/mm/yyyy",
                 }
                 }
         }
-        );
-                $(form).off();
-                return false;
-        });
-                if (accion === 'getOptionsCategorias' || accion == 'ConsultarCodigo') {
-        $(form).submit();
-        }
-        },
-                registrar: function (data) {
-                limpiar('#formArticulo');
-                        $('#miPopupArticulo').find('#titulo').empty();
-                        $('#miPopupArticulo').find('#titulo').append('Registrar Artículo');
-                        $('#miPopupArticulo').find('#btnArticulo').attr('value', 'Registrar');
-                        $('#miPopupArticulo').find('#txtPrecioCompra').attr('readOnly', false);
-                        $('#miPopupArticulo').find('#txtPrecioVenta');
-                        $('#miPopupArticulo').find('#txtCantidadArticulo').attr('readOnly', false);
-                        $('#miPopupArticulo').find('#txtCodigo').val(data).attr('readOnly', true);
-                        $('#miPopupArticulo').modal('show');
+    },
+    registrar: function (data) {
+        limpiar('#formArticulo');
+        $('#miPopupArticulo').find('#titulo').empty();
+        $('#miPopupArticulo').find('#titulo').append('Registrar Artículo');
+        $('#miPopupArticulo').find('#btnArticulo').attr('value', 'Registrar');
+        $('#miPopupArticulo').find('#txtPrecioCompra').attr('readOnly', false);
+        $('#miPopupArticulo').find('#txtPrecioVenta');
+        $('#miPopupArticulo').find('#txtCantidadArticulo').attr('readOnly', false);
+        $('#miPopupArticulo').find('#txtCodigo').val(data).attr('readOnly', true);
+        $('#miPopupArticulo').modal('show');
+    },
+    editar: function (tr) {
+        var data = tablaArticulo.row(tr).data();
+        $('#miPopupArticulo').find('#titulo').empty();
+        $('#miPopupArticulo').find('#titulo').append('Editar Artículo');
+        $('#miPopupArticulo').find('#idArticulo').val(data[0]);
+        $('#miPopupArticulo').find('#txtDescripcion').val(data[2]);
+        $('#miPopupArticulo').find('#txtCantidadArticulo').val(data[3]).attr('readOnly', true);
+        $('#miPopupArticulo').find('#txtPrecioCompra').val(data[4]).attr('readOnly', true);
+        $('#miPopupArticulo').find('#txtPrecioVenta').val(data[5]);
+        $('#miPopupArticulo').find('#idCategoriaArticulo option').prop('selected', false).filter(function () {
+            return ($(this).text() == data[1]);
+        }).prop('selected', true);
+        $('#miPopupArticulo').find('#btnArticulo').val('Editar');
+        $('#miPopupArticulo').modal('show');
+    },
+    seleccionar: function (id) {
+        var x = articulo.noExiste(id);
+        if (x) {
+            $.ajax({
+                type: 'POST',
+                url: "ControllerArticulo",
+                dataType: 'JSON',
+                data: {
+                    action: 'Consultar',
+                    id: id
                 },
                 editar: function (tr) {
                 var data = tablaArticulo.row(tr).data();
@@ -1116,23 +1135,34 @@ format: "dd/mm/yyyy",
                 $('#form_estudiante').find('#idEmpresa').empty();
                         $('#form_estudiante').find('#idEmpresa').append(data);
                 }
-        };
-        var compra = {
-        myAjax: function (accion, id) {
-        var form = $('#formCompra');
-                $(form).off();
-                $(form).on('submit', function () {
-        $.ajax({
-        type: $(form).attr('method'),
+            },
+            "language": {
+                "url": "public/js/locales/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaEmpresa.ajax.reload();
+    },
+    cargarOpciones: function (data) {
+        $('#form_estudiante').find('#idEmpresa').empty();
+        $('#form_estudiante').find('#idEmpresa').append(data);
+    }
+};
+
+var compra = {
+    myAjax: function (accion, id) {
+        var form = $('#formMovimiento');
+        $(form).off();
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
                 url: $(form).attr('action'),
                 data: $(form).serialize() + '&action=' + accion + '&id=' + id,
                 success: function (data) {
                 if (accion == 'Consultar') {
                 $('#btnGestionCompras').tab('show')
                         compra.consultar(data);
-                }
-                else if (accion === 'getOptionsCompra') {
-                compra.cargarOpciones(data);
                         $("#ddlArticulos").destroy();
                         articulo.listarArticulos();
                 }
@@ -1152,14 +1182,9 @@ format: "dd/mm/yyyy",
                         elementos.precioArticulo = $(this).find('#valor').val();
                         salida += elementos.cantidad * elementos.precioArticulo;
                 }
-                $('#tablaDetalleMovimiento tbody tr').each(function () {
-        }
-                efectuarCompra: function () {
-                var form = $('#formCompra');
-                        $(form).off();
-                        $(form).on('submit', function () {
-                var lista = Array();
-                        $('#tablaDetalleCompra tbody tr').each(function () {
+                    }
+                    else if (accion === 'getOptionsCompra') {
+                        compra.cargarOpciones(data);
                 var elementos = {idArticulo: '', cantidad: '', precioArticulo: ''};
                         elementos.idArticulo = $(this).data('id');
                         elementos.cantidad = $(this).find('#cantidad').val();
@@ -1168,37 +1193,11 @@ format: "dd/mm/yyyy",
                 });
                         if (lista.length > 0) {
                 var nombre = $('#tabCompras').find('#txtNombre').val();
-                        var numeroFactura = $('#tabCompras').find('#txtNumeroFactura').val();
-                        var total = $('#tabCompras').find('#txtTotalCompra').val();
-                        $.ajax({
-                        type: 'POST',
-                                url: "ControllerCompra",
-                                data: {
-                                action: 'Registrar',
-                                        lista: lista,
-                                        size: lista.length,
-                                        txtNombre: nombre,
-                                        txtNumeroFactura: numeroFactura,
-                                        txtTotalCompra: total,
-                                        documentoUsuario: documentoUsuario
-                                },
-                                success: function (data, textStatus, jqXHR) {
-                                $('#tablaDetalleCompra tbody tr').each(function () {
-                                $(this).remove();
-                                });
-                                        $("#ddlArticulos").val(null);
-                                        limpiar('#formCompra');
-                                        mensaje(data);
-                                        compra.actualizarTabla();
-                                }
-                        });
-                } else {
                 $.notify('Una compra debe contener almenos un artículo', 'error');
                         $(form).off();
                         return false;
                 }
                 $(form).off();
-                        return false;
                 });
                 }
         actualizarTabla: function () {
@@ -1315,3 +1314,50 @@ format: "dd/mm/yyyy",
                                 });
                         }
                 });
+            }, "language": {
+                "url": "public/js/locales/Spanish.json"
+            }
+        });
+    },
+    consultar: function (id) {
+        $.ajax({
+            type: 'POST',
+            url: "ControllerCompra",
+            data: {
+                id: id,
+                action: 'Consultar'
+            },
+            success: function (data, textStatus, jqXHR) {
+                compra.limpiarDetalle();
+                $('#btnGestionCompras').data('target', '#tabMovimientos').tab('show');
+                $('#contenidoDinamico').data('actual', 'compra');
+                $('#tabMovimientos').find('#titulo').text('Consultar Compra');
+                $('#tabMovimientos').find('#nombre').text('Nombre del Proveedor');
+                $('#tabMovimientos').find('#numero').text('Numero de Factura ');
+                $('#tabMovimientos').find('#total').text('Total compra');
+                $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + data.Compra.fechaCompra);
+                $('#tabMovimientos').find('#txtNombre').val(data.Compra.nombreProveedor).attr('readOnly', true);
+                $('#tabMovimientos').find('#txtNumeroFactura').val(data.Compra.facturaProveedor).attr('readOnly', true);
+                $('#tabMovimientos').find('#txtTotalMovimiento').val(data.Compra.totalCompra);
+                $('#tabMovimientos').find('#ddlArticulos').attr('disabled', true).parents('.row:first').hide();
+                $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide();
+                $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'compra.imprimir('+data.Compra.idMovimiento+')').attr('type', 'button').val('Imprimir Compra');
+                $.each(data["Detalle"], function (index, element) {
+                    var fila = '<tr  data-id="' + element.idArticulo + '">';
+                    fila += '<td>' + element.idArticulo + '</td>';
+                    fila += '<td>' + element.descripcionArticulo + '</td>';
+                    fila += '<td>' + element.cantidad + '</td>';
+                    fila += '<td>' + element.precioArticulo + '</td>';
+                    fila += '<td>' + '</td>';
+                    fila += '</tr>';
+                    $('#tablaDetalleMovimiento tbody').append(fila);
+                });
+            }
+        });
+    },
+    efectuarCompra: function () {
+        var form = $('#formCompra');
+        $(form).off();
+        $(form).on('submit', function () {
+            var lista = Array();
+            $('#tablaDetalleCompra tbody tr').each(function () {
