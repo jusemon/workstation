@@ -11,10 +11,15 @@ import Model.DTO.ObjUsuario;
 import Model.Data.ModelCompra;
 import com.google.gson.Gson;
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -58,6 +63,7 @@ public class ControllerCompra extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         if (request.getParameter("action") != null) {
             //int estado = 0;
+            String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
             String action = request.getParameter("action");
             switch (action) {
                 case "Registrar": {
@@ -120,25 +126,36 @@ public class ControllerCompra extends HttpServlet {
                         PdfWriter.getInstance(document, os);
                         //Abro el documento
                         document.open();
-                        //Escribo y agrego un primer parrafo con los datos basicos de la compra
-                        Paragraph primero = new Paragraph("Nombre del Proveedor: " + compra.get("nombreProveedor") + "\n" + "Numero de la Factura: " + compra.get("facturaProveedor") + "\n" + "Fecha Compra: " + compra.get("fechaCompra"));
+                        Image logo = Image.getInstance(url + "/public/images/logo.png");
+                        logo.scaleAbsolute(new Rectangle(logo.getPlainWidth() / 4, logo.getPlainHeight() / 4));
+                        document.add(logo);
+                        //Creo una fuente para la letra en negrilla
+                        Font helveticaBold = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+                        //Escribo y agrego un primer parrafo con los datos basicos de la compra                        
+                        Paragraph primero = new Paragraph();
+                        primero.add(new Chunk("Nombre del Proveedor: ", helveticaBold));
+                        primero.add(new Chunk(compra.get("nombreProveedor") + "\n"));
+                        primero.add(new Chunk("Factura del Proveedor: ", helveticaBold));
+                        primero.add(new Chunk(compra.get("facturaProveedor") + "\n"));
+                        primero.add(new Chunk("Fecha Compra: ", helveticaBold));
+                        primero.add(new Chunk(compra.get("fechaCompra") + "\n"));
                         primero.setSpacingAfter(20);
                         document.add(primero);
                         //Creo la tabla del detalle
                         PdfPTable tablaDetalle = new PdfPTable(new float[]{1, 3, 2, 2});
                         tablaDetalle.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
                         //Creo el titulo, le quito el borde, le digo que ocupara cuatro columnas y que serà centrado
-                        PdfPCell tituloCell = new PdfPCell(new Paragraph("Detalle de Compra"));
+                        PdfPCell tituloCell = new PdfPCell(new Phrase("Detalle de Compra", helveticaBold));
                         tituloCell.setBorder(0);
                         tituloCell.setColspan(4);
                         tituloCell.setHorizontalAlignment(Element.ALIGN_CENTER);
                         tablaDetalle.addCell(tituloCell);
                         //Aqui creo cada cabecera
-                        tablaDetalle.getDefaultCell().setBackgroundColor(BaseColor.LIGHT_GRAY);
-                        tablaDetalle.addCell("ID");
-                        tablaDetalle.addCell("Nombre");
-                        tablaDetalle.addCell("Cantidad");
-                        tablaDetalle.addCell("Valor");
+                        tablaDetalle.getDefaultCell().setBackgroundColor(BaseColor.LIGHT_GRAY);                       
+                        tablaDetalle.addCell(new Phrase("ID", helveticaBold));
+                        tablaDetalle.addCell(new Phrase("Nombre", helveticaBold));
+                        tablaDetalle.addCell(new Phrase("Cantidad", helveticaBold));
+                        tablaDetalle.addCell(new Phrase("Valor", helveticaBold));
                         tablaDetalle.getDefaultCell().setBackgroundColor(null);
                         //Aqui agrego la tabla cada articulo.
                         for (Map<String, String> next : detalle) {
@@ -148,7 +165,10 @@ public class ControllerCompra extends HttpServlet {
                             tablaDetalle.addCell(currencyFormatter.format(Integer.parseInt(next.get("precioArticulo"))));
                         }
                         //Creo el Footer
-                        PdfPCell footerCell = new PdfPCell(new Paragraph("Total: " + currencyFormatter.format(Integer.parseInt(compra.get("totalCompra")))));
+                        primero = new Paragraph();
+                        primero.add(new Chunk("Total: ", helveticaBold));
+                        primero.add(new Chunk(currencyFormatter.format(Integer.parseInt(compra.get("totalCompra")))));
+                        PdfPCell footerCell = new PdfPCell(primero);
                         footerCell.setBorder(0);
                         footerCell.setColspan(4);
                         footerCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
