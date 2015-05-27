@@ -32,10 +32,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import javax.servlet.ServletException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
+import javax.servlet.ServletException;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 /**
  *
@@ -107,6 +112,7 @@ public class ControllerCompra extends HttpServlet {
                     response.getWriter().write(getTableCompra());
                     break;
                 }
+                //<editor-fold defaultstate="collapsed" desc="PDF mediante iText">
                 case "Imprimir": {
                     response.setContentType("application/pdf");
                     try {
@@ -130,17 +136,30 @@ public class ControllerCompra extends HttpServlet {
                         logo.scaleAbsolute(new Rectangle(logo.getPlainWidth() / 4, logo.getPlainHeight() / 4));
                         document.add(logo);
                         //Creo una fuente para la letra en negrilla
-                        Font helveticaBold = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+                        final Font helveticaBold = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
                         //Escribo y agrego un primer parrafo con los datos basicos de la compra                        
-                        Paragraph primero = new Paragraph();
-                        primero.add(new Chunk("Nombre del Proveedor: ", helveticaBold));
-                        primero.add(new Chunk(compra.get("nombreProveedor") + "\n"));
-                        primero.add(new Chunk("Factura del Proveedor: ", helveticaBold));
-                        primero.add(new Chunk(compra.get("facturaProveedor") + "\n"));
-                        primero.add(new Chunk("Fecha Compra: ", helveticaBold));
-                        primero.add(new Chunk(compra.get("fechaCompra") + "\n"));
-                        primero.setSpacingAfter(20);
-                        document.add(primero);
+                        Paragraph headerDerecha = new Paragraph();
+                        headerDerecha.add(new Chunk("Nombre del Proveedor: ", helveticaBold));
+                        headerDerecha.add(new Chunk(compra.get("nombreProveedor") + "\n"));
+                        headerDerecha.add(new Chunk("Factura del Proveedor: ", helveticaBold));
+                        headerDerecha.add(new Chunk(compra.get("facturaProveedor") + "\n"));
+                        headerDerecha.add(new Chunk("Fecha Compra: ", helveticaBold));
+                        headerDerecha.add(new Chunk(compra.get("fechaCompra") + "\n"));
+                        //Escribo y agrego un segundo parrafo con los datos basicos de Stelarte  
+                        Paragraph headerIzquierda = new Paragraph();
+                        headerIzquierda.add(new Chunk("Stelarte.Decoracion \n", helveticaBold));
+                        headerIzquierda.add(new Chunk("Direccion: ", helveticaBold));
+                        headerIzquierda.add(new Chunk("Calle Falsa 123 # 12a34\n"));
+                        headerIzquierda.add(new Chunk("Telefono: ", helveticaBold));
+                        headerIzquierda.add(new Chunk("2583697 \n"));
+                        //Agrego los dos anteriores parrafos al Header
+                        PdfPTable header = new PdfPTable(2);
+                        header.getDefaultCell().setBorder(0);
+                        header.addCell(headerIzquierda);
+                        header.addCell(headerDerecha);
+                        header.setWidthPercentage(100f);
+                        header.setSpacingAfter(20);
+                        document.add(header);
                         //Creo la tabla del detalle
                         PdfPTable tablaDetalle = new PdfPTable(new float[]{1, 3, 2, 2});
                         tablaDetalle.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -151,7 +170,7 @@ public class ControllerCompra extends HttpServlet {
                         tituloCell.setHorizontalAlignment(Element.ALIGN_CENTER);
                         tablaDetalle.addCell(tituloCell);
                         //Aqui creo cada cabecera
-                        tablaDetalle.getDefaultCell().setBackgroundColor(BaseColor.LIGHT_GRAY);                       
+                        tablaDetalle.getDefaultCell().setBackgroundColor(BaseColor.LIGHT_GRAY);
                         tablaDetalle.addCell(new Phrase("ID", helveticaBold));
                         tablaDetalle.addCell(new Phrase("Nombre", helveticaBold));
                         tablaDetalle.addCell(new Phrase("Cantidad", helveticaBold));
@@ -165,10 +184,10 @@ public class ControllerCompra extends HttpServlet {
                             tablaDetalle.addCell(currencyFormatter.format(Integer.parseInt(next.get("precioArticulo"))));
                         }
                         //Creo el Footer
-                        primero = new Paragraph();
-                        primero.add(new Chunk("Total: ", helveticaBold));
-                        primero.add(new Chunk(currencyFormatter.format(Integer.parseInt(compra.get("totalCompra")))));
-                        PdfPCell footerCell = new PdfPCell(primero);
+                        headerIzquierda = new Paragraph();
+                        headerIzquierda.add(new Chunk("Total: ", helveticaBold));
+                        headerIzquierda.add(new Chunk(currencyFormatter.format(Integer.parseInt(compra.get("totalCompra")))));
+                        PdfPCell footerCell = new PdfPCell(headerIzquierda);
                         footerCell.setBorder(0);
                         footerCell.setColspan(4);
                         footerCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -185,8 +204,30 @@ public class ControllerCompra extends HttpServlet {
                     } catch (DocumentException de) {
                         throw new IOException(de.getMessage());
                     }
-
+                    break;
                 }
+                //</editor-fold>
+                //<editor-fold defaultstate="collapsed" desc="PDF mediante iReports">
+                case "Imprimir2": {
+                    try {
+                        int id = Integer.parseInt(request.getParameter("id"));
+                        String source = url + "/reports/newReport2.jrxml";
+                        JasperPrint jasperPrint = null;
+                        JasperReport jasperReport = null;
+                        JasperDesign jasperDesign = null;
+                        System.out.println(source);
+                        String reportPath = request.getServletContext().
+                                getRealPath("reports") + "\\newReport.jrxml";
+                        jasperDesign = JRXmlLoader.load(reportPath);
+                        jasperReport = JasperCompileManager.compileReport(jasperDesign);
+                        jasperPrint = JasperFillManager.fillReport(jasperReport, reporte(id), daoModelCompra.getConnection());
+                        JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
+                    } catch (Exception ex) {
+                        Logger.getLogger(ControllerCompra.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
+                //</editor-fold>
 
             }
         }
@@ -343,6 +384,10 @@ public class ControllerCompra extends HttpServlet {
         }
         daoModelCompra.Signout();
         return lista;
+    }
+
+    private void prinToPDF(String source, Map reporte, HttpServletResponse response) {
+
     }
 
 }
