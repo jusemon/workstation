@@ -1208,11 +1208,12 @@ var compra = {
         });
     },
     efectuarCompra: function () {
-        var form = $('#formCompra');
+        $('#tabMovimientos').find('#btnMovimiento').attr("type", "submit");
+        var form = $('#formMovimiento');
         $(form).off();
         $(form).on('submit', function () {
             var lista = Array();
-            $('#tablaDetalleCompra tbody tr').each(function () {
+            $('#tablaDetalleMovimiento tbody tr').each(function () {
                 var elementos = {idArticulo: '', cantidad: '', precioArticulo: ''};
                 elementos.idArticulo = $(this).data('id');
                 elementos.cantidad = $(this).find('#cantidad').val();
@@ -1220,9 +1221,9 @@ var compra = {
                 lista.push(elementos);
             });
             if (lista.length > 0) {
-                var nombre = $('#tabCompras').find('#txtNombre').val();
-                var numeroFactura = $('#tabCompras').find('#txtNumeroFactura').val();
-                var total = $('#tabCompras').find('#txtTotalMovimiento').val();
+                var nombre = $('#tabMovimientos').find('#txtNombre').val();
+                var numeroFactura = $('#tabMovimientos').find('#txtNumeroFactura').val();
+                var total = $('#tabMovimientos').find('#txtTotalMovimiento').val();
                 $.ajax({
                     type: 'POST',
                     url: "ControllerCompra",
@@ -1264,6 +1265,7 @@ var compra = {
     imprimir: function (idMovimiento) {
         var link = document.createElement('a');
         link.href = window.URL = "ControllerCompra?action=Imprimir&id=" + idMovimiento;
+        //link.href = window.URL = "ControllerCompra?action=Imprimir2&id=" + idMovimiento;
         link.download = "Compra_" + idMovimiento + ".pdf";
         link.click();
     }
