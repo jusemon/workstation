@@ -52,6 +52,14 @@
         <servlet-name>ControllerPreinscripcion</servlet-name>
         <servlet-class>Controller.ControllerPreinscripcion</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControllerVenta</servlet-name>
+        <servlet-class>Controller.ControllerVenta</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ModelVenta</servlet-name>
+        <servlet-class>Model.Data.ModelVenta</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControllerCliente</servlet-name>
         <url-pattern>/ControllerCliente</url-pattern>
@@ -103,6 +111,14 @@
     <servlet-mapping>
         <servlet-name>ControllerPreinscripcion</servlet-name>
         <url-pattern>/ControllerPreinscripcion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControllerVenta</servlet-name>
+        <url-pattern>/ControllerVenta</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ModelVenta</servlet-name>
+        <url-pattern>/ModelVenta</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
