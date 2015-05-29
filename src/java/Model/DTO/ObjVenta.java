@@ -17,6 +17,7 @@ public class ObjVenta {
          
     private int idVenta;
     private String nombreCliente;
+    private String documentoCliente;
     private String fechaVenta;
     private int totalVenta;
 
@@ -35,6 +36,12 @@ public class ObjVenta {
     public void setNombreCliente(String nombreCliente) {
         this.nombreCliente = nombreCliente;
     }
+    public String getDocumentoCliente() {
+        return documentoCliente;
+    }
+
+    public void setDocumentoCliente(String documentoCliente) {
+        this.documentoCliente = documentoCliente;}
 
     public String getFechaVenta() {
         return fechaVenta;

@@ -30,6 +30,12 @@ public class ModelVenta extends ConnectionDB {
         boolean objReturn = false;
         String sql1 = "call spIngresarVenta (?,?,?,?)";
         String sql2 = "call spIngresarDetalleVenta (?,?,?,?,?,)";
+        
+        try{
+         getStmt();
+                 
+                 
+        }
     }
     
     

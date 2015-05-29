@@ -5,7 +5,10 @@
  */
 
 package Controller;
-
+import Model.JDBC.ConnectionDB;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
