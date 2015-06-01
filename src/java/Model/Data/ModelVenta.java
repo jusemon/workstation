@@ -70,4 +70,59 @@ public class ModelVenta extends ConnectionDB {
         }
         return objReturn;
     }
+
+    public ResultSet ListAll() throws Exception {
+        ResultSet rs = null;
+        String sql = "call spConsultarVentas()";
+        try {
+            getStmt();
+            rs = stmt.executeQuery(sql);
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+
+    }
+
+    public boolean Edit(ObjVenta _objVenta) {
+        boolean objReturn = false;
+        String sql = "call spActualizarVenta (?,?,?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, _objVenta.getDocumentoCliente());
+            pStmt.setString(2, _objVenta.getNombreCliente());
+            pStmt.setString(3, _objVenta.getFechaVenta());
+            pStmt.setInt(4, _objVenta.getTotalVenta());
+
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
+
+    public ResultSet[] ConsultarVenta(int idVenta) throws Exception {
+        ResultSet[] rs = new ResultSet[2];
+        String sql = "call spConsultarVentaPorID(?)";
+        String sql2 = "call spConsultarDetalleVentaPorID(?)";
+        try {
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, idVenta);
+            rs[0] = pStmt.executeQuery();
+            pStmt = connection.prepareCall(sql2);
+            pStmt.setInt(1, idVenta);
+            rs[1] = pStmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }
+
 }
+
+
