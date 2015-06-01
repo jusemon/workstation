@@ -28,18 +28,19 @@ public class ModelVenta extends ConnectionDB {
 
     public boolean Add(ObjVenta _objVenta, ObjUsuario _objUsuario, List<ObjDetalleMovimiento> _listObjDetalleMovimientos) {
         boolean objReturn = false;
-        String sql1 = "call spIngresarVenta (?,?,?,?)";
-        String sql2 = "call spIngresarDetalleVenta (?,?,?,?,?,)";
+        String sql1 = "call spIngresarVenta (?,?,?,?,?)";
+        String sql2 = "call spIngresarDetalleVenta (?,?,?,?,?)";
 
         try {
             getStmt();
             connection.setAutoCommit(false);
             pStmt = connection.prepareCall(sql1);
-            pStmt.setString(1, _objVenta.getDocumentoCliente());
-            pStmt.setString(2, _objVenta.getNombreCliente());
-            pStmt.setString(3, _objVenta.getFechaVenta());
-            pStmt.setInt(4, _objVenta.getTotalVenta());
-
+            pStmt.setInt(1, _objVenta.getIdVenta());
+            pStmt.setInt(2, _objVenta.getTotalVenta());
+            pStmt.setString(3, _objUsuario.getDocumentoUsuario());
+            pStmt.setString(4, _objVenta.getNombreCliente());
+            pStmt.setString(5, _objVenta.getDocumentoCliente());
+            
             int updadeCount = pStmt.executeUpdate();
             if (updadeCount > 0) {
                 objReturn = true;
@@ -123,6 +124,20 @@ public class ModelVenta extends ConnectionDB {
         return rs;
     }
 
+    public String consultarContador() {
+        ResultSet rs = null;
+        String sql = "call spContadorVenta()";
+        String salida = null;
+        try {
+            pStmt = connection.prepareCall(sql);
+            rs = pStmt.executeQuery();
+            while (rs.next()) {
+                salida = rs.getString("idVenta");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return salida;
+    }
+
 }
-
-

@@ -72,7 +72,10 @@ $('#btnGestionCompras').on('click', function () {
         $('#tabMovimientos').find('#titulo').text('Registrar Compra');
         $('#tabMovimientos').find('#nombre').text('Nombre del Proveedor');
         $('#tabMovimientos').find('#numero').text('Numero de Factura');
+        $('#tabMovimientos').find('#txtNumero').attr('readOnly', false);
+        $('#tabMovimientos').find('#txtDocumentoCliente').attr('disabled', true).parents('.row:first').hide();
         $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + fecha());
+        $('#tabMovimientos').find('#btnArticulo').show();
         $('#tabMovimientos').find('#total').text('Total compra');
         $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'compra.efectuarCompra()').val('Efectuar Compra');
     } else {
@@ -96,8 +99,12 @@ $('#btnGestionVentas').on('click', function () {
         $('#tabMovimientos').find('#titulo').text('Registrar Venta');
         $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
         $('#tabMovimientos').find('#numero').text('Numero de Venta');
+        venta.contador();
+        $('#tabMovimientos').find('#txtNumero').attr('readOnly', true);
+        $('#tabMovimientos').find('#txtDocumentoCliente').attr('disabled', false).parents('.row:first').show();
         $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + fecha());
         $('#tabMovimientos').find('#total').text('Total venta');
+        $('#tabMovimientos').find('#btnArticulo').hide();
         $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'venta.efectuarVenta()').val('Efectuar Venta');
     } else {
         $('#contenidoDinamico').data('actual', 'listas');

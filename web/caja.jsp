@@ -251,7 +251,6 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label id="nombre" for="txtNombre">
-                                                            Nombre del Proveedor
                                                         </label>
                                                         <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="" required>
                                                     </div>
@@ -261,9 +260,18 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label id="numero" for="txtNumero">
-                                                            Número de Factura
                                                         </label>
-                                                        <input name="txtNumeroFactura" id="txtNumeroFactura" type="text" class="form-control" placeholder="" required>
+                                                        <input name="txtNumero" id="txtNumero" type="text" class="form-control" placeholder="" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label  for="txtDocumentoCliente">
+                                                            Documento del Cliente
+                                                        </label>
+                                                        <input name="txtDocumentoCliente" id="txtDocumentoCliente" type="text" class="form-control" placeholder="" required>
                                                     </div>
                                                 </div>
                                             </div>

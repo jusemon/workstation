@@ -10,31 +10,16 @@ import Model.DTO.ObjDetalleMovimiento;
 import Model.DTO.ObjUsuario;
 import Model.Data.ModelVenta;
 import com.google.gson.Gson;
-import Model.JDBC.ConnectionDB;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.sql.ResultSet;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import net.sf.jasperreports.engine.*;
 import javax.servlet.ServletException;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 /**
  *
@@ -66,7 +51,9 @@ public class ControllerVenta extends HttpServlet {
             switch (action) {
                 case "Registrar": {
                     String documentoUsuario = (request.getParameter("documentoUsuario"));
+                    String documentoCliente = (request.getParameter("txtDocumentoCliente"));
                     String nombreUsuario = (request.getParameter("txtNombre"));
+                    int idVenta = Integer.parseInt(request.getParameter("txtNumeroVenta"));
                     int lenght = Integer.parseInt(request.getParameter("size"));
                     int totalCompra = Integer.parseInt(request.getParameter("txtTotalVenta"));
                     listOjbDetalleMovimientos = new ArrayList<>();
@@ -80,7 +67,8 @@ public class ControllerVenta extends HttpServlet {
                         listOjbDetalleMovimientos.add(_objDetalleMovimiento);
                     }
                     _objUsuario.setDocumentoUsuario(documentoUsuario);
-                    _objVenta.setDocumentoCliente(documentoUsuario);
+                    _objVenta.setIdVenta(idVenta);
+                    _objVenta.setDocumentoCliente(documentoCliente);
                     _objVenta.setNombreCliente(nombreUsuario);
                     _objVenta.setTotalVenta(totalCompra);
                     daoModelVenta = new ModelVenta();
@@ -104,9 +92,15 @@ public class ControllerVenta extends HttpServlet {
                     response.getWriter().write(getTableVenta());
                     break;
                 }
+                case "Contador": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getContador());
+                    break;
+                }
             }
         }
-
+    }
 
     public String getTableVenta() {
         ResultSet result;
@@ -124,6 +118,7 @@ public class ControllerVenta extends HttpServlet {
                         + "<span class=\"glyphicon glyphicon-search\"></span></a>";
                 lista.add(arreglo);
             }
+            daoModelVenta.Signout();
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error en el controller compra " + e.toString());
         }
@@ -146,8 +141,11 @@ public class ControllerVenta extends HttpServlet {
         return salida;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    private int consultarDetalle(int id) {
+        return -1;
+    }
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -185,5 +183,15 @@ public class ControllerVenta extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String getContador() {
+        daoModelVenta = new ModelVenta();
+        String numero = daoModelVenta.consultarContador();
+        daoModelVenta.Signout();
+        Map<String, String> respuesta = new LinkedHashMap<>();
+        respuesta.put("numero", numero);
+        String salida = new Gson().toJson(respuesta);
+        return salida;
+    }
 
 }

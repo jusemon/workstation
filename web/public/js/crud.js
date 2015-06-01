@@ -1189,11 +1189,11 @@ var compra = {
                 $('#tabMovimientos').find('#total').text('Total compra');
                 $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + data.Compra.fechaCompra);
                 $('#tabMovimientos').find('#txtNombre').val(data.Compra.nombreProveedor).attr('readOnly', true);
-                $('#tabMovimientos').find('#txtNumeroFactura').val(data.Compra.facturaProveedor).attr('readOnly', true);
+                $('#tabMovimientos').find('#txtNumero').val(data.Compra.facturaProveedor).attr('readOnly', true);
                 $('#tabMovimientos').find('#txtTotalMovimiento').val(data.Compra.totalCompra);
                 $('#tabMovimientos').find('#ddlArticulos').attr('disabled', true).parents('.row:first').hide();
                 $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide();
-                $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'compra.imprimir('+data.Compra.idMovimiento+')').attr('type', 'button').val('Imprimir Compra');
+                $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'compra.imprimir(' + data.Compra.idMovimiento + ')').attr('type', 'button').val('Imprimir Compra');
                 $.each(data["Detalle"], function (index, element) {
                     var fila = '<tr  data-id="' + element.idArticulo + '">';
                     fila += '<td>' + element.idArticulo + '</td>';
@@ -1222,7 +1222,7 @@ var compra = {
             });
             if (lista.length > 0) {
                 var nombre = $('#tabMovimientos').find('#txtNombre').val();
-                var numeroFactura = $('#tabMovimientos').find('#txtNumeroFactura').val();
+                var numeroFactura = $('#tabMovimientos').find('#txtNumero').val();
                 var total = $('#tabMovimientos').find('#txtTotalMovimiento').val();
                 $.ajax({
                     type: 'POST',
@@ -1239,7 +1239,7 @@ var compra = {
                     success: function (data, textStatus, jqXHR) {
                         compra.limpiarDetalle();
                         $("#ddlArticulos").val(null);
-                        limpiar('#formCompra');
+                        limpiar('#formMovimiento');
                         mensaje(data);
                         compra.actualizarTabla();
                     }
@@ -1283,11 +1283,12 @@ var venta = {
         $('#tabCompras').find('#txtTotalCompra').val(salida);
     },
     efectuarVenta: function () {
-        var form = $('#formVenta');
+        $('#tabMovimientos').find('#btnMovimiento').attr("type", "submit");
+        var form = $('#formMovimiento');
         $(form).off();
         $(form).on('submit', function () {
             var lista = Array();
-            $('#tablaDetalleVenta tbody tr').each(function () {
+            $('#tablaDetalleMovimiento tbody tr').each(function () {
                 var elementos = {idArticulo: '', cantidad: '', precioArticulo: ''};
                 elementos.idArticulo = $(this).data('id');
                 elementos.cantidad = $(this).find('#cantidad').val();
@@ -1295,9 +1296,11 @@ var venta = {
                 lista.push(elementos);
             });
             if (lista.length > 0) {
-                var nombre = $('#tabVentas').find('#txtNombreCliente').val();
-                var numeroVenta = $('#tabVentas').find('#txtNumeroVenta').val();
-                var total = $('#tabVentas').find('#txtTotalVenta').val();
+                var nombre = $('#tabMovimientos').find('#txtNombre').val();
+                var numeroVenta = $('#tabMovimientos').find('#txtNumero').val();
+                var documentoCliente = $('#tabMovimientos').find('#txtDocumentoCliente').val();
+                var total = $('#tabMovimientos').find('#txtTotalMovimiento').val();
+                alert(documentoUsuario);
                 $.ajax({
                     type: 'POST',
                     url: "ControllerVenta",
@@ -1308,7 +1311,8 @@ var venta = {
                         txtNombreCliente: nombre,
                         txtNumeroVenta: numeroVenta,
                         txtTotalVenta: total,
-                        documentoUsuario: documentoUsuario
+                        documentoUsuario: documentoUsuario,
+                        documentoCliente: documentoCliente
                     },
                     success: function (data, textStatus, jqXHR) {
                         $('#tablaDetalleVenta tbody tr').each(function () {
@@ -1328,6 +1332,18 @@ var venta = {
             return false;
         });
 
+    },
+    contador: function () {
+        $.ajax({
+            url: "ControllerVenta",
+            type: 'POST',
+            data: {
+                action: 'Contador'
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#tabMovimientos').find('#txtNumero').val(data['numero']);
+            }
+        });
     }
 };
 
