@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-06-2015 a las 20:04:29
+-- Tiempo de generación: 01-06-2015 a las 23:27:10
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -28,16 +28,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarArticulo`(
         in idArticu		int,
 	in idCategoriaArticu	int,
 	in descripcionArticu	varchar(50),
-	in cantidadDisponib	int,
-	in precioComp		int,
         in precioVen            int
 )
 BEGIN
 	UPDATE tblarticulo SET 
             `idCategoriaArticulo` = `idCategoriaArticu`, 
             `descripcionArticulo`=`descripcionArticu`,
-            `cantidadDisponible`=`cantidadDisponib`,
-            `precioCompra`=`precioComp`,
             `precioVenta`=`precioVen`
         WHERE `idArticulo`=`idArticu`;
 END$$
@@ -218,8 +214,8 @@ BEGIN
         `totalMovimiento` as totalCompra, 
         `idtipoMovimiento`, 
         `documentoUsuario`, 
-        `facturaProveedor`, 
-        `nombreProveedor` 
+        `numeroAuxiliar` as `facturaProveedor`, 
+        `nombreAuxiliar` as `nombreProveedor` 
     FROM `tblmovimiento` 
     WHERE `idtipoMovimiento` = 1
 AND `idMovimiento` = idCompra;
@@ -233,8 +229,8 @@ BEGIN
         `totalMovimiento` as totalCompra, 
         `idtipoMovimiento`, 
         `documentoUsuario`, 
-        `facturaProveedor`, 
-        `nombreProveedor` 
+        `numeroAuxiliar` as `facturaProveedor`, 
+        `nombreAuxiliar` as `nombreProveedor` 
     FROM `tblmovimiento` 
     WHERE `idtipoMovimiento` = 1;
 END$$
@@ -473,16 +469,6 @@ BEGIN
     WHERE `documentoUsuario` = `documentoUsuar`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarVenta`(
-        in idMovimien int
-)
-BEGIN
-select v.idventa, m.idmovimiento 
-from tblventa v inner join tblmovimiento on v.idmovimiento = m.idmovimiento 
-where v.idmovimiento = idmovimien;
-	
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarUsuarioPorPassYCorreo`(
     in `correo` varchar(40),
     in `pass` varchar(40)
@@ -503,6 +489,16 @@ BEGIN
     WHERE `emailUsuario` = `correo` and `password` = `pass`;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarVenta`(
+        in idMovimien int
+)
+BEGIN
+select v.idventa, m.idmovimiento 
+from tblventa v inner join tblmovimiento on v.idmovimiento = m.idmovimiento 
+where v.idmovimiento = idmovimien;
+	
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarVentasDiarias`(
 
 )
@@ -518,8 +514,14 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spContadorVenta`()
 BEGIN
-    SELECT MAX(idVenta)+1 AS idVenta FROM tblVenta;
-END$$
+    declare respuesta int;
+    set respuesta = (SELECT max(`numeroAuxiliar`)+1 FROM `tblmovimiento` WHERE `idtipoMovimiento` = 3);
+    IF (respuesta is not null) THEN
+        SELECT respuesta as idVenta;
+    ELSE
+        SELECT 1 as idVenta;
+    END IF;
+    END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarAbono`(
     in idAbo        int,
@@ -579,7 +581,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCompra`(
 )
 BEGIN
     declare msg varchar(40);    
-    if (exists(select facturaProveedor from tblMovimiento where facturaProveedor=`facturaProveed`)) then
+    if (exists(select numeroAuxiliar from tblMovimiento where numeroAuxiliar=`facturaProveed` and `idtipoMovimiento` = 1)) then
             set msg="Esta compra ya fue registrada.";
             select msg as Respuesta;
     else
@@ -589,8 +591,8 @@ BEGIN
             `totalMovimiento`, 
             `idtipoMovimiento`, 
             `documentoUsuario`, 
-            `facturaProveedor`, 
-            `nombreProveedor`
+            `numeroAuxiliar`, 
+            `nombreAuxiliar`
         ) VALUES (
             NOW(),
             `totalMovimien`,
@@ -892,31 +894,35 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarVenta`(
     in idVen                int,
-    in fechaVen             datetime,
     in totalVen             int,
-    in documentoUsar       VARCHAR(30) ,
-    in idClien              VARCHAR(30) 
+    in documentoUsuar       VARCHAR(30) ,
+    in nombreClien          VARCHAR(30),
+    in documentoClien       VARCHAR(45)
  )
 BEGIN
 	declare msg varchar(40);    
-	if (exists(select idVenta from tblVenta where idVenta=idVen)) then
+	if (exists(select numeroAuxiliar from tblMovimiento where numeroAuxiliar=`idVen` and `idtipoMovimiento`=3)) then
 		set msg="Esta venta ya existe";
 		select msg as Respuesta;
 	else
-		insert into tblMovimiento 
-        (
-            `fechaMovimiento`, 
-            `totalMovimiento`, 
-            `idtipoMovimiento`, 
-            `documentoUsuario`, 
-            `nombreCliente`
-        ) VALUES (
-            NOW(),
-            `totalMovimien`,
-            1,
-            `documentoUsuar`,  
-            `nombreCliente`
-        );
+            insert into tblMovimiento 
+            (
+                `fechaMovimiento`, 
+                `totalMovimiento`, 
+                `idtipoMovimiento`, 
+                `documentoUsuario`, 
+                `nombreAuxiliar`,
+                `numeroAuxiliar`,
+                documentoAuxiliar
+            ) VALUES (
+                NOW(),
+                `totalVen`,
+                3,
+                documentoUsuar,
+                `nombreClien`,
+                idVen,
+                documentoClien
+            );
 	end if;
 END$$
 
@@ -928,12 +934,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarArticulos`()
 BEGIN
 
 SELECT * FROM tblarticulo INNER JOIN tblcategoriaarticulo ON tblarticulo.idCategoriaArticulo = tblcategoriaarticulo.idCategoriaArticulo;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarCompras`(IN `numeroFactura` VARCHAR(50), IN `nombreProveedor` VARCHAR(50), IN `fechaCompra` DATE, IN `totalCompra` INT)
-    NO SQL
-BEGIN
-SELECT * FROM tblCompra;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarCreditos`()
@@ -1115,7 +1115,7 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `idCategoriaCurso` int(11) NOT NULL,
   PRIMARY KEY (`idCurso`),
   KEY `fk_tblcurso_tblcategoriacurso1_idx` (`idCategoriaCurso`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Volcado de datos para la tabla `tblcurso`
@@ -1123,7 +1123,8 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
 
 INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorClase`, `estadoCurso`, `descripcionCurso`, `precioCurso`, `idCategoriaCurso`) VALUES
 (5, 'Oleo', 10, 3, 1, 'Asd', 120000, 2),
-(6, 'Loquesea', 1, 5, 1, 'Seminario de lo que sea', 120000, 1);
+(6, 'Loquesea', 1, 5, 1, 'Seminario de lo que sea', 120000, 1),
+(7, 'Curso J', 10, 3, 1, 'La J es una letra, por la cual empieza mi nombre', 120000, 2);
 
 -- --------------------------------------------------------
 
@@ -1268,22 +1269,23 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
   `totalMovimiento` int(11) NOT NULL,
   `idtipoMovimiento` int(11) NOT NULL,
   `documentoUsuario` varchar(20) NOT NULL,
-  `facturaProveedor` varchar(45) DEFAULT NULL,
-  `nombreProveedor` varchar(45) DEFAULT NULL,
+  `numeroAuxiliar` varchar(45) DEFAULT NULL,
+  `nombreAuxiliar` varchar(45) DEFAULT NULL,
+  `documentoAuxiliar` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idMovimiento`),
   KEY `fk_tblMovimiento_tblTipoMovimiento1_idx` (`idtipoMovimiento`),
   KEY `fk_tblMovimiento_tblusuario1_idx` (`documentoUsuario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
 
 --
 -- Volcado de datos para la tabla `tblmovimiento`
 --
 
-INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento`, `idtipoMovimiento`, `documentoUsuario`, `facturaProveedor`, `nombreProveedor`) VALUES
-(14, '2015-05-18 14:14:07', 75000, 1, '1017225673', '123', 'Sebas'),
-(15, '2015-05-18 14:26:23', 18900, 1, '1017225673', '256', 'Sebas'),
-(16, '2015-05-18 14:44:49', 36000, 1, '1017225673', 'asdasd', 'asd'),
-(17, '2015-05-27 12:52:18', 36000, 1, '1017225673', '234234', 'asdasd');
+INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento`, `idtipoMovimiento`, `documentoUsuario`, `numeroAuxiliar`, `nombreAuxiliar`, `documentoAuxiliar`) VALUES
+(14, '2015-05-18 14:14:07', 75000, 1, '1017225673', '123', 'Sebas', NULL),
+(15, '2015-05-18 14:26:23', 18900, 1, '1017225673', '256', 'Sebas', NULL),
+(16, '2015-05-18 14:44:49', 36000, 1, '1017225673', 'asdasd', 'asd', NULL),
+(17, '2015-05-27 12:52:18', 36000, 1, '1017225673', '234234', 'asdasd', NULL);
 
 -- --------------------------------------------------------
 
