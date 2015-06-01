@@ -5,7 +5,23 @@
  */
 
 package Controller;
+import Model.DTO.ObjVenta;
+import Model.DTO.ObjDetalleMovimiento;
+import Model.DTO.ObjUsuario;
+import Model.Data.ModelVenta;
+import com.google.gson.Gson;
 import Model.JDBC.ConnectionDB;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.sql.ResultSet;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,12 +31,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
+import javax.servlet.ServletException;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 /**
  *
  * @author siete
  */
 public class ControllerVenta extends HttpServlet {
+    ModelVenta daoModelVenta;
+    ObjVenta _objVenta = new ObjVenta();
+    ObjUsuario _objUsuario = new ObjUsuario();
+    List<ObjDetalleMovimiento> ListOjbDetalleMovimientos = new ArrayList <>();
+    ObjDetalleMovimiento _objDetalleMovimiento = new ObjDetalleMovimiento();
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,18 +60,8 @@ public class ControllerVenta extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ControllerVenta</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ControllerVenta at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+    if (request.getParameter("action") !=null){
+    }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
