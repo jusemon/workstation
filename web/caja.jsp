@@ -427,5 +427,8 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
     </div>
 </div>
 
+<!--Popup Articulo-->
+<%@include file="WEB-INF/jspf/modalArticulo.jspf" %>
+
 <%@include file="WEB-INF/jspf/footer.jspf" %>
 
