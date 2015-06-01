@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 /**
  *
- * @author Administrador
+ * @author Juan Sebastian Montoya
  */
 public class ModelEstudiante extends ConnectionDB {
 
