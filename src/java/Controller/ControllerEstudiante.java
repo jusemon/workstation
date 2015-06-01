@@ -156,7 +156,7 @@ public class ControllerEstudiante extends HttpServlet {
                         String celular = request.getParameter("txtCelular").trim();
                         String correo = request.getParameter("txtCorreo").trim();
                         int estado = Integer.parseInt(request.getParameter("radioBeneficiario").trim());
-                        String pass = request.getParameter("pass").trim();
+                        String pass = request.getParameter("txtPass").trim();
                         //Beneficiario 0->No Subvencionado 1->Subvencionado?
                         String tipoDocAcudiente = "";
                         int numeroDocAcudiente = 0;

@@ -244,7 +244,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <form id="formCompra" method="POST">
+                                <form id="formMovimiento" method="POST">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="row">
@@ -299,7 +299,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 table-responsive">
-                                                    <table id="tablaDetalleCompra" class="table table-bordered table-hover table-sortable" id="tab_logic">
+                                                    <table id="tablaDetalleMovimiento" class="table table-bordered table-hover table-sortable" id="tab_logic">
                                                         <thead>
                                                             <tr >
                                                                 <th class="text-center">
@@ -318,8 +318,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                                 </th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="tbodyCompra"> 
-
+                                                        <tbody> 
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -426,6 +425,9 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
         </div>
     </div>
 </div>
+
+<!--Popup Articulo-->
+<%@include file="WEB-INF/jspf/modalArticulo.jspf" %>
 
 <%@include file="WEB-INF/jspf/footer.jspf" %>
 
