@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-05-2015 a las 00:40:12
+-- Tiempo de generación: 01-06-2015 a las 19:51:54
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -953,7 +953,7 @@ INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArti
 (1, 1, 'Vinilo Aguamarina', 165, 1200, 1200),
 (2, 2, 'Vinilo Dorado', 120, 2100, 1400),
 (3, 2, 'Vinilo Plateado', 124, 1000, 1400),
-(4, 1, 'Pincel delgado', 20, 1200, 1300);
+(4, 1, 'Pincel delgado', 50, 1200, 1300);
 
 -- --------------------------------------------------------
 
@@ -1007,7 +1007,7 @@ CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
 
 INSERT INTO `tblcategoriacurso` (`idCategoriaCurso`, `nombreCategoriaCurso`) VALUES
 (1, 'Seminario'),
-(2, 'Ads'),
+(2, 'Primera Categoria'),
 (3, 'Categoria B'),
 (4, 'Categoria C'),
 (5, 'Categoria D');
@@ -1093,7 +1093,7 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
   PRIMARY KEY (`idDetalleMovimiento`),
   KEY `FK_tblDetalleVenta_idArticulo` (`idArticulo`),
   KEY `fk_tbldetallemovimiento_tblMovimiento1_idx` (`idMovimiento`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
 -- Volcado de datos para la tabla `tbldetallemovimiento`
@@ -1104,7 +1104,8 @@ INSERT INTO `tbldetallemovimiento` (`idDetalleMovimiento`, `idArticulo`, `cantid
 (20, 1, 10, 3, 25000, 14, 2500),
 (21, 3, 30, 3, 30000, 14, 1000),
 (22, 2, 9, 1, 18900, 15, 2100),
-(23, 1, 30, 1, 36000, 16, 1200);
+(23, 1, 30, 1, 36000, 16, 1200),
+(24, 4, 30, 1, 36000, 17, 1200);
 
 -- --------------------------------------------------------
 
@@ -1223,7 +1224,7 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
   PRIMARY KEY (`idMovimiento`),
   KEY `fk_tblMovimiento_tblTipoMovimiento1_idx` (`idtipoMovimiento`),
   KEY `fk_tblMovimiento_tblusuario1_idx` (`documentoUsuario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 --
 -- Volcado de datos para la tabla `tblmovimiento`
@@ -1232,7 +1233,8 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
 INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento`, `idtipoMovimiento`, `documentoUsuario`, `facturaProveedor`, `nombreProveedor`) VALUES
 (14, '2015-05-18 14:14:07', 75000, 1, '1017225673', '123', 'Sebas'),
 (15, '2015-05-18 14:26:23', 18900, 1, '1017225673', '256', 'Sebas'),
-(16, '2015-05-18 14:44:49', 36000, 1, '1017225673', 'asdasd', 'asd');
+(16, '2015-05-18 14:44:49', 36000, 1, '1017225673', 'asdasd', 'asd'),
+(17, '2015-05-27 12:52:18', 36000, 1, '1017225673', '234234', 'asdasd');
 
 -- --------------------------------------------------------
 
@@ -1346,7 +1348,7 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
 
 INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`) VALUES
 ('1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL),
-('CC1017225673', '1994-11-03', 'Juan', 'Montoya', 'thejuansebas03@gmail.com', 'es120300', 1, 1, 3, NULL),
+('CC1017225673', '1994-11-03', 'Juancito', 'Montoya', 'thejuansebas03@gmail.com', '123', 0, 1, 3, NULL),
 ('CC32466217', '1999-02-03', 'Maria Dolly', 'Montoya Puerta', 'micorreo@correo.com', '123', 1, NULL, 4, NULL),
 ('CC94110325805', '1990-03-02', 'Juan', 'Olla', 'nuevocorrep@correo.com', '123', 1, NULL, 4, NULL);
 
@@ -1383,8 +1385,8 @@ ALTER TABLE `tblcurso`
 -- Filtros para la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-  ADD CONSTRAINT `FK_tblDetalleVenta_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tbldetallemovimiento_tblMovimiento1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tbldetallemovimiento_tblMovimiento1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_tblDetalleVenta_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tblmodulorol`

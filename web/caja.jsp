@@ -240,7 +240,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         <div class="col-md-12 panel panel-default">
                             <div class="panel-heading">
                                 <div class="panel-title">
-                                    <label id='titulo'>Registrar Compra</label>
+                                    <label id='titulo'></label>
                                 </div>
                             </div>
                             <div class="panel-body">
@@ -269,14 +269,14 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="ddlArticulos">
-                                                        Artículos:
-                                                    </label>
-                                                    <select class="form-control" style="width: 100%" id="ddlArticulos">
-                                                        <option></option>
-                                                    </select>
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label for="ddlArticulos">
+                                                            Artículos:
+                                                        </label>
+                                                        <select class="form-control" style="width: 100%" id="ddlArticulos">
+                                                            <option></option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row">
