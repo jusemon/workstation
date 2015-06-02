@@ -66,25 +66,15 @@ $('#btnGestionCompras').on('click', function () {
     limpiar('#formMovimiento');
     var actual = $('#contenidoDinamico').data('actual');
     if (actual == 'listas' || actual == 'venta') {
-        $(this).data('target', '#tabMovimientos');
-        $('#contenidoDinamico').data('actual', 'compra');
+        compra.show('Registrar');
         $('#btnGestionVentas').data('target', '#tabMovimientos');
-        $('#tabMovimientos').find('#titulo').text('Registrar Compra');
-        $('#tabMovimientos').find('#nombre').text('Nombre del Proveedor');
-        $('#tabMovimientos').find('#numero').text('Numero de Factura');
-        $('#tabMovimientos').find('#txtNumero').attr('readOnly', false);
-        $('#tabMovimientos').find('#txtDocumentoCliente').attr('disabled', true).parents('.row:first').hide();
-        $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + fecha());
-        $('#tabMovimientos').find('#btnArticulo').show();
-        $('#tabMovimientos').find('#total').text('Total compra');
-        $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'compra.efectuarCompra()').val('Efectuar Compra');
+        $(this).data('target', '#tabMovimientos');
     } else {
         $('#contenidoDinamico').data('actual', 'listas');
         $('#btnGestionVentas').data('target', '#tabListas');
         $(this).data('target', '#tabListas');
     }
-    $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
-    $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
+
 });
 
 $('#btnGestionVentas').on('click', function () {
@@ -93,34 +83,13 @@ $('#btnGestionVentas').on('click', function () {
     limpiar('#formMovimiento');
     var actual = $('#contenidoDinamico').data('actual');
     if (actual == 'listas' || actual == 'compra') {
-        $(this).data('target', '#tabMovimientos');
-        $('#contenidoDinamico').data('actual', 'venta');
+        venta.show('Registrar')
         $('#btnGestionCompras').data('target', '#tabMovimientos');
-        $('#tabMovimientos').find('#titulo').text('Registrar Venta');
-        $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
-        $('#tabMovimientos').find('#numero').text('Numero de Venta');
-        venta.contador();
-        $('#tabMovimientos').find('#txtNumero').attr('readOnly', true);
-        $('#tabMovimientos').find('#txtDocumentoCliente').attr('disabled', false).parents('.row:first').show();
-        $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + fecha());
-        $('#tabMovimientos').find('#total').text('Total venta');
-        $('#tabMovimientos').find('#btnArticulo').hide();
-        $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'venta.efectuarVenta()').val('Efectuar Venta');
+        $(this).data('target', '#tabMovimientos');        
     } else {
         $('#contenidoDinamico').data('actual', 'listas');
         $('#btnGestionCompras').data('target', '#tabListas');
         $(this).data('target', '#tabListas');
-    }
-    $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
-    $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
-});
-
-var $eventSelect = $("#ddlArticulos");
-
-$eventSelect.on("select2:select", function (e) {
-    var id = e.params.data.id;
-    if (id != '-1') {
-        articulo.seleccionar(id);
     }
 });
 

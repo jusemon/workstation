@@ -88,10 +88,9 @@ public class ControllerArticulo extends HttpServlet {
                     //<editor-fold defaultstate="collapsed" desc="Consultar un Articulo por ID">
                     case "Consultar": {
                         int id = Integer.parseInt(request.getParameter("id"));
-                        String resultado = consultarArticulo(id);
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
-                        response.getWriter().write(resultado);
+                        response.getWriter().write(consultarArticulo(id));
                         break;
                     }
                     //</editor-fold>
@@ -115,6 +114,7 @@ public class ControllerArticulo extends HttpServlet {
                     }
                     //</editor-fold>
 
+                    //<editor-fold defaultstate="collapsed" desc="Obtener las opciones de Articulos">
                     case "getOptionsArticulos": {
                         String resultado = getOptionsArticulos();
                         response.setContentType("application/json");
@@ -122,6 +122,7 @@ public class ControllerArticulo extends HttpServlet {
                         response.getWriter().write(resultado);
                         break;
                     }
+                    //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="Enlistar todos los Articulos">
                     case "Enlistar": {
@@ -249,6 +250,8 @@ public class ControllerArticulo extends HttpServlet {
             while (result.next()) {
                 salida.put("idArticulo", result.getString("idArticulo"));
                 salida.put("descripcionArticulo", result.getString("descripcionArticulo"));
+                salida.put("cantidadDisponible", result.getString("cantidadDisponible"));
+                salida.put("precioVenta", result.getString("precioVenta"));
             }
         } catch (Exception e) {
         }
