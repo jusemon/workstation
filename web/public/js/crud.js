@@ -929,6 +929,8 @@ var articulo = {
                         $('#miPopupArticulo').modal('hide');
                         mensaje(data);
                         articulo.actualizarTabla();
+                        $("#ddlArticulos").select2('destroy'); 
+                        articulo.listarArticulos();
                     } else if (accion == 'ConsultarCodigo') {
                         articulo.registrar(data);
                     }
@@ -945,7 +947,7 @@ var articulo = {
             $(form).submit();
         }
     },
-    registrar: function (data) {
+    registrar: function () {
         limpiar('#formArticulo');
         $('#miPopupArticulo').find('#titulo').empty();
         $('#miPopupArticulo').find('#titulo').append('Registrar Artículo');
@@ -1034,7 +1036,7 @@ var articulo = {
             }
         });
     },
-    listarArticulos: function () {
+    listarArticulos: function () {        
         var f = new Date();
         var fechaActual = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
         $('#tabCompras').find('#txtFechaCompra').append('Fecha: ' + fechaActual);
