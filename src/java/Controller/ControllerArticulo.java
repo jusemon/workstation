@@ -96,17 +96,12 @@ public class ControllerArticulo extends HttpServlet {
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="Consultar Codigo">
-                    case "ConsultarCodigo": {
-                        int codigo = 0;
+                    case "Contador": {
                         daoModelArticulo = new ModelArticulo();
-                        ResultSet result = daoModelArticulo.consultarCodigoSiguiente();
-                        try {
-                            while (result.next()) {
-                                codigo = result.getInt("idArticulo");
-                            }
-                        } catch (Exception e) {
-                        }
-                        String respuesta = new Gson().toJson(codigo);
+                        String resultado = daoModelArticulo.consultarContador();
+                        Map <String, String> salida = new LinkedHashMap<>();
+                        salida.put("idArticulo", resultado);
+                        String respuesta = new Gson().toJson(salida);
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(respuesta);
