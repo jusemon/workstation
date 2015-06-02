@@ -110,7 +110,7 @@ public class ModelVenta extends ConnectionDB {
     public ResultSet[] ConsultarVenta(int idVenta) throws Exception {
         ResultSet[] rs = new ResultSet[2];
         String sql = "call spConsultarVentaPorID(?)";
-        String sql2 = "call spConsultarDetalleVentaPorID(?)";
+        String sql2 = "call spConsultarDetallesVentaPorID(?)";
         try {
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, idVenta);

@@ -1434,7 +1434,7 @@ var venta = {
             $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
             venta.contador();
         } else if (tipo === 'Consultar') {
-            $('#tabMovimientos').find('#titulo').text('Consultar Compra');
+            $('#tabMovimientos').find('#titulo').text('Consultar Venta');
             $('#btnGestionVentas').data('target', '#tabMovimientos').tab('show');
             $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + datos.Venta.fechaVenta);
             $('#tabMovimientos').find('#txtNombre').val(datos.Venta.nombreCliente).attr('readOnly', true);

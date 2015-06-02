@@ -145,8 +145,44 @@ public class ControllerVenta extends HttpServlet {
         return salida;
     }
 
-    private int consultarDetalle(int id) {
-        return -1;
+    private String consultarDetalle(int id) {
+        Map<String, Object> lista = new LinkedHashMap<>();
+        List<Map> lista2 = new ArrayList<>();
+        Map<String, String> resultado = null;
+        daoModelVenta = new ModelVenta();
+        try {
+            ResultSet[] result = daoModelVenta.ConsultarVenta(id);
+            while (result[0].next()) {
+                resultado = new LinkedHashMap<>();
+                resultado.put("idMovimiento", result[0].getString("idMovimiento"));
+                resultado.put("fechaVenta", result[0].getString("fechaVenta"));
+                resultado.put("totalVenta", result[0].getString("totalVenta"));
+                resultado.put("documentoUsuario", result[0].getString("documentoUsuario"));
+                resultado.put("numeroVenta", result[0].getString("numeroVenta"));
+                resultado.put("nombreCliente", result[0].getString("nombreCliente"));
+                resultado.put("documentoCliente", result[0].getString("documentoCliente"));
+                lista.put("Venta", resultado);
+            }
+            while (result[1].next()) {
+                resultado = new LinkedHashMap<>();
+                resultado.put("idDetalleMovimiento", result[1].getString("idDetalleMovimiento"));
+                resultado.put("idArticulo", result[1].getString("idArticulo"));
+                resultado.put("descripcionArticulo", result[1].getString("descripcionArticulo"));
+                resultado.put("cantidad", result[1].getString("cantidad"));
+                resultado.put("descuento", result[1].getString("descuento"));
+                resultado.put("totalDetalleMovimiento", result[1].getString("totalDetalleMovimiento"));
+                resultado.put("idMovimiento", result[1].getString("idMovimiento"));
+                resultado.put("precioArticulo", result[1].getString("precioArticulo"));
+                lista2.add(resultado);
+            }
+            //listas.put("Compra",lista);
+            lista.put("Detalle", lista2);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        daoModelVenta.Signout();
+        String salida = new Gson().toJson(lista);
+        return salida;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
