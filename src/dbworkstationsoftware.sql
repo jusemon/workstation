@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-06-2015 a las 23:27:10
+-- Tiempo de generación: 02-06-2015 a las 20:06:33
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -497,6 +497,21 @@ select v.idventa, m.idmovimiento
 from tblventa v inner join tblmovimiento on v.idmovimiento = m.idmovimiento 
 where v.idmovimiento = idmovimien;
 	
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarVentas`()
+BEGIN
+    SELECT  
+        `idMovimiento`, 
+        `fechaMovimiento` as fechaVenta, 
+        `totalMovimiento` as totalVenta, 
+        `idtipoMovimiento`, 
+        `documentoUsuario`, 
+        `numeroAuxiliar` as `numeroVenta`, 
+        `nombreAuxiliar` as `nombreCliente`, 
+        `documentoAuxiliar` as `documentoCliente`
+    FROM `tblmovimiento` 
+    WHERE `idtipoMovimiento` = 3;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarVentasDiarias`(
@@ -999,10 +1014,10 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
 --
 
 INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioCompra`, `precioVenta`) VALUES
-(1, 1, 'Vinilo Aguamarina', 165, 1200, 1200),
-(2, 2, 'Vinilo Dorado', 120, 2100, 1400),
-(3, 2, 'Vinilo Plateado', 124, 1000, 1400),
-(4, 1, 'Pincel delgado', 50, 1200, 1300);
+(1, 1, 'Vinilo Aguamarina', 154, 1200, 1200),
+(2, 2, 'Vinilo Dorado', 110, 900, 1400),
+(3, 2, 'Vinilo Plateado', 123, 3243, 1400),
+(4, 1, 'Pincel delgado', -172, 23423, 1300);
 
 -- --------------------------------------------------------
 
@@ -1143,7 +1158,7 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
   PRIMARY KEY (`idDetalleMovimiento`),
   KEY `FK_tblDetalleVenta_idArticulo` (`idArticulo`),
   KEY `fk_tbldetallemovimiento_tblMovimiento1_idx` (`idMovimiento`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
 
 --
 -- Volcado de datos para la tabla `tbldetallemovimiento`
@@ -1155,7 +1170,12 @@ INSERT INTO `tbldetallemovimiento` (`idDetalleMovimiento`, `idArticulo`, `cantid
 (21, 3, 30, 3, 30000, 14, 1000),
 (22, 2, 9, 1, 18900, 15, 2100),
 (23, 1, 30, 1, 36000, 16, 1200),
-(24, 4, 30, 1, 36000, 17, 1200);
+(24, 4, 30, 1, 36000, 17, 1200),
+(26, 4, 12, 1, 18792, 20, 1566),
+(27, 4, 234, 1, 5480982, 21, 23423),
+(28, 1, 1, 1, 1200, 22, 1200),
+(29, 2, 10, 1, 9000, 23, 900),
+(30, 3, 1, 1, 3243, 24, 3243);
 
 -- --------------------------------------------------------
 
@@ -1275,7 +1295,7 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
   PRIMARY KEY (`idMovimiento`),
   KEY `fk_tblMovimiento_tblTipoMovimiento1_idx` (`idtipoMovimiento`),
   KEY `fk_tblMovimiento_tblusuario1_idx` (`documentoUsuario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
 -- Volcado de datos para la tabla `tblmovimiento`
@@ -1285,7 +1305,12 @@ INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento
 (14, '2015-05-18 14:14:07', 75000, 1, '1017225673', '123', 'Sebas', NULL),
 (15, '2015-05-18 14:26:23', 18900, 1, '1017225673', '256', 'Sebas', NULL),
 (16, '2015-05-18 14:44:49', 36000, 1, '1017225673', 'asdasd', 'asd', NULL),
-(17, '2015-05-27 12:52:18', 36000, 1, '1017225673', '234234', 'asdasd', NULL);
+(17, '2015-05-27 12:52:18', 36000, 1, '1017225673', '234234', 'asdasd', NULL),
+(20, '2015-06-01 17:02:26', 18792, 1, '1017225673', '1', 'tela', NULL),
+(21, '2015-06-01 17:21:48', 5480982, 3, '1017225673', '1', 'Categoria asdasd', '567576576'),
+(22, '2015-06-01 17:26:02', 1200, 3, '1017225673', '2', 'Sebas', '1017225673'),
+(23, '2015-06-01 17:30:38', 9000, 3, '1017225673', '3', 'Lorenzo', '12312312'),
+(24, '2015-06-01 17:32:47', 3243, 3, '1017225673', '4', 'vintage', '234234');
 
 -- --------------------------------------------------------
 
