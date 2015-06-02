@@ -1036,16 +1036,21 @@ var articulo = {
             }
         });
     },
-    listarArticulos: function () {        
+    listarArticulos: function (tipo) {        
+        var accion = null;
         var f = new Date();
         var fechaActual = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
         $('#tabCompras').find('#txtFechaCompra').append('Fecha: ' + fechaActual);
+        if (tipo==='Venta'){
+            accion='Venta';
+        }
         $.ajax({
             type: 'POST',
             url: 'ControllerArticulo',
             dataType: 'JSON',
             data: {
-                action: 'getOptionsArticulos'
+                action: 'getOptionsArticulos',
+                tipo: accion
             },
             success: function (data) {
                 $("#ddlArticulos").select2({

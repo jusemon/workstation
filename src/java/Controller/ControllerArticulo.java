@@ -99,7 +99,7 @@ public class ControllerArticulo extends HttpServlet {
                     case "Contador": {
                         daoModelArticulo = new ModelArticulo();
                         String resultado = daoModelArticulo.consultarContador();
-                        Map <String, String> salida = new LinkedHashMap<>();
+                        Map<String, String> salida = new LinkedHashMap<>();
                         salida.put("idArticulo", resultado);
                         String respuesta = new Gson().toJson(salida);
                         response.setContentType("application/json");
@@ -111,7 +111,8 @@ public class ControllerArticulo extends HttpServlet {
 
                     //<editor-fold defaultstate="collapsed" desc="Obtener las opciones de Articulos">
                     case "getOptionsArticulos": {
-                        String resultado = getOptionsArticulos();
+                        String tipo = request.getParameter("tipo");
+                        String resultado = getOptionsArticulos(tipo);
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(resultado);
@@ -218,12 +219,19 @@ public class ControllerArticulo extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private String getOptionsArticulos() {
+    private String getOptionsArticulos(String tipo) {
         ResultSet result;
         List<Map> salida = new ArrayList<>();
         Map<String, String> articulo;
         try {
-            result = daoModelArticulo.ListAll();
+            if (tipo != null) {
+                if (tipo == "Venta") {
+                    result = daoModelArticulo.ListOnlyExistencias();
+                }
+                result = daoModelArticulo.ListAll();
+            } else {
+                result = daoModelArticulo.ListAll();
+            }
             while (result.next()) {
                 articulo = new LinkedHashMap<>();
                 articulo.put("id", result.getString("idArticulo"));

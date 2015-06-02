@@ -56,8 +56,6 @@ function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
 
-articulo.listarArticulos();
-
 $('#tabListas').tab('show');
 
 $('#btnGestionCompras').on('click', function () {
@@ -67,6 +65,7 @@ $('#btnGestionCompras').on('click', function () {
     var actual = $('#contenidoDinamico').data('actual');
     if (actual == 'listas' || actual == 'venta') {
         compra.show('Registrar');
+        articulo.listarArticulos('Compras');
         $('#btnGestionVentas').data('target', '#tabMovimientos');
         $(this).data('target', '#tabMovimientos');
     } else {
@@ -84,6 +83,7 @@ $('#btnGestionVentas').on('click', function () {
     var actual = $('#contenidoDinamico').data('actual');
     if (actual == 'listas' || actual == 'compra') {
         venta.show('Registrar')
+        articulo.listarArticulos('Venta');
         $('#btnGestionCompras').data('target', '#tabMovimientos');
         $(this).data('target', '#tabMovimientos');        
     } else {
