@@ -971,7 +971,7 @@ var articulo = {
         $('#miPopupArticulo').find('#btnArticulo').val('Editar');
         $('#miPopupArticulo').modal('show');
     },
-    seleccionar: function (id) {
+    seleccionar: function (id, tipo) {
         var x = articulo.noExiste(id);
         if (x) {
             $.ajax({
@@ -983,11 +983,20 @@ var articulo = {
                     id: id
                 },
                 success: function (data) {
+                    /**
+                     * `idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`,
+                     * `cantidadDisponible`, `precioCompra`, `precioVenta`
+                     */
                     var fila = '<tr  data-id="' + data['idArticulo'] + '">';
                     fila += '<td>' + data['idArticulo'] + '</td>';
                     fila += '<td>' + data['descripcionArticulo'] + '</td>';
-                    fila += '<td>' + '<input type="number" id="cantidad" onblur="compra.actualizarTotal(\'cantidad\')" name="cantidad" min="1" required>' + '</td>';
-                    fila += '<td>' + '<input type="number" id="valor" onblur="compra.actualizarTotal(\'valor\')" name="valor" min="50" required>' + '</td>';
+                    if (tipo === 'Compra') {
+                        fila += '<td>' + '<input type="number" id="cantidad" onblur="compra.actualizarTotal(\'cantidad\')" name="cantidad" min="1" required>' + '</td>';
+                        fila += '<td>' + '<input type="number" id="valor" onblur="compra.actualizarTotal(\'valor\')" name="valor" min="50" required>' + '</td>';
+                    } else {
+                        fila += '<td>' + '<input type="number" id="cantidad" onblur="compra.actualizarTotal(\'cantidad\')" name="cantidad" min="1" max="' + data['cantidadDisponible'] + '" required>' + '</td>';
+                        fila += '<td>' + '<input type="number" id="valor" onblur="compra.actualizarTotal(\'valor\')" name="valor" min="50" value="' + data['precioVenta'] + '" required>' + '</td>';
+                    }
                     fila += '<td>' + '<button class="btn btn-danger glyphicon glyphicon-remove row-remove" onclick="articulo.remover(' + data['idArticulo'] + ')"></button>' + '</td>';
                     fila += '</tr>';
                     $('#tablaDetalleMovimiento tbody').append(fila);
@@ -1247,6 +1256,13 @@ var compra = {
         link.click();
     },
     show: function (tipo, datos) {
+        $("#ddlArticulos").off();
+        $("#ddlArticulos").on("select2:select", function (e) {
+            var id = e.params.data.id;
+            if (id != '-1') {
+                articulo.seleccionar(id, 'Compra');
+            }
+        });
         compra.limpiarDetalle();
         $('#contenidoDinamico').data('actual', 'compra');
         $('#tabMovimientos').find('#nombre').text('Nombre del Proveedor');
@@ -1393,7 +1409,15 @@ var venta = {
         link.href = window.URL = "ControllerVenta?action=Imprimir&id=" + idMovimiento;
         link.download = "Venta_" + idMovimiento + ".pdf";
         link.click();
-    }, show: function (tipo, datos) {
+    },
+    show: function (tipo, datos) {
+        $("#ddlArticulos").off();
+        $("#ddlArticulos").on("select2:select", function (e) {
+            var id = e.params.data.id;
+            if (id != '-1') {
+                articulo.seleccionar(id, 'Venta');
+            }
+        });
         venta.limpiarDetalle();
         $('#contenidoDinamico').data('actual', 'venta');
         $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');

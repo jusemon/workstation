@@ -93,15 +93,6 @@ $('#btnGestionVentas').on('click', function () {
     }
 });
 
-var $eventSelect = $("#ddlArticulos");
-
-$eventSelect.on("select2:select", function (e) {
-    var id = e.params.data.id;
-    if (id != '-1') {
-        articulo.seleccionar(id);
-    }
-});
-
 $(document).ready(function () {
     var fixHelperModified = function (e, tr) {
         var $originals = tr.children();
