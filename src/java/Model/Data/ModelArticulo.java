@@ -99,18 +99,20 @@ public class ModelArticulo extends ConnectionDB {
         return rs;
     }
 
-    public ResultSet consultarCodigoSiguiente() {
+    public String consultarContador() {
         ResultSet rs = null;
-        String sql = "call spContadorArticulos()";
+        String sql = "call spContadorArticulo()";
+        String salida = null;
         try {
-            getStmt();
             pStmt = connection.prepareCall(sql);
             rs = pStmt.executeQuery();
-
-        } catch (SQLException e) {
-            System.err.println("SQLException:" + e.getMessage());
+            while (rs.next()) {
+                salida = rs.getString("idArticulo");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        return rs;
+        return salida;
     }
 
     public ResultSet consultarPorID(int id) {
@@ -121,7 +123,7 @@ public class ModelArticulo extends ConnectionDB {
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, id);
             rs = pStmt.executeQuery();
-                    
+
         } catch (Exception e) {
             System.err.println("SQLException:" + e.getMessage());
         }

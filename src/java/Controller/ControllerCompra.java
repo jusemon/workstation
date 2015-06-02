@@ -10,19 +10,8 @@ import Model.DTO.ObjDetalleMovimiento;
 import Model.DTO.ObjUsuario;
 import Model.Data.ModelCompra;
 import com.google.gson.Gson;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.ResultSet;
@@ -32,8 +21,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -211,19 +198,21 @@ public class ControllerCompra extends HttpServlet {
                 case "Imprimir2": {
                     try {
                         int id = Integer.parseInt(request.getParameter("id"));
-                        String source = url + "/reports/newReport2.jrxml";
+                        String source = url + "/reports/newReport1.jrxml";
                         JasperPrint jasperPrint = null;
                         JasperReport jasperReport = null;
                         JasperDesign jasperDesign = null;
                         System.out.println(source);
                         String reportPath = request.getServletContext().
-                                getRealPath("reports") + "\\newReport.jrxml";
+                                getRealPath("reports") + "\\newReport1.jrxml";
                         jasperDesign = JRXmlLoader.load(reportPath);
                         jasperReport = JasperCompileManager.compileReport(jasperDesign);
                         jasperPrint = JasperFillManager.fillReport(jasperReport, reporte(id), daoModelCompra.getConnection());
                         JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
                     } catch (Exception ex) {
-                        Logger.getLogger(ControllerCompra.class.getName()).log(Level.SEVERE, null, ex);
+                        for (StackTraceElement ruta : ex.getStackTrace()) {
+                            System.err.println(ruta);
+                        }
                     }
                 }
                 break;
@@ -385,9 +374,4 @@ public class ControllerCompra extends HttpServlet {
         daoModelCompra.Signout();
         return lista;
     }
-
-    private void prinToPDF(String source, Map reporte, HttpServletResponse response) {
-
-    }
-
 }

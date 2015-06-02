@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-06-2015 a las 20:06:33
+-- Tiempo de generación: 02-06-2015 a las 20:38:08
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -218,7 +218,7 @@ BEGIN
         `nombreAuxiliar` as `nombreProveedor` 
     FROM `tblmovimiento` 
     WHERE `idtipoMovimiento` = 1
-AND `idMovimiento` = idCompra;
+    AND `idMovimiento` = idCompra;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCompras`()
@@ -325,6 +325,22 @@ BEGIN
     FROM `tbldetallemovimiento` detMov INNER JOIN tblarticulo art
     ON (detMov.`idArticulo`=art.`idArticulo`)
     WHERE `idMovimiento` = idCompra;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarDetallesVentaPorID`(IN idVenta int)
+BEGIN
+    SELECT 
+        `idDetalleMovimiento`, 
+        art.`idArticulo` as `idArticulo`, 
+        `descripcionArticulo`,
+        `cantidad`, 
+        `descuento`, 
+        `totalDetalleMovimiento`, 
+        `idMovimiento`, 
+        `precioArticulo` 
+    FROM `tbldetallemovimiento` detMov INNER JOIN tblarticulo art
+    ON (detMov.`idArticulo`=art.`idArticulo`)
+    WHERE `idMovimiento` = idVenta;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudiantePorID`(
@@ -489,14 +505,22 @@ BEGIN
     WHERE `emailUsuario` = `correo` and `password` = `pass`;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarVenta`(
-        in idMovimien int
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarVentaPorID`(
+    in idVenta int
 )
 BEGIN
-select v.idventa, m.idmovimiento 
-from tblventa v inner join tblmovimiento on v.idmovimiento = m.idmovimiento 
-where v.idmovimiento = idmovimien;
-	
+    SELECT  
+        `idMovimiento`, 
+        `fechaMovimiento` as fechaVenta, 
+        `totalMovimiento` as totalVenta, 
+        `idtipoMovimiento`, 
+        `documentoUsuario`, 
+        `numeroAuxiliar` as `numeroVenta`, 
+        `nombreAuxiliar` as `nombreCliente`, 
+        `documentoAuxiliar` as `documentoCliente`
+    FROM `tblmovimiento` 
+    WHERE `idtipoMovimiento` = 3
+    AND `idMovimiento` = idVenta;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarVentas`()

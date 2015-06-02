@@ -8,14 +8,31 @@ package Controller;
 import Model.DTO.ObjVenta;
 import Model.DTO.ObjDetalleMovimiento;
 import Model.DTO.ObjUsuario;
+import Model.Data.ModelCompra;
 import Model.Data.ModelVenta;
 import com.google.gson.Gson;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.sql.ResultSet;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.text.NumberFormat;
+import java.util.Locale;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -96,6 +113,101 @@ public class ControllerVenta extends HttpServlet {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getContador());
+                    break;
+                }
+                case "Imprimir": {
+                    response.setContentType("application/pdf");
+                    try {
+                        Locale loc = Locale.getDefault();
+                        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(loc);
+                        //Primero obtengo el id del Movimiento
+                        int id = Integer.parseInt(request.getParameter("id"));
+                        //Obtengo el reporte a manera de Map
+                        Map material = reporte(id);
+                        //Topo ese reporte y lo divido, primero en la compra y luego el detalle
+                        Map<String, String> venta = (Map) material.get("Venta");
+                        List<Map> detalle = (List) material.get("Detalle");
+                        //Creo el documento y obtengo el canal de comunicacion con el servidor, para luego enviar el documento.
+                        Document document = new Document();
+                        OutputStream os = response.getOutputStream();
+                        //Creo una instancia a partir del documento y del canal
+                        PdfWriter.getInstance(document, os);
+                        //Abro el documento
+                        document.open();
+                        Image logo = Image.getInstance(url + "/public/images/logo.png");
+                        logo.scaleAbsolute(new Rectangle(logo.getPlainWidth() / 4, logo.getPlainHeight() / 4));
+                        document.add(logo);
+                        //Creo una fuente para la letra en negrilla
+                        final Font helveticaBold = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+                        //Escribo y agrego un primer parrafo con los datos basicos de la compra         
+                        Paragraph headerDerecha = new Paragraph();
+                        headerDerecha.add(new Chunk("Numero de la Venta: ", helveticaBold));
+                        headerDerecha.add(new Chunk(venta.get("numeroVenta") + "\n"));
+                        headerDerecha.add(new Chunk("Nombre del Cliente: ", helveticaBold));
+                        headerDerecha.add(new Chunk(venta.get("nombreCliente") + "\n"));
+                        headerDerecha.add(new Chunk("Documento del Cliente: ", helveticaBold));
+                        headerDerecha.add(new Chunk(venta.get("documentoCliente") + "\n"));
+                        headerDerecha.add(new Chunk("Fecha Venta: ", helveticaBold));
+                        headerDerecha.add(new Chunk(venta.get("fechaVenta") + "\n"));
+                        //Escribo y agrego un segundo parrafo con los datos basicos de Stelarte  
+                        Paragraph headerIzquierda = new Paragraph();
+                        headerIzquierda.add(new Chunk("Stelarte.Decoracion \n", helveticaBold));
+                        headerIzquierda.add(new Chunk("Direccion: ", helveticaBold));
+                        headerIzquierda.add(new Chunk("Calle Falsa 123 # 12a34\n"));
+                        headerIzquierda.add(new Chunk("Telefono: ", helveticaBold));
+                        headerIzquierda.add(new Chunk("2583697 \n"));
+                        //Agrego los dos anteriores parrafos al Header
+                        PdfPTable header = new PdfPTable(2);
+                        header.getDefaultCell().setBorder(0);
+                        header.addCell(headerIzquierda);
+                        header.addCell(headerDerecha);
+                        header.setWidthPercentage(100f);
+                        header.setSpacingAfter(20);
+                        document.add(header);
+                        //Creo la tabla del detalle
+                        PdfPTable tablaDetalle = new PdfPTable(new float[]{1, 3, 2, 2});
+                        tablaDetalle.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+                        //Creo el titulo, le quito el borde, le digo que ocupara cuatro columnas y que serà centrado
+                        PdfPCell tituloCell = new PdfPCell(new Phrase("Detalle de Venta", helveticaBold));
+                        tituloCell.setBorder(0);
+                        tituloCell.setColspan(4);
+                        tituloCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        tablaDetalle.addCell(tituloCell);
+                        //Aqui creo cada cabecera
+                        tablaDetalle.getDefaultCell().setBackgroundColor(BaseColor.LIGHT_GRAY);
+                        tablaDetalle.addCell(new Phrase("ID", helveticaBold));
+                        tablaDetalle.addCell(new Phrase("Nombre", helveticaBold));
+                        tablaDetalle.addCell(new Phrase("Cantidad", helveticaBold));
+                        tablaDetalle.addCell(new Phrase("Valor", helveticaBold));
+                        tablaDetalle.getDefaultCell().setBackgroundColor(null);
+                        //Aqui agrego la tabla cada articulo.
+                        for (Map<String, String> next : detalle) {
+                            tablaDetalle.addCell(next.get("idArticulo"));
+                            tablaDetalle.addCell(next.get("descripcionArticulo"));
+                            tablaDetalle.addCell(next.get("cantidad"));
+                            tablaDetalle.addCell(currencyFormatter.format(Integer.parseInt(next.get("precioArticulo"))));
+                        }
+                        //Creo el Footer
+                        headerIzquierda = new Paragraph();
+                        headerIzquierda.add(new Chunk("Total: ", helveticaBold));
+                        headerIzquierda.add(new Chunk(currencyFormatter.format(Integer.parseInt(venta.get("totalVenta")))));
+                        PdfPCell footerCell = new PdfPCell(headerIzquierda);
+                        footerCell.setBorder(0);
+                        footerCell.setColspan(4);
+                        footerCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                        tablaDetalle.addCell(footerCell);
+                        //Establesco el tamaño  y posicion de la tabla, luego la agrego al documento
+                        tablaDetalle.setWidthPercentage(100f);
+                        tablaDetalle.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                        document.add(tablaDetalle);
+                        //Cierro el documento y lo envio con flush.
+                        document.close();
+                        response.setHeader("Content-Disposition", "attachment;filename=\"reporte.pdf\"");
+                        os.flush();
+                        os.close();
+                    } catch (DocumentException de) {
+                        throw new IOException(de.getMessage());
+                    }
                     break;
                 }
             }
@@ -232,6 +344,43 @@ public class ControllerVenta extends HttpServlet {
         respuesta.put("numero", numero);
         String salida = new Gson().toJson(respuesta);
         return salida;
+    }
+
+    private Map reporte(int id) {
+        Map<String, Object> lista = new LinkedHashMap<>();
+        List<Map> lista2 = new ArrayList<>();
+        Map<String, String> resultado = null;
+        daoModelVenta = new ModelVenta();
+        try {
+            ResultSet[] result = daoModelVenta.ConsultarVenta(id);
+            while (result[0].next()) {
+                resultado = new LinkedHashMap<>();
+                resultado.put("idMovimiento", result[0].getString("idMovimiento"));
+                resultado.put("fechaVenta", result[0].getString("fechaVenta"));
+                resultado.put("totalVenta", result[0].getString("totalVenta"));
+                resultado.put("documentoUsuario", result[0].getString("documentoUsuario"));
+                resultado.put("numeroVenta", result[0].getString("numeroVenta"));
+                resultado.put("nombreCliente", result[0].getString("nombreCliente"));
+                resultado.put("documentoCliente", result[0].getString("documentoCliente"));
+                lista.put("Venta", resultado);
+            }
+            while (result[1].next()) {
+                resultado = new LinkedHashMap<>();
+                resultado.put("idDetalleMovimiento", result[1].getString("idDetalleMovimiento"));
+                resultado.put("idArticulo", result[1].getString("idArticulo"));
+                resultado.put("descripcionArticulo", result[1].getString("descripcionArticulo"));
+                resultado.put("cantidad", result[1].getString("cantidad"));
+                resultado.put("descuento", result[1].getString("descuento"));
+                resultado.put("totalDetalleMovimiento", result[1].getString("totalDetalleMovimiento"));
+                resultado.put("idMovimiento", result[1].getString("idMovimiento"));
+                resultado.put("precioArticulo", result[1].getString("precioArticulo"));
+                lista2.add(resultado);
+            }
+            lista.put("Detalle", lista2);
+        } catch (Exception e) {
+        }
+        daoModelVenta.Signout();
+        return lista;
     }
 
 }

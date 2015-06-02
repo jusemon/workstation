@@ -953,7 +953,7 @@ var articulo = {
         $('#miPopupArticulo').find('#txtPrecioCompra').attr('readOnly', false);
         $('#miPopupArticulo').find('#txtPrecioVenta');
         $('#miPopupArticulo').find('#txtCantidadArticulo').attr('readOnly', false);
-        $('#miPopupArticulo').find('#txtCodigo').val(data).attr('readOnly', true);
+        articulo.contador();
         $('#miPopupArticulo').modal('show');
     },
     editar: function (tr) {
@@ -1057,7 +1057,19 @@ var articulo = {
     },
     actualizarTabla: function () {
         tablaArticulo.ajax.reload();
-    }
+    },
+    contador: function () {
+        $.ajax({
+            url: "ControllerArticulo",
+            type: 'POST',
+            data: {
+                action: 'Contador'
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#miPopupArticulo').find('#txtIdArticulo').text('Codigo: '+data['idArticulo']);
+            }
+        });
+    },
 };
 
 var empresa = {
