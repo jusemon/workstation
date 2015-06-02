@@ -51,8 +51,8 @@ public class ControllerVenta extends HttpServlet {
             switch (action) {
                 case "Registrar": {
                     String documentoUsuario = (request.getParameter("documentoUsuario"));
-                    String documentoCliente = (request.getParameter("txtDocumentoCliente"));
-                    String nombreUsuario = (request.getParameter("txtNombre"));
+                    String documentoCliente = (request.getParameter("documentoCliente"));
+                    String nombreCliente = (request.getParameter("txtNombreCliente"));
                     int idVenta = Integer.parseInt(request.getParameter("txtNumeroVenta"));
                     int lenght = Integer.parseInt(request.getParameter("size"));
                     int totalCompra = Integer.parseInt(request.getParameter("txtTotalVenta"));
@@ -69,7 +69,7 @@ public class ControllerVenta extends HttpServlet {
                     _objUsuario.setDocumentoUsuario(documentoUsuario);
                     _objVenta.setIdVenta(idVenta);
                     _objVenta.setDocumentoCliente(documentoCliente);
-                    _objVenta.setNombreCliente(nombreUsuario);
+                    _objVenta.setNombreCliente(nombreCliente);
                     _objVenta.setTotalVenta(totalCompra);
                     daoModelVenta = new ModelVenta();
                     String salida = Mensaje(daoModelVenta.Add(_objVenta, _objUsuario, listOjbDetalleMovimientos), "La venta ha sido registrada", "Ha ocurrido un error");
@@ -109,18 +109,22 @@ public class ControllerVenta extends HttpServlet {
             daoModelVenta = new ModelVenta();
             result = daoModelVenta.ListAll();
             while (result.next()) {
-                String[] arreglo = new String[5];
-                arreglo[0] = result.getString("documentoCliente").trim();
-                arreglo[1] = result.getString("nombreCliente").trim();
-                arreglo[2] = result.getString("fechaVenta").trim();
-                arreglo[3] = result.getString("totalVenta").trim();
-                arreglo[4] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"venta.consultar(" + result.getString("idMovimiento") + ")\">"
+                String[] arreglo = new String[6];
+                arreglo[0] = result.getString("numeroVenta").trim();
+                arreglo[2] = result.getString("documentoCliente").trim();
+                arreglo[3] = result.getString("nombreCliente").trim();
+                arreglo[1] = result.getString("fechaVenta").trim();
+                arreglo[4] = result.getString("totalVenta").trim();
+                arreglo[5] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"venta.consultar(" + result.getString("idMovimiento") + ")\">"
                         + "<span class=\"glyphicon glyphicon-search\"></span></a>";
                 lista.add(arreglo);
             }
             daoModelVenta.Signout();
         } catch (Exception e) {
-            System.err.println("Ha Ocurrido un error en el controller compra " + e.toString());
+            System.err.println("Ha Ocurrido un error en el controller venta " + e.toString());
+            for (StackTraceElement strings : e.getStackTrace()) {
+                System.out.println(strings);
+            }
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";

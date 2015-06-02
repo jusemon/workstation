@@ -175,22 +175,13 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                     <tr>
                                         <th class="text-center">Número Venta</th>
                                         <th class="text-center">Fecha</th>
-                                        <th class="text-center">Cod Cliente</th>
+                                        <th class="text-center">Cedula Cliente</th>
                                         <th class="text-center">Nombre Cliente</th>
                                         <th class="text-center">Total </th>                                
                                         <th class="text-center">Consultar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">0001</td>
-                                        <td class="text-center">21/11/2014</td>
-                                        <td class="text-center">0001</td>
-                                        <td class="text-center">Manolo</td>
-                                        <td class="text-center">56000</td>
-                                        <td class="text-center"><a class="btn-sm btn-primary btn-block " data-toggle="modal" data-target="#miPopupDetalleVenta" href="javascript:void(0)"> <span class="glyphicon glyphicon-search"></span></a>
-                                        </td>  
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
