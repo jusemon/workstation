@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Controller.Validaciones.Validador;
 import Model.DTO.ObjUsuario;
 import Model.Data.ModelUsuario;
 import com.google.gson.Gson;
@@ -47,7 +48,19 @@ public class ControllerUsuario extends HttpServlet {
             switch (action) {
                 case "Registrar": {
                     try {
-                        String tipoDocumento = request.getParameter("ddlIdentificacion").trim();
+                        String tipoDocumento = null;
+                        if (Validador.validarNumero(request.getParameter("ddlIdentificacion").trim())) {
+                            System.out.println("ddl true");
+                            
+                        } else {
+                            System.out.println("ddl false");
+                        }
+                        if (Validador.validarTipoDocumento(request.getParameter("txtIdentificacion").trim())) {
+                            System.out.println("txtIdentificacion true");
+                        } else {
+                            System.out.println("txtIdentificacion false");
+                        }
+                        tipoDocumento = request.getParameter("ddlIdentificacion").trim();
                         long numeroIdentificacion = Long.parseLong(request.getParameter("txtIdentificacion").trim());
                         String identificacion = tipoDocumento + numeroIdentificacion;
                         String nombre = request.getParameter("txtNombre").trim();
@@ -67,12 +80,13 @@ public class ControllerUsuario extends HttpServlet {
                         _objUsuario.setIdrol(rol);
                         response.setContentType("application/json");
                         daoModelUsuario = new ModelUsuario();
-                        String salida = Mensaje(daoModelUsuario.Add(_objUsuario), nombre+" ha sido registrado existosamente", "A ocurrido un error al intentar registrar al estudiante");
+                        String salida = Mensaje(daoModelUsuario.Add(_objUsuario), nombre + " ha sido registrado existosamente", "A ocurrido un error al intentar registrar al estudiante");
                         response.getWriter().write(salida);
                     } catch (NumberFormatException | IOException | ParseException e) {
                         response.setContentType("application/json");
                         String salida = Mensaje(false, "", "A ocurrido un error" + e.getMessage());
-                        response.getWriter().write(salida);                    }
+                        response.getWriter().write(salida);
+                    }
                     break;
                 }
                 case "Consultar": {
@@ -98,7 +112,8 @@ public class ControllerUsuario extends HttpServlet {
                     } catch (SQLException | IOException e) {
                         response.setContentType("application/json");
                         String salida = Mensaje(false, "", "A ocurrido un error" + e.getMessage());
-                        response.getWriter().write(salida);                      }
+                        response.getWriter().write(salida);
+                    }
                     break;
                 }
                 case "Editar": {
