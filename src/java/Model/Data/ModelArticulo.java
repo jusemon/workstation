@@ -130,4 +130,18 @@ public class ModelArticulo extends ConnectionDB {
         return rs;
     }
 
+    public ResultSet ListOnlyExistencias() {
+        ResultSet rs = null;
+        String sql = "call spListarArticulosConExistencias()";
+        try {
+            getStmt();
+            rs = stmt.executeQuery(sql);
+
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+
+        return rs;
+    }
+
 }

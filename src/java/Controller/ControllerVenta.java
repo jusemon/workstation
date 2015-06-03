@@ -8,7 +8,6 @@ package Controller;
 import Model.DTO.ObjVenta;
 import Model.DTO.ObjDetalleMovimiento;
 import Model.DTO.ObjUsuario;
-import Model.Data.ModelCompra;
 import Model.Data.ModelVenta;
 import com.google.gson.Gson;
 import com.itextpdf.text.BaseColor;
