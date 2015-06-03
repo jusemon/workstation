@@ -1458,6 +1458,7 @@ var venta = {
             $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + datos.Venta.fechaVenta);
             $('#tabMovimientos').find('#txtNombre').val(datos.Venta.nombreCliente).attr('readOnly', true);
             $('#tabMovimientos').find('#txtNumero').val(datos.Venta.numeroVenta).attr('readOnly', true);
+            $('#tabMovimientos').find('#txtDocumentoCliente').val(datos.Venta.documentoCliente).attr('readOnly', true);
             $('#tabMovimientos').find('#txtTotalMovimiento').val(datos.Venta.totalVenta);
             $('#tabMovimientos').find('#ddlArticulos').attr('disabled', true).parents('.row:first').hide();
             $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide();
