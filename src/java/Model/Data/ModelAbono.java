@@ -64,7 +64,7 @@ public class ModelAbono extends ConnectionDB {
         }
         return objReturn;
     }
-    public ResultSet buscarPorCredito(int idCredito) {
+    public ResultSet buscarByCredito(int idCredito) {
         ResultSet rs = null;
         String sql = "call spConsultarAbonoByCredito(?)";
         try {

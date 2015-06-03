@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-06-2015 a las 17:43:34
+-- Tiempo de generación: 03-06-2015 a las 22:52:19
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -64,8 +64,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCredito`(
     in estadoCredi	int
 )
 BEGIN
-	UPDATE tblcredito SET
-             `saldoActual`=`saldoActu`,`estadoCredito`=`estadoCredi`
+	UPDATE tblCredito SET
+             `saldoActual`=`saldoActu`
         WHERE `idCredito`=`idCredi`;
 END$$
 
@@ -110,14 +110,13 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstadoCredito`(
-    in idCredi          int,
-    in idCategoriaCredi int,
+    in idCredi          int,    
     in estadoCredi      int
 )
 BEGIN
-	UPDATE tblCredito SET 
-            estadoCredito = estadoCredi 
-        WHERE idCredito = idCredi and idCategoriaCredito = idCategoriaCredi;
+	UPDATE tblCredito 
+        SET estadoCredito = estadoCredi 
+        WHERE idCredito = idCredi;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstadoCurso`(
@@ -245,22 +244,22 @@ BEGIN
 	
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByTipoCredito1`(
-    in idCredi int
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByDocumento`(
+    in documentoUsuar varchar(20)
 )
 BEGIN
-    select c.idCredito, c.idCategoriaCredito, c.documentoUsuario, c.fechaInicio, c.saldoInicial, c.saldoActual, c.estadoCredito
-    FROM tblCredito c INNER JOIN tblCategoriaCredito cc ON (c.idCategoriaCredito=cc.idCategoriaCredito) 
-    WHERE idCredito=idCredi AND idCategoriaCredito=1;
+    select c.idCredito, c.documentoUsuario, c.fechaInicio, c.saldoInicial, c.saldoActual, c.estadoCredito
+    FROM tblCredito inner join usuario u on c.documentoUsuario = u.documentoUsuario
+    WHERE c.documentoUsuar = documentoUsuar;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByTipoCredito2`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByID`(
     in idCredi int
 )
 BEGIN
-    select c.idCredito, c.idCategoriaCredito, c.documentoUsuario, c.fechaInicio, c.saldoInicial, c.saldoActual, c.estadoCredito
-    FROM tblCredito c INNER JOIN tblCategoriaCredito cc ON (c.idCategoriaCredito=cc.idCategoriaCredito) 
-    WHERE idCredito=idCredi AND idCategoriaCredito=2;
+    select idCredito, documentoUsuario, fechaInicio, saldoInicial, saldoActual, estadoCredito
+    FROM tblCredito 
+    WHERE idCredito=idCredi;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursoPorID`(id int)
@@ -309,6 +308,15 @@ BEGIN
         cc.`nombreCategoriaCurso` as `nombreCategoriaCurso`
     FROM `tblcurso` c INNER JOIN tblcategoriacurso cc ON (c.`idCategoriaCurso`=cc.`idCategoriaCurso`) 
     WHERE `nombreCategoriaCurso`!='Seminario' and `estadoCurso`=1;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarDetalleCreditoByIdCredito`(
+    in idCredi int
+)
+BEGIN
+    select d.idDetalleCredito, d.idCredito, d.idMovimiento, d.fechaDetalle
+    FROM tblDetalleCredito d inner join tblCredito c on d.idCredito = c.idCredito
+    WHERE d.idCredito = idCredi;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarDetallesCompraPorID`(IN idCompra int)
@@ -644,8 +652,8 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCredito`(
-    in idCredi      int,
-    in idClien      int,
+    in idCredi              int,
+    in documentoUsuar       varchar(20),
     in fechaInic    datetime,
     in saldoInici   double,
     in saldoActu    double,
@@ -653,12 +661,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCredito`(
  )
 BEGIN
 	declare msg varchar(40);    
-	if (exists(select idCliente from tblCredito where idCliente=idClien and saldoActual>0)) then
-		set msg="Este cliente ya tiene un credito activo.";
+	if (exists(select documentoUsuario from tblCredito where documentoUsuario=documentoUsuar)) then
+		set msg="Este usuario ya tiene un credito activo.";
 		select msg as Respuesta;
        	else
-		insert into tblCredito (idCliente,fechaInicio,saldoInicial,saldoActual,estadoCredito) 
-                Values(idClien,fechaInic,saldoInic,saldoActu,estadoCredi);
+		insert into tblCredito (documentoUsuario,fechaInicio,saldoInicial,saldoActual,estadoCredito) 
+                Values(documentoUsuar,fechaInic,saldoInic,saldoActu,estadoCredi);
 		set msg="El credito ha sido registrado correctamente.";
 		select msg as Respuesta; 
 	end if;
@@ -719,6 +727,18 @@ BEGIN
         `precioArticu`
     );
     UPDATE `tblarticulo` SET `cantidadDisponible`=`cantidadDisponible` + `cantid`,`precioCompra`= `precioArticu` WHERE `idArticulo` = `idArticu`;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleCredito`(
+    in idDetalleCredi      int,
+    in idCredi      int,
+    in idMovimien    int,
+    in fechaDetal   datetime
+ )
+BEGIN
+	insert into tblDetalleCredito (idCredito,idMovimiento,fechaDetalle) 
+        Values(idCredi,idMovimien,fechaDetal);
+
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleVenta`(
@@ -966,8 +986,8 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarAbonos`()
-select * from tblAbono a inner join tblCredito c on(a.idCredito=c.idCredito) 
-order by (a.idCredito,a.fechaPago)$$
+select a.idAbono, a.idCredito, a.valorAbono, a.fechaPago from tblAbono a inner join tblCredito c on(a.idCredito = c.idCredito) 
+order by (a.idCredito, a.fechaPago)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarArticulos`()
 BEGIN
@@ -982,8 +1002,12 @@ SELECT * FROM tblarticulo INNER JOIN tblcategoriaarticulo ON tblarticulo.idCateg
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarCreditos`()
-select c.idCredito, c.idCategoriaCredito, c.documentoUsuario, c.fechaInicio, c.saldoInicial, c.saldoActual, c.estadoCredito 
+select c.idCredito, c.documentoUsuario, c.fechaInicio, c.saldoInicial, c.saldoActual, c.estadoCredito 
 from tblCredito c inner join tblUsuario u on(c.documentoUsuario=u.documentoUsuario)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarDetalleCreditos`()
+select d.idDetalleCredito, d.idCredito, d.idMovimiento, d.fechaDetalle
+from tblDetalleCredito d inner join tblCredito c on(d.idCredito = c.idCredito)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarEmpresas`()
 BEGIN
@@ -1170,6 +1194,7 @@ CREATE TABLE IF NOT EXISTS `tbldetallecredito` (
   `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT,
   `idCredito` int(11) NOT NULL,
   `idMovimiento` int(11) NOT NULL,
+  `fechaDetalle` date DEFAULT NULL,
   PRIMARY KEY (`idDetalleCredito`),
   KEY `idMovimiento` (`idMovimiento`),
   KEY `idCredito` (`idCredito`)
@@ -1507,8 +1532,8 @@ ALTER TABLE `tblcurso`
 -- Filtros para la tabla `tbldetallecredito`
 --
 ALTER TABLE `tbldetallecredito`
-  ADD CONSTRAINT `tbldetallecredito_ibfk_2` FOREIGN KEY (`idCredito`) REFERENCES `tblcredito` (`idCredito`),
-  ADD CONSTRAINT `tbldetallecredito_ibfk_1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`);
+  ADD CONSTRAINT `tbldetallecredito_ibfk_1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`),
+  ADD CONSTRAINT `tbldetallecredito_ibfk_2` FOREIGN KEY (`idCredito`) REFERENCES `tblcredito` (`idCredito`);
 
 --
 -- Filtros para la tabla `tbldetallemovimiento`

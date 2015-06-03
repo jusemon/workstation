@@ -76,7 +76,7 @@ public class ControllerAbono extends HttpServlet {
                     id = Integer.parseInt(aux.trim());
                     try {
                         respuesta = new LinkedHashMap<>();
-                        result = daoModelAbono.buscarPorCredito(id);
+                        result = daoModelAbono.buscarByCredito(id);
                         while (result.next()) {
                             respuesta.put("idAbono", result.getString("idAbono"));
                             respuesta.put("idCredito", result.getString("idCredito"));
