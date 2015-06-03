@@ -51,6 +51,7 @@ public class ControllerUsuario extends HttpServlet {
                         String tipoDocumento = null;
                         if (Validador.validarNumero(request.getParameter("ddlIdentificacion").trim())) {
                             System.out.println("ddl true");
+                            
                         } else {
                             System.out.println("ddl false");
                         }

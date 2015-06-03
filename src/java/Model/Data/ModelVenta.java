@@ -40,7 +40,7 @@ public class ModelVenta extends ConnectionDB {
             pStmt.setString(3, _objUsuario.getDocumentoUsuario());
             pStmt.setString(4, _objVenta.getNombreCliente());
             pStmt.setString(5, _objVenta.getDocumentoCliente());
-            
+
             int updadeCount = pStmt.executeUpdate();
             if (updadeCount > 0) {
                 objReturn = true;
@@ -67,6 +67,7 @@ public class ModelVenta extends ConnectionDB {
                 connection.rollback();
             } catch (Exception e) {
                 System.out.println(sqlE.getMessage());
+                return false;
             }
         }
         return objReturn;

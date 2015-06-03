@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Controller.Validaciones.Validador;
 import Model.DTO.ObjVenta;
 import Model.DTO.ObjDetalleMovimiento;
 import Model.DTO.ObjUsuario;
@@ -36,6 +37,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
+import org.apache.tomcat.jdbc.pool.Validator;
 
 /**
  *
@@ -67,8 +69,17 @@ public class ControllerVenta extends HttpServlet {
             switch (action) {
                 case "Registrar": {
                     String documentoUsuario = (request.getParameter("documentoUsuario"));
-                    String documentoCliente = (request.getParameter("documentoCliente"));
-                    String nombreCliente = (request.getParameter("txtNombreCliente"));
+                    String documentoCliente = null;
+                    String nombreCliente = null;
+                    if (Validador.validarNumero(request.getParameter("documentoCliente"))&Validador.validarNombre(request.getParameter("txtNombreCliente"))) {
+                        documentoCliente = (request.getParameter("documentoCliente"));
+                        nombreCliente = (request.getParameter("txtNombreCliente"));
+                    } else {
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write(Mensaje(false, null, "Lo sentimos, ha ingresado datos incorrectos"));
+                        break;
+                    }                    
                     int idVenta = Integer.parseInt(request.getParameter("txtNumeroVenta"));
                     int lenght = Integer.parseInt(request.getParameter("size"));
                     int totalCompra = Integer.parseInt(request.getParameter("txtTotalVenta"));
