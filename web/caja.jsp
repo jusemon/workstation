@@ -65,7 +65,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                     -->
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a id="btnGestionVentas" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas">
+                            <a id="btnGestionCredito" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas">
                                 Gestión de Créditos
                             </a>
                         </h4>

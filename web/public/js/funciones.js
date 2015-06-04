@@ -63,14 +63,16 @@ $('#btnGestionCompras').on('click', function () {
     habilitar('#formMovimiento');
     limpiar('#formMovimiento');
     var actual = $('#contenidoDinamico').data('actual');
-    if (actual == 'listas' || actual == 'venta') {
+    if (actual == 'listas' || actual == 'venta' || actual == 'credito') {
         compra.show('Registrar');
         articulo.listarArticulos('Compras');
         $('#btnGestionVentas').data('target', '#tabMovimientos');
+        $('#btnGestionCredito').data('target', '#tabMovimientos');
         $(this).data('target', '#tabMovimientos');
     } else {
         $('#contenidoDinamico').data('actual', 'listas');
         $('#btnGestionVentas').data('target', '#tabListas');
+        $('#btnGestionCredito').data('target', '#tabListas');
         $(this).data('target', '#tabListas');
     }
 
@@ -81,16 +83,38 @@ $('#btnGestionVentas').on('click', function () {
     habilitar('#formMovimiento');
     limpiar('#formMovimiento');
     var actual = $('#contenidoDinamico').data('actual');
-    if (actual == 'listas' || actual == 'compra') {
+    if (actual == 'listas' || actual == 'compra' || actual == 'credito') {
         venta.show('Registrar')
         articulo.listarArticulos('Venta');
         $('#btnGestionCompras').data('target', '#tabMovimientos');
-        $(this).data('target', '#tabMovimientos');        
+        $('#btnGestionCredito').data('target', '#tabMovimientos');
+        $(this).data('target', '#tabMovimientos');
     } else {
         $('#contenidoDinamico').data('actual', 'listas');
+        $('#btnGestionCredito').data('target', '#tabListas');
         $('#btnGestionCompras').data('target', '#tabListas');
         $(this).data('target', '#tabListas');
     }
+});
+
+$('#btnGestionCredito').on('click', function () {
+    $('#tabMovimientos').find('#btnMovimiento').show();
+    habilitar('#formMovimiento');
+    limpiar('#formMovimiento');
+    var actual = $('#contenidoDinamico').data('actual');
+    if (actual == 'listas' || actual == 'venta' || actual == 'compra') {
+        credito.show('Registrar');
+        articulo.listarArticulos('Venta');
+        $('#btnGestionVentas').data('target', '#tabMovimientos');
+        $('#btnGestionCompras').data('target', '#tabMovimientos');
+        $(this).data('target', '#tabMovimientos');
+    } else {
+        $('#contenidoDinamico').data('actual', 'listas');
+        $('#btnGestionVentas').data('target', '#tabListas');
+        $('#btnGestionCompras').data('target', '#tabMovimientos');
+        $(this).data('target', '#tabListas');
+    }
+
 });
 
 $(document).ready(function () {

@@ -4,7 +4,6 @@ package Model.DTO;
 /**
  * @author David
  * @version 1.0
- * @created 08-may.-2015 12:13:14 a. m.
  */
 public class ObjCredito {
     

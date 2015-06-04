@@ -929,7 +929,7 @@ var articulo = {
                         $('#miPopupArticulo').modal('hide');
                         mensaje(data);
                         articulo.actualizarTabla();
-                        $("#ddlArticulos").select2('destroy'); 
+                        $("#ddlArticulos").select2('destroy');
                         articulo.listarArticulos();
                     } else if (accion == 'ConsultarCodigo') {
                         articulo.registrar(data);
@@ -1036,13 +1036,13 @@ var articulo = {
             }
         });
     },
-    listarArticulos: function (tipo) {        
+    listarArticulos: function (tipo) {
         var accion = null;
         var f = new Date();
         var fechaActual = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
         $('#tabCompras').find('#txtFechaCompra').append('Fecha: ' + fechaActual);
-        if (tipo==='Venta'){
-            accion='Venta';
+        if (tipo === 'Venta') {
+            accion = 'Venta';
         }
         $.ajax({
             type: 'POST',
@@ -1073,7 +1073,7 @@ var articulo = {
                 action: 'Contador'
             },
             success: function (data, textStatus, jqXHR) {
-                $('#miPopupArticulo').find('#txtIdArticulo').text('Codigo: '+data['idArticulo']);
+                $('#miPopupArticulo').find('#txtIdArticulo').text('Codigo: ' + data['idArticulo']);
             }
         });
     },
@@ -1478,6 +1478,51 @@ var venta = {
     limpiarDetalle: function () {
         $('#tablaDetalleMovimiento tbody tr').each(function () {
             $(this).remove();
+        });
+    }
+};
+
+var credito = {
+    show: function (tipo, datos) {
+        $("#ddlArticulos").off();
+        $("#ddlArticulos").on("select2:select", function (e) {
+            var id = e.params.data.id;
+            if (id != '-1') {
+                articulo.seleccionar(id, 'Venta');
+            }
+        });
+        credito.limpiarDetalle();
+        $('#contenidoDinamico').data('actual', 'credito');
+        $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
+        $('#tabMovimientos').find('#numero').text('Numero del Credito');
+        $('#tabMovimientos').find('#total').text('Total Credito');
+        if (tipo === 'Registrar') {
+            $('#tabMovimientos').find('#titulo').text('Registrar Credito');
+            $('#tabMovimientos').find('#txtNumero').attr('readOnly', true);
+            $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + fecha());
+            $('#tabMovimientos').find('#btnArticulo').hide();
+            $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'credito.registrarCredito()').val('Registrar Credito');
+            $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
+            $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide;
+            credito.contador();
+        }
+
+    },
+    limpiarDetalle: function () {
+        $('#tablaDetalleMovimiento tbody tr').each(function () {
+            $(this).remove();
+        });
+    },
+    contador: function () {
+        $.ajax({
+            url: "ControllerCredito",
+            type: 'POST',
+            data: {
+                action: 'Contador'
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#tabMovimientos').find('#txtNumero').val(data['numero']);
+            }
         });
     }
 };
