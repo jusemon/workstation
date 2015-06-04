@@ -229,56 +229,71 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-5">
                                             <div class="form-group">
                                                 <label for="txtIdentificacion">
-                                                    Estudiante:
+                                                    Documento:
                                                 </label>
-                                                <label id="txtIdentificacion"></label>
-                                                <div id="nombres">
-                                                    <label for="nombres">
-                                                        Nombres:
-                                                    </label>
-                                                    <label id="txtNombre"></label>
-                                                    <label id="txtApellido"></label>
-                                                </div>
-                                                <input type="hidden" name="txtIdentificacion" id="idEstudiante"/>
+                                                <label id="txtIdentificacion"></label>                                                                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="form-group">
+                                                <label for="nombres">
+                                                    Nombre:
+                                                </label>
+                                                <label id="txtNombre"></label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-5">
                                             <div class="form-group">
-                                                <label for="idCursoFicha">
-                                                    Ficha:
+                                                <label for="idCursoMatricula">
+                                                    Curso:
                                                 </label>
-                                                <select name="idCursoFicha" id="idCursoFicha" class="form-control" onchange="estudiante.myAjax('Seleccion', $('#idCursoFicha').val())" required>
+                                                <select name="idCursoMatricula" id="idCursoMatricula" class="form-control" onchange="curso.seleccion($('#idCursoMatricula').val())" required>
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-7">
                                             <div class="form-group">
-                                                <label for="dateInicioFicha">
-                                                    Fecha de Inicio:
+                                                <label for="txtPrecioCurso">
+                                                    Precio del Curso:
                                                 </label>
-                                                <label id="dateInicioFicha"></label>
-                                                <input type="hidden" name="dateInicio" id="dateInicio"/>
+                                                <label id="txtPrecioCurso">
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="dateFinFicha">
-                                                    Fecha Fin: 
+                                                <label for="txtClases">
+                                                    Clases:
                                                 </label>
-                                                <label id="dateFinFicha"></label>
-                                                <input type="hidden" name="dateFinal" id="dateFinal"/>
+                                                <input type="text" name="txtClases" id="txtClases" class="form-control"/>
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtPrecioClases">
+                                                    Precio por Clase:
+                                                </label>
+                                                <label id="txtPrecioClases">
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="txtHoraClase">
+                                                    Horas por Clase:
+                                                </label>
+                                                <label id="txtHoraClase">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>                                    
                                 </div>
                                 <div class="panel-footer">
                                     <div class="col-md-offset-3 col-md-6">
