@@ -613,7 +613,7 @@ var estudiante = {
                 url: $(form).attr('action'),
                 data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
                 success: function (data) {
-                    if (accion == 'Consultar') {
+                    if (accion === 'Consultar') {
                         if (tipo == 'Editar') {
                             estudiante.editar(data);
 
@@ -628,7 +628,7 @@ var estudiante = {
                         } else
                             estudiante.consultar(data);
                     }
-                    else if (accion == 'Registrar' || accion == 'Editar' || accion == 'Estado') {
+                    else if (accion === 'Registrar' || accion === 'Editar' || accion === 'Estado') {
                         if (accion != 'Estado') {
                             $('#miPopupEstudiante').modal('hide');
                         }
@@ -637,6 +637,8 @@ var estudiante = {
                     }
                     else if (accion === 'getOptionsFichas') {
                         clase.cargarOpciones(data);
+                    } else if (accion==='Formalizar Inscripción') {
+                        mensaje(data);
                     }
                 }
             });
@@ -678,6 +680,7 @@ var estudiante = {
         $('#miPopupEstudiante').find('#txtTelefono').val(data['telefonoFijo']);
         $('#miPopupEstudiante').find('#txtCelular').val(data['telefonoMovil']);
         $('#miPopupEstudiante').find('#txtCorreo').val(data['emailUsuario']);
+        $('#miPopupEstudiante').find('#txtPass').val(data['password']);
         $('#miPopupEstudiante').find('#radioGeneroFemenino').parents('.row:first').show();
         if (data['generoUsuario'] == 0)
             $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', true).parents('.row:first').show();
@@ -704,7 +707,12 @@ var estudiante = {
         estudiante.consultar(data);
         $('#miPopupEstudiante').find('#titulo').empty();
         $('#miPopupEstudiante').find('#titulo').append('Formalizar Inscripcion');
-        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Formalizar Inscripcion').attr('disabled', false);
+        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Formalizar Inscripción').attr('disabled', false);
+        $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', false);
+        $('#miPopupEstudiante').find('#radioGeneroMasculino').prop('checked', false);
+        $('#miPopupEstudiante').find('#radioNoBeneficiario').prop('checked', false);
+        $('#miPopupEstudiante').find('#radioSiBeneficiario').prop('checked', false);
+        habilitar("#form_estudiante");
         $('#miPopupEstudiante').modal('show');
     },
     registrar: function () {

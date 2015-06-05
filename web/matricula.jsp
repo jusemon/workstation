@@ -88,7 +88,7 @@
                                 <th class="text-center">Fecha Preinscripción</th>
                                 <th class="text-center">Email Cliente</th>
                                 <th class="text-center">Consultar</th>
-                                <th class="text-center">Inscribit</th>
+                                <th class="text-center">Inscribir</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -447,7 +447,7 @@
                                                 <label for="radioGenero">
                                                     Género: 
                                                 </label>
-                                                <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroFemenino" class="radio-inline" value="0">Femenino</label>
+                                                <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroFemenino" class="radio-inline" value="0" required="true">Femenino</label>
                                                 <label class="radio-inline"><input type="radio" name="radioGenero" id="radioGeneroMasculino" class="radio-inline" value="1">Masculino</label>
                                             </div>
                                         </div>
@@ -456,7 +456,7 @@
                                                 <label for="radioBeneficiario">
                                                     Beneficiario: 
                                                 </label>
-                                                <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioSiBeneficiario" class="radio-inline" value="1">Si</label>
+                                                <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioSiBeneficiario" class="radio-inline" value="1" required="true">Si</label>
                                                 <label class="radio-inline"><input type="radio" name="radioBeneficiario" id="radioNoBeneficiario" class="radio-inline" value="0">No</label>
                                             </div>
                                         </div>                                       
