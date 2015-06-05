@@ -1348,6 +1348,7 @@ var compra = {
             $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'compra.efectuarCompra()').val('Efectuar Compra');
             $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
             $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
+            $('#tabMovimientos').find('#ddlIdentificacion').attr('disabled', true).parents('.row:first').hide();
         } else if (tipo === 'Consultar') {
             $('#tabMovimientos').find('#titulo').text('Consultar Compra');
             $('#btnGestionCompras').data('target', '#tabMovimientos').tab('show');
@@ -1503,6 +1504,7 @@ var venta = {
             $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'venta.efectuarVenta()').val('Efectuar Venta');
             $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
             $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
+            $('#tabMovimientos').find('#ddlIdentificacion').attr('disabled', true).parents('.row:first').hide();
             venta.contador();
         } else if (tipo === 'Consultar') {
             $('#tabMovimientos').find('#titulo').text('Consultar Venta');
@@ -1546,16 +1548,22 @@ var credito = {
         credito.limpiarDetalle();
         $('#contenidoDinamico').data('actual', 'credito');
         $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
-        $('#tabMovimientos').find('#numero').text('Numero del Credito');
-        $('#tabMovimientos').find('#total').text('Total Credito');
-        if (tipo === 'Registrar') {
-            $('#tabMovimientos').find('#titulo').text('Registrar Credito');
+        $('#tabMovimientos').find('#numero').text('Número del Credito');
+        $('#tabMovimientos').find('#total').text('Total Crédito');
+        
+        if (tipo === 'Registrar') {          
+            
             $('#tabMovimientos').find('#txtNumero').attr('readOnly', true);
+            $('#tabMovimientos').find('#titulo').text('Registrar Crédito');            
+
             $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + fecha());
             $('#tabMovimientos').find('#btnArticulo').hide();
+            $('#tabMovimientos').find('#txtDocumentoCliente').attr('disabled', true).parents('.row:first').hide();
             $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'credito.registrarCredito()').val('Registrar Credito');
             $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
-            $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide;
+            $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide();
+            $('#tabMovimientos').find('#ddlIdentificacion').attr('disabled', false).parents('.row:first').show();
+            
             credito.contador();
         }
 
@@ -1591,6 +1599,6 @@ articulo.cargar();
 //matricula.cargar();
 empresa.cargar();
 usuario.cargar();
-//credito.cargar()
+credito.cargar();
 categoriaArticulo.cargarOpciones();
 preinscrito.cargar();

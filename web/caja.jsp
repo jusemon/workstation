@@ -224,6 +224,35 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-12" for="identificacion">
+                                                        Identificación
+                                                    </label>
+                                                    <div class="col-md-3" id="identificacion">
+                                                        <div class="form-group">
+                                                            <label for="ddlIdentificacion">
+                                                                Tipo
+                                                            </label>
+                                                            <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control" required>
+                                                                <option value="">Seleccionar...</option>
+                                                                <option value="CC" > Cédula </option>
+                                                                <option value="CE" > Cédula Extranjería </option>
+                                                                <option value="TI" > Tarjeta de Identidad </option>
+                                                                <option value="RC" > Registro Civil </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="form-group">
+                                                            <label for="txtIdentificacion">
+                                                                Número
+                                                            </label>
+                                                            <input name="txtIdentificacion" id="txtIdentificacion" type="text" pattern="[0-9]{5,15}"  title="Solo se permiten numeros y no deben ser menos de 5 o mas de 15" class="form-control" placeholder="Ejm: 1017225673" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label id="nombre" for="txtNombre">

@@ -77,14 +77,40 @@ public class ControllerCredito extends HttpServlet {
                 }
                 // </editor-fold>
 
-                // <editor-fold defaultstate="collapsed" desc="Listar las Empresas">
+                // <editor-fold defaultstate="collapsed" desc="Listar los créditos">
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableCredito());
                     break;
-                }
+                }                
                 // </editor-fold>
+                // <editor-fold defaultstate="collapsed" desc="Cambiar el estado de un crédito">
+                case "Estado": {
+                    aux = request.getParameter("idCredito");
+                    id = Integer.parseInt(aux);
+                    tipo = request.getParameter("type");
+                    salida = cambiarEstado(id);
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(salida);
+                    break;
+                }
+                //</editor-fold>
+                // <editor-fold defaultstate="collapsed" desc="Consultar un crédito">
+                case "Consultar": {
+                    aux = request.getParameter("id");
+                    id = Integer.parseInt(aux.trim());
+                    if (request.getParameter("type") != null) {
+                        tipo = request.getParameter("type");
+                    }
+                    salida = consultar(id);
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(salida);
+                    break;
+                }
+                //</editor-fold>
             }        
         }
     }
@@ -134,15 +160,12 @@ public class ControllerCredito extends HttpServlet {
             result= daoModelCredito.buscarCreditoByID(id);
             
             while (result.next()) {
-                respuesta.put("idCredito", result.getString("idCurso"));
-                respuesta.put("nombreCurso", result.getString("nombreCurso"));
-                respuesta.put("cantidadClases", result.getString("cantidadClases"));
-                respuesta.put("horasPorClase", result.getString("horasPorClase"));
-                respuesta.put("estadoCurso", result.getString("estadoCurso"));
-                respuesta.put("precioCurso", result.getString("precioCurso"));
-                respuesta.put("descripcionCurso", result.getString("descripcionCurso"));
-                respuesta.put("idCategoriaCurso", result.getString("idCategoriaCurso"));
-                respuesta.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
+                respuesta.put("idCredito", result.getString("idCredito"));
+                respuesta.put("documentoUsuario", result.getString("documentoUsuario"));
+                respuesta.put("fechaInicio", result.getString("fechaInicio"));
+                respuesta.put("saldoInicial", result.getString("saldoInicial"));
+                respuesta.put("saldoActual", result.getString("saldoActual"));
+                respuesta.put("estadoCredito", result.getString("estadoCredito"));
             }
 
         } catch (Exception e) {
@@ -172,6 +195,8 @@ public class ControllerCredito extends HttpServlet {
                 arreglo[4] = result.getString("saldoActual").trim();
                 arreglo[5] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"credito.myAjax('Estado'," + arreglo[0] + ", '','Credito')\">"
                         + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
+                arreglo[6] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"credito.myAjax('Consultar'," + arreglo[0] + ", '', 'Credito')\">"
+                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
                 lista.add(arreglo);
             }
         } catch (Exception e) {
