@@ -117,6 +117,26 @@ $('#btnGestionCredito').on('click', function () {
 
 });
 
+$('#btnGestionCredito').on('click', function () {
+    $('#tabMovimientos').find('#btnMovimiento').show();
+    habilitar('#formMovimiento');
+    limpiar('#formMovimiento');
+    var actual = $('#contenidoDinamico').data('actual');
+    if (actual == 'listas' || actual == 'venta' || actual == 'compra') {
+        credito.show('Registrar');
+        articulo.listarArticulos('Venta');
+        $('#btnGestionVentas').data('target', '#tabMovimientos');
+        $('#btnGestionCompras').data('target', '#tabMovimientos');
+        $(this).data('target', '#tabMovimientos');
+    } else {
+        $('#contenidoDinamico').data('actual', 'listas');
+        $('#btnGestionVentas').data('target', '#tabListas');
+        $('#btnGestionCompras').data('target', '#tabMovimientos');
+        $(this).data('target', '#tabListas');
+    }
+
+});
+
 $(document).ready(function () {
     var fixHelperModified = function (e, tr) {
         var $originals = tr.children();
