@@ -72,19 +72,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!--tr>
-                                <td class="text-center">0001</td>
-                                <td class="text-center">1017225673</td>
-                                <td class="text-center">Oleo</td>
-                                <td class="text-center">11/01/2015</td>
-                                <td class="text-center">11/04/2015</td>
-                                <td class="text-center"><a class="btn-sm btn-success btn-block " href="javascript:void(0)"  onclick="add("Estado")>
-                                                           <span class="glyphicon glyphicon-ok"></span></a>
-                                </td>
-                                <td class="text-center"><a class="btn-sm btn-primary btn-block " href="javascript:void(0)"  onclick="add("Estado")>
-                                                           <span class="glyphicon glyphicon-pencil"></span></a>
-                                </td>
-                            </tr-->
                         </tbody>
                     </table>
                 </div>
@@ -231,18 +218,24 @@
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="form-group">
-                                                <label for="txtIdentificacion">
-                                                    Documento:
+                                                <label for="txtTipo">
+                                                    Tipo de Documento:
                                                 </label>
-                                                <label id="txtIdentificacion"></label>                                                                                                
+                                                <text id="txtTipo"></text>
+                                                <br>
+                                                <label for="txtIdentificacion">
+                                                    Número:
+                                                </label>
+                                                <text id="txtIdentificacion"></text>
+                                                <input type="hidden" name="txtDocumento" id="txtDocumento"/>
                                             </div>
                                         </div>
                                         <div class="col-md-7">
                                             <div class="form-group">
-                                                <label for="nombres">
+                                                <label for="txtNombre">
                                                     Nombre:
                                                 </label>
-                                                <label id="txtNombre"></label>
+                                                <text id="txtNombre"></text>
                                             </div>
                                         </div>
                                     </div>
@@ -252,7 +245,7 @@
                                                 <label for="idCursoMatricula">
                                                     Curso:
                                                 </label>
-                                                <select name="idCursoMatricula" id="idCursoMatricula" class="form-control" onchange="curso.seleccion($('#idCursoMatricula').val())" required>
+                                                <select name="idCursoMatricula" id="idCursoMatricula" class="form-control" onchange="curso.seleccionar($('#idCursoMatricula').val())" required>
                                                 </select>
                                             </div>
                                         </div>
@@ -261,13 +254,13 @@
                                                 <label for="txtPrecioCurso">
                                                     Precio del Curso:
                                                 </label>
-                                                <label id="txtPrecioCurso">
-                                                </label>
+                                                <text id="txtPrecioCurso">
+                                                </text>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-2">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="txtClases">
                                                     Clases:
@@ -275,22 +268,22 @@
                                                 <input type="text" name="txtClases" id="txtClases" class="form-control"/>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="txtPrecioClases">
-                                                    Precio por Clase:
+                                                    Precio por Clase: 
                                                 </label>
-                                                <label id="txtPrecioClases">
-                                                </label>
+                                                <text id="txtPrecioClases">
+                                                </text>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="txtHoraClase">
-                                                    Horas por Clase:
+                                                    Horas por Clase: 
                                                 </label>
-                                                <label id="txtHoraClase">
-                                                </label>
+                                                <text id="txtHoraClase">
+                                                </text>
                                             </div>
                                         </div>
                                     </div>                                    
@@ -298,7 +291,7 @@
                                 <div class="panel-footer">
                                     <div class="col-md-offset-3 col-md-6">
                                         <div class="form-group">
-                                            <input  class="btn btn-default btn-block" type="submit" name="action" value="Matricular">
+                                            <input  class="btn btn-default btn-block" type="button" name="action" value="Matricular" onclick="matricula.registrar()">
                                         </div>
                                     </div>
                                 </div>

@@ -49,7 +49,7 @@ public class ControllerCurso extends HttpServlet {
             int estado = 0, cantidadClases, categoria, id, horasPorClase, precio;
             switch (request.getParameter("action")) {
 
-                // <editor-fold defaultstate="collapsed" desc="Registrar un Curso">
+                // <editor-fold defaultstate="collapsed" desc="Registrar un Curso o Seminario">
                 case "Registrar": {
                     daoModelCurso.getConnection();
                     tipo = request.getParameter("tipo");
@@ -81,7 +81,7 @@ public class ControllerCurso extends HttpServlet {
                 }
                 //</editor-fold>
 
-                // <editor-fold defaultstate="collapsed" desc="Consultar un Curso">
+                // <editor-fold defaultstate="collapsed" desc="Consultar un Curso o Seminario">
                 case "Consultar": {
                     aux = request.getParameter("id");
                     id = Integer.parseInt(aux.trim());
@@ -447,7 +447,7 @@ public class ControllerCurso extends HttpServlet {
             }
 
         } catch (Exception e) {
-            OptionsCursos = "Ha Ocurrido un error 2" + e.getMessage();
+            OptionsCursos = "Ha Ocurrido un error" + e.getMessage();
         } finally {
             daoModelCurso.Signout();
         }
