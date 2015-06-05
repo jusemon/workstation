@@ -39,6 +39,9 @@
                 <li>
                     <a href="#matriculas" role="tab" data-toggle="tab">Listado de Matriculas</a>
                 </li>
+                <li>
+                    <a href="#preinscritos" role="tab" data-toggle="tab">Listado de Preinscritos</a>
+                </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="estudiantes">
@@ -69,6 +72,23 @@
                                 <th class="text-center">Fecha Fin</th>
                                 <th class="text-center">Estado</th>
                                 <th class="text-center">Editar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="preinscritos">
+                    <table id="tblPreinscritos" class="table table-responsive table-hover" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Documento</th>
+                                <th class="text-center">Cliente</th>
+                                <th class="text-center">Curso</th>
+                                <th class="text-center">Fecha Preinscripción</th>
+                                <th class="text-center">Email Cliente</th>
+                                <th class="text-center">Consultar</th>
+                                <th class="text-center">Inscribit</th>
                             </tr>
                         </thead>
                         <tbody>

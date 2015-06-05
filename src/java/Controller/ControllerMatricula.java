@@ -115,23 +115,21 @@ public class ControllerMatricula extends HttpServlet {
     private String getTableMatriculas() {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
-        int contador = 0;
         String[] arreglo;
         try {
             daoModelMatricula = new ModelMatricula();
-            result = daoModelMatricula.ListAll();
+            result = daoModelMatricula.ListMatriculados();
             while (result.next()) {
                 arreglo = new String[7];
-                arreglo[0] = result.getString("nitEmpresa").trim();
-                arreglo[1] = result.getString("nombreEmpresa").trim();
-                arreglo[2] = result.getString("direccionEmpresa").trim();
-                arreglo[3] = result.getString("nombreContacto").trim();
-                arreglo[4] = result.getString("telefonoContacto").trim();
-                arreglo[5] = result.getString("emailContacto").trim();
-                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"empresa.editar(" + contador + ")\">"
+                arreglo[0] = result.getString("").trim();
+                arreglo[1] = result.getString("").trim();
+                arreglo[2] = result.getString("").trim();
+                arreglo[3] = result.getString("").trim();
+                arreglo[4] = result.getString("").trim();
+                arreglo[5] = result.getString("").trim();
+                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"matricula.consultar(" + result.getString("").trim() + ")\">"
                         + "<span class=\"glyphicon glyphicon-pencil\"></span></a>";
                 lista.add(arreglo);
-                contador++;
             }
         } catch (Exception e) {
             System.err.println("Ha ocurrido un error." + e.getMessage());

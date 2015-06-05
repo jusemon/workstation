@@ -12,7 +12,7 @@ $('.fecha').datepicker({
     orientation: "top left"
 });
 
-var tablaCurso, tablaCategoriaCurso, tablaClases, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso;
+var tablaCurso, tablaCategoriaCurso, tablaClases, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso, tablaPreinscritos;
 
 var curso = {
     myAjax: function (accion, id, aux, typo) {
@@ -203,7 +203,7 @@ var curso = {
                             + '<label id="horas">' + data[i]['horasPorClase'] + '</label>'
                             + '</div>'
                             + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.preinscripcion(' + data[i]['idCurso'] + ',\'Curso\')">Preinscribirse</a>'
+                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.preinscripcion(' + data[i]['idCurso'] + ',this)">Preinscribirse</a>'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -619,6 +619,12 @@ var estudiante = {
 
                         } else if (tipo == 'Matricular') {
                             estudiante.matricular(data);
+                        } else if (tipo == 'Preinscrito') {
+                            if (aux === 'Inscribir') {
+                                estudiante.preinscribir(data);
+                            } else
+                                estudiante.consultarPreinscrito(data);
+
                         } else
                             estudiante.consultar(data);
                     }
@@ -668,14 +674,15 @@ var estudiante = {
         $('#miPopupEstudiante').find('#txtNombre').val(data['nombreUsuario']);
         $('#miPopupEstudiante').find('#txtApellido').val(data['apellidoUsuario']);
         $('#miPopupEstudiante').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
-        $('#miPopupEstudiante').find('#txtDireccion').val(data['direccionUsuario']);
+        $('#miPopupEstudiante').find('#txtDireccion').val(data['direccionUsuario']).parents('.row:first').show();
         $('#miPopupEstudiante').find('#txtTelefono').val(data['telefonoFijo']);
         $('#miPopupEstudiante').find('#txtCelular').val(data['telefonoMovil']);
         $('#miPopupEstudiante').find('#txtCorreo').val(data['emailUsuario']);
+        $('#miPopupEstudiante').find('#radioGeneroFemenino').parents('.row:first').show();
         if (data['generoUsuario'] == 0)
-            $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', true);
+            $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', true).parents('.row:first').show();
         else
-            $('#miPopupEstudiante').find('#radioGeneroMasculino').prop('checked', true)
+            $('#miPopupEstudiante').find('#radioGeneroMasculino').prop('checked', true);
 
         if (data['estadoBeneficiario'] == 0)
             $('#miPopupEstudiante').find('#radioNoBeneficiario').prop('checked', true);
@@ -684,6 +691,20 @@ var estudiante = {
 
         $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'hidden').attr('disabled', true);
         desabilitar('#form_estudiante');
+        $('#miPopupEstudiante').modal('show');
+    },
+    consultarPreinscrito: function (data) {
+        limpiar("#form_estudiante");
+        estudiante.consultar(data);
+        $('#miPopupEstudiante').find('#txtDireccion').parents('.row:first').hide();
+        $('#miPopupEstudiante').find('#radioGeneroFemenino').parents('.row:first').hide();
+    },
+    preinscribir: function (data) {
+        limpiar("#form_estudiante");
+        estudiante.consultar(data);
+        $('#miPopupEstudiante').find('#titulo').empty();
+        $('#miPopupEstudiante').find('#titulo').append('Formalizar Inscripcion');
+        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Formalizar Inscripcion').attr('disabled', false);
         $('#miPopupEstudiante').modal('show');
     },
     registrar: function () {
@@ -717,6 +738,25 @@ var estudiante = {
     },
     actualizarTabla: function () {
         tablaEstudiante.ajax.reload();
+    }
+};
+
+var preinscrito = {
+    cargar: function () {
+        tablaPreinscritos = $('#tblPreinscritos').DataTable({
+            "ajax": {
+                "url": "ControllerEstudiante",
+                "type": "POST",
+                "data": {
+                    action: 'EnlistarPreinscritos'
+                }
+            }, "language": {
+                "url": "public/js/locales/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaPreinscritos.ajax.reload();
     }
 };
 
@@ -758,7 +798,6 @@ var usuario = {
         limpiar("#formPreinscripcion");
         $('#miPopupPreinscripcion').find('#titulo').empty();
         $('#miPopupPreinscripcion').find('#titulo').append('Preinscribir al ' + data['tipo']);
-        ;
         $('#miPopupPreinscripcion').find('#dateFinFicha').empty();
         $('#miPopupPreinscripcion').modal('show');
     },
@@ -828,13 +867,13 @@ var usuario = {
 };
 
 var matricula = {
-    registrar: function (){
+    registrar: function () {
         $.ajax({
             url: "ControllerMatricula",
-            type: 'POST',            
-            data: $('#formMatricula').serialize()+'&action=Registrar',
+            type: 'POST',
+            data: $('#formMatricula').serialize() + '&action=Registrar',
             success: function (data, textStatus, jqXHR) {
-                 $('#miPopupMatricula').modal('hide');
+                $('#miPopupMatricula').modal('hide');
                 mensaje(data);
             }
         });
@@ -1089,7 +1128,7 @@ var articulo = {
                 $('#miPopupArticulo').find('#txtIdArticulo').text('Codigo: ' + data['idArticulo']);
             }
         });
-    },
+    }
 };
 
 var empresa = {
@@ -1554,3 +1593,4 @@ empresa.cargar();
 usuario.cargar();
 //credito.cargar()
 categoriaArticulo.cargarOpciones();
+preinscrito.cargar();
