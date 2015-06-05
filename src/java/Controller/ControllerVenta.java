@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
+import org.apache.tomcat.jdbc.pool.Validator;
 
 /**
  *
@@ -59,16 +60,19 @@ public class ControllerVenta extends HttpServlet {
                     String documentoUsuario = (request.getParameter("documentoUsuario"));
                     String documentoCliente = null;
                     String nombreCliente = null;
-                    if (Validador.validarNumero(request.getParameter("documentoCliente"))&Validador.validarNombre(request.getParameter("txtNombreCliente"))) {
+                    int numeroVenta = 0;
+                    if (Validador.validarNumero(request.getParameter("documentoCliente")) & Validador.validarNombre(request.getParameter("txtNombreCliente"))
+                            & Validador.validarNumero(request.getParameter("txtNumeroVenta"))) {
                         documentoCliente = (request.getParameter("documentoCliente"));
                         nombreCliente = (request.getParameter("txtNombreCliente"));
+                        numeroVenta = Integer.parseInt(request.getParameter("txtNumeroVenta"));
                     } else {
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(Mensaje(false, null, "Lo sentimos, ha ingresado datos incorrectos"));
                         break;
-                    }                    
-                    int idVenta = Integer.parseInt(request.getParameter("txtNumeroVenta"));
+                    }
+
                     int lenght = Integer.parseInt(request.getParameter("size"));
                     int totalCompra = Integer.parseInt(request.getParameter("txtTotalVenta"));
                     listOjbDetalleMovimientos = new ArrayList<>();

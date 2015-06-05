@@ -613,7 +613,7 @@ var estudiante = {
                 url: $(form).attr('action'),
                 data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
                 success: function (data) {
-                    if (accion == 'Consultar') {
+                    if (accion === 'Consultar') {
                         if (tipo == 'Editar') {
                             estudiante.editar(data);
 
@@ -628,7 +628,7 @@ var estudiante = {
                         } else
                             estudiante.consultar(data);
                     }
-                    else if (accion == 'Registrar' || accion == 'Editar' || accion == 'Estado') {
+                    else if (accion === 'Registrar' || accion === 'Editar' || accion === 'Estado') {
                         if (accion != 'Estado') {
                             $('#miPopupEstudiante').modal('hide');
                         }
@@ -637,6 +637,8 @@ var estudiante = {
                     }
                     else if (accion === 'getOptionsFichas') {
                         clase.cargarOpciones(data);
+                    } else if (accion==='Formalizar Inscripción') {
+                        mensaje(data);
                     }
                 }
             });
@@ -678,6 +680,7 @@ var estudiante = {
         $('#miPopupEstudiante').find('#txtTelefono').val(data['telefonoFijo']);
         $('#miPopupEstudiante').find('#txtCelular').val(data['telefonoMovil']);
         $('#miPopupEstudiante').find('#txtCorreo').val(data['emailUsuario']);
+        $('#miPopupEstudiante').find('#txtPass').val(data['password']);
         $('#miPopupEstudiante').find('#radioGeneroFemenino').parents('.row:first').show();
         if (data['generoUsuario'] == 0)
             $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', true).parents('.row:first').show();
@@ -704,7 +707,12 @@ var estudiante = {
         estudiante.consultar(data);
         $('#miPopupEstudiante').find('#titulo').empty();
         $('#miPopupEstudiante').find('#titulo').append('Formalizar Inscripcion');
-        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Formalizar Inscripcion').attr('disabled', false);
+        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Formalizar Inscripción').attr('disabled', false);
+        $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', false);
+        $('#miPopupEstudiante').find('#radioGeneroMasculino').prop('checked', false);
+        $('#miPopupEstudiante').find('#radioNoBeneficiario').prop('checked', false);
+        $('#miPopupEstudiante').find('#radioSiBeneficiario').prop('checked', false);
+        habilitar("#form_estudiante");
         $('#miPopupEstudiante').modal('show');
     },
     registrar: function () {
@@ -1348,7 +1356,6 @@ var compra = {
             $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'compra.efectuarCompra()').val('Efectuar Compra');
             $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
             $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
-            $('#tabMovimientos').find('#ddlIdentificacion').attr('disabled', true).parents('.row:first').hide();
         } else if (tipo === 'Consultar') {
             $('#tabMovimientos').find('#titulo').text('Consultar Compra');
             $('#btnGestionCompras').data('target', '#tabMovimientos').tab('show');
@@ -1504,7 +1511,6 @@ var venta = {
             $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'venta.efectuarVenta()').val('Efectuar Venta');
             $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
             $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
-            $('#tabMovimientos').find('#ddlIdentificacion').attr('disabled', true).parents('.row:first').hide();
             venta.contador();
         } else if (tipo === 'Consultar') {
             $('#tabMovimientos').find('#titulo').text('Consultar Venta');
@@ -1548,22 +1554,16 @@ var credito = {
         credito.limpiarDetalle();
         $('#contenidoDinamico').data('actual', 'credito');
         $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
-        $('#tabMovimientos').find('#numero').text('Número del Credito');
-        $('#tabMovimientos').find('#total').text('Total Crédito');
-        
-        if (tipo === 'Registrar') {          
-            
+        $('#tabMovimientos').find('#numero').text('Numero del Credito');
+        $('#tabMovimientos').find('#total').text('Total Credito');
+        if (tipo === 'Registrar') {
+            $('#tabMovimientos').find('#titulo').text('Registrar Credito');
             $('#tabMovimientos').find('#txtNumero').attr('readOnly', true);
-            $('#tabMovimientos').find('#titulo').text('Registrar Crédito');            
-
             $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + fecha());
             $('#tabMovimientos').find('#btnArticulo').hide();
-            $('#tabMovimientos').find('#txtDocumentoCliente').attr('disabled', true).parents('.row:first').hide();
             $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'credito.registrarCredito()').val('Registrar Credito');
             $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
-            $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide();
-            $('#tabMovimientos').find('#ddlIdentificacion').attr('disabled', false).parents('.row:first').show();
-            
+            $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide;
             credito.contador();
         }
 
@@ -1599,6 +1599,6 @@ articulo.cargar();
 //matricula.cargar();
 empresa.cargar();
 usuario.cargar();
-credito.cargar();
+//credito.cargar()
 categoriaArticulo.cargarOpciones();
 preinscrito.cargar();

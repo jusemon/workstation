@@ -56,6 +56,7 @@ public class ControllerEstudiante extends HttpServlet {
         String action = request.getParameter("action");
         if (action != null) {
             switch (action) {
+                //<editor-fold desc="Registrar un Estudiante" defaultstate="collapsed">
                 case "Registrar": {
                     try {
                         String tipoDocumento = request.getParameter("ddlIdentificacion").trim();
@@ -94,6 +95,7 @@ public class ControllerEstudiante extends HttpServlet {
                         response.setContentType("application/json");
                         daoModelEstudiante = new ModelEstudiante();
                         String salida = Mensaje(daoModelEstudiante.Add(_objUsuario, _objDetalleUsuario), "El estudiante ha sido registrado", "A ocurrido un error al intentar registrar al estudiante");
+                        daoModelEstudiante.Signout();
                         response.getWriter().write(salida);
                     } catch (NumberFormatException | IOException e) {
                         System.out.println("Ha ocurrido un error en el Controller Estudiante" + e.getMessage());
@@ -104,6 +106,8 @@ public class ControllerEstudiante extends HttpServlet {
                     }
                     break;
                 }
+                //</editor-fold>
+
                 case "Consultar": {
                     String id = request.getParameter("id");
                     String tipo = request.getParameter("tipo");
@@ -149,7 +153,9 @@ public class ControllerEstudiante extends HttpServlet {
                         _objUsuario.setEstadoUsuario(estado);
                         _objUsuario.setPassword(pass);
                         response.setContentType("application/json");
+                        daoModelEstudiante = new ModelEstudiante();
                         String salida = Mensaje(daoModelEstudiante.Edit(_objUsuario, _objDetalleUsuario), "El estudiante ha sido actualizado", "A ocurrido un error al intentar actualizar al estudiante");
+                        daoModelEstudiante.Signout();
                         response.getWriter().write(salida);
 
                     } catch (NumberFormatException | IOException e) {
@@ -171,7 +177,11 @@ public class ControllerEstudiante extends HttpServlet {
                     response.getWriter().write(getTablePreinscritos());
                     break;
                 }
-
+                case "Formalizar Inscripción": {
+                    response.setContentType("application/json");
+                    response.getWriter().write(Mensaje(true, "Se ha formalizado la Inscripcion", null));
+                    break;
+                }
             }
         }
     }
@@ -180,6 +190,7 @@ public class ControllerEstudiante extends HttpServlet {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
         try {
+            daoModelEstudiante.getConnection();
             result = daoModelEstudiante.ListAll();
             String[] arreglo;
             while (result.next()) {
@@ -200,6 +211,7 @@ public class ControllerEstudiante extends HttpServlet {
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error enlistando" + e.getMessage());
         } finally {
+            daoModelEstudiante.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
@@ -210,6 +222,7 @@ public class ControllerEstudiante extends HttpServlet {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
         try {
+            daoModelEstudiante.getConnection();
             result = daoModelEstudiante.ListPreinscritos();
             String[] arreglo;
             while (result.next()) {
@@ -229,6 +242,7 @@ public class ControllerEstudiante extends HttpServlet {
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error enlistando" + e.getMessage());
         } finally {
+            daoModelEstudiante.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
@@ -291,6 +305,7 @@ public class ControllerEstudiante extends HttpServlet {
     private String Consultar(String id, String tipo) {
         ResultSet result = null;
         respuesta = new LinkedHashMap<>();
+        daoModelEstudiante.getConnection();
         if (tipo != null) {
             if (tipo.equals("Preinscrito")) {
                 result = daoModelEstudiante.buscarPreinscritoPorID(id);
@@ -325,9 +340,11 @@ public class ControllerEstudiante extends HttpServlet {
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
+        } finally {
+            daoModelEstudiante.Signout();
         }
         String salida = new Gson().toJson(respuesta);
-        return  salida;
+        return salida;
     }
 
 }
