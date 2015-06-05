@@ -52,13 +52,12 @@ public class ControllerCredito extends HttpServlet {
             
             switch (request.getParameter("action")){
                 
-                // <editor-fold defaultstate="collapsed" desc="Registrar un crédito">
+                
                 case "Registrar": {
                                                
                     daoModelCredito = new ModelCredito();
                     
-                    int idCategoriaCredito = Integer.parseInt(request.getParameter("ddlCategoriaCredito").trim());
-                    _ObjCredito.setIdCategoriaCredito(idCategoriaCredito);
+                    // <editor-fold defaultstate="collapsed" desc="Ingresar un crédito nuevo">
                     String documentoUsuario = request.getParameter("txtDocumentoUsuario").trim();
                     _ObjCredito.setDocumentoUsuario(documentoUsuario);
                     String fechaInicio = request.getParameter("txtFechaInicio").trim();
@@ -76,7 +75,7 @@ public class ControllerCredito extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
-                
+                // </editor-fold>
 
                 // <editor-fold defaultstate="collapsed" desc="Listar las Empresas">
                 case "Enlistar": {
@@ -90,18 +89,14 @@ public class ControllerCredito extends HttpServlet {
         }
     }
     
-    public String cambiarEstado(int idCredito, int idCategoriaCredito) {
+    public String cambiarEstado(int idCredito) {
         ResultSet result;
         int estadoCredito = 0;
         try {
             daoModelCredito = new ModelCredito();
-            if (idCategoriaCredito != 1){
-                result = daoModelCredito.buscarTipoCredito1(idCredito);
-            } else if (idCategoriaCredito == 2) {
-                result = daoModelCredito.buscarTipoCredito2(idCredito);
-            } else {
-                result = daoModelCredito.buscarTipoCredito1(idCredito);
-            }
+            
+            result = result = daoModelCredito.buscarCreditoByID(idCredito);
+            
             while (result.next()) {
                 estadoCredito = Integer.parseInt(result.getString("ddlEstadoCredito"));
             }
@@ -130,16 +125,14 @@ public class ControllerCredito extends HttpServlet {
         return salida;
     }
     
-    public String consultar(int id, String tipo) {
+    public String consultar(int id) {
         String salida;
         respuesta = new LinkedHashMap<>();
         result = null;
         try {
-            if (tipo.equals("Clase")) {
-                result = daoModelCredito.buscarTipoCredito1(id);
-            } else {
-                result = daoModelCredito.buscarTipoCredito2(id);
-            }
+            
+            result= daoModelCredito.buscarCreditoByID(id);
+            
             while (result.next()) {
                 respuesta.put("idCredito", result.getString("idCurso"));
                 respuesta.put("nombreCurso", result.getString("nombreCurso"));
@@ -174,11 +167,10 @@ public class ControllerCredito extends HttpServlet {
                 String[] arreglo = new String[8];
                 arreglo[0] = result.getString("idCredito").trim();
                 arreglo[1] = result.getString("documentoUsuario").trim();
-                arreglo[2] = result.getString("idCategoriaCredito").trim();
-                arreglo[3] = result.getString("fechaInicio").trim();
-                arreglo[4] = result.getString("saldoInicial").trim();
-                arreglo[5] = result.getString("saldoActual").trim();
-                arreglo[6] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"credito.myAjax('Estado'," + arreglo[0] + ", '','Credito')\">"
+                arreglo[2] = result.getString("fechaInicio").trim();
+                arreglo[3] = result.getString("saldoInicial").trim();
+                arreglo[4] = result.getString("saldoActual").trim();
+                arreglo[5] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"credito.myAjax('Estado'," + arreglo[0] + ", '','Credito')\">"
                         + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
                 lista.add(arreglo);
             }

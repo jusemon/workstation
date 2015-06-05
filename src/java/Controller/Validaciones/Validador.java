@@ -105,4 +105,17 @@ public class Validador {
         return matcher.matches();
     }
 
+    public static boolean validarDocumento(String documento) {
+        if (documento==null) {
+            return false;
+        }
+        // Compila la expresion regular en un pattern
+        Pattern pattern = Pattern.compile(PATTERN_TIPO_DOCUMENTO);
+        Pattern pattern2 = Pattern.compile(PATTERN_NUMERO);
+        // Busca que la fecha cumpla con la expresion regular
+        Matcher matcher = pattern.matcher(documento.substring(0, 2));
+        Matcher matcher2 = pattern2.matcher(documento.substring(2));
+        return (matcher.matches()&&matcher2.matches());
+    }
+
 }

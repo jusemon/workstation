@@ -1,5 +1,6 @@
 
 
+
 <%-- 
     Document   : caja
     Created on : 23-oct-2014, 12:19:52
@@ -44,66 +45,30 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         </h4>
                     </div>
                 </div>
-                <!--Gestión de Abonos-->
+                <!--Gestión de abonos-->
                 <div class="panel panel-default">
                     <!--
-                    Aquí el botón que desplegará la gestión de Abonos
+                    Aqui el boton que desplegara la gestión de Abonos
                     -->
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                            <a id="btnGestionVentas" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas">
                                 Gestión de Abonos
                             </a>
                         </h4>
                     </div>
+                </div>
+                <!--Gestión de créditos-->
+                <div class="panel panel-default">
                     <!--
-                    Aquí el contenido de la gestión de abonos, en este caso habrá un botón para registrar un abono
-                    y otro para consultar abonos por crédito
-                    -->                              
-                    <div id="collapseThree" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupAbono" data-dismiss="modal" name="regAbono" value="Registrar Abono">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="panel-group" id="accordion2">
-                                        <div class="panel panel-default">
-                                            <input class="btn btn-default btn-block" data-toggle="collapse" value="Consultar Abono por crédito" data-parent="#accordion2" href="#collapseConsultaAbono"/>                                                           
-                                        </div>
-                                    </div>
-                                    <div class="panel-collapse collapse" id="collapseConsultaAbono">
-                                        <div class="panel-body">
-                                            <form action="ControllerAbono" method="POST">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="txtIdCredito">
-                                                                Id. del Crédito
-                                                            </label>
-                                                            <input name="txtIdCredito" id="txtIdCredito" type="text" class="form-control" placeholder="Ej: 12345" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <button type="button" class=" btn btn-default btn-block" >
-                                                                <span class="glyphicon glyphicon-search "></span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    Aqui el boton que desplegara la gestión de créditos
+                    -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a id="btnGestionCredito" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas">
+                                Gestión de Créditos
+                            </a>
+                        </h4>
                     </div>
                 </div>
                 <!-- Gestion de Diario de Caja-->
@@ -150,6 +115,9 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                             <a href="#abonos" role="tab" data-toggle="tab">Listado de Abonos</a>                            
                         </li>                            
                         <li>
+                            <a href="#creditos" role="tab" data-toggle="tab">Listado de Créditos</a>                            
+                        </li>                            
+                        <li>
                             <a href="#diario" role="tab" data-toggle="tab">Diario de caja</a>
                         </li>
                     </ul>
@@ -193,6 +161,23 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                         <th class="text-center">Id. Crédito</th>
                                         <th class="text-center">Valor Abono ($)</th>                                
                                         <th class="text-center">Fecha Pago</th>                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="creditos">
+                            <table id="tblCreditos" class="table table-responsive table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Id. Crédito</th>
+                                        <th class="text-center">Documento</th>
+                                        <th class="text-center">Fecha inicio</th>
+                                        <th class="text-center">Saldo inicial ($)</th>
+                                        <th class="text-center">Saldo actual ($)</th>
+                                        <th class="text-center">Estado</th>                                
+                                        <th class="text-center">Detalle</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -362,71 +347,15 @@ dentro del cuerpo del panel se encuentra el formulario para agregar elementos y 
 finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
 -->
 
-<!--Popup Abono-->
-<div class="modal" id="miPopupAbono">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">                               
-                        <form method="POST" action="ControllerAbono">
-                            <div class="panel">
-                                <div class="panel-heading estilo2">
-                                    <h3 class="panel-title">
-                                        Registrar abono
-                                        <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                                    </h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txtIdCredito">
-                                                    Id. del crédito
-                                                </label>
-                                                <input name="txtIdCredito" id="txtIdCredito" type="text" class="form-control" placeholder="Ej: 0001" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txtValorAbono">
-                                                    Valor abono ($)
-                                                </label>
-                                                <input name="txtValorAbono" id="txtValorAbono" type="number" class="form-control" placeholder="Ej: 25000" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="dateFechaPago">
-                                                    Fecha de pago
-                                                </label>
-                                                <input name="dateFechaPago" id="dateFechaPago" type="date" class="form-control" placeholder="" required>
-                                            </div>
-                                        </div>
-                                    </div>                                
-                                </div>
-                                <div class="panel-footer">
-                                    <div class="col-md-offset-3 col-md-6">
-                                        <div class="form-group">
-                                            <input  class="btn btn-default btn-block" id="btnAbono" type="submit" name="action" value="Registrar">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!--Popup Articulo-->
 <%@include file="WEB-INF/jspf/modalArticulo.jspf" %>
+
+<!--Popup Abono-->
+<%@include file="WEB-INF/jspf/modalAbono.jspf" %>
+
+<!--Popup Credito-->
+<%@include file="WEB-INF/jspf/modalCredito.jspf" %>
 
 <%@include file="WEB-INF/jspf/footer.jspf" %>
 

@@ -5,7 +5,6 @@ import java.sql.Date;
 /**
  * @author Zack
  * @version 1.0
- * @created 08-may.-2015 12:13:13 a. m.
  */
 public class ObjAcudiente {
 

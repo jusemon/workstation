@@ -13,18 +13,13 @@ import Model.Data.ModelEstudiante;
 import Model.Data.ModelClase;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -111,34 +106,10 @@ public class ControllerEstudiante extends HttpServlet {
                 }
                 case "Consultar": {
                     String id = request.getParameter("id");
-                    try {
-                        respuesta = new LinkedHashMap<>();
-                        ResultSet result = daoModelEstudiante.buscarPorID(id);
-                        while (result.next()) {
-                            respuesta.put("tipoDocumento", result.getString("documentoUsuario").substring(0, 2));
-                            respuesta.put("numeroDocumento", result.getString("documentoUsuario").substring(2));
-                            respuesta.put("fechaNacimiento", result.getString("fechaNacimiento"));
-                            respuesta.put("nombreUsuario", result.getString("nombreUsuario"));
-                            respuesta.put("apellidoUsuario", result.getString("apellidoUsuario"));
-                            respuesta.put("emailUsuario", result.getString("emailUsuario"));
-                            respuesta.put("password", result.getString("password"));
-                            respuesta.put("estadoUsuario", result.getString("estadoUsuario"));
-                            respuesta.put("idDetalleUsuario", result.getString("idDetalleUsuario"));
-                            respuesta.put("direccionUsuario", result.getString("direccionUsuario"));
-                            respuesta.put("telefonoFijo", result.getString("telefonoFijo"));
-                            respuesta.put("telefonoMovil", result.getString("telefonoMovil"));
-                            respuesta.put("generoUsuario", result.getString("generoUsuario"));
-                            respuesta.put("idrol", result.getString("idrol"));
-                            respuesta.put("documentoAcudiente", result.getString("documentoAcudiente"));
-                            respuesta.put("estadoBeneficiario", result.getString("estadoBeneficiario"));
-                        }
-                        String salida = new Gson().toJson(respuesta);
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
-                        response.getWriter().write(salida);
-                    } catch (Exception e) {
-                        System.err.println(e.getMessage());
-                    }
+                    String tipo = request.getParameter("tipo");
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(Consultar(id, tipo));
                     break;
                 }
 
@@ -190,35 +161,14 @@ public class ControllerEstudiante extends HttpServlet {
                     }
                     break;
                 }
-                case "Seleccion": {
-                    daoModelFicha = new ModelClase();
-                    String id = request.getParameter("id");
-                    try {
-                        respuesta = new LinkedHashMap<>();
-                        ResultSet result = daoModelFicha.buscarPorDocumentoUsuario(id);
-                        while (result.next()) {
-                            respuesta.put("idFicha", result.getString("idFicha"));
-                            respuesta.put("estado", result.getString("estado"));
-                            respuesta.put("cuposDisponibles", result.getString("cuposDisponibles"));
-                            respuesta.put("fechaInicio", result.getString("fechaInicio"));
-                            respuesta.put("precioFicha", result.getString("precioFicha"));
-                            respuesta.put("tblcurso_idCurso", result.getString("tblcurso_idCurso"));
-                            String fechaFinal = result.getString("fechaInicio");
-                            respuesta.put("fechaFinal", formatoFechaEntrada.format(sumarRestarDiasFecha(fechaFinal, 90)));
-                        }
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
-                        String salida = new Gson().toJson(respuesta);
-                        daoModelFicha.Signout();
-                        response.getWriter().write(salida);
-                    } catch (SQLException | IOException e) {
-                        System.err.println("Ha ocurrido un error " + e.toString());
-                    }
-                    break;
-                }
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.getWriter().write(getTableEstudiantes());
+                    break;
+                }
+                case "EnlistarPreinscritos": {
+                    response.setContentType("application/json");
+                    response.getWriter().write(getTablePreinscritos());
                     break;
                 }
 
@@ -256,6 +206,35 @@ public class ControllerEstudiante extends HttpServlet {
         return salida;
     }
 
+    public String getTablePreinscritos() {
+        ResultSet result;
+        List<String[]> lista = new ArrayList<>();
+        try {
+            result = daoModelEstudiante.ListPreinscritos();
+            String[] arreglo;
+            while (result.next()) {
+                arreglo = new String[7];
+                arreglo[0] = result.getString("documentoUsuario").trim();
+                arreglo[1] = result.getString("nombreUsuario").trim();
+                arreglo[2] = result.getString("nombreCurso").trim();
+                arreglo[3] = result.getString("fechaPreincripcion").trim();
+                arreglo[4] = result.getString("emailUsuario").trim();
+                arreglo[5] = "<a class=\"btn-sm btn-success btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + arreglo[0] + "', 'Preinscrito')\">\n"
+                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
+                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + arreglo[0] + "', 'Preinscrito', 'Inscribir')\">\n"
+                        + "<span class=\"glyphicon glyphicon-bookmark\"></span></a>";
+                lista.add(arreglo);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Ha Ocurrido un error enlistando" + e.getMessage());
+        } finally {
+        }
+        String salida = new Gson().toJson(lista);
+        salida = "{\"data\":" + salida + "}";
+        return salida;
+    }
+
     public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
         Map<String, String> mensaje = new LinkedHashMap<>();
         if (entrada) {
@@ -268,21 +247,6 @@ public class ControllerEstudiante extends HttpServlet {
         }
         String salida = new Gson().toJson(mensaje);
         return salida;
-    }
-
-    public Date sumarRestarDiasFecha(String fecha, int dias) {
-        Date salida = null;
-        try {
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(formatoFechaEntrada.parse(fecha));
-            calendar.add(Calendar.DAY_OF_YEAR, dias);
-            salida = new Date(calendar.getTime().getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(ControllerEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return salida;
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -323,5 +287,47 @@ public class ControllerEstudiante extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String Consultar(String id, String tipo) {
+        ResultSet result = null;
+        respuesta = new LinkedHashMap<>();
+        if (tipo != null) {
+            if (tipo.equals("Preinscrito")) {
+                result = daoModelEstudiante.buscarPreinscritoPorID(id);
+            } else {
+                tipo = "Inscrito";
+                result = daoModelEstudiante.buscarPorID(id);
+            }
+        } else {
+            tipo = "Inscrito";
+            result = daoModelEstudiante.buscarPorID(id);
+        }
+        try {
+            while (result.next()) {
+                respuesta.put("tipoDocumento", result.getString("documentoUsuario").substring(0, 2));
+                respuesta.put("numeroDocumento", result.getString("documentoUsuario").substring(2));
+                respuesta.put("fechaNacimiento", result.getString("fechaNacimiento"));
+                respuesta.put("nombreUsuario", result.getString("nombreUsuario"));
+                respuesta.put("apellidoUsuario", result.getString("apellidoUsuario"));
+                respuesta.put("emailUsuario", result.getString("emailUsuario"));
+                respuesta.put("password", result.getString("password"));
+                respuesta.put("estadoUsuario", result.getString("estadoUsuario"));
+                respuesta.put("idrol", result.getString("idrol"));
+                if (tipo.equals("Inscrito")) {
+                    respuesta.put("idDetalleUsuario", result.getString("idDetalleUsuario"));
+                    respuesta.put("direccionUsuario", result.getString("direccionUsuario"));
+                    respuesta.put("telefonoFijo", result.getString("telefonoFijo"));
+                    respuesta.put("telefonoMovil", result.getString("telefonoMovil"));
+                    respuesta.put("generoUsuario", result.getString("generoUsuario"));
+                    respuesta.put("documentoAcudiente", result.getString("documentoAcudiente"));
+                    respuesta.put("estadoBeneficiario", result.getString("estadoBeneficiario"));
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        String salida = new Gson().toJson(respuesta);
+        return  salida;
+    }
 
 }

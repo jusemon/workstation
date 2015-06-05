@@ -83,6 +83,21 @@ public class ModelEstudiante extends ConnectionDB {
         return rs;
     }
 
+    public ResultSet buscarPreinscritoPorID(String ID) {
+        ResultSet rs = null;
+        String sql = "call spConsultarPreinscritoPorID(?)";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, ID);
+            rs = pStmt.executeQuery();
+
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }
+
     public boolean Edit(ObjUsuario _objUsuario, ObjDetalleUsuario _objDetalleUsuario) {
         boolean objReturn = false;
         String sql = "call spActualizarEstudiante(?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -109,5 +124,18 @@ public class ModelEstudiante extends ConnectionDB {
             System.out.println(e.getMessage());
         }
         return objReturn;
+    }
+
+    public ResultSet ListPreinscritos() {
+        ResultSet rs = null;
+        String sql = "call spConsultarPreinscritos()";
+        try {
+            getStmt();
+            rs = stmt.executeQuery(sql);
+
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
     }
 }

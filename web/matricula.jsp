@@ -39,6 +39,9 @@
                 <li>
                     <a href="#matriculas" role="tab" data-toggle="tab">Listado de Matriculas</a>
                 </li>
+                <li>
+                    <a href="#preinscritos" role="tab" data-toggle="tab">Listado de Preinscritos</a>
+                </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="estudiantes">
@@ -72,19 +75,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!--tr>
-                                <td class="text-center">0001</td>
-                                <td class="text-center">1017225673</td>
-                                <td class="text-center">Oleo</td>
-                                <td class="text-center">11/01/2015</td>
-                                <td class="text-center">11/04/2015</td>
-                                <td class="text-center"><a class="btn-sm btn-success btn-block " href="javascript:void(0)"  onclick="add("Estado")>
-                                                           <span class="glyphicon glyphicon-ok"></span></a>
-                                </td>
-                                <td class="text-center"><a class="btn-sm btn-primary btn-block " href="javascript:void(0)"  onclick="add("Estado")>
-                                                           <span class="glyphicon glyphicon-pencil"></span></a>
-                                </td>
-                            </tr-->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="preinscritos">
+                    <table id="tblPreinscritos" class="table table-responsive table-hover" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Documento</th>
+                                <th class="text-center">Cliente</th>
+                                <th class="text-center">Curso</th>
+                                <th class="text-center">Fecha Preinscripción</th>
+                                <th class="text-center">Email Cliente</th>
+                                <th class="text-center">Consultar</th>
+                                <th class="text-center">Inscribit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         </tbody>
                     </table>
                 </div>
@@ -229,61 +236,82 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-5">
                                             <div class="form-group">
-                                                <label for="txtIdentificacion">
-                                                    Estudiante:
+                                                <label for="txtTipo">
+                                                    Tipo de Documento:
                                                 </label>
-                                                <label id="txtIdentificacion"></label>
-                                                <div id="nombres">
-                                                    <label for="nombres">
-                                                        Nombres:
-                                                    </label>
-                                                    <label id="txtNombre"></label>
-                                                    <label id="txtApellido"></label>
-                                                </div>
-                                                <input type="hidden" name="txtIdentificacion" id="idEstudiante"/>
+                                                <text id="txtTipo"></text>
+                                                <br>
+                                                <label for="txtIdentificacion">
+                                                    Número:
+                                                </label>
+                                                <text id="txtIdentificacion"></text>
+                                                <input type="hidden" name="txtDocumento" id="txtDocumento"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="form-group">
+                                                <label for="txtNombre">
+                                                    Nombre:
+                                                </label>
+                                                <text id="txtNombre"></text>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-5">
                                             <div class="form-group">
-                                                <label for="idCursoFicha">
-                                                    Ficha:
+                                                <label for="idCursoMatricula">
+                                                    Curso:
                                                 </label>
-                                                <select name="idCursoFicha" id="idCursoFicha" class="form-control" onchange="estudiante.myAjax('Seleccion', $('#idCursoFicha').val())" required>
+                                                <select name="idCursoMatricula" id="idCursoMatricula" class="form-control" onchange="curso.seleccionar($('#idCursoMatricula').val())" required>
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-7">
                                             <div class="form-group">
-                                                <label for="dateInicioFicha">
-                                                    Fecha de Inicio:
+                                                <label for="txtPrecioCurso">
+                                                    Precio del Curso:
                                                 </label>
-                                                <label id="dateInicioFicha"></label>
-                                                <input type="hidden" name="dateInicio" id="dateInicio"/>
+                                                <text id="txtPrecioCurso">
+                                                </text>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="dateFinFicha">
-                                                    Fecha Fin: 
+                                                <label for="txtClases">
+                                                    Clases:
                                                 </label>
-                                                <label id="dateFinFicha"></label>
-                                                <input type="hidden" name="dateFinal" id="dateFinal"/>
+                                                <input type="text" name="txtClases" id="txtClases" class="form-control"/>
                                             </div>
                                         </div>
-                                    </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="txtPrecioClases">
+                                                    Precio por Clase: 
+                                                </label>
+                                                <text id="txtPrecioClases">
+                                                </text>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="txtHoraClase">
+                                                    Horas por Clase: 
+                                                </label>
+                                                <text id="txtHoraClase">
+                                                </text>
+                                            </div>
+                                        </div>
+                                    </div>                                    
                                 </div>
                                 <div class="panel-footer">
                                     <div class="col-md-offset-3 col-md-6">
                                         <div class="form-group">
-                                            <input  class="btn btn-default btn-block" type="submit" name="action" value="Matricular">
+                                            <input  class="btn btn-default btn-block" type="button" name="action" value="Matricular" onclick="matricula.registrar()">
                                         </div>
                                     </div>
                                 </div>

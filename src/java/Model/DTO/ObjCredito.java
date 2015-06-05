@@ -4,13 +4,11 @@ package Model.DTO;
 /**
  * @author David
  * @version 1.0
- * @created 08-may.-2015 12:13:14 a. m.
  */
 public class ObjCredito {
     
-    private int idCredito;
-    private int idCategoriaCredito;
-    private String documentoUsuario;
+    private int idCredito;    
+    private String documentoUsuario = "";
     private String fechaInicio = "";
     private double saldoInicial = 0;
     private double saldoActual = 0;
@@ -23,15 +21,6 @@ public class ObjCredito {
     public void setIdCredito(int idCredito) {
         this.idCredito = idCredito;
     }
-
-    public int getIdCategoriaCredito() {
-        return idCategoriaCredito;
-    }
-
-    public void setIdCategoriaCredito(int idCategoriaCredito) {
-        this.idCategoriaCredito = idCategoriaCredito;
-    }
-
     public String getDocumentoUsuario() {
         return documentoUsuario;
     }

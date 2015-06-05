@@ -12,7 +12,7 @@ $('.fecha').datepicker({
     orientation: "top left"
 });
 
-var tablaCurso, tablaCategoriaCurso, tablaClases, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso;
+var tablaCurso, tablaCategoriaCurso, tablaClases, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso, tablaPreinscritos;
 
 var curso = {
     myAjax: function (accion, id, aux, typo) {
@@ -38,9 +38,6 @@ var curso = {
                         if (accion == 'Registrar') {
                             seminario.actualizarTabla();
                         }
-                        if (accion == 'Registrar') {
-                            seminario.actualizarTabla();
-                        }
                         mensaje(data);
                         curso.actualizarTabla();
                     }
@@ -52,9 +49,47 @@ var curso = {
             $(form).off();
             return false;
         });
-        if (accion === 'Estado' || accion === 'Consultar' || accion === 'getOptionsCursos') {
+        if (accion === 'Estado' || accion === 'Consultar') {
             $(form).submit();
         }
+    },
+    seleccionar: function (id) {
+        if (id > 0) {
+            $.ajax({
+                url: "ControllerCurso",
+                type: 'POST',
+                data: {
+                    action: 'Consultar',
+                    id: id,
+                    type: 'Curso'
+                },
+                success: function (data, textStatus, jqXHR) {
+                    $('#miPopupMatricula').find('#txtPrecioCurso').text(data['precioCurso']).parents('.form-group:first').show();
+                    $('#miPopupMatricula').find('#txtClases').val(data['cantidadClases']).parents('.row:first').show();
+                    $('#miPopupMatricula').find('#txtPrecioClases').text(data['precioCurso'] / data['cantidadClases']);
+                    $('#miPopupMatricula').find('#txtHoraClase').text(data['horasPorClase']);
+                }
+            });
+        } else {
+            $('#miPopupMatricula').find('#txtPrecioCurso').empty().parents('.form-group:first').hide();
+            $('#miPopupMatricula').find('#txtClases').val(null).parents('.row:first').hide();
+            $('#miPopupMatricula').find('#txtPrecioClases').empty();
+            $('#miPopupMatricula').find('#txtHoraClase').empty();
+        }
+
+    },
+    cargarOpciones: function () {
+        $.ajax({
+            url: "ControllerCurso",
+            type: 'POST',
+            data: {
+                action: 'getOptionsCursos'
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#idCursoMatricula').empty();
+                $('#idCursoMatricula').append('<option value="0"></option>' + data);
+            }
+        });
     },
     consultar: function (data) {
         limpiar("#formCurso");
@@ -168,7 +203,7 @@ var curso = {
                             + '<label id="horas">' + data[i]['horasPorClase'] + '</label>'
                             + '</div>'
                             + '<div class="col-md-5">'
-                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.preinscripcion(' + data[i]['idCurso'] + ',\'Curso\')">Preinscribirse</a>'
+                            + '<a class="btn btn-sm btn-default" href="javascript:void(0)" onclick="curso.preinscripcion(' + data[i]['idCurso'] + ',this)">Preinscribirse</a>'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -578,15 +613,18 @@ var estudiante = {
                 url: $(form).attr('action'),
                 data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
                 success: function (data) {
-                    if (accion == 'Seleccion') {
-                        estudiante.cargarSeleccion(data);
-                    }
                     if (accion == 'Consultar') {
                         if (tipo == 'Editar') {
                             estudiante.editar(data);
 
                         } else if (tipo == 'Matricular') {
                             estudiante.matricular(data);
+                        } else if (tipo == 'Preinscrito') {
+                            if (aux === 'Inscribir') {
+                                estudiante.preinscribir(data);
+                            } else
+                                estudiante.consultarPreinscrito(data);
+
                         } else
                             estudiante.consultar(data);
                     }
@@ -611,20 +649,20 @@ var estudiante = {
     },
     matricular: function (data) {
         limpiar("#formMatricula");
-        $('#miPopupMatricula').find('#titulo').empty();
-        $('#miPopupMatricula').find('#titulo').append('Matricular Estudiante');
-        $('#miPopupMatricula').find('#txtNombre').empty();
-        $('#miPopupMatricula').find('#txtApellido').empty();
-        $('#miPopupMatricula').find('#txtNombre').append(data["nombreCliente"]);
-        $('#miPopupMatricula').find('#txtApellido').append(data["apellidoCliente"]);
-        $('#miPopupMatricula').find('#idEstudiante').val(data['numeroDocumento']);
-        $('#miPopupMatricula').find('#txtIdentificacion').empty();
-        $('#miPopupMatricula').find('#txtIdentificacion').append(data['numeroDocumento']);
-        $('#miPopupMatricula').find('#idCursoFicha option').prop('selected', false);
-        $('#miPopupMatricula').find('#dateInicio').val('');
-        $('#miPopupMatricula').find('#dateFinal').val('');
-        $('#miPopupMatricula').find('#dateInicioFicha').empty();
-        $('#miPopupMatricula').find('#dateFinFicha').empty();
+        curso.cargarOpciones();
+        $('#miPopupMatricula').find('#titulo').text('Matricular Estudiante');
+        $('#miPopupMatricula').find('#txtNombre').text(data["nombreUsuario"] + " " + data["apellidoUsuario"]);
+        $('#miPopupMatricula').find('#txtIdentificacion').text(data['numeroDocumento']);
+        var tipo = data['tipoDocumento'];
+        tipo = (tipo === 'CC') ? 'Cedula' : tipo;
+        tipo = (tipo === 'TI') ? 'Tarjeta de Identidad' : tipo;
+        tipo = (tipo === 'RC') ? 'Registro Civil' : tipo;
+        tipo = (tipo === 'CE') ? 'Cedula de Extranjeria' : tipo;
+        $('#miPopupMatricula').find('#txtTipo').text(tipo);
+        $('#miPopupMatricula').find('#txtDocumento').val(data['tipoDocumento'] + data['numeroDocumento']);
+        $('#miPopupMatricula').find('#idCursoMatricula option').prop('selected', false);
+        $('#miPopupMatricula').find('#txtPrecioCurso').empty().parents('.form-group:first').hide();
+        $('#miPopupMatricula').find('#txtClases').val(null).parents('.row:first').hide();
         $('#miPopupMatricula').modal('show');
     },
     consultar: function (data) {
@@ -636,14 +674,15 @@ var estudiante = {
         $('#miPopupEstudiante').find('#txtNombre').val(data['nombreUsuario']);
         $('#miPopupEstudiante').find('#txtApellido').val(data['apellidoUsuario']);
         $('#miPopupEstudiante').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
-        $('#miPopupEstudiante').find('#txtDireccion').val(data['direccionUsuario']);
+        $('#miPopupEstudiante').find('#txtDireccion').val(data['direccionUsuario']).parents('.row:first').show();
         $('#miPopupEstudiante').find('#txtTelefono').val(data['telefonoFijo']);
         $('#miPopupEstudiante').find('#txtCelular').val(data['telefonoMovil']);
         $('#miPopupEstudiante').find('#txtCorreo').val(data['emailUsuario']);
+        $('#miPopupEstudiante').find('#radioGeneroFemenino').parents('.row:first').show();
         if (data['generoUsuario'] == 0)
-            $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', true);
+            $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', true).parents('.row:first').show();
         else
-            $('#miPopupEstudiante').find('#radioGeneroMasculino').prop('checked', true)
+            $('#miPopupEstudiante').find('#radioGeneroMasculino').prop('checked', true);
 
         if (data['estadoBeneficiario'] == 0)
             $('#miPopupEstudiante').find('#radioNoBeneficiario').prop('checked', true);
@@ -652,6 +691,20 @@ var estudiante = {
 
         $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'hidden').attr('disabled', true);
         desabilitar('#form_estudiante');
+        $('#miPopupEstudiante').modal('show');
+    },
+    consultarPreinscrito: function (data) {
+        limpiar("#form_estudiante");
+        estudiante.consultar(data);
+        $('#miPopupEstudiante').find('#txtDireccion').parents('.row:first').hide();
+        $('#miPopupEstudiante').find('#radioGeneroFemenino').parents('.row:first').hide();
+    },
+    preinscribir: function (data) {
+        limpiar("#form_estudiante");
+        estudiante.consultar(data);
+        $('#miPopupEstudiante').find('#titulo').empty();
+        $('#miPopupEstudiante').find('#titulo').append('Formalizar Inscripcion');
+        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Formalizar Inscripcion').attr('disabled', false);
         $('#miPopupEstudiante').modal('show');
     },
     registrar: function () {
@@ -670,15 +723,6 @@ var estudiante = {
         habilitar('#form_estudiante');
         $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
     },
-    cargarSeleccion: function (data) {
-        $('#miPopupMatricula').find('#dateInicio').val(data['fechaInicio']);
-        $('#miPopupMatricula').find('#dateFinal').val(data['fechaFinal']);
-        $('#miPopupMatricula').find('#dateInicioFicha').empty();
-        $('#miPopupMatricula').find('#dateInicioFicha').append(data['fechaInicio']);
-        $('#miPopupMatricula').find('#dateFinFicha').empty();
-        $('#miPopupMatricula').find('#dateFinFicha').append(data['fechaFinal']);
-
-    },
     cargar: function () {
         tablaEstudiante = $('#tblEstudiantes').DataTable({
             "ajax": {
@@ -694,6 +738,25 @@ var estudiante = {
     },
     actualizarTabla: function () {
         tablaEstudiante.ajax.reload();
+    }
+};
+
+var preinscrito = {
+    cargar: function () {
+        tablaPreinscritos = $('#tblPreinscritos').DataTable({
+            "ajax": {
+                "url": "ControllerEstudiante",
+                "type": "POST",
+                "data": {
+                    action: 'EnlistarPreinscritos'
+                }
+            }, "language": {
+                "url": "public/js/locales/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaPreinscritos.ajax.reload();
     }
 };
 
@@ -735,7 +798,6 @@ var usuario = {
         limpiar("#formPreinscripcion");
         $('#miPopupPreinscripcion').find('#titulo').empty();
         $('#miPopupPreinscripcion').find('#titulo').append('Preinscribir al ' + data['tipo']);
-        ;
         $('#miPopupPreinscripcion').find('#dateFinFicha').empty();
         $('#miPopupPreinscripcion').modal('show');
     },
@@ -805,26 +867,16 @@ var usuario = {
 };
 
 var matricula = {
-    myAjax: function (accion, id, tipo) {
-        var form = $('#formMatricula');
-        $(form).off();
-        $(form).on('submit', function () {
-            $.ajax({
-                type: $(form).attr('method'),
-                url: $(form).attr('action'),
-                data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
-                success: function (data) {
-                    if (accion === 'Seleccion') {
-                        matricula.cargarSeleccion(data);
-                    }
-                }
-            });
-            $(form).off();
-            return false;
+    registrar: function () {
+        $.ajax({
+            url: "ControllerMatricula",
+            type: 'POST',
+            data: $('#formMatricula').serialize() + '&action=Registrar',
+            success: function (data, textStatus, jqXHR) {
+                $('#miPopupMatricula').modal('hide');
+                mensaje(data);
+            }
         });
-        if (accion === 'Estado' || accion === 'Consultar' || accion === 'Seleccion') {
-            $(form).submit();
-        }
     },
     cargar: function () {
         tablaMatricula = $('#tblMatriculas').DataTable({
@@ -929,7 +981,7 @@ var articulo = {
                         $('#miPopupArticulo').modal('hide');
                         mensaje(data);
                         articulo.actualizarTabla();
-                        $("#ddlArticulos").select2('destroy'); 
+                        $("#ddlArticulos").select2('destroy');
                         articulo.listarArticulos();
                     } else if (accion == 'ConsultarCodigo') {
                         articulo.registrar(data);
@@ -1036,13 +1088,13 @@ var articulo = {
             }
         });
     },
-    listarArticulos: function (tipo) {        
+    listarArticulos: function (tipo) {
         var accion = null;
         var f = new Date();
         var fechaActual = (f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
         $('#tabCompras').find('#txtFechaCompra').append('Fecha: ' + fechaActual);
-        if (tipo==='Venta'){
-            accion='Venta';
+        if (tipo === 'Venta') {
+            accion = 'Venta';
         }
         $.ajax({
             type: 'POST',
@@ -1073,10 +1125,10 @@ var articulo = {
                 action: 'Contador'
             },
             success: function (data, textStatus, jqXHR) {
-                $('#miPopupArticulo').find('#txtIdArticulo').text('Codigo: '+data['idArticulo']);
+                $('#miPopupArticulo').find('#txtIdArticulo').text('Codigo: ' + data['idArticulo']);
             }
         });
-    },
+    }
 };
 
 var empresa = {
@@ -1482,6 +1534,51 @@ var venta = {
     }
 };
 
+var credito = {
+    show: function (tipo, datos) {
+        $("#ddlArticulos").off();
+        $("#ddlArticulos").on("select2:select", function (e) {
+            var id = e.params.data.id;
+            if (id != '-1') {
+                articulo.seleccionar(id, 'Venta');
+            }
+        });
+        credito.limpiarDetalle();
+        $('#contenidoDinamico').data('actual', 'credito');
+        $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
+        $('#tabMovimientos').find('#numero').text('Numero del Credito');
+        $('#tabMovimientos').find('#total').text('Total Credito');
+        if (tipo === 'Registrar') {
+            $('#tabMovimientos').find('#titulo').text('Registrar Credito');
+            $('#tabMovimientos').find('#txtNumero').attr('readOnly', true);
+            $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + fecha());
+            $('#tabMovimientos').find('#btnArticulo').hide();
+            $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'credito.registrarCredito()').val('Registrar Credito');
+            $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
+            $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide;
+            credito.contador();
+        }
+
+    },
+    limpiarDetalle: function () {
+        $('#tablaDetalleMovimiento tbody tr').each(function () {
+            $(this).remove();
+        });
+    },
+    contador: function () {
+        $.ajax({
+            url: "ControllerCredito",
+            type: 'POST',
+            data: {
+                action: 'Contador'
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#tabMovimientos').find('#txtNumero').val(data['numero']);
+            }
+        });
+    }
+};
+
 compra.cargar();
 venta.cargar();
 categoriaCurso.cargar();
@@ -1496,3 +1593,4 @@ empresa.cargar();
 usuario.cargar();
 //credito.cargar()
 categoriaArticulo.cargarOpciones();
+preinscrito.cargar();

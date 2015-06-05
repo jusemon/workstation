@@ -5,12 +5,19 @@
  */
 package Controller;
 
+import Controller.Validaciones.Validador;
+import Model.DTO.ObjClase;
+import Model.DTO.ObjCurso;
+import Model.DTO.ObjUsuario;
+import Model.Data.ModelClase;
 import Model.Data.ModelMatricula;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 public class ControllerMatricula extends HttpServlet {
 
     ModelMatricula daoModelMatricula = new ModelMatricula();
+    ObjClase _objClase = new ObjClase();
+    ObjCurso _objCurso = new ObjCurso();
+    ObjUsuario _objUsuario = new ObjUsuario();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,6 +48,12 @@ public class ControllerMatricula extends HttpServlet {
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
                 case "Consultar": {
+                    break;
+                }
+                case "Registrar": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(Registrar(request));
                     break;
                 }
                 case "Estado": {
@@ -99,23 +115,21 @@ public class ControllerMatricula extends HttpServlet {
     private String getTableMatriculas() {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
-        int contador = 0;
         String[] arreglo;
         try {
-             daoModelMatricula = new ModelMatricula();
-             result = daoModelMatricula.ListAll();
+            daoModelMatricula = new ModelMatricula();
+            result = daoModelMatricula.ListMatriculados();
             while (result.next()) {
                 arreglo = new String[7];
-                arreglo[0] = result.getString("nitEmpresa").trim();
-                arreglo[1] = result.getString("nombreEmpresa").trim();
-                arreglo[2] = result.getString("direccionEmpresa").trim();
-                arreglo[3] = result.getString("nombreContacto").trim();
-                arreglo[4] = result.getString("telefonoContacto").trim();
-                arreglo[5] = result.getString("emailContacto").trim();
-                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"empresa.editar(" + contador + ")\">"
+                arreglo[0] = result.getString("").trim();
+                arreglo[1] = result.getString("").trim();
+                arreglo[2] = result.getString("").trim();
+                arreglo[3] = result.getString("").trim();
+                arreglo[4] = result.getString("").trim();
+                arreglo[5] = result.getString("").trim();
+                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"matricula.consultar(" + result.getString("").trim() + ")\">"
                         + "<span class=\"glyphicon glyphicon-pencil\"></span></a>";
                 lista.add(arreglo);
-                contador++;
             }
         } catch (Exception e) {
             System.err.println("Ha ocurrido un error." + e.getMessage());
@@ -125,4 +139,28 @@ public class ControllerMatricula extends HttpServlet {
         return salida;
     }
 
+    private String Registrar(HttpServletRequest request) {
+        if (Validador.validarDocumento(request.getParameter("txtDocumento")) & Validador.validarNumero(request.getParameter("idCursoMatricula")) & Validador.validarNumero(request.getParameter("txtClases"))) {
+            _objUsuario = new ObjUsuario();
+            _objCurso = new ObjCurso();
+            _objUsuario.setDocumentoUsuario(request.getParameter("txtDocumento"));
+            _objCurso.setIdCurso(Integer.parseInt(request.getParameter("idCursoMatricula")));
+            _objCurso.setCantidadClases(Integer.parseInt(request.getParameter("txtClases")));
+            return Mensaje(daoModelMatricula.Add(_objUsuario, _objCurso), "Se ha matriculado con exito", "Ha ocurrido un error al intentar registrar la matricula")  ;
+        }
+        return Mensaje(false, null, "Uno o mas campos contienen datos incorrectos.");
+    }
+    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
+        Map<String, String> mensaje = new LinkedHashMap<>();
+        if (entrada) {
+            mensaje.put("mensaje", mensajeSuccess);
+            mensaje.put("tipo", "success");
+
+        } else {
+            mensaje.put("mensaje", mensajeError);
+            mensaje.put("tipo", "error");
+        }
+        String salida = new Gson().toJson(mensaje);
+        return salida;
+    }
 }

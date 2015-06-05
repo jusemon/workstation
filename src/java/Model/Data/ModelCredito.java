@@ -44,12 +44,11 @@ public class ModelCredito  extends ConnectionDB{
             System.out.println(e.getMessage());
         }
         return objReturn;        
-    }
+    }    
     
-    
-    public ResultSet buscarTipoCredito1(int idCredito) {
+    public ResultSet buscarCreditoByID(int idCredito) {
         ResultSet rs = null;
-        String sql = "call spConsultarCreditoByTipoCredito1(?)";
+        String sql = "call spConsultarCreditoByID(?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
@@ -61,32 +60,70 @@ public class ModelCredito  extends ConnectionDB{
         }
         return rs;
     }
-        
-    public ResultSet buscarTipoCredito2(int idCredito) {
+    public ResultSet buscarCreditoByDocumento(String documentoUsuario) {
         ResultSet rs = null;
-        String sql = "call spConsultarCreditoByTipoCredito2(?)";
+        String sql = "call spConsultarCreditoByDocumento(?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setInt(1, idCredito);
+            pStmt.setString(1, documentoUsuario);
             rs = pStmt.executeQuery();
 
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
         return rs;
-    }
-    
+    }    
     public boolean cambiarEstadoCredito(ObjCredito _objCredito) {
         boolean objReturn = false;
-        String sql = "call spActualizarEstadoCredito(?,?,?)";
+        String sql = "call spActualizarEstadoCredito(?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, _objCredito.getIdCredito());            
+            pStmt.setInt(2, _objCredito.getEstadoCredito());
+
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
+    public boolean Update(ObjCredito _objCredito) {
+        boolean objReturn = false;
+        String sql = "call spActualizarCredito(?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, _objCredito.getIdCredito());            
+            pStmt.setDouble(2, _objCredito.getSaldoActual());
+
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }  
+    
+    public boolean cambiarEstado(ObjCredito _objCredito) {
+        boolean objReturn = false;
+        String sql = "call spActualizarEstadoCredito(?,?)";
 
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, _objCredito.getIdCredito());
-            pStmt.setInt(2,_objCredito.getIdCategoriaCredito());
-            pStmt.setInt(3, _objCredito.getEstadoCredito());
+            pStmt.setInt(2, _objCredito.getEstadoCredito());
 
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
