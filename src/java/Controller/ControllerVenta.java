@@ -86,7 +86,7 @@ public class ControllerVenta extends HttpServlet {
                         listOjbDetalleMovimientos.add(_objDetalleMovimiento);
                     }
                     _objUsuario.setDocumentoUsuario(documentoUsuario);
-                    _objVenta.setIdVenta(idVenta);
+                    _objVenta.setIdVenta(numeroVenta);
                     _objVenta.setDocumentoCliente(documentoCliente);
                     _objVenta.setNombreCliente(nombreCliente);
                     _objVenta.setTotalVenta(totalCompra);
