@@ -1,3 +1,5 @@
+/* global articulo */
+
 
 
 
@@ -228,7 +230,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                     <label class="col-md-12" for="identificacion">
                                                         Identificación
                                                     </label>
-                                                    <div class="col-md-3" id="identificacion">
+                                                    <div class="col-md-5" id="identificacion">
                                                         <div class="form-group">
                                                             <label for="ddlIdentificacion">
                                                                 Tipo
@@ -242,7 +244,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-9">
+                                                    <div class="col-md-7">
                                                         <div class="form-group">
                                                             <label for="txtIdentificacion">
                                                                 Número
@@ -305,7 +307,6 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                 <div class="col-md-offset-9 col-md-3">
                                                     <div class="form-group">
                                                         <label for="txtFechaMovimiento" id="txtFechaMovimiento">
-
                                                         </label>
                                                     </div>
                                                 </div>
@@ -331,12 +332,12 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                                 </th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody> 
+                                                        <tbody>
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
-                                            <div class="row bottom">
+                                            <div class="row">
                                                 <div class="col-md-offset-2 col-md-5">
                                                     <input id="btnMovimiento" type="submit" class="btn btn-default" value="Efectuar Compra" onclick="compra.efectuarCompra()">
                                                 </div>
@@ -353,7 +354,6 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                 </form>
                             </div>
                             <div class="panel-footer">
-
                             </div>
                         </div>
                     </div>
