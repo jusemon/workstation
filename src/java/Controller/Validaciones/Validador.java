@@ -12,13 +12,15 @@ import java.util.regex.Pattern;
  * @author Administrador
  */
 public class Validador {
-    
+
     private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static final String PATTERN_NUMERO = "^[0-9]{1,}";
     private static final String PATTERN_NOMBRE = "^([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})?";
     private static final String PATTERN_FECHA = "^(0[1-9]|1[0-9]|3[01]).(0[1-9]|1[0-2]).([0-9]{4})";
     private static final String PATTERN_TIPO_DOCUMENTO = "^(C{2}|TI{1}|CE{1}|RC{1})";
+    private static final String PATTERN_TELEFONO = "^([0-9 ]{7,14})";
+    private static final String PATTERN_CELULAR = "^([0-9 ]{10,24})";
 
     /**
      * Valida el email que se ingresa con una expresion regular
@@ -27,7 +29,7 @@ public class Validador {
      * @return true email valido, sino false
      */
     public static boolean validarEmail(String email) {
-        if (email==null) {
+        if (email == null) {
             return false;
         }
         // Compila la expresion regular en un pattern
@@ -44,7 +46,7 @@ public class Validador {
      * @return true numero valido, sino false
      */
     public static boolean validarNumero(String numero) {
-        if (numero==null) {
+        if (numero == null) {
             return false;
         }
         // Compila la expresion regular en un pattern
@@ -61,7 +63,7 @@ public class Validador {
      * @return true nombre valido, sino false
      */
     public static boolean validarNombre(String nombre) {
-        if (nombre==null) {
+        if (nombre == null) {
             return false;
         }
         // Compila la expresion regular en un pattern
@@ -78,7 +80,7 @@ public class Validador {
      * @return true fecha valida, sino false
      */
     public static boolean validarFecha(String fecha) {
-        if (fecha==null) {
+        if (fecha == null) {
             return false;
         }
         // Compila la expresion regular en un pattern
@@ -87,14 +89,17 @@ public class Validador {
         Matcher matcher = pattern.matcher(fecha);
         return matcher.matches();
     }
+
     /**
-     * Valida el email que se ingresa con una expresion regular
+     * Valida el tipo de documento que se ingresa con una expresion regular
      *
-     * @param tipo Tipo de documento que se va a validar, se permiten CC:Cedula de ciudadania, TI: Tarjeta de identidad, CE: Cedula de estrangeria y RC: Registro civil
-     * @return true email valido, sino false
+     * @param tipo Tipo de documento que se va a validar, se permiten CC:Cedula
+     * de ciudadania, TI: Tarjeta de identidad, CE: Cedula de estrangeria y RC:
+     * Registro civil
+     * @return true tipo valido, sino false
      */
     public static boolean validarTipoDocumento(String tipo) {
-        if (tipo==null) {
+        if (tipo == null) {
             return false;
         }
         // Compila la expresion regular en un pattern
@@ -104,8 +109,15 @@ public class Validador {
         return matcher.matches();
     }
 
+    /**
+     * Valida el documento que se ingresa con una expresion regular
+     *
+     * @param documento El documento a validar, el formato valido es una cadena
+     * formada de dons letras (CC, CE, TI o RC) sumado a una serie de numeros
+     * @return true documento valido, sino false
+     */
     public static boolean validarDocumento(String documento) {
-        if (documento==null) {
+        if (documento == null) {
             return false;
         }
         // Compila la expresion regular en un pattern
@@ -114,7 +126,64 @@ public class Validador {
         // Busca que la fecha cumpla con la expresion regular
         Matcher matcher = pattern.matcher(documento.substring(0, 2));
         Matcher matcher2 = pattern2.matcher(documento.substring(2));
-        return (matcher.matches()&&matcher2.matches());
+        return (matcher.matches() && matcher2.matches());
+    }
+
+    /**
+     * Valida el bit que se ingresa mediante un par de if
+     *
+     * @param entrada el bit a validar, solo permite cero (0) o uno (1)
+     * @return true entrada valida, sino false
+     */
+    public static boolean validarBit(String entrada) {
+        if (entrada == null) {
+            return false;
+        }
+        return entrada.equals("0") | entrada.equals("1");
+    }
+
+    /**
+     * Valida la cadena que se ingresa con un if
+     *
+     * @param entrada la cadena a evaluar, permite cualquier cadena no nula
+     * @return true entrada valida, sino false
+     */
+    public static boolean validarString(String entrada) {
+        return entrada != null;
+    }
+
+    /**
+     * Valida el número de telefono que se ingresa mediante una expresion regular
+     *
+     * @param entrada la cadena a evaluar, permite cualquier cadena no nula
+     * @return true entrada valida, sino false
+     */
+    public static boolean validarTelefono(String entrada) {
+        if (entrada == null) {
+            return false;
+        }
+        // Compila la expresion regular en un pattern
+        Pattern pattern = Pattern.compile(PATTERN_TELEFONO);
+        // Busca que el telefono cumpla con la expresion regular
+        Matcher matcher = pattern.matcher(entrada);
+        return matcher.matches();
+    }
+
+    /**
+     * Valida el número de celular que se ingresa mediante una expresion regular
+     *
+     * @param entrada la cadena a evaluar, permite cualquier cadena no nula
+     * @return true entrada valida, sino false
+     */
+    public static boolean validarCelular(String entrada) {
+        if (entrada == null) {
+            return false;
+        }
+        // Compila la expresion regular en un pattern
+        Pattern pattern = Pattern.compile(PATTERN_CELULAR);
+        // Busca que número celular cumpla con la expresion regular
+        Matcher matcher = pattern.matcher(entrada);
+        return matcher.matches();
     }
 
 }

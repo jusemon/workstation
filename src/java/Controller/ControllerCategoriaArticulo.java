@@ -124,7 +124,6 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         daoModelCategoriaArticulo = new ModelCategoriaArticulo();
         try {
             result = daoModelCategoriaArticulo.ListAll();
-
             while (result.next()) {
                 OptionsCategorias += "<option value=\"" + result.getString("idCategoriaArticulo").trim() + "\">" + result.getString("nombreCategoriaArticulo").trim() + "</option>";
             }

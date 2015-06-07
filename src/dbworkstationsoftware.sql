@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2015 a las 08:13:02
+-- Tiempo de generación: 07-06-2015 a las 04:54:17
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -380,7 +380,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudiantes`()
 BEGIN
     SELECT 
         `documentoUsuario`, 
-        `fechaNacimiento`, 
+        DATE_FORMAT(`fechaNacimiento`,'%d/%m/%Y') as `fechaNacimiento`, 
         `nombreUsuario`, 
         `apellidoUsuario`, 
         `emailUsuario`, 
@@ -402,12 +402,26 @@ BEGIN
     SELECT 
         DISTINCT  usu.`documentoUsuario` as `documentoUsuario`, 
         `nombreCurso`,  
-        (select count(`idClase`) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso`) as numeroClases
+        (select count(`idClase`) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso` and cl.`estadoAsistencia`=0) as numeroClases
     FROM `tblclase` cl 
         inner join `tblcurso` cu 
         on(cl.`idCurso` = cu.`idCurso`)
         inner join tblusuario usu 
         on (cl.`documentoUsuario`=usu.`documentoUsuario`);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudiantesConClasesSinPagar`()
+BEGIN
+    SELECT 
+        DISTINCT  usu.`documentoUsuario` as `documentoUsuario`, 
+        `nombreCurso`,  
+        (select count(`idClase`) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso` and cl.`estadoAsistencia`=1 and cl.`estadoPago`=0) as numeroClases
+    FROM `tblclase` cl 
+        inner join `tblcurso` cu 
+        on(cl.`idCurso` = cu.`idCurso`)
+        inner join tblusuario usu 
+        on (cl.`documentoUsuario`=usu.`documentoUsuario`)
+    WHERE numeroClases>0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarIDCategoriaSeminario`()
@@ -424,7 +438,7 @@ BEGIN
         usu.`documentoUsuario` as `documentoUsuario`, 
         (select `nombreCurso` from tblcurso WHERE pre.`idCurso` = tblcurso.`idCurso`) as nombreCurso,
         fecha as fechaPreincripcion, 
-        `fechaNacimiento`, 
+        DATE_FORMAT(`fechaNacimiento`,'%d/%m/%Y') as `fechaNacimiento`, 
         `nombreUsuario`, 
         `apellidoUsuario`, 
         `emailUsuario`, 
@@ -442,7 +456,7 @@ BEGIN
         usu.`documentoUsuario` as `documentoUsuario`, 
         (select `nombreCurso` from tblcurso WHERE pre.`idCurso` = tblcurso.`idCurso`) as nombreCurso,
         fecha as fechaPreincripcion, 
-        `fechaNacimiento`, 
+        DATE_FORMAT(`fechaNacimiento`,'%d/%m/%Y') as `fechaNacimiento`, 
         `nombreUsuario`, 
         `apellidoUsuario`, 
         `emailUsuario`, 
@@ -951,11 +965,14 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarPreinscripcion`(
 )
 BEGIN	
 
-declare msg varchar(40);    
-    if (exists(SELECT `documentoUsuario`, `idCurso` FROM `tblpreinscripcion` WHERE `documentoUsuario` = `documentoUsuar` and `idCurso` = `idCur`)) then
-		set msg="Este cliente ya se ha registrado";
-		select msg as Respuesta;
-   	else    
+declare msg varchar(60);    
+    if (exists(SELECT `documentoUsuario` FROM `tblpreinscripcion` WHERE `documentoUsuario` = `documentoUsuar` and `idCurso` = `idCur`)) then
+		set msg= CONVERT(CONCAT('Este cliente ya se ha preinscrito a ',(SELECT `nombreCurso` from tblcurso WHERE `idCurso` = idCur)) using utf8);
+		select msg as mensaje, 'error' as tipo;
+    elseif (exists(SELECT `documentoUsuario` FROM `tblpreinscripcion` WHERE `documentoUsuario` = `documentoUsuar` and estado = 1)) then
+                set msg=CONVERT(CONCAT('Este cliente se encuentra preinscrito a ',(SELECT `nombreCurso` from tblcurso WHERE `idCurso` = (SELECT idCurso from `tblpreinscripcion` WHERE `documentoUsuario` = `documentoUsuar` and estado = 1))) using utf8);
+		select msg as mensaje, 'error' as tipo;
+    else
     INSERT INTO `tblpreinscripcion`
     (
         `estado`, 
@@ -968,6 +985,8 @@ declare msg varchar(40);
         `documentoUsuar`, 
         `idCur`
     );
+    set msg= CONVERT(CONCAT('Se ha registrado su preincripción a ',(SELECT `nombreCurso` from tblcurso WHERE `idCurso` = idCur)) using utf8);
+    select msg as mensaje, 'success' as tipo;
 end if;
 END$$
 
@@ -1146,20 +1165,6 @@ INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArtic
 (3, 'Categoria C'),
 (4, 'Categoria D');
 
-
-CREATE TABLE IF NOT EXISTS `tbldetallecredito` (
-  `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT,
-  `idCredito` int(11) NOT NULL,
-  `idMovimiento` int(11) NOT NULL,
-  `fechaDetalle` date DEFAULT NULL,
-  PRIMARY KEY (`idDetalleCredito`),
-  KEY `idMovimiento` (`idMovimiento`),
-  KEY `idCredito` (`idCredito`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- --------------------------------------------------------
 
 --
@@ -1240,6 +1245,19 @@ INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorCla
 (5, 'Oleo', 15, 2, 1, 'Asd', 120000, 2),
 (6, 'Loquesea', 1, 5, 1, 'Seminario de lo que sea', 120000, 1),
 (7, 'Curso J', 10, 3, 1, 'La J es una letra, por la cual empieza mi nombre', 120000, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbldetallecredito`
+--
+
+CREATE TABLE IF NOT EXISTS `tbldetallecredito` (
+`idDetalleCredito` int(11) NOT NULL,
+  `idCredito` int(11) NOT NULL,
+  `idMovimiento` int(11) NOT NULL,
+  `fechaDetalle` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1426,17 +1444,14 @@ CREATE TABLE IF NOT EXISTS `tblpreinscripcion` (
   `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `documentoUsuario` varchar(20) NOT NULL,
   `idCurso` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tblpreinscripcion`
 --
 
 INSERT INTO `tblpreinscripcion` (`idPreinscripcion`, `estado`, `fecha`, `documentoUsuario`, `idCurso`) VALUES
-(22, b'1', '2015-06-05 00:02:00', 'CC94110325805', 6),
-(23, b'1', '2015-06-05 00:02:00', 'CC32466217', 6),
-(24, b'1', '2015-06-05 00:02:00', 'CC32466217', 7),
-(25, b'1', '2015-06-05 00:02:00', 'CC32466217', 5);
+(4, b'1', '2015-06-06 20:54:41', 'CC32466217', 6);
 
 -- --------------------------------------------------------
 
@@ -1556,7 +1571,7 @@ ALTER TABLE `tblcategoriacurso`
 -- Indices de la tabla `tblclase`
 --
 ALTER TABLE `tblclase`
- ADD PRIMARY KEY (`idClase`);
+ ADD PRIMARY KEY (`idClase`), ADD KEY `idCurso_idx` (`idCurso`);
 
 --
 -- Indices de la tabla `tblcredito`
@@ -1569,6 +1584,12 @@ ALTER TABLE `tblcredito`
 --
 ALTER TABLE `tblcurso`
  ADD PRIMARY KEY (`idCurso`), ADD KEY `fk_tblcurso_tblcategoriacurso1_idx` (`idCategoriaCurso`);
+
+--
+-- Indices de la tabla `tbldetallecredito`
+--
+ALTER TABLE `tbldetallecredito`
+ ADD PRIMARY KEY (`idDetalleCredito`), ADD KEY `idMovimiento` (`idMovimiento`), ADD KEY `idCredito` (`idCredito`);
 
 --
 -- Indices de la tabla `tbldetallemovimiento`
@@ -1671,6 +1692,11 @@ MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `tblcurso`
 MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
+-- AUTO_INCREMENT de la tabla `tbldetallecredito`
+--
+ALTER TABLE `tbldetallecredito`
+MODIFY `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT de la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
@@ -1694,7 +1720,7 @@ MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --
 ALTER TABLE `tblpreinscripcion`
-MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
+MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `tblrol`
 --
@@ -1716,6 +1742,12 @@ ALTER TABLE `tblarticulo`
 ADD CONSTRAINT `FK_tblArticulo_idCategoriaArticulo` FOREIGN KEY (`idCategoriaArticulo`) REFERENCES `tblcategoriaarticulo` (`idCategoriaArticulo`);
 
 --
+-- Filtros para la tabla `tblclase`
+--
+ALTER TABLE `tblclase`
+ADD CONSTRAINT `tblclase_ibfk_1` FOREIGN KEY (`idCurso`) REFERENCES `tblcurso` (`idCurso`);
+
+--
 -- Filtros para la tabla `tblcredito`
 --
 ALTER TABLE `tblcredito`
@@ -1731,8 +1763,8 @@ ADD CONSTRAINT `fk_tblcurso_tblcategoriacurso1` FOREIGN KEY (`idCategoriaCurso`)
 -- Filtros para la tabla `tbldetallecredito`
 --
 ALTER TABLE `tbldetallecredito`
-  ADD CONSTRAINT `tbldetallecredito_ibfk_1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`),
-  ADD CONSTRAINT `tbldetallecredito_ibfk_2` FOREIGN KEY (`idCredito`) REFERENCES `tblcredito` (`idCredito`);
+ADD CONSTRAINT `tbldetallecredito_ibfk_1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`),
+ADD CONSTRAINT `tbldetallecredito_ibfk_2` FOREIGN KEY (`idCredito`) REFERENCES `tblcredito` (`idCredito`);
 
 --
 -- Filtros para la tabla `tbldetallemovimiento`

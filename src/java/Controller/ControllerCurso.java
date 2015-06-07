@@ -143,23 +143,6 @@ public class ControllerCurso extends HttpServlet {
                 }
                 //</editor-fold>
 
-                // <editor-fold defaultstate="collapsed" desc="Preinscribir a un Curso o Seminario">
-                case "Preinscribir": {
-                    int idCurso = Integer.parseInt(request.getParameter("idCurso"));
-                    String documentoUsuario = request.getParameter("documentoUsuario");
-                    tipo = request.getParameter("tipo");
-                    if (documentoUsuario == null) {
-                        salida = Mensaje(false, null, "Debes estar registrado y con la sesion iniciada");
-                    } else {
-                        salida = presincribir(idCurso, tipo, documentoUsuario);
-                    }
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write(salida);
-                    break;
-                }
-                //</editor-fold>
-
                 // <editor-fold defaultstate="collapsed" desc="Enlistar los Cursos">
                 case "Enlistar": {
                     response.setContentType("application/json");
@@ -266,21 +249,6 @@ public class ControllerCurso extends HttpServlet {
 
         } catch (Exception e) {
             return Mensaje(false, "", "Ha ocurrido un error en el controller " + e.getMessage());
-        } finally {
-            daoModelCurso.Signout();
-        }
-    }
-
-    private String presincribir(int id, String tipo, String documentoUsuario) {
-        try {
-            daoModelCurso.getConnection();
-            if (tipo.equals("Seminario")) {
-                return Mensaje(daoModelCurso.Preincribir(id, documentoUsuario), "Has sido preincrito al Seminario.", "Ha ocurrido un error durante la preinscripcion");
-            } else {
-                return Mensaje(daoModelCurso.Preincribir(id, documentoUsuario), "Has sido preincrito al Curso.", "Ha ocurrido un error durante la preinscripcion");
-            }
-        } catch (Exception e) {
-            return Mensaje(false, "", "Ha Ocurrido un Error");
         } finally {
             daoModelCurso.Signout();
         }

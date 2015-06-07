@@ -149,7 +149,7 @@ var curso = {
             $(document).on('click', '.notifyjs-foo-base .yes', function () {
                 $.ajax({
                     type: 'POST',
-                    url: "ControllerCurso",
+                    url: "ControllerMatricula",
                     dataType: 'JSON',
                     data: {
                         action: 'Preinscribir',
@@ -469,7 +469,7 @@ var seminario = {
             $(document).on('click', '.notifyjs-foo-base .yes', function () {
                 $.ajax({
                     type: 'POST',
-                    url: "ControllerCurso",
+                    url: "ControllerMatricula",
                     dataType: 'JSON',
                     data: {
                         action: 'Preinscribir',

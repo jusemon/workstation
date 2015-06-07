@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Controller.Validaciones.Validador;
 import Model.DTO.ObjAcudiente;
 import Model.DTO.ObjUsuario;
 import Model.DTO.ObjDetalleUsuario;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -59,39 +62,15 @@ public class ControllerEstudiante extends HttpServlet {
                 //<editor-fold desc="Registrar un Estudiante" defaultstate="collapsed">
                 case "Registrar": {
                     try {
-                        String tipoDocumento = request.getParameter("ddlIdentificacion").trim();
-                        int numeroIdentificacion = Integer.parseInt(request.getParameter("txtIdentificacion").trim());
-                        String identificacion = tipoDocumento + numeroIdentificacion;
-                        String nombre = request.getParameter("txtNombre").trim();
-                        String apellido = request.getParameter("txtApellido").trim();
-                        int genero = Integer.parseInt(request.getParameter("radioGenero").trim());
-                        String fechaNacimiento = request.getParameter("dateFechaNacimiento").trim();
-                        String direccion = request.getParameter("txtDireccion").trim();
-                        String telefono = request.getParameter("txtTelefono").trim();
-                        String celular = request.getParameter("txtCelular").trim();
-                        String correo = request.getParameter("txtCorreo").trim();
-                        int estado = Integer.parseInt(request.getParameter("radioBeneficiario").trim());
-                        String pass = request.getParameter("txtPass").trim();
-                        //Beneficiario 0->No Subvencionado 1->Subvencionado?
-                        String tipoDocAcudiente = "";
-                        int numeroDocAcudiente = 0;
-                        if (request.getParameter("tipoDocAcudiente") != null && request.getParameter("numeroDocAcudiente") != null) {
-                            tipoDocAcudiente = request.getParameter("tipoDocAcudiente").trim();
-                            numeroDocAcudiente = Integer.parseInt(request.getParameter("numeroDocAcudiente").trim());
-                            String identificacionAcudiente = tipoDocAcudiente + numeroDocAcudiente;
-                            _objUsuario.setDocumentoAcudiente(identificacionAcudiente);
+                        Object[] datosEstudiante = ObtenerDatosFormulario(request);
+                        if (datosEstudiante == null) {
+                            response.setContentType("application/json");
+                            String salida = Mensaje(false, "", "Uno o mas campos contienen datos incorrectos.");
+                            response.getWriter().write(salida);
+                            break;
                         }
-                        _objUsuario.setDocumentoUsuario(identificacion);
-                        _objUsuario.setNombreUsuario(nombre);
-                        _objUsuario.setApellidoUsuario(apellido);
-                        _objDetalleUsuario.setGeneroUsuario(genero);
-                        _objUsuario.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
-                        _objDetalleUsuario.setDireccionUsuario(direccion);
-                        _objDetalleUsuario.setTelefonoFijo(telefono);
-                        _objDetalleUsuario.setTelefonoMovil(celular);
-                        _objUsuario.setEmailUsuario(correo);
-                        _objUsuario.setEstadoUsuario(estado);
-                        _objUsuario.setPassword(pass);
+                        _objUsuario = (ObjUsuario) datosEstudiante[0];
+                        _objDetalleUsuario = (ObjDetalleUsuario) datosEstudiante[1];
                         response.setContentType("application/json");
                         daoModelEstudiante = new ModelEstudiante();
                         String salida = Mensaje(daoModelEstudiante.Add(_objUsuario, _objDetalleUsuario), "El estudiante ha sido registrado", "A ocurrido un error al intentar registrar al estudiante");
@@ -179,7 +158,12 @@ public class ControllerEstudiante extends HttpServlet {
                 }
                 case "Formalizar Inscripción": {
                     response.setContentType("application/json");
-                    response.getWriter().write(Mensaje(true, "Se ha formalizado la Inscripcion", null));
+                    try {
+                        response.getWriter().write(Formalizar(request));
+                    } catch (ParseException ex) {
+                        String salida = Mensaje(false, "", "A ocurrido un error con la fecha de nacimiento");
+                        response.getWriter().write(salida);
+                    }
                     break;
                 }
             }
@@ -345,6 +329,75 @@ public class ControllerEstudiante extends HttpServlet {
         }
         String salida = new Gson().toJson(respuesta);
         return salida;
+    }
+
+    private String Formalizar(HttpServletRequest request) throws ParseException {
+        Object[] datosEstudiante = ObtenerDatosFormulario(request);
+        _objUsuario = (ObjUsuario) datosEstudiante[0];
+        _objDetalleUsuario = (ObjDetalleUsuario) datosEstudiante[1];
+        daoModelEstudiante.AddInscrito(_objUsuario, _objDetalleUsuario);
+        if (datosEstudiante == null) {
+            return Mensaje(false, "", "Uno o mas campos contienen datos incorrectos.");
+        }
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private Object[] ObtenerDatosFormulario(HttpServletRequest request) throws ParseException {
+        Object[] resultado = new Object[2];
+        if (Validador.validarTipoDocumento(request.getParameter("ddlIdentificacion").trim())
+                && Validador.validarNumero(request.getParameter("txtIdentificacion").trim())
+                && Validador.validarNombre(request.getParameter("txtNombre").trim())
+                && Validador.validarNombre(request.getParameter("txtApellido").trim())
+                && Validador.validarBit(request.getParameter("radioGenero").trim())
+                && Validador.validarFecha(request.getParameter("dateFechaNacimiento").trim())
+                && Validador.validarString(request.getParameter("txtDireccion").trim())
+                && Validador.validarTelefono(request.getParameter("txtTelefono").trim())
+                && Validador.validarCelular(request.getParameter("txtCelular").trim())
+                && Validador.validarEmail(request.getParameter("txtCorreo").trim())
+                && Validador.validarBit(request.getParameter("radioBeneficiario").trim())
+                && Validador.validarString(request.getParameter("txtPass").trim())) {
+
+            String tipoDocumento = request.getParameter("ddlIdentificacion").trim();
+            int numeroIdentificacion = Integer.parseInt(request.getParameter("txtIdentificacion").trim());
+            String identificacion = tipoDocumento + numeroIdentificacion;
+            String nombre = request.getParameter("txtNombre").trim();
+            String apellido = request.getParameter("txtApellido").trim();
+            int genero = Integer.parseInt(request.getParameter("radioGenero").trim());
+            String fechaNacimiento = request.getParameter("dateFechaNacimiento").trim();
+            String direccion = request.getParameter("txtDireccion").trim();
+            String telefono = request.getParameter("txtTelefono").trim();
+            String celular = request.getParameter("txtCelular").trim();
+            String correo = request.getParameter("txtCorreo").trim();
+            int estado = Integer.parseInt(request.getParameter("radioBeneficiario").trim());
+            String pass = request.getParameter("txtPass").trim();
+            //Beneficiario 0->No Subvencionado 1->Subvencionado?
+            String tipoDocAcudiente = "";
+            int numeroDocAcudiente = 0;
+            _objUsuario = new ObjUsuario();
+            _objDetalleUsuario = new ObjDetalleUsuario();
+            if (request.getParameter("tipoDocAcudiente") != null && request.getParameter("numeroDocAcudiente") != null) {
+                tipoDocAcudiente = request.getParameter("tipoDocAcudiente").trim();
+                numeroDocAcudiente = Integer.parseInt(request.getParameter("numeroDocAcudiente").trim());
+                String identificacionAcudiente = tipoDocAcudiente + numeroDocAcudiente;
+                _objUsuario.setDocumentoAcudiente(identificacionAcudiente);
+            }
+            _objUsuario.setDocumentoUsuario(identificacion);
+            _objUsuario.setNombreUsuario(nombre);
+            _objUsuario.setApellidoUsuario(apellido);
+            _objDetalleUsuario.setGeneroUsuario(genero);
+            _objUsuario.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
+            _objDetalleUsuario.setDireccionUsuario(direccion);
+            _objDetalleUsuario.setTelefonoFijo(telefono);
+            _objDetalleUsuario.setTelefonoMovil(celular);
+            _objUsuario.setEmailUsuario(correo);
+            _objUsuario.setEstadoUsuario(estado);
+            _objUsuario.setPassword(pass);
+            resultado[0] = _objUsuario;
+            resultado[2] = _objDetalleUsuario;
+            return resultado;
+        } else {
+            return null;
+        }
     }
 
 }

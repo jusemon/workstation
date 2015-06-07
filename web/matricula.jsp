@@ -411,7 +411,7 @@
                                                 <label for="txtTelefono">
                                                     Teléfono
                                                 </label>
-                                                <input name="txtTelefono" id="txtTelefono" type="text" pattern="([0-9 ]{7,12})" title="Numeros, se permiten espacios, ejem: 5 86 15 29" class="form-control" placeholder="Ejm: 5 65 85 45" required>
+                                                <input name="txtTelefono" id="txtTelefono" type="text" pattern="([0-9 ]{7,14})" title="Numeros, se permiten espacios, ejem: 5 86 15 29" class="form-control" placeholder="Ejm: 5 65 85 45" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -419,7 +419,7 @@
                                                 <label for="txtCelular">
                                                     Celular
                                                 </label>
-                                                <input name="txtCelular" id="txtCelular" type="text" pattern="([0-9 ]{10,20})" title="Numeros, se permiten espacios, ejem: 321 801 62 37" class="form-control" placeholder="Ejm: 321 801 62 37">
+                                                <input name="txtCelular" id="txtCelular" type="text" pattern="([0-9 ]{10,22})" title="Numeros, se permiten espacios, ejem: 321 801 62 37" class="form-control" placeholder="Ejm: 321 801 62 37">
                                             </div>
                                         </div>
                                     </div>

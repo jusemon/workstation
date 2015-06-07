@@ -11,6 +11,7 @@ import Model.DTO.ObjCurso;
 import Model.DTO.ObjUsuario;
 import Model.Data.ModelClase;
 import Model.Data.ModelMatricula;
+import Model.Data.ModelPreinscripcion;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ControllerMatricula extends HttpServlet {
 
     ModelMatricula daoModelMatricula = new ModelMatricula();
+    ModelPreinscripcion daoModelPreinscripcion = new ModelPreinscripcion();
     ObjClase _objClase = new ObjClase();
     ObjCurso _objCurso = new ObjCurso();
     ObjUsuario _objUsuario = new ObjUsuario();
@@ -65,6 +67,25 @@ public class ControllerMatricula extends HttpServlet {
                     response.getWriter().write(getTableMatriculas());
                     break;
                 }
+
+                // <editor-fold defaultstate="collapsed" desc="Preinscribir a un Curso o Seminario">
+                case "Preinscribir": {
+                    int idCurso = Integer.parseInt(request.getParameter("idCurso"));
+                    String documentoUsuario = request.getParameter("documentoUsuario");
+                    String tipo = request.getParameter("tipo");
+                    String salida = null;
+                    if (documentoUsuario == null) {
+                        salida = Mensaje(false, null, "Debes estar registrado y con la sesion iniciada");
+                    } else {
+                        salida = presincribir(idCurso, documentoUsuario);
+                    }
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(salida);
+                    break;
+                }
+                //</editor-fold>
+
                 case "Seleccion": {
 
                     break;
@@ -146,10 +167,11 @@ public class ControllerMatricula extends HttpServlet {
             _objUsuario.setDocumentoUsuario(request.getParameter("txtDocumento"));
             _objCurso.setIdCurso(Integer.parseInt(request.getParameter("idCursoMatricula")));
             _objCurso.setCantidadClases(Integer.parseInt(request.getParameter("txtClases")));
-            return Mensaje(daoModelMatricula.Add(_objUsuario, _objCurso), "Se ha matriculado con exito", "Ha ocurrido un error al intentar registrar la matricula")  ;
+            return Mensaje(daoModelMatricula.Add(_objUsuario, _objCurso), "Se ha matriculado con exito", "Ha ocurrido un error al intentar registrar la matricula");
         }
         return Mensaje(false, null, "Uno o mas campos contienen datos incorrectos.");
     }
+
     public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
         Map<String, String> mensaje = new LinkedHashMap<>();
         if (entrada) {
@@ -162,5 +184,24 @@ public class ControllerMatricula extends HttpServlet {
         }
         String salida = new Gson().toJson(mensaje);
         return salida;
+    }
+
+    public String Mensaje(String entrada[]) {
+        Map<String, String> mensaje = new LinkedHashMap<>();
+        mensaje.put("mensaje", entrada[0]);
+        mensaje.put("tipo", entrada[1]);
+        String salida = new Gson().toJson(mensaje);
+        return salida;
+    }
+
+    private String presincribir(int id, String documentoUsuario) {
+        try {
+            daoModelPreinscripcion.getConnection();
+            return Mensaje(daoModelPreinscripcion.Add(id, documentoUsuario));
+        } catch (Exception e) {
+            return Mensaje(false, "", "Ha Ocurrido un Error");
+        } finally {
+            daoModelPreinscripcion.Signout();
+        }
     }
 }
