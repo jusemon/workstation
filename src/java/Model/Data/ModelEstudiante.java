@@ -27,29 +27,45 @@ public class ModelEstudiante extends ConnectionDB {
 
     public boolean Add(ObjUsuario _objUsuario, ObjDetalleUsuario _objDetalleUsuario) {
         boolean objReturn = false;
-        String sql = "call spIngresarEstudiante(?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "call spIngresarDetalleEstudiante(?,?,?,?)";
+        String sql2 = "call spIngresarEstudiante(?,?,?,?,?,?,?,?)";
         try {
             getStmt();
+            connection.setAutoCommit(false);
             pStmt = connection.prepareCall(sql);
-            pStmt.setString(1, _objUsuario.getDocumentoUsuario());
-            pStmt.setDate(2, Date.valueOf(_objUsuario.getFechaNacimiento()));
-            pStmt.setString(3, _objUsuario.getNombreUsuario());
-            pStmt.setString(4, _objUsuario.getApellidoUsuario());
-            pStmt.setString(5, _objUsuario.getEmailUsuario());
-            pStmt.setString(6, _objUsuario.getPassword());
-            pStmt.setInt(7, _objUsuario.getEstadoUsuario());
-            pStmt.setString(8, _objUsuario.getDocumentoAcudiente());
-            pStmt.setString(9, _objDetalleUsuario.getDireccionUsuario());
-            pStmt.setString(10, _objDetalleUsuario.getTelefonoFijo());
-            pStmt.setString(11, _objDetalleUsuario.getTelefonoMovil());
-            pStmt.setInt(12, _objDetalleUsuario.getGeneroUsuario());
+            pStmt.setString(1, _objDetalleUsuario.getDireccionUsuario());
+            pStmt.setString(2, _objDetalleUsuario.getTelefonoFijo());
+            pStmt.setString(3, _objDetalleUsuario.getTelefonoMovil());
+            pStmt.setInt(4, _objDetalleUsuario.getGeneroUsuario());
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
-            }
+                pStmt = connection.prepareCall(sql2);
+                pStmt.setString(1, _objUsuario.getDocumentoUsuario());
+                pStmt.setDate(2, Date.valueOf(_objUsuario.getFechaNacimiento()));
+                pStmt.setString(3, _objUsuario.getNombreUsuario());
+                pStmt.setString(4, _objUsuario.getApellidoUsuario());
+                pStmt.setString(5, _objUsuario.getEmailUsuario());
+                pStmt.setString(6, _objUsuario.getPassword());
+                pStmt.setInt(7, _objUsuario.getEstadoUsuario());
+                pStmt.setString(8, _objUsuario.getDocumentoAcudiente());
+                if (pStmt.executeUpdate() > 0) {
+                    objReturn = true;
+                } else {
+                    connection.rollback();
+                }
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            } else {
+                connection.rollback();
+            }
+            connection.commit();
+        } catch (SQLException sqlE) {
+            System.out.println(sqlE.getMessage());
+            try {
+                connection.rollback();
+            } catch (Exception e) {
+                System.out.println(sqlE.getMessage());
+            }
         }
 
         return objReturn;
@@ -139,30 +155,54 @@ public class ModelEstudiante extends ConnectionDB {
         return rs;
     }
 
-    public boolean AddInscrito(ObjUsuario _objUsuario, ObjDetalleUsuario _objDetalleUsuario) {
-        boolean objReturn = false;
-        String sql = "call spIngresarEstudianteApartirDePreinscrito(?,?,?,?,?,?,?,?,?,?,?,?)";
+    public String[] AddInscrito(ObjUsuario _objUsuario, ObjDetalleUsuario _objDetalleUsuario) {
+        String[] objReturn = new String[2];
+        String sql = "call spIngresarDetalleEstudiante(?,?,?,?)";
+        String sql2 = "call spIngresarEstudianteApartirDePreinscrito(?,?,?,?,?,?,?,?)";
         try {
             getStmt();
+            connection.setAutoCommit(false);
             pStmt = connection.prepareCall(sql);
-            pStmt.setString(1, _objUsuario.getDocumentoUsuario());
-            pStmt.setDate(2, Date.valueOf(_objUsuario.getFechaNacimiento()));
-            pStmt.setString(3, _objUsuario.getNombreUsuario());
-            pStmt.setString(4, _objUsuario.getApellidoUsuario());
-            pStmt.setString(5, _objUsuario.getEmailUsuario());
-            pStmt.setString(6, _objUsuario.getPassword());
-            pStmt.setInt(7, _objUsuario.getEstadoUsuario());
-            pStmt.setString(8, _objUsuario.getDocumentoAcudiente());
-            pStmt.setString(9, _objDetalleUsuario.getDireccionUsuario());
-            pStmt.setString(10, _objDetalleUsuario.getTelefonoFijo());
-            pStmt.setString(11, _objDetalleUsuario.getTelefonoMovil());
-            pStmt.setInt(12, _objDetalleUsuario.getGeneroUsuario());
+            pStmt.setString(1, _objDetalleUsuario.getDireccionUsuario());
+            pStmt.setString(2, _objDetalleUsuario.getTelefonoFijo());
+            pStmt.setString(3, _objDetalleUsuario.getTelefonoMovil());
+            pStmt.setInt(4, _objDetalleUsuario.getGeneroUsuario());
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
-                objReturn = true;
+                pStmt = connection.prepareCall(sql2);
+                pStmt.setString(1, _objUsuario.getDocumentoUsuario());
+                pStmt.setDate(2, Date.valueOf(_objUsuario.getFechaNacimiento()));
+                pStmt.setString(3, _objUsuario.getNombreUsuario());
+                pStmt.setString(4, _objUsuario.getApellidoUsuario());
+                pStmt.setString(5, _objUsuario.getEmailUsuario());
+                pStmt.setString(6, _objUsuario.getPassword());
+                pStmt.setInt(7, _objUsuario.getEstadoUsuario());
+                pStmt.setString(8, _objUsuario.getDocumentoAcudiente());
+                ResultSet rs = pStmt.executeQuery();
+                while (rs.next()) {
+                    objReturn[0] = rs.getString("tipo");
+                    objReturn[1] = rs.getString("mensaje");
+                    if (objReturn[0].equals("error")) {
+                        connection.rollback();
+                        return objReturn;
+                    }
+                }
+            } else {
+                objReturn[0] = "error";
+                objReturn[1] = "Ha ocurrido un error al ingresar el detalle";
+                connection.rollback();
+                return objReturn;
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            connection.commit();
+        } catch (SQLException sqlE) {
+            objReturn[0] = "error";
+            objReturn[1] = "Ha ocurrido un error: " + sqlE;
+            try {
+                connection.rollback();
+            } catch (Exception e) {
+                objReturn[0] = "error";
+                objReturn[1] = "Ha ocurrido un error: " + e;
+            }
         }
         return objReturn;
     }

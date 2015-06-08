@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-06-2015 a las 04:54:17
+-- Tiempo de generación: 08-06-2015 a las 04:14:46
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -455,6 +455,7 @@ BEGIN
     SELECT        
         usu.`documentoUsuario` as `documentoUsuario`, 
         (select `nombreCurso` from tblcurso WHERE pre.`idCurso` = tblcurso.`idCurso`) as nombreCurso,
+        `idCurso`,
         fecha as fechaPreincripcion, 
         DATE_FORMAT(`fechaNacimiento`,'%d/%m/%Y') as `fechaNacimiento`, 
         `nombreUsuario`, 
@@ -823,6 +824,26 @@ BEGIN
 
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleEstudiante`(
+    in direccionUsuar   varchar(50),
+    in telefonoFi       varchar(11),
+    in telefonoMov      varchar(15),
+    in generoUsuar      bit
+)
+BEGIN
+    INSERT INTO `tbldetalleusuario`(
+        `direccionUsuario`, 
+        `telefonoFijo`, 
+        `telefonoMovil`, 
+        `generoUsuario`
+    ) VALUES (
+        direccionUsuar,
+        telefonoFi,
+        telefonoMov,
+        generoUsuar
+    );
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleVenta`(
     IN `idArticu` INT, 
     IN `cantid` INT, 
@@ -880,24 +901,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarEstudiante`(
     in emailUsuar       varchar(50),
     in passwo           varchar(45),
     in estadoUsuar      int,
-    in documentoAcudien varchar(20),
-    in direccionUsuar   varchar(50),
-    in telefonoFi       varchar(11),
-    in telefonoMov      varchar(15),
-    in generoUsuar      bit
+    in documentoAcudien varchar(20)
 )
 BEGIN
-INSERT INTO `tbldetalleusuario`(
-    `direccionUsuario`, 
-    `telefonoFijo`, 
-    `telefonoMovil`, 
-    `generoUsuario`
-) VALUES (
-    direccionUsuar,
-    telefonoFi,
-    telefonoMov,
-    generoUsuar
-);
 INSERT INTO `tblusuario`(
     `documentoUsuario`, 
     `fechaNacimiento`, 
@@ -920,6 +926,40 @@ INSERT INTO `tblusuario`(
     3,
     documentoAcudien,
     (SELECT MAX(idDetalleUsuario) FROM `tbldetalleusuario`));
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarEstudianteApartirDePreinscrito`(
+    in documentoUsuar   varchar(20),
+    in fechaNacimien    DATE,
+    in nombreUsuar      varchar(30),
+    in apellidoUsuar    varchar(30),
+    in emailUsuar       varchar(50),
+    in passwo           varchar(45),
+    in estadoUsuar      int,
+    in documentoAcudien varchar(20)
+)
+BEGIN
+declare msg varchar(50);
+IF (exists(SELECT `documentoUsuario` FROM `tblusuario` WHERE `documentoUsuario` = `documentoUsuar` and `idrol` = 3)) then
+		set msg= CONVERT(CONCAT('Este cliente ya esta registrado como estudiante') using utf8);
+		select msg as mensaje, 'error' as tipo;    
+ELSE
+    UPDATE tblusuario 
+        SET `fechaNacimiento` = `fechaNacimien`,
+            `nombreUsuario` = `nombreUsuar`,
+            `apellidoUsuario` = `apellidoUsuar`,
+            `emailUsuario` = `emailUsuar`,
+            password = passwo,
+            `estadoUsuario` = `estadoUsuar`,
+            idrol  = 3,
+            `idDetalleUsuario` = (SELECT MAX(idDetalleUsuario) FROM `tbldetalleusuario`)
+        WHERE `documentoUsuario` = `documentoUsuar`;
+    UPDATE tblpreinscripcion
+        SET estado = 0
+        WHERE `documentoUsuario` = `documentoUsuar`;
+    set msg= CONVERT(CONCAT('Este cliente se ha registrado como estudiante') using utf8);
+    select msg as mensaje, 'success' as tipo;    
+END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarFactura`(
@@ -1202,7 +1242,38 @@ CREATE TABLE IF NOT EXISTS `tblclase` (
   `precioClase` float NOT NULL,
   `idCurso` int(11) NOT NULL,
   `documentoUsuario` varchar(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tblclase`
+--
+
+INSERT INTO `tblclase` (`idClase`, `fecha`, `estadoPago`, `estadoAsistencia`, `creditoCreado`, `precioClase`, `idCurso`, `documentoUsuario`) VALUES
+(1, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(2, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(3, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(4, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(5, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(6, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(7, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(8, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(9, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(10, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(11, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(12, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(13, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(14, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(15, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(16, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
+(17, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
+(18, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
+(19, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
+(20, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
+(21, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
+(22, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
+(23, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
+(24, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
+(25, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805');
 
 -- --------------------------------------------------------
 
@@ -1313,7 +1384,7 @@ CREATE TABLE IF NOT EXISTS `tbldetalleusuario` (
   `telefonoMovil` varchar(15) NOT NULL,
   `generoUsuario` bit(1) NOT NULL,
   `estadoBeneficiario` bit(1) NOT NULL DEFAULT b'0'
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbldetalleusuario`
@@ -1321,7 +1392,8 @@ CREATE TABLE IF NOT EXISTS `tbldetalleusuario` (
 
 INSERT INTO `tbldetalleusuario` (`idDetalleUsuario`, `direccionUsuario`, `telefonoFijo`, `telefonoMovil`, `generoUsuario`, `estadoBeneficiario`) VALUES
 (1, 'Calle 24 # 65 e 25', '5860529', '3218016237', b'1', b'0'),
-(2, 'Calle falsa 456', '56865245', '3218016237', b'1', b'0');
+(2, 'Calle falsa 456', '56865245', '3218016237', b'1', b'0'),
+(3, 'asdasd', '123123123', '123123123123', b'0', b'0');
 
 -- --------------------------------------------------------
 
@@ -1444,14 +1516,15 @@ CREATE TABLE IF NOT EXISTS `tblpreinscripcion` (
   `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `documentoUsuario` varchar(20) NOT NULL,
   `idCurso` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tblpreinscripcion`
 --
 
 INSERT INTO `tblpreinscripcion` (`idPreinscripcion`, `estado`, `fecha`, `documentoUsuario`, `idCurso`) VALUES
-(4, b'1', '2015-06-06 20:54:41', 'CC32466217', 6);
+(4, b'1', '2015-06-06 20:54:41', 'CC32466217', 6),
+(5, b'1', '2015-06-07 18:15:39', 'CC94110325805', 7);
 
 -- --------------------------------------------------------
 
@@ -1535,8 +1608,8 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
 INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`) VALUES
 ('1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL),
 ('CC1017225673', '1994-11-03', 'Juancito', 'Montoya', 'thejuansebas03@gmail.com', '123', 0, 1, 3, NULL),
-('CC32466217', '1999-02-03', 'Maria Dolly', 'Montoya Puerta', 'micorreo@correo.com', '123', 1, NULL, 4, NULL),
-('CC94110325805', '1990-03-02', 'Juan', 'Olla', 'nuevocorrep@correo.com', '123', 1, NULL, 4, NULL),
+('CC32466217', '1999-02-03', 'Maria Dolly', 'Montoya Puerta', 'micorreo@correo.com', '123', 0, NULL, 4, NULL),
+('CC94110325805', '1990-03-02', 'Juan', 'Olla', 'nuevocorrep@correo.com', '123', 0, NULL, 4, NULL),
 ('CE1017225673', '1990-03-09', 'Juanse', 'DeOlla', 'juansmm@outlook.com', '123', 0, 2, 3, NULL);
 
 --
@@ -1680,7 +1753,7 @@ MODIFY `idCategoriaCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 -- AUTO_INCREMENT de la tabla `tblclase`
 --
 ALTER TABLE `tblclase`
-MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT de la tabla `tblcredito`
 --
@@ -1705,7 +1778,7 @@ MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=39;
 -- AUTO_INCREMENT de la tabla `tbldetalleusuario`
 --
 ALTER TABLE `tbldetalleusuario`
-MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `tblmodulo`
 --
@@ -1720,7 +1793,7 @@ MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --
 ALTER TABLE `tblpreinscripcion`
-MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `tblrol`
 --

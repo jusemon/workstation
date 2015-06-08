@@ -342,6 +342,7 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="form-group">
+                                            <input name="idCurso" id="idCurso" type="hidden">
                                             <label class="col-md-12" for="identificacion">
                                                 Identificación
                                             </label>
@@ -364,7 +365,7 @@
                                                     <label for="txtIdentificacion">
                                                         Número
                                                     </label>
-                                                    <input name="txtIdentificacion" id="txtIdentificacion" type="text" pattern="[0-9]{5,15}"  title="Solo se permiten numeros y no deben ser menos de 5 o mas de 15" class="form-control" placeholder="Ejm: 1017225673" required>
+                                                    <input name="txtIdentificacion" id="txtIdentificacion" type="text" pattern="[0-9]{5,15}"  title="Solo se permiten numeros y no deben ser menos de 5 o mas de 15" class="form-control" placeholder="Ejm: 1017225673" required>                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -462,11 +463,13 @@
                                         </div>                                       
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-offset-3 col-md-6">
-                                    <div class="form-group">
-                                        <input class="btn btn-default btn-block" type="submit" id="btnEstudiante" name="action" onclick="estudiante.myAjax($('#btnEstudiante').val())">
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-offset-3 col-md-6">
+                                            <div class="form-group">
+                                                <input class="btn btn-default btn-block" type="submit" id="btnEstudiante" name="action" onclick="estudiante.myAjax($('#btnEstudiante').val())">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -10,6 +10,10 @@ import Model.JDBC.ConnectionDB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -49,34 +53,56 @@ public class ModelCurso extends ConnectionDB {
         return objReturn;
     }
 
-    public ResultSet buscarCursoPorID(int ID) {
+    public Map<String, String> buscarCursoPorID(int ID) {
         ResultSet rs = null;
         String sql = "call spConsultarCursoPorID(?)";
+        Map<String, String> respuesta = new LinkedHashMap<>();
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, ID);
             rs = pStmt.executeQuery();
-
+            while (rs.next()) {
+                respuesta.put("idCurso", rs.getString("idCurso"));
+                respuesta.put("nombreCurso", rs.getString("nombreCurso"));
+                respuesta.put("cantidadClases", rs.getString("cantidadClases"));
+                respuesta.put("horasPorClase", rs.getString("horasPorClase"));
+                respuesta.put("estadoCurso", rs.getString("estadoCurso"));
+                respuesta.put("precioCurso", rs.getString("precioCurso"));
+                respuesta.put("descripcionCurso", rs.getString("descripcionCurso"));
+                respuesta.put("idCategoriaCurso", rs.getString("idCategoriaCurso"));
+                respuesta.put("nombreCategoriaCurso", rs.getString("nombreCategoriaCurso"));
+            }
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
-        return rs;
+        return respuesta;
     }
 
-    public ResultSet buscarSeminarioPorID(int ID) {
+    public Map<String, String> buscarSeminarioPorID(int ID) {
         ResultSet rs = null;
+        Map<String, String> respuesta = new LinkedHashMap<>();
         String sql = "call spConsultarSeminarioPorID(?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, ID);
             rs = pStmt.executeQuery();
-
+            while (rs.next()) {
+                respuesta.put("idCurso", rs.getString("idCurso"));
+                respuesta.put("nombreCurso", rs.getString("nombreCurso"));
+                respuesta.put("cantidadClases", rs.getString("cantidadClases"));
+                respuesta.put("horasPorClase", rs.getString("horasPorClase"));
+                respuesta.put("estadoCurso", rs.getString("estadoCurso"));
+                respuesta.put("precioCurso", rs.getString("precioCurso"));
+                respuesta.put("descripcionCurso", rs.getString("descripcionCurso"));
+                respuesta.put("idCategoriaCurso", rs.getString("idCategoriaCurso"));
+                respuesta.put("nombreCategoriaCurso", rs.getString("nombreCategoriaCurso"));
+            }
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
-        return rs;
+        return respuesta;
     }
 
     public boolean Edit(ObjCurso _objCurso) {
@@ -125,17 +151,32 @@ public class ModelCurso extends ConnectionDB {
         return objReturn;
     }
 
-    public ResultSet ListCursosDisponibles() {
+    public List<Map> ListCursosDisponibles() {
+        List<Map> lista = new ArrayList<>();
         ResultSet rs = null;
+        Map<String, String> respuesta = null;
         String sql = "call spConsultarCursosDisponibles()";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             rs = pStmt.executeQuery();
+            while (rs.next()) {
+                respuesta = new LinkedHashMap<>();
+                respuesta.put("idCurso", rs.getString("idCurso"));
+                respuesta.put("nombreCurso", rs.getString("nombreCurso"));
+                respuesta.put("cantidadClases", rs.getString("cantidadClases"));
+                respuesta.put("horasPorClase", rs.getString("horasPorClase"));
+                respuesta.put("estadoCurso", rs.getString("estadoCurso"));
+                respuesta.put("descripcionCurso", rs.getString("descripcionCurso"));
+                respuesta.put("precioCurso", rs.getString("precioCurso"));
+                respuesta.put("idCategoriaCurso", rs.getString("idCategoriaCurso"));
+                respuesta.put("nombreCategoriaCurso", rs.getString("nombreCategoriaCurso"));
+                lista.add(respuesta);
+            }
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
-        return rs;
+        return lista;
     }
 
     public ResultSet ListAll() throws Exception {
@@ -164,17 +205,32 @@ public class ModelCurso extends ConnectionDB {
         return rs;
     }
 
-    public ResultSet ListSeminariosDisponibles() {
+    public List<Map> ListSeminariosDisponibles() {
+        List<Map> lista = new ArrayList<>();
         ResultSet rs = null;
+        Map<String, String> respuesta = null;
         String sql = "call spConsultarSeminariosDisponibles()";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             rs = pStmt.executeQuery();
+            while (rs.next()) {
+                respuesta = new LinkedHashMap<>();
+                respuesta.put("idCurso", rs.getString("idCurso"));
+                respuesta.put("nombreCurso", rs.getString("nombreCurso"));
+                respuesta.put("cantidadClases", rs.getString("cantidadClases"));
+                respuesta.put("horasPorClase", rs.getString("horasPorClase"));
+                respuesta.put("estadoCurso", rs.getString("estadoCurso"));
+                respuesta.put("descripcionCurso", rs.getString("descripcionCurso"));
+                respuesta.put("precioCurso", rs.getString("precioCurso"));
+                respuesta.put("idCategoriaCurso", rs.getString("idCategoriaCurso"));
+                respuesta.put("nombreCategoriaCurso", rs.getString("nombreCategoriaCurso"));
+                lista.add(respuesta);
+            }
 
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
-        return rs;
+        return lista;
     }
 }

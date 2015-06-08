@@ -91,9 +91,8 @@ public class ControllerCategoriaCurso extends HttpServlet {
         }
 
     }
-
+    
     public String getTableCategoriaCurso() {
-
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
         daoModelCategoriaCurso.getConnection();
@@ -141,7 +140,6 @@ public class ControllerCategoriaCurso extends HttpServlet {
         if (entrada) {
             mensaje.put("mensaje", mensajeSuccess);
             mensaje.put("tipo", "success");
-
         } else {
             mensaje.put("mensaje", mensajeError);
             mensaje.put("tipo", "error");

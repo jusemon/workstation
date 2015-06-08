@@ -23,14 +23,11 @@ import java.util.Map;
  *
  * @author David
  */
-
 public class ControllerCredito extends HttpServlet {
-    
+
     ModelCredito daoModelCredito;
     ObjCredito _ObjCredito = new ObjCredito();
     Map<String, String> respuesta;
-    ResultSet result;
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,20 +41,17 @@ public class ControllerCredito extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        if (request.getParameter("action")!= null){
-            
+
+        if (request.getParameter("action") != null) {
+
             String nombre, descripcion, aux, salida, tipo = "";
             int estado = 0, cantidadClases, categoria, id, horasPorClase, precio;
-            
-            switch (request.getParameter("action")){
-                
-                
+
+            switch (request.getParameter("action")) {
+
+                // <editor-fold defaultstate="collapsed" desc="Ingresar un crédito nuevo">
                 case "Registrar": {
-                                               
                     daoModelCredito = new ModelCredito();
-                    
-                    // <editor-fold defaultstate="collapsed" desc="Ingresar un crédito nuevo">
                     String documentoUsuario = request.getParameter("txtDocumentoUsuario").trim();
                     _ObjCredito.setDocumentoUsuario(documentoUsuario);
                     String fechaInicio = request.getParameter("txtFechaInicio").trim();
@@ -68,7 +62,7 @@ public class ControllerCredito extends HttpServlet {
                     _ObjCredito.setSaldoActual(saldoActual);
                     int estadoCredito = Integer.parseInt(request.getParameter("ddlEstadoCredito").trim());
                     _ObjCredito.setEstadoCredito(estadoCredito);
-                    
+
                     salida = Mensaje(daoModelCredito.Add(_ObjCredito), "El crédito ha sido registrado", "Ha ocurrido un error al intentar registrar el crédito");
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -76,14 +70,13 @@ public class ControllerCredito extends HttpServlet {
                     break;
                 }
                 // </editor-fold>
-
                 // <editor-fold defaultstate="collapsed" desc="Listar los créditos">
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableCredito());
                     break;
-                }                
+                }
                 // </editor-fold>
                 // <editor-fold defaultstate="collapsed" desc="Cambiar el estado de un crédito">
                 case "Estado": {
@@ -111,18 +104,17 @@ public class ControllerCredito extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-            }        
+            }
         }
     }
-    
+
     public String cambiarEstado(int idCredito) {
-        ResultSet result;
         int estadoCredito = 0;
         try {
             daoModelCredito = new ModelCredito();
-            
-            result = result = daoModelCredito.buscarCreditoByID(idCredito);
-            
+            ResultSet result;
+            result = daoModelCredito.buscarCreditoByID(idCredito);
+
             while (result.next()) {
                 estadoCredito = Integer.parseInt(result.getString("ddlEstadoCredito"));
             }
@@ -136,7 +128,7 @@ public class ControllerCredito extends HttpServlet {
             return Mensaje(false, "", "Ha ocurrido un error en el controlador " + e.getMessage());
         }
     }
-    
+
     public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
         Map<String, String> mensaje = new LinkedHashMap<>();
         if (entrada) {
@@ -150,15 +142,15 @@ public class ControllerCredito extends HttpServlet {
         String salida = new Gson().toJson(mensaje);
         return salida;
     }
-    
+
     public String consultar(int id) {
         String salida;
         respuesta = new LinkedHashMap<>();
-        result = null;
+        ResultSet result = null;
         try {
-            
-            result= daoModelCredito.buscarCreditoByID(id);
-            
+
+            result = daoModelCredito.buscarCreditoByID(id);
+
             while (result.next()) {
                 respuesta.put("idCredito", result.getString("idCredito"));
                 respuesta.put("documentoUsuario", result.getString("documentoUsuario"));
@@ -175,10 +167,11 @@ public class ControllerCredito extends HttpServlet {
         salida = new Gson().toJson(respuesta);
         return salida;
     }
-    
+
     public String getTableCredito() {
         List<String[]> lista = new ArrayList<>();
         try {
+            ResultSet result = null;
             daoModelCredito = new ModelCredito();
             result = daoModelCredito.ListAll();
             while (result.next()) {

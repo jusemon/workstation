@@ -12,12 +12,16 @@ import Model.DTO.ObjDetalleUsuario;
 import Model.Data.ModelAcudiente;
 import Model.Data.ModelEstudiante;
 import Model.Data.ModelClase;
+import Model.Data.ModelCurso;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +43,7 @@ public class ControllerEstudiante extends HttpServlet {
     public ObjDetalleUsuario _objDetalleUsuario = new ObjDetalleUsuario();
     public ModelAcudiente daoModelAcudiente = new ModelAcudiente();
     public ObjAcudiente _objAcudiente = new ObjAcudiente();
-    ModelClase daoModelFicha = new ModelClase();
+    public ModelCurso daoModelCurso = new ModelCurso();
     SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
     Map<String, String> respuesta;
@@ -163,6 +167,7 @@ public class ControllerEstudiante extends HttpServlet {
                     } catch (ParseException ex) {
                         String salida = Mensaje(false, "", "A ocurrido un error con la fecha de nacimiento");
                         response.getWriter().write(salida);
+
                     }
                     break;
                 }
@@ -218,7 +223,7 @@ public class ControllerEstudiante extends HttpServlet {
                 arreglo[4] = result.getString("emailUsuario").trim();
                 arreglo[5] = "<a class=\"btn-sm btn-success btn-block \" href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + arreglo[0] + "', 'Preinscrito')\">\n"
                         + "<span class=\"glyphicon glyphicon-search\"></span></a>";
-                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + arreglo[0] + "', 'Preinscrito', 'Inscribir')\">\n"
+                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\"  onclick=\"estudiante.myAjax('Consultar','" + arreglo[0] + "', 'Preinscrito', 'Inscribir', " + result.getString("idCurso") + ")\">\n"
                         + "<span class=\"glyphicon glyphicon-bookmark\"></span></a>";
                 lista.add(arreglo);
             }
@@ -246,45 +251,6 @@ public class ControllerEstudiante extends HttpServlet {
         String salida = new Gson().toJson(mensaje);
         return salida;
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
     private String Consultar(String id, String tipo) {
         ResultSet result = null;
@@ -332,14 +298,25 @@ public class ControllerEstudiante extends HttpServlet {
     }
 
     private String Formalizar(HttpServletRequest request) throws ParseException {
+        Map<String, Object> objetos = new LinkedHashMap<>();
         Object[] datosEstudiante = ObtenerDatosFormulario(request);
         _objUsuario = (ObjUsuario) datosEstudiante[0];
         _objDetalleUsuario = (ObjDetalleUsuario) datosEstudiante[1];
-        daoModelEstudiante.AddInscrito(_objUsuario, _objDetalleUsuario);
         if (datosEstudiante == null) {
-            return Mensaje(false, "", "Uno o mas campos contienen datos incorrectos.");
+            objetos.put("tipo", "error");
+            objetos.put("mensaje", "Uno o mas campos contienen datos incorrectos. 1");
+        } else {
+            daoModelEstudiante = new ModelEstudiante();
+            String[] respuestaBD = daoModelEstudiante.AddInscrito(_objUsuario, _objDetalleUsuario);
+            daoModelEstudiante.Signout();
+            objetos.put("tipo", respuestaBD[0]);
+            objetos.put("mensaje", respuestaBD[1]);
         }
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Object aux = new Gson().fromJson(Consultar(_objUsuario.getDocumentoUsuario(), null), Object.class);
+        objetos.put("estudiante", aux);
+        objetos.put("idCurso", request.getParameter("idCurso"));
+        String salida = new Gson().toJson(objetos);
+        return salida;
     }
 
     private Object[] ObtenerDatosFormulario(HttpServletRequest request) throws ParseException {
@@ -358,7 +335,7 @@ public class ControllerEstudiante extends HttpServlet {
                 && Validador.validarString(request.getParameter("txtPass").trim())) {
 
             String tipoDocumento = request.getParameter("ddlIdentificacion").trim();
-            int numeroIdentificacion = Integer.parseInt(request.getParameter("txtIdentificacion").trim());
+            long numeroIdentificacion = Long.parseLong(request.getParameter("txtIdentificacion").trim());
             String identificacion = tipoDocumento + numeroIdentificacion;
             String nombre = request.getParameter("txtNombre").trim();
             String apellido = request.getParameter("txtApellido").trim();
@@ -393,11 +370,50 @@ public class ControllerEstudiante extends HttpServlet {
             _objUsuario.setEstadoUsuario(estado);
             _objUsuario.setPassword(pass);
             resultado[0] = _objUsuario;
-            resultado[2] = _objDetalleUsuario;
+            resultado[1] = _objDetalleUsuario;
             return resultado;
         } else {
             return null;
         }
     }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
 
 }

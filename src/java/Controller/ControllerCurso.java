@@ -30,7 +30,6 @@ public class ControllerCurso extends HttpServlet {
     ModelCurso daoModelCurso = new ModelCurso();
     ModelCategoriaCurso daoModelCategoriaCurso = new ModelCategoriaCurso();
     Map<String, String> respuesta;
-    ResultSet result;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -195,26 +194,13 @@ public class ControllerCurso extends HttpServlet {
     public String consultar(int id, String tipo) {
         String salida;
         respuesta = new LinkedHashMap<>();
-        result = null;
         try {
             daoModelCurso.getConnection();
             if (tipo.equals("Seminario")) {
-                result = daoModelCurso.buscarSeminarioPorID(id);
+                respuesta = daoModelCurso.buscarSeminarioPorID(id);
             } else {
-                result = daoModelCurso.buscarCursoPorID(id);
+                respuesta = daoModelCurso.buscarCursoPorID(id);
             }
-            while (result.next()) {
-                respuesta.put("idCurso", result.getString("idCurso"));
-                respuesta.put("nombreCurso", result.getString("nombreCurso"));
-                respuesta.put("cantidadClases", result.getString("cantidadClases"));
-                respuesta.put("horasPorClase", result.getString("horasPorClase"));
-                respuesta.put("estadoCurso", result.getString("estadoCurso"));
-                respuesta.put("precioCurso", result.getString("precioCurso"));
-                respuesta.put("descripcionCurso", result.getString("descripcionCurso"));
-                respuesta.put("idCategoriaCurso", result.getString("idCategoriaCurso"));
-                respuesta.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
-            }
-
         } catch (Exception e) {
             System.err.println(e.getMessage());
             Mensaje(false, "", "Ha ocurrido un error en el Controller " + e.getMessage());
@@ -227,20 +213,18 @@ public class ControllerCurso extends HttpServlet {
     }
 
     public String cambiarEstado(int id, String tipo) {
+        respuesta = new LinkedHashMap<>();
         int estado = 0;
         try {
             daoModelCurso.getConnection();
-            result = null;
             if (tipo == null) {
-                result = daoModelCurso.buscarCursoPorID(id);
+                respuesta = daoModelCurso.buscarCursoPorID(id);
             } else if (tipo.equals("Seminario")) {
-                result = daoModelCurso.buscarSeminarioPorID(id);
+                respuesta = daoModelCurso.buscarSeminarioPorID(id);
             } else {
-                result = daoModelCurso.buscarCursoPorID(id);
+                respuesta = daoModelCurso.buscarCursoPorID(id);
             }
-            while (result.next()) {
-                estado = Integer.parseInt(result.getString("estadoCurso"));
-            }
+            estado = Integer.parseInt(respuesta.get("estadoCurso"));
             estado = estado > 0 ? 0 : 1;
             _objCurso = new ObjCurso();
             _objCurso.setIdCurso(id);
@@ -257,23 +241,10 @@ public class ControllerCurso extends HttpServlet {
     public String getCursosDisponibles() {
         List<Map> lista = new ArrayList<>();
         respuesta = null;
-        result = null;
         try {
             daoModelCurso.getConnection();
-            result = daoModelCurso.ListCursosDisponibles();
-            while (result.next()) {
-                respuesta = new LinkedHashMap<>();
-                respuesta.put("idCurso", result.getString("idCurso"));
-                respuesta.put("nombreCurso", result.getString("nombreCurso"));
-                respuesta.put("cantidadClases", result.getString("cantidadClases"));
-                respuesta.put("horasPorClase", result.getString("horasPorClase"));
-                respuesta.put("estadoCurso", result.getString("estadoCurso"));
-                respuesta.put("descripcionCurso", result.getString("descripcionCurso"));
-                respuesta.put("precioCurso", result.getString("precioCurso"));
-                respuesta.put("idCategoriaCurso", result.getString("idCategoriaCurso"));
-                respuesta.put("nombreCategoriaCurso", result.getString("nombreCategoriaCurso"));
-                lista.add(respuesta);
-            }
+            lista = daoModelCurso.ListCursosDisponibles();
+
         } catch (Exception e) {
             respuesta = new LinkedHashMap<>();
             respuesta.put("mensaje", "Ups, al parecer ha ocurrio un error: " + e + ".");
@@ -285,38 +256,36 @@ public class ControllerCurso extends HttpServlet {
         }
         String salida = new Gson().toJson(lista);
         return salida;
-
     }
 
     public String getSeminariosDisponibles() {
         String resultado = "";
+        List<Map> lista = new ArrayList<>();
         respuesta = null;
-        result = null;
-
         try {
             daoModelCurso.getConnection();
-            result = daoModelCurso.ListSeminariosDisponibles();
-            while (result.next()) {
+            lista = daoModelCurso.ListSeminariosDisponibles();
+            for (Map result : lista) {
                 resultado += "<div class=\"col-md-6\">\n"
                         + "<div class=\"panel panel-default\">\n"
                         + "<div class=\"panelCursos-Heading\">\n"
-                        + "<div class=\"panel-title text-center\">" + result.getString("nombreCurso") + "</div>\n"
+                        + "<div class=\"panel-title text-center\">" + result.get("nombreCurso") + "</div>\n"
                         + "</div>\n"
                         + "<div class=\"panel-body\">\n"
                         + "<div class=\"row\">\n"
                         + "<div class=\"col-md-6\">Precio:\n"
-                        + "<label id=\"precio\">" + result.getString("precioCurso") + "</label>\n"
+                        + "<label id=\"precio\">" + result.get("precioCurso") + "</label>\n"
                         + "</div>\n"
                         + "<div class=\"col-md-6\">Clases:\n"
-                        + "<label id=\"clases\">" + result.getString("cantidadClases") + "</label>\n"
+                        + "<label id=\"clases\">" + result.get("cantidadClases") + "</label>\n"
                         + "</div>\n"
                         + "</div>\n"
                         + "<div class=\"row\">\n"
                         + "<div class=\"col-md-6\">Horas (Por Clase):\n"
-                        + "<label id=\"horas\">" + result.getString("horasPorClase") + "</label>\n"
+                        + "<label id=\"horas\">" + result.get("horasPorClase") + "</label>\n"
                         + "</div>\n"
                         + "<div class=\"col-md-5\">\n"
-                        + "<button class=\"btn btn-sm btn-default\" id=\"btnPreincripcion\" onclick=\"seminario.preinscripcion(" + result.getString("idCurso") + ", this)\">Preinscribirse</button>\n"
+                        + "<button class=\"btn btn-sm btn-default\" id=\"btnPreincripcion\" onclick=\"seminario.preinscripcion(" + result.get("idCurso") + ", this)\">Preinscribirse</button>\n"
                         + "</div>\n"
                         + "</div>\n"
                         + "</div>\n"
@@ -337,7 +306,7 @@ public class ControllerCurso extends HttpServlet {
 
     public String getTableCursos() {
         List<String[]> lista = new ArrayList<>();
-        result = null;
+        ResultSet result = null;
         try {
             daoModelCurso.getConnection();
             result = daoModelCurso.ListAll();
@@ -373,7 +342,7 @@ public class ControllerCurso extends HttpServlet {
 
     public String getTableSeminarios() {
         List<String[]> lista = new ArrayList<>();
-        result = null;
+        ResultSet result = null;
         try {
             daoModelCurso.getConnection();
             result = daoModelCurso.ListAll("Seminarios");
@@ -406,7 +375,7 @@ public class ControllerCurso extends HttpServlet {
 
     public String getOptionsCursos() {
         String OptionsCursos = "";
-        result = null;
+        ResultSet result = null;
         try {
             daoModelCurso.getConnection();
             result = daoModelCurso.ListAll();

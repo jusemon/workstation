@@ -604,10 +604,11 @@ var abono = {
 };
 
 var estudiante = {
-    myAjax: function (accion, id, tipo, aux) {
+    myAjax: function (accion, id, tipo, aux, aux2) {
         var form = $('#form_estudiante');
         $(form).off();
         $(form).on('submit', function () {
+            $('#miPopupEstudiante').find('#ddlIdentificacion').attr('disabled', false);
             $.ajax({
                 type: $(form).attr('method'),
                 url: $(form).attr('action'),
@@ -616,12 +617,11 @@ var estudiante = {
                     if (accion === 'Consultar') {
                         if (tipo == 'Editar') {
                             estudiante.editar(data);
-
                         } else if (tipo == 'Matricular') {
                             estudiante.matricular(data);
                         } else if (tipo == 'Preinscrito') {
                             if (aux === 'Inscribir') {
-                                estudiante.preinscribir(data);
+                                estudiante.preinscribir(data, aux2);
                             } else
                                 estudiante.consultarPreinscrito(data);
 
@@ -637,8 +637,8 @@ var estudiante = {
                     }
                     else if (accion === 'getOptionsFichas') {
                         clase.cargarOpciones(data);
-                    } else if (accion==='Formalizar Inscripción') {
-                        mensaje(data);
+                    } else if (accion === 'Formalizar Inscripción') {
+                        estudiante.formalizar(data);
                     }
                 }
             });
@@ -702,10 +702,11 @@ var estudiante = {
         $('#miPopupEstudiante').find('#txtDireccion').parents('.row:first').hide();
         $('#miPopupEstudiante').find('#radioGeneroFemenino').parents('.row:first').hide();
     },
-    preinscribir: function (data) {
+    preinscribir: function (data, idCurso) {
         limpiar("#form_estudiante");
         estudiante.consultar(data);
         $('#miPopupEstudiante').find('#titulo').empty();
+        $('#miPopupEstudiante').find('#idCurso').val(idCurso);
         $('#miPopupEstudiante').find('#titulo').append('Formalizar Inscripcion');
         $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Formalizar Inscripción').attr('disabled', false);
         $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', false);
@@ -713,6 +714,8 @@ var estudiante = {
         $('#miPopupEstudiante').find('#radioNoBeneficiario').prop('checked', false);
         $('#miPopupEstudiante').find('#radioSiBeneficiario').prop('checked', false);
         habilitar("#form_estudiante");
+        $('#miPopupEstudiante').find('#txtIdentificacion').attr('readOnly', true);
+        $('#miPopupEstudiante').find('#ddlIdentificacion').attr('disabled', true);
         $('#miPopupEstudiante').modal('show');
     },
     registrar: function () {
@@ -746,6 +749,16 @@ var estudiante = {
     },
     actualizarTabla: function () {
         tablaEstudiante.ajax.reload();
+    },
+    formalizar: function (data) {
+        mensaje(data);
+        if (data['tipo'] !== 'error') {
+            $('#miPopupEstudiante').modal('hide');
+            estudiante.matricular(data['estudiante']);
+            $('#miPopupMatricula').find('#idCursoMatricula option').prop('selected', false).filter('[value="' + data['idCurso'] + '"]').prop('selected', true);
+            curso.seleccionar(data['idCurso']);
+            preinscrito.actualizarTabla();
+        }
     }
 };
 
