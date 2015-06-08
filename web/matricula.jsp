@@ -65,13 +65,12 @@
                     <table id="tblMatriculas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th class="text-center">Código</th>
                                 <th class="text-center">Cliente</th>
                                 <th class="text-center">Curso</th>
-                                <th class="text-center">Fecha Inicio</th>
-                                <th class="text-center">Fecha Fin</th>
-                                <th class="text-center">Estado</th>
-                                <th class="text-center">Editar</th>
+                                <th class="text-center">Clases</th>
+                                <th class="text-center">Clases Asistidas</th>                                
+                                <th class="text-center">Consultar</th>
+                                <th class="text-center">Marcar Asistencia</th>
                             </tr>
                         </thead>
                         <tbody>

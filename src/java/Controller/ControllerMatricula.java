@@ -141,15 +141,16 @@ public class ControllerMatricula extends HttpServlet {
             daoModelMatricula = new ModelMatricula();
             result = daoModelMatricula.ListMatriculados();
             while (result.next()) {
-                arreglo = new String[7];
-                arreglo[0] = result.getString("").trim();
-                arreglo[1] = result.getString("").trim();
-                arreglo[2] = result.getString("").trim();
-                arreglo[3] = result.getString("").trim();
-                arreglo[4] = result.getString("").trim();
-                arreglo[5] = result.getString("").trim();
-                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"matricula.consultar(" + result.getString("").trim() + ")\">"
-                        + "<span class=\"glyphicon glyphicon-pencil\"></span></a>";
+                arreglo = new String[6];
+                arreglo[0] = result.getString("documentoUsuario").trim();
+                arreglo[1] = result.getString("nombreCurso").trim();
+                arreglo[2] = result.getString("numeroClases").trim();
+                //arreglo[3] = result.getString("numeroClasesFaltantes").trim();
+                arreglo[3] = result.getString("numeroClasesAsistidas").trim();
+                arreglo[4] = "<a class=\"btn-sm btn-success btn-block \" href=\"javascript:void(0)\"  onclick=\"matricula.consultar('" + result.getString("documentoUsuario").trim() + "'," + result.getString("idCurso").trim() + ")\">"
+                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
+                arreglo[5] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"matricula.asistencia('" + result.getString("documentoUsuario").trim() + "'," + result.getString("idCurso").trim() + ")\">"
+                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
                 lista.add(arreglo);
             }
         } catch (Exception e) {

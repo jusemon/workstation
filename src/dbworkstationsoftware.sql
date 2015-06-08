@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-06-2015 a las 04:14:46
+-- Tiempo de generación: 08-06-2015 a las 05:47:34
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -400,14 +400,20 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudiantesConClasesActivas`()
 BEGIN
     SELECT 
-        DISTINCT  usu.`documentoUsuario` as `documentoUsuario`, 
+        usu.`documentoUsuario` as `documentoUsuario`, 
         `nombreCurso`,  
-        (select count(`idClase`) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso` and cl.`estadoAsistencia`=0) as numeroClases
+        (select count(`idClase`) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso`) as "numeroClases",
+        (select count(`idClase`) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso` and cl.`estadoAsistencia`=0) as "numeroClasesFaltantes",
+         ROUND("numeroClases" - "numeroClasesFaltantes" ,0) as numeroClasesAsistidas,
+        (select max(fecha) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso` and cl.`estadoAsistencia`=1) as fechaUltimaAsistencia,
+        cu.`idCurso` as idCurso
     FROM `tblclase` cl 
         inner join `tblcurso` cu 
         on(cl.`idCurso` = cu.`idCurso`)
         inner join tblusuario usu 
-        on (cl.`documentoUsuario`=usu.`documentoUsuario`);
+        on (cl.`documentoUsuario`=usu.`documentoUsuario`)
+    GROUP BY usu.`documentoUsuario`
+    ;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarEstudiantesConClasesSinPagar`()
@@ -689,7 +695,15 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarClase`(
     IN `idCur` INT,
     IN `documentoUsuar` VARCHAR(30)
 )
-BEGIN    
+BEGIN
+declare msg varchar(60);    
+    IF (exists(select `documentoUsuario` from tblclase WHERE `estadoPago` = 0  and `documentoUsuario` = `documentoUsuar` and `idCurso` = `idCur`)) then
+		set msg= CONVERT('Este estudiante cuenta con clases sin pagar de este curso' using utf8);
+		select msg as mensaje, 'error' as tipo;
+    elseif (exists(select `documentoUsuario` from tblclase WHERE `estadoAsistencia` = 0  and `documentoUsuario` = `documentoUsuar` and `idCurso` = `idCur`)) then
+		set msg= CONVERT('Este estudiante cuenta con clases sin asistir de este curso' using utf8);
+		select msg as mensaje, 'error' as tipo;
+    else
     INSERT INTO tblclase
     (
         `idCurso`,
@@ -701,6 +715,7 @@ BEGIN
         documentoUsuar,
         (SELECT `precioCurso`/`cantidadClases` FROM `tblcurso` WHERE `idCurso` = idCur)
     );    
+END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCompra`(
@@ -1242,14 +1257,14 @@ CREATE TABLE IF NOT EXISTS `tblclase` (
   `precioClase` float NOT NULL,
   `idCurso` int(11) NOT NULL,
   `documentoUsuario` varchar(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tblclase`
 --
 
 INSERT INTO `tblclase` (`idClase`, `fecha`, `estadoPago`, `estadoAsistencia`, `creditoCreado`, `precioClase`, `idCurso`, `documentoUsuario`) VALUES
-(1, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
+(1, NULL, b'1', b'1', b'0', 8000, 5, 'CC1017225673'),
 (2, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
 (3, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
 (4, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
@@ -1272,8 +1287,7 @@ INSERT INTO `tblclase` (`idClase`, `fecha`, `estadoPago`, `estadoAsistencia`, `c
 (21, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
 (22, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
 (23, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
-(24, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805'),
-(25, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805');
+(24, NULL, b'0', b'0', b'0', 12000, 7, 'CC94110325805');
 
 -- --------------------------------------------------------
 
@@ -1753,7 +1767,7 @@ MODIFY `idCategoriaCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 -- AUTO_INCREMENT de la tabla `tblclase`
 --
 ALTER TABLE `tblclase`
-MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
+MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT de la tabla `tblcredito`
 --

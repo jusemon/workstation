@@ -1609,7 +1609,7 @@ seminario.cargar();
 estudiante.cargar();
 categoriaArticulo.cargar();
 articulo.cargar();
-//matricula.cargar();
+matricula.cargar();
 empresa.cargar();
 usuario.cargar();
 //credito.cargar()
