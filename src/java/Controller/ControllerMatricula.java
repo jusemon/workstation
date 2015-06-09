@@ -9,7 +9,6 @@ import Controller.Validaciones.Validador;
 import Model.DTO.ObjClase;
 import Model.DTO.ObjCurso;
 import Model.DTO.ObjUsuario;
-import Model.Data.ModelClase;
 import Model.Data.ModelMatricula;
 import Model.Data.ModelPreinscripcion;
 import com.google.gson.Gson;
@@ -168,7 +167,11 @@ public class ControllerMatricula extends HttpServlet {
             _objUsuario.setDocumentoUsuario(request.getParameter("txtDocumento"));
             _objCurso.setIdCurso(Integer.parseInt(request.getParameter("idCursoMatricula")));
             _objCurso.setCantidadClases(Integer.parseInt(request.getParameter("txtClases")));
-            return Mensaje(daoModelMatricula.Add(_objUsuario, _objCurso), "Se ha matriculado con exito", "Ha ocurrido un error al intentar registrar la matricula");
+            Map<String, String> objetos = new LinkedHashMap<>();
+            String[] respuestaBD = daoModelMatricula.Add(_objUsuario, _objCurso);
+            objetos.put("tipo", respuestaBD[0]);
+            objetos.put("mensaje", respuestaBD[1]);
+            return new Gson().toJson(objetos);
         }
         return Mensaje(false, null, "Uno o mas campos contienen datos incorrectos.");
     }

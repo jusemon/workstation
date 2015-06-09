@@ -23,10 +23,9 @@ public class ModelClase extends ConnectionDB {
         getConnection();
     }
 
-    public boolean Add(ObjClase _objClase) {
-        boolean objReturn = false;
+    public String[] Add(ObjClase _objClase) {
+        String[] objReturn = new String[2];
         String sql = "call spIngresarClase(?,?,?,?,?,?,?)";
-
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
@@ -37,13 +36,17 @@ public class ModelClase extends ConnectionDB {
             pStmt.setInt(5, _objClase.getEstadoPago());
             pStmt.setInt(6, _objClase.getCreditoCreado());
             pStmt.setFloat(7, _objClase.getPrecioClase());
-            int updateCount = pStmt.executeUpdate();
-            if (updateCount > 0) {
-                objReturn = true;
+            ResultSet rs = pStmt.executeQuery();
+            while (rs.next()) {
+                objReturn[0] = rs.getString("tipo");
+                objReturn[1] = rs.getString("mensaje");
+                if (objReturn[0].equals("error")) {
+                    return objReturn;
+                }
             }
-
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            objReturn[0] = "error";
+            objReturn[1] = "Ha ocurrido un error: " + e;
         }
         return objReturn;
     }

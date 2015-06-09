@@ -37,32 +37,56 @@ public class ModelMatricula extends ConnectionDB {
         return rs;
     }
 
-    public boolean Add(ObjUsuario _objUsuario, ObjCurso _objCurso) {
+    public String[] Add(ObjUsuario _objUsuario, ObjCurso _objCurso) {
         int cantidadClases = _objCurso.getCantidadClases();
-        boolean objReturn = false;
-        String sql = "call spIngresarClase(?,?)";
-
+        String[] objReturn = new String[2];
+        String sql = "call spContarClasesRestantes(?,?,?)";
+        String sql2 = "call spIngresarClase(?,?)";
         try {
             getStmt();
             connection.setAutoCommit(false);
             pStmt = connection.prepareCall(sql);
-            for (int i = 0; i < cantidadClases; i++) {
-                pStmt.setInt(1, _objCurso.getIdCurso());
-                pStmt.setString(2, _objUsuario.getDocumentoUsuario());
-                if (pStmt.executeUpdate() > 0) {
-                    objReturn = true;
+            pStmt.setInt(1, _objCurso.getIdCurso());
+            pStmt.setString(2, _objUsuario.getDocumentoUsuario());
+            pStmt.setInt(3, cantidadClases);
+            ResultSet rs = pStmt.executeQuery();
+            int numero = cantidadClases;
+            while (rs.next()) {
+                numero = rs.getInt("Restantes");
+            }
+            if (numero >= 0) {
+                pStmt = connection.prepareCall(sql2);
+                for (int i = 0; i < cantidadClases; i++) {
+                    pStmt.setInt(1, _objCurso.getIdCurso());
+                    pStmt.setString(2, _objUsuario.getDocumentoUsuario());
+                    ResultSet rs2 = pStmt.executeQuery();
+                    while (rs2.next()) {
+                        objReturn[0] = rs2.getString("tipo");
+                        objReturn[1] = rs2.getString("mensaje");
+                        if (objReturn[0].equals("error")) {
+                            connection.rollback();
+                            return objReturn;
+                        }
+                    }
+                }
+                connection.commit();
+            } else {
+                objReturn[0] = "error";
+                if ((cantidadClases + numero) == 0) {
+                    objReturn[1] = "Ya se encuentra matriculado a todas las clases de este curso";
                 } else {
-                    connection.rollback();
-                    break;
+                    objReturn[1] = "Solo se puede matricular a " + (cantidadClases + numero) + " clases";
                 }
             }
-            connection.commit();
+            return objReturn;
         } catch (SQLException sqlE) {
-            System.out.println(sqlE.getMessage());
             try {
+                objReturn[0] = "error";
+                objReturn[1] = "Ha ocurrido un error: " + sqlE;
                 connection.rollback();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                objReturn[0] = "error";
+                objReturn[1] = "Ha ocurrido un error: " + e;
             }
         }
         return objReturn;

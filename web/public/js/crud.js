@@ -895,6 +895,7 @@ var matricula = {
             data: $('#formMatricula').serialize() + '&action=Registrar',
             success: function (data, textStatus, jqXHR) {
                 $('#miPopupMatricula').modal('hide');
+                matricula.actualizarTabla();
                 mensaje(data);
             }
         });
