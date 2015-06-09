@@ -11,6 +11,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -87,5 +91,40 @@ public class ModelUsuario extends ConnectionDB {
             System.err.println("SQLException: " + e.getMessage());
         }
         return rs;
+    }
+
+    public List<Map<String, String>> ListClientesYEstudiantes() {
+        ResultSet rs = null;
+        Map<String, String> respuesta = null;
+        List<Map<String, String>> salida = new ArrayList<>();
+        String sql = "call spConsultarClientesYEstudiantes()";
+        try {
+            getStmt();
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                respuesta = new LinkedHashMap<>();
+                respuesta.put("tipoDocumento", rs.getString("documentoUsuario").substring(0, 2));
+                respuesta.put("numeroDocumento", rs.getString("documentoUsuario").substring(2));
+                respuesta.put("fechaNacimiento", rs.getString("fechaNacimiento"));
+                respuesta.put("nombreUsuario", rs.getString("nombreUsuario"));
+                respuesta.put("apellidoUsuario", rs.getString("apellidoUsuario"));
+                respuesta.put("emailUsuario", rs.getString("emailUsuario"));
+                respuesta.put("password", rs.getString("password"));
+                respuesta.put("estadoUsuario", rs.getString("estadoUsuario"));
+                respuesta.put("idrol", rs.getString("idrol"));
+                respuesta.put("idDetalleUsuario", rs.getString("idDetalleUsuario"));
+                respuesta.put("direccionUsuario", rs.getString("direccionUsuario"));
+                respuesta.put("telefonoFijo", rs.getString("telefonoFijo"));
+                respuesta.put("telefonoMovil", rs.getString("telefonoMovil"));
+                respuesta.put("generoUsuario", rs.getString("generoUsuario"));
+                respuesta.put("documentoAcudiente", rs.getString("documentoAcudiente"));
+                respuesta.put("estadoBeneficiario", rs.getString("estadoBeneficiario"));
+                salida.add(respuesta);
+            }
+            return salida;
+        } catch (SQLException e) {
+            System.err.println("SQLException: " + e.getMessage());
+        }
+        return null;
     }
 }

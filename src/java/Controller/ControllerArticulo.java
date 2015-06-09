@@ -225,10 +225,11 @@ public class ControllerArticulo extends HttpServlet {
         Map<String, String> articulo;
         try {
             if (tipo != null) {
-                if (tipo == "Venta") {
+                if (tipo.equals("Venta")) {
                     result = daoModelArticulo.ListOnlyExistencias();
+                } else {
+                    result = daoModelArticulo.ListAll();
                 }
-                result = daoModelArticulo.ListAll();
             } else {
                 result = daoModelArticulo.ListAll();
             }

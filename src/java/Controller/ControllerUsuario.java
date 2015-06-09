@@ -14,7 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -51,7 +53,7 @@ public class ControllerUsuario extends HttpServlet {
                         String tipoDocumento = null;
                         if (Validador.validarNumero(request.getParameter("ddlIdentificacion").trim())) {
                             System.out.println("ddl true");
-                            
+
                         } else {
                             System.out.println("ddl false");
                         }
@@ -132,8 +134,10 @@ public class ControllerUsuario extends HttpServlet {
 
                     break;
                 }
-                case "Enlistar": {
-
+                case "getOptionsClientes": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(getOptionsClientes());
                     break;
                 }
             }
@@ -152,6 +156,25 @@ public class ControllerUsuario extends HttpServlet {
         }
         String salida = new Gson().toJson(mensaje);
         return salida;
+    }
+
+    private String getOptionsClientes() {
+        List<Map<String, String>> resultado = daoModelUsuario.ListClientesYEstudiantes();
+        List<Object> salida = new ArrayList<>();
+        Map<String, String> aux = null;
+        String retorno = "";
+        if (resultado != null) {
+            for (Map<String, String> result : resultado) {
+                aux = new LinkedHashMap<>();
+                aux.put("id", result.get("tipoDocumento")+result.get("numeroDocumento"));
+                aux.put("text", result.get("tipoDocumento") + " " + result.get("numeroDocumento"));
+                salida.add(aux);
+            }            
+            retorno = new Gson().toJson(salida);           
+        } else {
+            return retorno;
+        }
+        return retorno;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -191,6 +214,6 @@ public class ControllerUsuario extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }// </editor-fold>   
 
 }

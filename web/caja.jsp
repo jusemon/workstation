@@ -221,6 +221,29 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="tipoMovimiento">
+                                                            El cliente esta registrado: 
+                                                        </label>
+                                                        <input id="tipoMovimiento" name="tipoMovimiento" type="checkbox" value="registrado" onchange="venta.cambioDeTipo(this.checked)"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="tipoMovimiento">
+                                                            Seleccione el Cliente:
+                                                        </label>
+                                                        <br/>
+                                                        <select id="clienteRegistrado" class="form-control" style="width: 100%">
+                                                            <option></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="form-group">
                                                     <label class="col-md-12" for="identificacion">
                                                         Identificación
@@ -264,16 +287,6 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                         <label id="numero" for="txtNumero">
                                                         </label>
                                                         <input name="txtNumero" id="txtNumero" type="text" class="form-control" placeholder="" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label  for="txtDocumentoCliente">
-                                                            Documento del Cliente
-                                                        </label>
-                                                        <input name="txtDocumentoCliente" id="txtDocumentoCliente" type="text" class="form-control" placeholder="" required>
                                                     </div>
                                                 </div>
                                             </div>

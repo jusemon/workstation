@@ -378,6 +378,24 @@ var clase = {
     }
 };
 
+var cliente = {
+    seleccionar: function (id) {
+        $.ajax({
+            url: "ControllerUsuario",
+            type: 'POST',
+            data: {
+                action: 'Consultar',
+                id: id
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#tabMovimientos').find('#txtIdentificacion').val(id.substring(2))
+                $('#tabMovimientos').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + id.substring(0, 2) + '"]').prop('selected', true);
+                $('#tabMovimientos').find('#txtNombre').val(data.nombreUsuario + ' ' + data.apellidoUsuario).attr('readOnly', true);
+            }
+        });
+    }
+}
+
 var seminario = {
     myAjax: function (accion, id, aux, typo) {
         var form = $('#formCurso');
@@ -662,7 +680,7 @@ var estudiante = {
         tipo = (tipo === 'CE') ? 'Cedula de Extranjeria' : tipo;
         $('#miPopupMatricula').find('#txtTipo').text(tipo);
         $('#miPopupMatricula').find('#txtDocumento').val(data['tipoDocumento'] + data['numeroDocumento']);
-        $('#miPopupMatricula').find('#idCursoMatricula option').prop('selected', false);
+        $('#miPopupMatricula').find('#idCursoMatricula option').prop('selected', false).attr('disabled', false);
         $('#miPopupMatricula').find('#txtPrecioCurso').empty().parents('.form-group:first').hide();
         $('#miPopupMatricula').find('#txtClases').val(null).parents('.row:first').hide();
         $('#miPopupMatricula').modal('show');
@@ -888,15 +906,35 @@ var usuario = {
 };
 
 var matricula = {
-    registrar: function () {
+    actualizarTabla: function () {
+        tablaMatricula.ajax.reload();
+    },
+    asistencia: function (documento, idCurso) {
+        matricula.consultar(documento, idCurso);
+    },
+    consultar: function (documento, idCurso) {
         $.ajax({
             url: "ControllerMatricula",
             type: 'POST',
-            data: $('#formMatricula').serialize() + '&action=Registrar',
+            data: {
+                documentoUsuario: documento,
+                idCurso: idCurso
+            },
             success: function (data, textStatus, jqXHR) {
-                $('#miPopupMatricula').modal('hide');
-                matricula.actualizarTabla();
-                mensaje(data);
+                $('#miPopupMatricula').find('#titulo').text('Asistencia Estudiante');
+                $('#miPopupMatricula').find('#txtNombre').text(data["nombreUsuario"] + " " + data["apellidoUsuario"]);
+                $('#miPopupMatricula').find('#txtIdentificacion').text(data['numeroDocumento']);
+                var tipo = data['tipoDocumento'];
+                tipo = (tipo === 'CC') ? 'Cedula' : tipo;
+                tipo = (tipo === 'TI') ? 'Tarjeta de Identidad' : tipo;
+                tipo = (tipo === 'RC') ? 'Registro Civil' : tipo;
+                tipo = (tipo === 'CE') ? 'Cedula de Extranjeria' : tipo;
+                $('#miPopupMatricula').find('#txtTipo').text(tipo);
+                $('#miPopupMatricula').find('#txtDocumento').val(data['tipoDocumento'] + data['numeroDocumento']);
+                $('#miPopupMatricula').find('#idCursoMatricula option').prop('selected', false).filter('[value="' + idCurso + '"]').prop('selected', true).attr('disabled', true);
+                $('#miPopupMatricula').find('#txtPrecioCurso').text(data['precioCurso']);
+                $('#miPopupMatricula').find('#txtClases').val(data['clases']);
+                $('#miPopupMatricula').modal('show');
             }
         });
     },
@@ -913,8 +951,17 @@ var matricula = {
             }
         });
     },
-    actualizarTabla: function () {
-        tablaMatricula.ajax.reload();
+    registrar: function () {
+        $.ajax({
+            url: "ControllerMatricula",
+            type: 'POST',
+            data: $('#formMatricula').serialize() + '&action=Registrar',
+            success: function (data, textStatus, jqXHR) {
+                $('#miPopupMatricula').modal('hide');
+                matricula.actualizarTabla();
+                mensaje(data);
+            }
+        });
     }
 };
 
@@ -1233,7 +1280,7 @@ var compra = {
                 data: $(form).serialize() + '&action=' + accion + '&id=' + id,
                 success: function (data) {
                     if (accion == 'Consultar') {
-                        $('#btnGestionCompras').tab('show')
+                        $('#btnGestionCompras').tab('show');
                         compra.consultar(data);
                     }
                     else if (accion === 'getOptionsCompra') {
@@ -1349,6 +1396,7 @@ var compra = {
         link.click();
     },
     show: function (tipo, datos) {
+        $('#clienteRegistrado').parents('.row:first').hide();
         $("#ddlArticulos").off();
         $("#ddlArticulos").on("select2:select", function (e) {
             var id = e.params.data.id;
@@ -1361,7 +1409,10 @@ var compra = {
         $('#tabMovimientos').find('#nombre').text('Nombre del Proveedor');
         $('#tabMovimientos').find('#numero').text('Numero de Factura ');
         $('#tabMovimientos').find('#total').text('Total compra');
-        $('#tabMovimientos').find('#txtDocumentoCliente').attr('disabled', true).parents('.row:first').hide();
+        document.getElementById('tipoMovimiento').checked = false;
+        $('#tabMovimientos').find('#tipoMovimiento').parents('.row:first').hide();
+        $('#tabMovimientos').find('#txtIdentificacion').attr('disabled', true).parents('.row:first').hide();
+        $('#tabMovimientos').find('#ddlIdentificacion').attr('disabled', true);
         if (tipo === 'Registrar') {
             $('#tabMovimientos').find('#titulo').text('Registrar Compra');
             $('#tabMovimientos').find('#txtNumero').attr('readOnly', false);
@@ -1407,6 +1458,48 @@ var venta = {
             salida += elementos.cantidad * elementos.precioArticulo;
         });
         $('#tabCompras').find('#txtTotalCompra').val(salida);
+    },
+    cambioDeTipo: function (checkBox) {
+        if (checkBox) {
+            $.ajax({
+                type: 'POST',
+                url: 'ControllerUsuario',
+                dataType: 'JSON',
+                data: {
+                    action: 'getOptionsClientes'
+                },
+                success: function (data) {
+                    try {
+                        $('#clienteRegistrado').select2();
+                        $('#clienteRegistrado').select2('destroy');
+                    } catch (err) {
+                    }
+                    $("#clienteRegistrado").select2({
+                        data: data,
+                        language: "es",
+                        placeholder: "Selecciona el cliente",
+                        allowClear: true
+                    });
+                    $('#tabMovimientos').find('#txtIdentificacion').attr('readOnly', true);
+                    $('#tabMovimientos').find('#ddlIdentificacion').attr('readOnly', true);
+                    $('#tabMovimientos').find('#txtNombre').attr('readOnly', true);
+                    $('#clienteRegistrado').parents('.row:first').show();
+                    $("#clienteRegistrado").off();
+                    $("#clienteRegistrado").on("select2:select", function (e) {
+                        var id = e.params.data.id;
+                        if (id != '-1') {
+                            cliente.seleccionar(id);
+                        }
+                    });
+                }
+            });
+        }
+        $('#clienteRegistrado').parents('.row:first').hide();
+        $('#tabMovimientos').find('#txtIdentificacion').attr('readOnly', false);
+        $('#tabMovimientos').find('#ddlIdentificacion').attr('readOnly', false);
+        $('#tabMovimientos').find('#txtNombre').val(null).attr('readOnly', false);
+        $('#tabMovimientos').find('#txtIdentificacion').val(null);
+        $('#tabMovimientos').find('#ddlIdentificacion option').prop('selected', false);
     },
     cargar: function () {
         tablaVenta = $('#tblVentas').DataTable({
@@ -1463,9 +1556,8 @@ var venta = {
             if (lista.length > 0) {
                 var nombre = $('#tabMovimientos').find('#txtNombre').val();
                 var numeroVenta = $('#tabMovimientos').find('#txtNumero').val();
-                var documentoCliente = $('#tabMovimientos').find('#txtDocumentoCliente').val();
+                var documentoCliente = $('#tabMovimientos').find('#ddlIdentificacion').val() + $('#tabMovimientos').find('#txtIdentificacion').val();
                 var total = $('#tabMovimientos').find('#txtTotalMovimiento').val();
-                alert(documentoUsuario);
                 $.ajax({
                     type: 'POST',
                     url: "ControllerVenta",
@@ -1473,8 +1565,7 @@ var venta = {
                         action: 'Registrar',
                         lista: lista,
                         size: lista.length,
-                        txtNombreCliente: nombre,
-                        txtNumeroVenta: numeroVenta,
+                        txtNombreCliente: nombre, txtNumeroVenta: numeroVenta,
                         txtTotalVenta: total,
                         documentoUsuario: documentoUsuario,
                         documentoCliente: documentoCliente
@@ -1484,6 +1575,7 @@ var venta = {
                         $("#ddlArticulos").val(null);
                         limpiar('#formMovimiento');
                         mensaje(data);
+                        venta.contador();
                         venta.actualizarTabla();
                     }
                 });
@@ -1504,6 +1596,9 @@ var venta = {
         link.click();
     },
     show: function (tipo, datos) {
+        $('#clienteRegistrado').parents('.row:first').hide();
+        document.getElementById('tipoMovimiento').checked = false;
+        $('#tabMovimientos').find('#tipoMovimiento').parents('.row:first').show();
         $("#ddlArticulos").off();
         $("#ddlArticulos").on("select2:select", function (e) {
             var id = e.params.data.id;
@@ -1516,8 +1611,10 @@ var venta = {
         $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
         $('#tabMovimientos').find('#numero').text('Numero de Venta');
         $('#tabMovimientos').find('#total').text('Total venta');
-        $('#tabMovimientos').find('#txtDocumentoCliente').attr('disabled', false).parents('.row:first').show();
         if (tipo === 'Registrar') {
+            $('#tabMovimientos').find('#ddlIdentificacion option').prop('selected', false);
+            $('#tabMovimientos').find('#ddlIdentificacion').attr('disabled', false);
+            $('#tabMovimientos').find('#txtIdentificacion').val(null).attr('readOnly', false).parents('.row:first').show();
             $('#tabMovimientos').find('#titulo').text('Registrar Venta');
             $('#tabMovimientos').find('#txtNumero').attr('readOnly', true);
             $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + fecha());
@@ -1532,7 +1629,9 @@ var venta = {
             $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + datos.Venta.fechaVenta);
             $('#tabMovimientos').find('#txtNombre').val(datos.Venta.nombreCliente).attr('readOnly', true);
             $('#tabMovimientos').find('#txtNumero').val(datos.Venta.numeroVenta).attr('readOnly', true);
-            $('#tabMovimientos').find('#txtDocumentoCliente').val(datos.Venta.documentoCliente).attr('readOnly', true);
+            $('#tabMovimientos').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + datos.Venta.documentoCliente.substring(0, 2) + '"]').prop('selected', true);
+            $('#tabMovimientos').find('#ddlIdentificacion').attr('disabled', true);
+            $('#tabMovimientos').find('#txtIdentificacion').val(datos.Venta.documentoCliente.substring(2)).attr('readOnly', true).parents('.row:first').show();
             $('#tabMovimientos').find('#txtTotalMovimiento').val(datos.Venta.totalVenta);
             $('#tabMovimientos').find('#ddlArticulos').attr('disabled', true).parents('.row:first').hide();
             $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide();

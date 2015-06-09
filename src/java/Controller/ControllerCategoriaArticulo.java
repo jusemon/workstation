@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerCategoriaArticulo extends HttpServlet {
 
-    public ModelCategoriaArticulo daoModelCategoriaArticulo;
+    public ModelCategoriaArticulo daoModelCategoriaArticulo = new ModelCategoriaArticulo();
     public ObjCategoriaArticulo _objCategoriaArticulo = new ObjCategoriaArticulo();
 
     /**
@@ -43,10 +43,9 @@ public class ControllerCategoriaArticulo extends HttpServlet {
 
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
-                
+
                 //<editor-fold defaultstate="collapsed" desc="Registrar una Categoría de Artículo">
                 case "Registrar": {
-                    daoModelCategoriaArticulo = new ModelCategoriaArticulo();
                     String nombreCategoriaArticulo = request.getParameter("txtNombre");
                     _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                     String salida = Mensaje(daoModelCategoriaArticulo.Add(_objCategoriaArticulo), "La categoría ha sido registrada", "Ha ocurrido un error al intentar registrar la categoría");
@@ -56,10 +55,9 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-                
+
                 //<editor-fold defaultstate="collapsed" desc="Editar una Categoría de Artículo">
                 case "Editar": {
-                    daoModelCategoriaArticulo = new ModelCategoriaArticulo();
                     int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoriaArticulo"));
                     String nombreCategoriaArticulo = request.getParameter("txtNombre");
                     _objCategoriaArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
@@ -71,7 +69,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-                
+
                 //<editor-fold defaultstate="collapsed" desc="Enlistar todas las Categorías de Artículo">
                 case "Enlistar": {
                     response.setContentType("application/json");
@@ -80,7 +78,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                     break;
                 }
                                 //</editor-fold>
-                
+
                 //<editor-fold defaultstate="collapsed" desc="Obtener las opciones de Categorías de Artículo">
                 case "getOptionsCategorias": {
                     response.setContentType("application/text");
@@ -97,7 +95,6 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         int contador = 0;
         List<String[]> lista = new ArrayList<>();
         String[] arreglo;
-        daoModelCategoriaArticulo = new ModelCategoriaArticulo();
         try {
             result = daoModelCategoriaArticulo.ListAll();
             while (result.next()) {
@@ -111,7 +108,6 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         } catch (Exception e) {
             System.err.println("Ha ocurrido un error" + e.getMessage());
         } finally {
-            daoModelCategoriaArticulo.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
@@ -121,7 +117,6 @@ public class ControllerCategoriaArticulo extends HttpServlet {
     public String getOptionsCategorias() {
         ResultSet result;
         String OptionsCategorias = "";
-        daoModelCategoriaArticulo = new ModelCategoriaArticulo();
         try {
             result = daoModelCategoriaArticulo.ListAll();
             while (result.next()) {
@@ -131,7 +126,6 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         } catch (Exception e) {
             OptionsCategorias = "Ha Ocurrido un error" + e.getMessage();
         } finally {
-            daoModelCategoriaArticulo.Signout();
         }
 
         return OptionsCategorias;
