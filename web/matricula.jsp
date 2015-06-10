@@ -305,12 +305,22 @@
                                                 </text>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="txtHoraClase">
+                                                        Pagar clase: 
+                                                    </label>
+                                                    <input type="checkbox" id="estadoPago" name="estadoPago"/>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>                                    
                                 </div>
                                 <div class="panel-footer">
                                     <div class="col-md-offset-3 col-md-6">
                                         <div class="form-group">
-                                            <input  class="btn btn-default btn-block" type="button" name="action" value="Matricular" onclick="matricula.registrar()">
+                                            <input id="btnMatricula"  class="btn btn-default btn-block" type="button" name="action">
                                         </div>
                                     </div>
                                 </div>

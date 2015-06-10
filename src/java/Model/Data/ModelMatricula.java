@@ -5,6 +5,7 @@
  */
 package Model.Data;
 
+import Model.DTO.ObjClase;
 import Model.DTO.ObjCurso;
 import Model.DTO.ObjUsuario;
 import Model.JDBC.ConnectionDB;
@@ -12,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -119,6 +121,10 @@ public class ModelMatricula extends ConnectionDB {
             System.err.println("SQLException:" + e.getMessage());
         }
         return resultado;
+    }
+
+    public Map<String, String> RegistrarAsistencia(List<ObjClase> clases) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -680,9 +680,11 @@ var estudiante = {
         tipo = (tipo === 'CE') ? 'Cedula de Extranjeria' : tipo;
         $('#miPopupMatricula').find('#txtTipo').text(tipo);
         $('#miPopupMatricula').find('#txtDocumento').val(data['tipoDocumento'] + data['numeroDocumento']);
-        $('#miPopupMatricula').find('#idCursoMatricula option').prop('selected', false).attr('disabled', false);
+        $('#miPopupMatricula').find('#idCursoMatricula').prop('selected', false).attr('disabled', false);
         $('#miPopupMatricula').find('#txtPrecioCurso').empty().parents('.form-group:first').hide();
         $('#miPopupMatricula').find('#txtClases').attr('readOnly', false).val(null).parents('.row:first').hide();
+        $('#miPopupMatricula').find('#estadoPago').attr('disabled', true).parents('.row:first').hide();
+        $('#miPopupMatricula').find('#btnMatricula').attr('value', 'Matricular').attr('onclick', 'matricula.registrar()').show();
         $('#miPopupMatricula').modal('show');
     },
     consultar: function (data) {
@@ -911,6 +913,9 @@ var matricula = {
     },
     asistencia: function (documento, idCurso) {
         matricula.consultar(documento, idCurso);
+        $('#miPopupMatricula').find('#estadoPago').attr('disabled', false).parents('.row:first').show();
+        $('#miPopupMatricula').find('#btnMatricula').attr('value', 'Ingresar').attr('onclick', 'matricula.registrarAsistencia()');
+        $('#miPopupMatricula').find('#btnMatricula').show();
     },
     consultar: function (documento, idCurso) {
         $.ajax({
@@ -932,26 +937,28 @@ var matricula = {
                  resultado.put("precioClase", rs.getString("precioClase"));
                  resultado.put("horasPorClase", rs.getString("horasPorClase"));
                  */
-
                 $('#miPopupMatricula').find('#titulo').text('Asistencia Estudiante');
                 $('#miPopupMatricula').find('#txtNombre').text(data["nombreUsuario"] + " " + data["apellidoUsuario"]);
                 $('#miPopupMatricula').find('#txtIdentificacion').text(data['documentoUsuario'].substring(2));
-                var tipo = data['documentoUsuario'].substring(0,2);
+                var tipo = data['documentoUsuario'].substring(0, 2);
                 tipo = (tipo === 'CC') ? 'Cedula' : tipo;
                 tipo = (tipo === 'TI') ? 'Tarjeta de Identidad' : tipo;
                 tipo = (tipo === 'RC') ? 'Registro Civil' : tipo;
                 tipo = (tipo === 'CE') ? 'Cedula de Extranjeria' : tipo;
                 $('#miPopupMatricula').find('#txtTipo').text(tipo);
                 $('#miPopupMatricula').find('#txtDocumento').val(data.documentoUsuario);
-                $('#miPopupMatricula').find('#idCursoMatricula').empty().append('<option value="'+idCurso+'">'+data['nombreCurso']+'</option>')
-                $('#miPopupMatricula').find('#idCursoMatricula option').prop('selected', false).filter('[value="' + idCurso + '"]').prop('selected', true).attr('disabled', true);
+                $('#miPopupMatricula').find('#idCursoMatricula').empty().append('<option value="' + idCurso + '">' + data['nombreCurso'] + '</option>')
+                $('#miPopupMatricula').find('#idCursoMatricula option').prop('selected', false).filter('[value="' + idCurso + '"]').prop('selected', true);
+                $('#miPopupMatricula').find('#idCursoMatricula').attr('disabled', true);
                 $('#miPopupMatricula').find('#txtPrecioCurso').text(data['precioCurso']);
                 $('#miPopupMatricula').find('#txtPrecioClases').text(data['precioClase']);
                 $('#miPopupMatricula').find('#txtHoraClase').text(data['horasPorClase']);
-                $('#miPopupMatricula').find('#txtClases').val(1).attr('readOnly', true);
+                $('#miPopupMatricula').find('#txtClases').val(1).attr('readOnly', true).parents('.row:first').show();
                 $('#miPopupMatricula').modal('show');
             }
         });
+        $('#miPopupMatricula').find('#btnMatricula').hide();
+        $('#miPopupMatricula').find('#estadoPago').attr('disabled', true).parents('.row:first').hide();
     },
     cargar: function () {
         tablaMatricula = $('#tblMatriculas').DataTable({
@@ -973,6 +980,19 @@ var matricula = {
             data: $('#formMatricula').serialize() + '&action=Registrar',
             success: function (data, textStatus, jqXHR) {
                 $('#miPopupMatricula').modal('hide');
+                matricula.actualizarTabla();
+                mensaje(data);
+            }
+        });
+    },
+    registrarAsistencia: function () {
+        $('#miPopupMatricula').find('#idCursoMatricula').attr('disabled', false);
+        $.ajax({
+            url: "ControllerMatricula",
+            type: 'POST',
+            data: $('#formMatricula').serialize() + '&action=RegistrarAsistencia',
+            success: function (data) {
+                $('#miPopupMatricula').find('#idCursoMatricula').attr('disabled', true);
                 matricula.actualizarTabla();
                 mensaje(data);
             }

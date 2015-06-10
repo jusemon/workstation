@@ -88,8 +88,10 @@ public class ControllerMatricula extends HttpServlet {
                 }
                 //</editor-fold>
 
-                case "Seleccion": {
-
+                case "RegistrarAsistencia": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(RegistrarAsistencia(request));
                     break;
                 }
             }
@@ -118,6 +120,8 @@ public class ControllerMatricula extends HttpServlet {
             }
         } catch (Exception e) {
             System.err.println("Ha ocurrido un error." + e.getMessage());
+        } finally {
+            daoModelMatricula.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
@@ -215,8 +219,36 @@ public class ControllerMatricula extends HttpServlet {
     private String Consultar(HttpServletRequest request) {
         String documento = request.getParameter("documentoUsuario");
         int idCurso = Integer.parseInt(request.getParameter("idCurso"));
-        Map<String, String> respuesta = daoModelMatricula.BuscarMatriculaPorDocumentoYIdCurso(documento,idCurso);
+        daoModelMatricula = new ModelMatricula();
+        Map<String, String> respuesta = daoModelMatricula.BuscarMatriculaPorDocumentoYIdCurso(documento, idCurso);
+        daoModelMatricula.Signout();
         String salida = new Gson().toJson(respuesta);
         return salida;
+    }
+
+    private String RegistrarAsistencia(HttpServletRequest request) {
+        /**
+         * txtDocumento:CC1017225673 idCursoMatricula:5 txtClases:1
+         * estadoPago:on action:RegistrarAsistencia
+         */
+        String documentoUsuario = request.getParameter("txtDocumento");
+        String estadoPago = request.getParameter("estadoPago") != null ? request.getParameter("estadoPago") : "off";
+        int idCurso = Integer.parseInt(request.getParameter("idCursoMatricula"));
+        int numeroClases = Integer.parseInt(request.getParameter("txtClases"));
+        List<ObjClase> clases = new ArrayList();
+        for (int i = 0; i < numeroClases; i++) {
+            _objClase = new ObjClase();
+            _objClase.setDocumentoUsuario(documentoUsuario);
+            _objClase.setIdCurso(idCurso);
+            _objClase.setEstadoPago((estadoPago.equals("on") ? 1 : 0));
+            _objClase.setCreditoCreado((estadoPago.equals("off") ? 1 : 0));
+            clases.add(_objClase);
+
+        }
+        daoModelMatricula = new ModelMatricula();
+        Map<String, String> respuesta = daoModelMatricula.RegistrarAsistencia(clases);
+        daoModelMatricula.Signout();
+        String salida = new Gson().toJson(respuesta);
+        return salida;        
     }
 }
