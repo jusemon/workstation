@@ -379,12 +379,12 @@ public class ControllerCurso extends HttpServlet {
 
     public String getOptionsCursos() {
         String OptionsCursos = "";
-        ResultSet result = null;
+        List<Map> cursos;
         try {
             daoModelCurso = new ModelCurso();
-            result = daoModelCurso.ListAll();
-            while (result.next()) {
-                OptionsCursos += "<option value=\"" + result.getString("idCurso").trim() + "\">" + result.getString("nombreCurso").trim() + "</option>";
+            cursos = daoModelCurso.ListCursosDisponibles();
+            for (Map<String, String> curso : cursos) {
+                OptionsCursos += "<option value=\"" + curso.get("idCurso").trim() + "\">" + curso.get("nombreCurso").trim() + "</option>";
             }
 
         } catch (Exception e) {

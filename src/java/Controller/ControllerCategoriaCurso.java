@@ -42,13 +42,12 @@ public class ControllerCategoriaCurso extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
-
                 //<editor-fold defaultstate="collapsed" desc="Registrar una Categoría de Curso">
                 case "Registrar": {
                     String nombre = request.getParameter("txtNombre");
                     _objCategoriaCurso.setNombreCategoriaCurso(nombre);
                     daoModelCategoriaCurso = new ModelCategoriaCurso();
-                    String salida = Mensaje(daoModelCategoriaCurso.Add(_objCategoriaCurso), "La categoría ha sido registrada", "Ha ocurrido un error al intentar registrar la categoría");
+                    String salida = new Gson().toJson(daoModelCategoriaCurso.Add(_objCategoriaCurso));
                     daoModelCategoriaCurso.Signout();
                     response.setContentType("application/json");
                     response.getWriter().write(salida);

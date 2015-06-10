@@ -79,7 +79,7 @@ public class ModelMatricula extends ConnectionDB {
                 if ((cantidadClases + numero) == 0) {
                     objReturn[1] = "Ya se encuentra matriculado a todas las clases de este curso";
                 } else {
-                    objReturn[1] = "Solo se puede matricular a " + (cantidadClases + numero) + " clases";
+                    objReturn[1] = "Sólo se puede matricular a " + (cantidadClases + numero) + " clases";
                 }
             }
             return objReturn;

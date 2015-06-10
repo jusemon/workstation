@@ -1015,6 +1015,7 @@ var categoriaArticulo = {
                     if (accion === 'Editar' || accion === 'Registrar') {
                         $('#miPopupCategoriaArticulo').modal('hide');
                         mensaje(data);
+                        categoriaArticulo.cargarOpciones();
                     }
                 }
             }
@@ -1026,7 +1027,7 @@ var categoriaArticulo = {
     registrar: function () {
         limpiar('#formCategoriaArticulo');
         $('#miPopupCategoriaArticulo').find('#titulo').empty();
-        $('#miPopupCategoriaArticulo').find('#titulo').append('Registrar Categoría Artículo');
+        $('#miPopupCategoriaArticulo').find('#titulo').append('Registrar Categoría Artículo');        
         $('#miPopupCategoriaArticulo').find('#btnCategoriaArticulo').attr('value', 'Registrar');
         $('#miPopupCategoriaArticulo').modal('show');
     },
@@ -1112,6 +1113,7 @@ var articulo = {
         $('#miPopupArticulo').find('#txtPrecioCompra').attr('readOnly', false);
         $('#miPopupArticulo').find('#txtPrecioVenta');
         $('#miPopupArticulo').find('#txtCantidadArticulo').attr('readOnly', false);
+        $('#miPopupArticulo').find('#txtCantidadArticulo').attr('disabled', true).parents('.row:first').hide();
         articulo.contador();
         $('#miPopupArticulo').modal('show');
     },
@@ -1122,6 +1124,7 @@ var articulo = {
         $('#miPopupArticulo').find('#idArticulo').val(data[0]);
         $('#miPopupArticulo').find('#txtDescripcion').val(data[2]);
         $('#miPopupArticulo').find('#txtCantidadArticulo').val(data[3]).attr('readOnly', true);
+        $('#miPopupArticulo').find('#txtCantidadArticulo').attr('disabled', false).parents('.row:first').show();
         $('#miPopupArticulo').find('#txtPrecioCompra').val(data[4]).attr('readOnly', true);
         $('#miPopupArticulo').find('#txtPrecioVenta').val(data[5]);
         $('#miPopupArticulo').find('#idCategoriaArticulo option').prop('selected', false).filter(function () {
