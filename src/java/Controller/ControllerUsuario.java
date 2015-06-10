@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ControllerUsuario extends HttpServlet {
 
     public ObjUsuario _objUsuario = new ObjUsuario();
-    ModelUsuario daoModelUsuario = new ModelUsuario();
+    ModelUsuario daoModelUsuario;
     SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -83,6 +83,7 @@ public class ControllerUsuario extends HttpServlet {
                         response.setContentType("application/json");
                         daoModelUsuario = new ModelUsuario();
                         String salida = Mensaje(daoModelUsuario.Add(_objUsuario), nombre + " ha sido registrado existosamente", "A ocurrido un error al intentar registrar al estudiante");
+                        daoModelUsuario.Signout();
                         response.getWriter().write(salida);
                     } catch (NumberFormatException | IOException | ParseException e) {
                         response.setContentType("application/json");
@@ -95,6 +96,7 @@ public class ControllerUsuario extends HttpServlet {
                     String id = request.getParameter("id");
                     try {
                         Map<String, String> respuesta = new LinkedHashMap<>();
+                        daoModelUsuario = new ModelUsuario();
                         ResultSet result = daoModelUsuario.buscarPorID(id);
                         while (result.next()) {
                             respuesta.put("tipoDocumento", result.getString("documentoUsuario").substring(0, 2));
@@ -107,6 +109,7 @@ public class ControllerUsuario extends HttpServlet {
                             respuesta.put("estadoUsuario", result.getString("estadoUsuario"));
                             respuesta.put("idrol", result.getString("idrol"));
                         }
+                        daoModelUsuario.Signout();
                         String salida = new Gson().toJson(respuesta);
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
@@ -159,18 +162,20 @@ public class ControllerUsuario extends HttpServlet {
     }
 
     private String getOptionsClientes() {
+        daoModelUsuario = new ModelUsuario();
         List<Map<String, String>> resultado = daoModelUsuario.ListClientesYEstudiantes();
+        daoModelUsuario.Signout();
         List<Object> salida = new ArrayList<>();
         Map<String, String> aux = null;
         String retorno = "";
         if (resultado != null) {
             for (Map<String, String> result : resultado) {
                 aux = new LinkedHashMap<>();
-                aux.put("id", result.get("tipoDocumento")+result.get("numeroDocumento"));
+                aux.put("id", result.get("tipoDocumento") + result.get("numeroDocumento"));
                 aux.put("text", result.get("tipoDocumento") + " " + result.get("numeroDocumento"));
                 salida.add(aux);
-            }            
-            retorno = new Gson().toJson(salida);           
+            }
+            retorno = new Gson().toJson(salida);
         } else {
             return retorno;
         }

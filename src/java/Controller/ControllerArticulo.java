@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Model.DTO.ObjArticulo;
 import Model.Data.ModelArticulo;
-import Model.Data.ModelCategoriaArticulo;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -26,9 +25,8 @@ import java.util.Map;
  */
 public class ControllerArticulo extends HttpServlet {
 
-    public ModelArticulo daoModelArticulo = new ModelArticulo();
-    public ObjArticulo _objArticulo = new ObjArticulo();
-    public ModelCategoriaArticulo daoModelCategoriaArticulo = new ModelCategoriaArticulo();
+    public ModelArticulo daoModelArticulo;
+    public ObjArticulo _objArticulo = new ObjArticulo();   
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,7 +56,9 @@ public class ControllerArticulo extends HttpServlet {
                         _objArticulo.setDescripcionArticulo(descripcionArticulo);
                         _objArticulo.setPrecioCompra(precioCompra);
                         _objArticulo.setPrecioVenta(precioVenta);
+                        daoModelArticulo = new ModelArticulo();
                         String salida = Mensaje(daoModelArticulo.Add(_objArticulo), "Artículo registrado con exito", "Ha ocurrido un error al intentar registrar el artículo");
+                        daoModelArticulo.Signout();
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(salida);
@@ -77,7 +77,9 @@ public class ControllerArticulo extends HttpServlet {
                         _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
                         _objArticulo.setDescripcionArticulo(descripcionArticulo);
                         _objArticulo.setPrecioVenta(precioVenta);
+                        daoModelArticulo = new ModelArticulo();
                         String salida = Mensaje(daoModelArticulo.Edit(_objArticulo), "Artículo actualizado con exito", "Ha ocurrido un error al intentar actualizar el artículo");
+                        daoModelArticulo.Signout();
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(salida);
@@ -99,6 +101,7 @@ public class ControllerArticulo extends HttpServlet {
                     case "Contador": {
                         daoModelArticulo = new ModelArticulo();
                         String resultado = daoModelArticulo.consultarContador();
+                        daoModelArticulo.Signout();
                         Map<String, String> salida = new LinkedHashMap<>();
                         salida.put("idArticulo", resultado);
                         String respuesta = new Gson().toJson(salida);
@@ -144,6 +147,7 @@ public class ControllerArticulo extends HttpServlet {
         List<String[]> lista = new ArrayList<>();
         int contador = 0;
         try {
+            daoModelArticulo = new ModelArticulo();
             result = daoModelArticulo.ListAll();
             while (result.next()) {
                 String[] arreglo = new String[7];
@@ -160,10 +164,64 @@ public class ControllerArticulo extends HttpServlet {
             }
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error" + e.getMessage());
+        } finally {
+            daoModelArticulo.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
         return salida;
+    }
+
+    private String getOptionsArticulos(String tipo) {
+        ResultSet result;
+        List<Map> salida = new ArrayList<>();
+        Map<String, String> articulo;
+        try {
+            daoModelArticulo = new ModelArticulo();
+            if (tipo != null) {
+                if (tipo.equals("Venta")) {
+                    result = daoModelArticulo.ListOnlyExistencias();
+                } else {
+                    result = daoModelArticulo.ListAll();
+                }
+            } else {
+                result = daoModelArticulo.ListAll();
+            }
+            while (result.next()) {
+                articulo = new LinkedHashMap<>();
+                articulo.put("id", result.getString("idArticulo"));
+                articulo.put("text", result.getString("descripcionArticulo"));
+                salida.add(articulo);
+            }
+        } catch (Exception ex) {
+            articulo = new LinkedHashMap<>();
+            articulo.put("tipo", "error");
+            articulo.put("mensaje", "Ha ocurrido un error: " + ex);
+        } finally {
+            daoModelArticulo.Signout();
+        }
+        String respuesta = new Gson().toJson(salida);
+        return respuesta;
+    }
+
+    private String consultarArticulo(int id) {
+        ResultSet result = null;
+        Map<String, String> salida = new LinkedHashMap<>();
+        try {
+            daoModelArticulo = new ModelArticulo();
+            result = daoModelArticulo.consultarPorID(id);
+            while (result.next()) {
+                salida.put("idArticulo", result.getString("idArticulo"));
+                salida.put("descripcionArticulo", result.getString("descripcionArticulo"));
+                salida.put("cantidadDisponible", result.getString("cantidadDisponible"));
+                salida.put("precioVenta", result.getString("precioVenta"));
+            }
+        } catch (Exception e) {
+            salida.put("tipo", "error");
+            salida.put("mensaje", "Ha ocurrido un error: " + e);
+        }
+        String respuesta = new Gson().toJson(salida);
+        return respuesta;
     }
 
     public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
@@ -218,49 +276,4 @@ public class ControllerArticulo extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private String getOptionsArticulos(String tipo) {
-        ResultSet result;
-        List<Map> salida = new ArrayList<>();
-        Map<String, String> articulo;
-        try {
-            if (tipo != null) {
-                if (tipo.equals("Venta")) {
-                    result = daoModelArticulo.ListOnlyExistencias();
-                } else {
-                    result = daoModelArticulo.ListAll();
-                }
-            } else {
-                result = daoModelArticulo.ListAll();
-            }
-            while (result.next()) {
-                articulo = new LinkedHashMap<>();
-                articulo.put("id", result.getString("idArticulo"));
-                articulo.put("text", result.getString("descripcionArticulo"));
-                salida.add(articulo);
-            }
-        } catch (Exception ex) {
-
-        }
-        String respuesta = new Gson().toJson(salida);
-        return respuesta;
-    }
-
-    private String consultarArticulo(int id) {
-        ResultSet result = null;
-        Map<String, String> salida = new LinkedHashMap<>();
-        try {
-            result = daoModelArticulo.consultarPorID(id);
-            while (result.next()) {
-                salida.put("idArticulo", result.getString("idArticulo"));
-                salida.put("descripcionArticulo", result.getString("descripcionArticulo"));
-                salida.put("cantidadDisponible", result.getString("cantidadDisponible"));
-                salida.put("precioVenta", result.getString("precioVenta"));
-            }
-        } catch (Exception e) {
-        }
-        String respuesta = new Gson().toJson(salida);
-        return respuesta;
-    }
-
 }

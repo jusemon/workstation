@@ -60,6 +60,7 @@ public class ControllerEmpresa extends HttpServlet {
                     String emailContacto = request.getParameter("txtEmailContacto").trim();
                     _objEmpresa.setEmailContacto(emailContacto);
                     String salida = Mensaje(daoModelEmpresa.Add(_objEmpresa), "La empresa ha sido registrada", "Ha ocurrido un error al intentar registrar la empresa");
+                    daoModelEmpresa.Signout();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(salida);
@@ -83,6 +84,7 @@ public class ControllerEmpresa extends HttpServlet {
                     String emailContacto = request.getParameter("txtEmailContacto").trim();
                     _objEmpresa.setEmailContacto(emailContacto);
                     String salida = Mensaje(daoModelEmpresa.Edit(_objEmpresa), "La empresa ha sido actualizada", "Ha ocurrido un error al intentar actualizar la empresa");
+                    daoModelEmpresa.Signout();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(salida);

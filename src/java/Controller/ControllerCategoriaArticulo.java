@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerCategoriaArticulo extends HttpServlet {
 
-    public ModelCategoriaArticulo daoModelCategoriaArticulo = new ModelCategoriaArticulo();
+    public ModelCategoriaArticulo daoModelCategoriaArticulo;
     public ObjCategoriaArticulo _objCategoriaArticulo = new ObjCategoriaArticulo();
 
     /**
@@ -48,7 +48,9 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                 case "Registrar": {
                     String nombreCategoriaArticulo = request.getParameter("txtNombre");
                     _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
+                    daoModelCategoriaArticulo = new ModelCategoriaArticulo();
                     String salida = Mensaje(daoModelCategoriaArticulo.Add(_objCategoriaArticulo), "La categoría ha sido registrada", "Ha ocurrido un error al intentar registrar la categoría");
+                    daoModelCategoriaArticulo.Signout();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(salida);
@@ -62,7 +64,9 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                     String nombreCategoriaArticulo = request.getParameter("txtNombre");
                     _objCategoriaArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
                     _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
+                    daoModelCategoriaArticulo = new ModelCategoriaArticulo();
                     String salida = Mensaje(daoModelCategoriaArticulo.Edit(_objCategoriaArticulo), "La categoría ha sido actualizada", "Ha ocurrido un error al intentar actualizar la categoría");
+                    daoModelCategoriaArticulo.Signout();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(salida);
@@ -96,6 +100,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         List<String[]> lista = new ArrayList<>();
         String[] arreglo;
         try {
+            daoModelCategoriaArticulo = new ModelCategoriaArticulo();
             result = daoModelCategoriaArticulo.ListAll();
             while (result.next()) {
                 arreglo = new String[3];
@@ -108,6 +113,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         } catch (Exception e) {
             System.err.println("Ha ocurrido un error" + e.getMessage());
         } finally {
+            daoModelCategoriaArticulo.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
@@ -118,6 +124,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         ResultSet result;
         String OptionsCategorias = "";
         try {
+            daoModelCategoriaArticulo = new ModelCategoriaArticulo();
             result = daoModelCategoriaArticulo.ListAll();
             while (result.next()) {
                 OptionsCategorias += "<option value=\"" + result.getString("idCategoriaArticulo").trim() + "\">" + result.getString("nombreCategoriaArticulo").trim() + "</option>";
@@ -126,6 +133,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         } catch (Exception e) {
             OptionsCategorias = "Ha Ocurrido un error" + e.getMessage();
         } finally {
+            daoModelCategoriaArticulo.Signout();
         }
 
         return OptionsCategorias;

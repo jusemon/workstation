@@ -8,6 +8,7 @@ package Controller;
 import Model.DTO.ObjUsuario;
 import Model.Data.ModelModulo;
 import Model.Data.ModelUsuario;
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.io.IOException;
 import java.sql.ResultSet;
 import javax.servlet.ServletException;
@@ -23,8 +24,8 @@ import javax.servlet.http.HttpSession;
 public class ControllerLogin extends HttpServlet {
 
     ObjUsuario _objUsuario = new ObjUsuario();
-    ModelUsuario _modelUsuario = new ModelUsuario();
-    ModelModulo _modelModulo = new ModelModulo();
+    ModelUsuario _modelUsuario;
+    ModelModulo _modelModulo;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -55,6 +56,7 @@ public class ControllerLogin extends HttpServlet {
                         session.setAttribute("documentoUsuario", _objUsuario.getDocumentoUsuario());
                         try {
                             String[] aux = _modelModulo.convertirRSaArray(_modelModulo.ListByUser(_objUsuario.getEmailUsuario()));
+                            _modelModulo.Signout();
                             session.setAttribute("derechos", aux);
                             session.setAttribute("isConsulta", false);
                             session.setAttribute("resultado", null);
@@ -87,6 +89,7 @@ public class ControllerLogin extends HttpServlet {
         _objUsuario.setEmailUsuario(email);
         _objUsuario.setPassword(pass);
         try {
+            _modelUsuario = new ModelUsuario();
             rs = _modelUsuario.Find(_objUsuario);
             while (rs.next()) {
                 if (rs.getString("emailUsuario").equalsIgnoreCase(email) && rs.getString("password").equals(pass)) {
@@ -99,6 +102,8 @@ public class ControllerLogin extends HttpServlet {
 
         } catch (Exception e) {
             System.err.println(e.getMessage());
+        } finally {
+            _modelUsuario.Signout();
         }
         return false;
     }
@@ -114,6 +119,7 @@ public class ControllerLogin extends HttpServlet {
         }
         try {
             comprobarUsuario(email, pass);
+            _modelModulo = new ModelModulo();
             result = _modelModulo.ListByUser(_objUsuario.getEmailUsuario());
             String btn;
             while (result.next()) {

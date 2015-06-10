@@ -35,9 +35,8 @@ public class ControllerEstudiante extends HttpServlet {
     ModelEstudiante daoModelEstudiante;
     public ObjUsuario _objUsuario = new ObjUsuario();
     public ObjDetalleUsuario _objDetalleUsuario = new ObjDetalleUsuario();
-    public ModelAcudiente daoModelAcudiente = new ModelAcudiente();
+    public ModelAcudiente daoModelAcudiente;
     public ObjAcudiente _objAcudiente = new ObjAcudiente();
-    public ModelCurso daoModelCurso = new ModelCurso();
     SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
     Map<String, String> respuesta;

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import Model.DTO.ObjCredito;
 import Model.Data.ModelCredito;
 import com.google.gson.Gson;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -51,7 +52,6 @@ public class ControllerCredito extends HttpServlet {
 
                 // <editor-fold defaultstate="collapsed" desc="Ingresar un crédito nuevo">
                 case "Registrar": {
-                    daoModelCredito = new ModelCredito();
                     String documentoUsuario = request.getParameter("txtDocumentoUsuario").trim();
                     _ObjCredito.setDocumentoUsuario(documentoUsuario);
                     String fechaInicio = request.getParameter("txtFechaInicio").trim();
@@ -62,8 +62,9 @@ public class ControllerCredito extends HttpServlet {
                     _ObjCredito.setSaldoActual(saldoActual);
                     int estadoCredito = Integer.parseInt(request.getParameter("ddlEstadoCredito").trim());
                     _ObjCredito.setEstadoCredito(estadoCredito);
-
+                    daoModelCredito = new ModelCredito();
                     salida = Mensaje(daoModelCredito.Add(_ObjCredito), "El crédito ha sido registrado", "Ha ocurrido un error al intentar registrar el crédito");
+                    daoModelCredito.Signout();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(salida);
@@ -110,11 +111,11 @@ public class ControllerCredito extends HttpServlet {
 
     public String cambiarEstado(int idCredito) {
         int estadoCredito = 0;
+        String objReturn = null;
         try {
             daoModelCredito = new ModelCredito();
             ResultSet result;
             result = daoModelCredito.buscarCreditoByID(idCredito);
-
             while (result.next()) {
                 estadoCredito = Integer.parseInt(result.getString("ddlEstadoCredito"));
             }
@@ -122,11 +123,13 @@ public class ControllerCredito extends HttpServlet {
             _ObjCredito = new ObjCredito();
             _ObjCredito.setIdCredito(idCredito);
             _ObjCredito.setEstadoCredito(estadoCredito);
-            return Mensaje(daoModelCredito.cambiarEstadoCredito(_ObjCredito), "El estado del crédito ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
-
-        } catch (Exception e) {
-            return Mensaje(false, "", "Ha ocurrido un error en el controlador " + e.getMessage());
+            objReturn = Mensaje(daoModelCredito.cambiarEstadoCredito(_ObjCredito), "El estado del crédito ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
+        } catch (SQLException | NumberFormatException e) {
+            objReturn = Mensaje(false, "", "Ha ocurrido un error en el controlador " + e.getMessage());
+        } finally {
+            daoModelCredito.Signout();
         }
+        return objReturn;
     }
 
     public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
@@ -148,9 +151,8 @@ public class ControllerCredito extends HttpServlet {
         respuesta = new LinkedHashMap<>();
         ResultSet result = null;
         try {
-
+            daoModelCredito = new ModelCredito();
             result = daoModelCredito.buscarCreditoByID(id);
-
             while (result.next()) {
                 respuesta.put("idCredito", result.getString("idCredito"));
                 respuesta.put("documentoUsuario", result.getString("documentoUsuario"));
@@ -161,8 +163,10 @@ public class ControllerCredito extends HttpServlet {
             }
 
         } catch (Exception e) {
-            System.err.println(e.getMessage());
-            Mensaje(false, "", "Ha ocurrido un error en el Controller " + e.getMessage());
+            System.err.println(e.getMessage());            
+            daoModelCredito.Signout();
+            salida = new Gson().toJson(Mensaje(false, "", "Ha ocurrido un error en el Controller " + e.getMessage()));
+            return salida;
         }
         salida = new Gson().toJson(respuesta);
         return salida;
@@ -195,6 +199,7 @@ public class ControllerCredito extends HttpServlet {
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error en el controller " + e.toString());
         } finally {
+            daoModelCredito.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";

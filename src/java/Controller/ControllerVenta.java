@@ -311,7 +311,7 @@ public class ControllerVenta extends HttpServlet {
     private Map reporte(int id) {
         Map<String, Object> lista = new LinkedHashMap<>();
         List<Map> lista2 = new ArrayList<>();
-        Map<String, String> resultado = null;
+        Map<String, String> resultado;
         daoModelVenta = new ModelVenta();
         try {
             ResultSet[] result = daoModelVenta.ConsultarVenta(id);

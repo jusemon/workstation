@@ -28,7 +28,7 @@ public class ControllerCurso extends HttpServlet {
 
     ObjCurso _objCurso = new ObjCurso();
     ModelCurso daoModelCurso;
-    ModelCategoriaCurso daoModelCategoriaCurso = new ModelCategoriaCurso();
+    ModelCategoriaCurso daoModelCategoriaCurso;
     Map<String, String> respuesta;
 
     /**
@@ -59,7 +59,9 @@ public class ControllerCurso extends HttpServlet {
                     horasPorClase = Integer.parseInt(request.getParameter("txtCantidadHoras").trim());
                     if (tipo.equals("Seminario")) {
                         cantidadClases = 1;
+                        daoModelCategoriaCurso = new ModelCategoriaCurso();
                         categoria = daoModelCategoriaCurso.GetIDCategoriaSeminario();
+                        daoModelCategoriaCurso.Signout();
                     } else {
                         cantidadClases = Integer.parseInt(request.getParameter("txtCantidadClases").trim());
                         categoria = Integer.parseInt(request.getParameter("ddlCategoria").trim());
@@ -110,7 +112,7 @@ public class ControllerCurso extends HttpServlet {
 
                 // <editor-fold defaultstate="collapsed" desc="Editar un Curso">
                 case "Editar": {
-                    daoModelCurso = new  ModelCurso();
+                    daoModelCurso = new ModelCurso();
                     aux = request.getParameter("idCurso");
                     id = Integer.parseInt(aux.trim());
                     tipo = request.getParameter("tipo");
@@ -121,7 +123,9 @@ public class ControllerCurso extends HttpServlet {
                     horasPorClase = Integer.parseInt(request.getParameter("txtCantidadHoras").trim());
                     cantidadClases = Integer.parseInt(request.getParameter("txtCantidadClases").trim());
                     if (tipo.equals("Seminario")) {
+                        daoModelCategoriaCurso = new ModelCategoriaCurso();
                         categoria = daoModelCategoriaCurso.GetIDCategoriaSeminario();
+                        daoModelCategoriaCurso.Signout();
                     } else {
                         categoria = Integer.parseInt(request.getParameter("ddlCategoria").trim());
                     }
