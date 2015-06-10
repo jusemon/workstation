@@ -227,10 +227,6 @@ public class ControllerMatricula extends HttpServlet {
     }
 
     private String RegistrarAsistencia(HttpServletRequest request) {
-        /**
-         * txtDocumento:CC1017225673 idCursoMatricula:5 txtClases:1
-         * estadoPago:on action:RegistrarAsistencia
-         */
         String documentoUsuario = request.getParameter("txtDocumento");
         String estadoPago = request.getParameter("estadoPago") != null ? request.getParameter("estadoPago") : "off";
         int idCurso = Integer.parseInt(request.getParameter("idCursoMatricula"));
@@ -246,9 +242,12 @@ public class ControllerMatricula extends HttpServlet {
 
         }
         daoModelMatricula = new ModelMatricula();
-        Map<String, String> respuesta = daoModelMatricula.RegistrarAsistencia(clases);
+        String[] aux = daoModelMatricula.RegistrarAsistencia(clases);
         daoModelMatricula.Signout();
+        Map<String, String> respuesta = new LinkedHashMap<>();
+        respuesta.put("tipo", aux[0]);
+        respuesta.put("mensaje", aux[1]);
         String salida = new Gson().toJson(respuesta);
-        return salida;        
+        return salida;
     }
 }

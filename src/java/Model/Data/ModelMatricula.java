@@ -97,7 +97,7 @@ public class ModelMatricula extends ConnectionDB {
     }
 
     public Map<String, String> BuscarMatriculaPorDocumentoYIdCurso(String documento, int idCurso) {
-        Map <String, String> resultado = new LinkedHashMap<>();
+        Map<String, String> resultado = new LinkedHashMap<>();
         ResultSet rs = null;
         String sql = "call spConsultarMatriculaPorDocumentoYIdCurso(?,?)";
         try {
@@ -106,7 +106,7 @@ public class ModelMatricula extends ConnectionDB {
             pStmt.setString(1, documento);
             pStmt.setInt(2, idCurso);
             rs = pStmt.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 resultado.put("documentoUsuario", rs.getString("documentoUsuario"));
                 resultado.put("nombreUsuario", rs.getString("nombreUsuario"));
                 resultado.put("apellidoUsuario", rs.getString("apellidoUsuario"));
@@ -123,8 +123,41 @@ public class ModelMatricula extends ConnectionDB {
         return resultado;
     }
 
-    public Map<String, String> RegistrarAsistencia(List<ObjClase> clases) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String[] RegistrarAsistencia(List<ObjClase> clases) {
+        String[] objReturn = new String[2];
+        String sql = "call spActualizarClase(?,?,?,?)";
+        try {
+            getStmt();
+            connection.setAutoCommit(false);
+            for (ObjClase clase : clases) {
+                pStmt = connection.prepareCall(sql);
+                pStmt.setString(1, clase.getDocumentoUsuario());
+                pStmt.setInt(2, clase.getIdCurso());
+                pStmt.setInt(3, clase.getEstadoPago());
+                pStmt.setInt(4, clase.getCreditoCreado());
+                ResultSet rs = pStmt.executeQuery();
+                while (rs.next()) {
+                    objReturn[0] = rs.getString("tipo");
+                    objReturn[1] = rs.getString("mensaje");
+                    if (objReturn[0].equals("error")) {
+                        connection.rollback();
+                        return objReturn;
+                    }
+                }
+            }
+            connection.commit();
+            return objReturn;
+        } catch (SQLException sqlE) {
+            try {
+                objReturn[0] = "error";
+                objReturn[1] = "Ha ocurrido un error: " + sqlE;
+                connection.rollback();
+            } catch (Exception e) {
+                objReturn[0] = "error";
+                objReturn[1] = "Ha ocurrido un error: " + e;
+            }
+        }
+        return objReturn;
     }
 
 }

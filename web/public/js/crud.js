@@ -993,6 +993,7 @@ var matricula = {
             data: $('#formMatricula').serialize() + '&action=RegistrarAsistencia',
             success: function (data) {
                 $('#miPopupMatricula').find('#idCursoMatricula').attr('disabled', true);
+                $('#miPopupMatricula').modal('hide');
                 matricula.actualizarTabla();
                 mensaje(data);
             }
