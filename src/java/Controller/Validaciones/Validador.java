@@ -18,10 +18,11 @@ public class Validador {
     private static final String PATTERN_NUMERO = "^[0-9]{1,}";
     private static final String PATTERN_NOMBRE = "^([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})?";
     private static final String PATTERN_NOMBRES_COMPLETOS = "^([ÁÉÍÓÚáéíóúñÑa-zA-Z ]{3,50})";
-    private static final String PATTERN_FECHA = "^(0[1-9]|1[0-9]|3[01]).(0[1-9]|1[0-2]).([0-9]{4})";
+    private static final String PATTERN_FECHA = "^(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[0-2]).([0-9]{4})";
     private static final String PATTERN_TIPO_DOCUMENTO = "^(C{2}|TI{1}|CE{1}|RC{1})";
     private static final String PATTERN_TELEFONO = "^([0-9 ]{7,14})";
     private static final String PATTERN_CELULAR = "^([0-9 ]{10,24})";
+    private static final String PATTERN_NIT_EMPRESA = "^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}\\-[0-9]{1}";
 
     /**
      * Valida el email que se ingresa con una expresion regular
@@ -154,7 +155,8 @@ public class Validador {
     }
 
     /**
-     * Valida el número de telefono que se ingresa mediante una expresion regular
+     * Valida el número de telefono que se ingresa mediante una expresion
+     * regular
      *
      * @param entrada la cadena a evaluar, permite cualquier cadena no nula
      * @return true entrada valida, sino false
@@ -195,6 +197,17 @@ public class Validador {
         Pattern pattern = Pattern.compile(PATTERN_NOMBRES_COMPLETOS);
         // Busca que el nombre cumpla con la expresion regular
         Matcher matcher = pattern.matcher(nombre);
+        return matcher.matches();
+    }
+
+    public static boolean validarNIT(String temp) {
+        if (temp == null) {
+            return false;
+        }
+        // Compila la expresion regular en un pattern
+        Pattern pattern = Pattern.compile(PATTERN_NIT_EMPRESA);
+        // Busca que el nombre cumpla con la expresion regular
+        Matcher matcher = pattern.matcher(temp);
         return matcher.matches();
     }
 

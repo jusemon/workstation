@@ -81,7 +81,7 @@
                                                 <label for="txtNitEmpresa">
                                                     NIT
                                                 </label>
-                                                <input name="txtNitEmpresa" id="txtNitEmpresa" type="text" class="form-control" placeholder="Ej: 123.456.789-0" required>
+                                                <input name="txtNitEmpresa" id="txtNitEmpresa" pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{1}" type="text" class="form-control" onblur="formatearTexto()" placeholder="Ej: 123.456.789-0" required>
                                             </div>
                                         </div>
                                     </div>

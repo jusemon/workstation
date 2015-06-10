@@ -59,7 +59,7 @@ public class ControllerEmpresa extends HttpServlet {
                     _objEmpresa.setTelefonoContacto(telefonoContacto);
                     String emailContacto = request.getParameter("txtEmailContacto").trim();
                     _objEmpresa.setEmailContacto(emailContacto);
-                    String salida = Mensaje(daoModelEmpresa.Add(_objEmpresa), "La empresa ha sido registrada", "Ha ocurrido un error al intentar registrar la empresa");
+                    String salida = new Gson().toJson(daoModelEmpresa.Add(_objEmpresa));
                     daoModelEmpresa.Signout();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");

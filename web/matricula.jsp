@@ -403,7 +403,7 @@
                                                 <label for="dateFechaNacimiento">
                                                     Fecha de Nacimiento
                                                 </label>
-                                                <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" pattern="(0[1-9]|1[0-9]|3[01]).(0[1-9]|1[0-2]).([0-9]{4})" title="El formato de la fecha debe ser dd/mm/yyyy" class="form-control fecha" placeholder="Ejm: 10/10/2014" required>
+                                                <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[0-2]).([0-9]{4})" title="El formato de la fecha debe ser dd/mm/yyyy" class="form-control fecha" placeholder="Ejm: 10/10/2014" required>
                                             </div>
                                         </div>
                                     </div>

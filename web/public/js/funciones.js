@@ -176,4 +176,13 @@ function fecha() {
     return currentDate;
 }
 
+function formatearTexto() {
+    var aux = $('#txtNitEmpresa').val();
+    if (aux.length === 10) {
+        var respuesta = aux.substr(0, 3) + '.' + aux.substr(3, 3) + '.' + aux.substr(6, 3) + '-' + aux.substr(9)
+        $('#txtNitEmpresa').val(respuesta);
+    }
+
+}
+
 var actual = $('#tabCompras').find('#txtTotalCompra').val();
