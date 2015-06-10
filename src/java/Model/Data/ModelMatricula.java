@@ -11,6 +11,8 @@ import Model.JDBC.ConnectionDB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  *
@@ -90,6 +92,33 @@ public class ModelMatricula extends ConnectionDB {
             }
         }
         return objReturn;
+    }
+
+    public Map<String, String> BuscarMatriculaPorDocumentoYIdCurso(String documento, int idCurso) {
+        Map <String, String> resultado = new LinkedHashMap<>();
+        ResultSet rs = null;
+        String sql = "call spConsultarMatriculaPorDocumentoYIdCurso(?,?)";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, documento);
+            pStmt.setInt(2, idCurso);
+            rs = pStmt.executeQuery();
+            while (rs.next()) {                
+                resultado.put("documentoUsuario", rs.getString("documentoUsuario"));
+                resultado.put("nombreUsuario", rs.getString("nombreUsuario"));
+                resultado.put("apellidoUsuario", rs.getString("apellidoUsuario"));
+                resultado.put("idCurso", rs.getString("idCurso"));
+                resultado.put("precioCurso", rs.getString("precioCurso"));
+                resultado.put("precioClase", rs.getString("precioClase"));
+                resultado.put("horasPorClase", rs.getString("horasPorClase"));
+                resultado.put("nombreCurso", rs.getString("nombreCurso"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return resultado;
     }
 
 }

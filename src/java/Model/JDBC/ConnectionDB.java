@@ -29,7 +29,6 @@ public class ConnectionDB {
      * Constructor de ConnectionDB
      */
     public ConnectionDB() {
-        getConnection();
     }
 
     public String getUrlConnection() {

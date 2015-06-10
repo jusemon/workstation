@@ -72,7 +72,7 @@ var curso = {
             });
         } else {
             $('#miPopupMatricula').find('#txtPrecioCurso').empty().parents('.form-group:first').hide();
-            $('#miPopupMatricula').find('#txtClases').val(null).parents('.row:first').hide();
+            $('#miPopupMatricula').find('#txtClases').val(null).parents('.row:first').attr('readOnly', false).hide();
             $('#miPopupMatricula').find('#txtPrecioClases').empty();
             $('#miPopupMatricula').find('#txtHoraClase').empty();
         }
@@ -682,7 +682,7 @@ var estudiante = {
         $('#miPopupMatricula').find('#txtDocumento').val(data['tipoDocumento'] + data['numeroDocumento']);
         $('#miPopupMatricula').find('#idCursoMatricula option').prop('selected', false).attr('disabled', false);
         $('#miPopupMatricula').find('#txtPrecioCurso').empty().parents('.form-group:first').hide();
-        $('#miPopupMatricula').find('#txtClases').val(null).parents('.row:first').hide();
+        $('#miPopupMatricula').find('#txtClases').attr('readOnly', false).val(null).parents('.row:first').hide();
         $('#miPopupMatricula').modal('show');
     },
     consultar: function (data) {
@@ -917,23 +917,38 @@ var matricula = {
             url: "ControllerMatricula",
             type: 'POST',
             data: {
+                action: 'Consultar',
                 documentoUsuario: documento,
                 idCurso: idCurso
             },
             success: function (data, textStatus, jqXHR) {
+                /**
+                 *
+                 resultado.put("documentoUsuario", rs.getString("documentoUsuario"));
+                 resultado.put("nombreUsuario", rs.getString("nombreUsuario"));
+                 resultado.put("apellidoUsuario", rs.getString("apellidoUsuario"));
+                 resultado.put("idCurso", rs.getString("idCurso"));
+                 resultado.put("precioCurso", rs.getString("precioCurso"));
+                 resultado.put("precioClase", rs.getString("precioClase"));
+                 resultado.put("horasPorClase", rs.getString("horasPorClase"));
+                 */
+
                 $('#miPopupMatricula').find('#titulo').text('Asistencia Estudiante');
                 $('#miPopupMatricula').find('#txtNombre').text(data["nombreUsuario"] + " " + data["apellidoUsuario"]);
-                $('#miPopupMatricula').find('#txtIdentificacion').text(data['numeroDocumento']);
-                var tipo = data['tipoDocumento'];
+                $('#miPopupMatricula').find('#txtIdentificacion').text(data['documentoUsuario'].substring(2));
+                var tipo = data['documentoUsuario'].substring(0,2);
                 tipo = (tipo === 'CC') ? 'Cedula' : tipo;
                 tipo = (tipo === 'TI') ? 'Tarjeta de Identidad' : tipo;
                 tipo = (tipo === 'RC') ? 'Registro Civil' : tipo;
                 tipo = (tipo === 'CE') ? 'Cedula de Extranjeria' : tipo;
                 $('#miPopupMatricula').find('#txtTipo').text(tipo);
-                $('#miPopupMatricula').find('#txtDocumento').val(data['tipoDocumento'] + data['numeroDocumento']);
+                $('#miPopupMatricula').find('#txtDocumento').val(data.documentoUsuario);
+                $('#miPopupMatricula').find('#idCursoMatricula').empty().append('<option value="'+idCurso+'">'+data['nombreCurso']+'</option>')
                 $('#miPopupMatricula').find('#idCursoMatricula option').prop('selected', false).filter('[value="' + idCurso + '"]').prop('selected', true).attr('disabled', true);
                 $('#miPopupMatricula').find('#txtPrecioCurso').text(data['precioCurso']);
-                $('#miPopupMatricula').find('#txtClases').val(data['clases']);
+                $('#miPopupMatricula').find('#txtPrecioClases').text(data['precioClase']);
+                $('#miPopupMatricula').find('#txtHoraClase').text(data['horasPorClase']);
+                $('#miPopupMatricula').find('#txtClases').val(1).attr('readOnly', true);
                 $('#miPopupMatricula').modal('show');
             }
         });

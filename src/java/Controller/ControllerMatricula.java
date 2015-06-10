@@ -49,6 +49,9 @@ public class ControllerMatricula extends HttpServlet {
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
                 case "Consultar": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(Consultar(request));
                     break;
                 }
                 case "Registrar": {
@@ -208,4 +211,12 @@ public class ControllerMatricula extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String Consultar(HttpServletRequest request) {
+        String documento = request.getParameter("documentoUsuario");
+        int idCurso = Integer.parseInt(request.getParameter("idCurso"));
+        Map<String, String> respuesta = daoModelMatricula.BuscarMatriculaPorDocumentoYIdCurso(documento,idCurso);
+        String salida = new Gson().toJson(respuesta);
+        return salida;
+    }
 }

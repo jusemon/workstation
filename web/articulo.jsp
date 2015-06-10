@@ -107,7 +107,7 @@
                                         <div class="col-md-12">                                        
                                             <div class="form-group">
                                                 Nombre
-                                                <input name="txtNombre" id="txtNombreCategoriaArticulo" type="text" pattern="[ÁÉÍÓÚáéíóúñÑa-zA-Z ]{3,15}" title="Entre 3 y 30 letras y no se permiten numeros" class="form-control" placeholder="Ejm: Vinilos" required>
+                                                <input name="txtNombre" id="txtNombreCategoriaArticulo" type="text" pattern="[ÁÉÍÓÚáéíóúñÑ°a-zA-Z ]{3,15}" title="Entre 3 y 30 letras y no se permiten numeros" class="form-control" placeholder="Ejm: Vinilos" required>
                                             </div>
                                         </div>
                                     </div>

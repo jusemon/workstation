@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ControllerCurso extends HttpServlet {
 
     ObjCurso _objCurso = new ObjCurso();
-    ModelCurso daoModelCurso = new ModelCurso();
+    ModelCurso daoModelCurso;
     ModelCategoriaCurso daoModelCategoriaCurso = new ModelCategoriaCurso();
     Map<String, String> respuesta;
 
@@ -50,7 +50,7 @@ public class ControllerCurso extends HttpServlet {
 
                 // <editor-fold defaultstate="collapsed" desc="Registrar un Curso o Seminario">
                 case "Registrar": {
-                    daoModelCurso.getConnection();
+                    daoModelCurso = new ModelCurso();
                     tipo = request.getParameter("tipo");
                     nombre = request.getParameter("txtNombre").trim();
                     descripcion = request.getParameter("txtDescripcion").trim();
@@ -110,7 +110,7 @@ public class ControllerCurso extends HttpServlet {
 
                 // <editor-fold defaultstate="collapsed" desc="Editar un Curso">
                 case "Editar": {
-                    daoModelCurso.getConnection();
+                    daoModelCurso = new  ModelCurso();
                     aux = request.getParameter("idCurso");
                     id = Integer.parseInt(aux.trim());
                     tipo = request.getParameter("tipo");
@@ -195,7 +195,7 @@ public class ControllerCurso extends HttpServlet {
         String salida;
         respuesta = new LinkedHashMap<>();
         try {
-            daoModelCurso.getConnection();
+            daoModelCurso = new ModelCurso();
             if (tipo.equals("Seminario")) {
                 respuesta = daoModelCurso.buscarSeminarioPorID(id);
             } else {
@@ -216,7 +216,7 @@ public class ControllerCurso extends HttpServlet {
         respuesta = new LinkedHashMap<>();
         int estado = 0;
         try {
-            daoModelCurso.getConnection();
+            daoModelCurso = new ModelCurso();
             if (tipo == null) {
                 respuesta = daoModelCurso.buscarCursoPorID(id);
             } else if (tipo.equals("Seminario")) {
@@ -242,7 +242,7 @@ public class ControllerCurso extends HttpServlet {
         List<Map> lista = new ArrayList<>();
         respuesta = null;
         try {
-            daoModelCurso.getConnection();
+            daoModelCurso = new ModelCurso();
             lista = daoModelCurso.ListCursosDisponibles();
 
         } catch (Exception e) {
@@ -263,7 +263,7 @@ public class ControllerCurso extends HttpServlet {
         List<Map> lista = new ArrayList<>();
         respuesta = null;
         try {
-            daoModelCurso.getConnection();
+            daoModelCurso = new ModelCurso();
             lista = daoModelCurso.ListSeminariosDisponibles();
             for (Map result : lista) {
                 resultado += "<div class=\"col-md-6\">\n"
@@ -308,7 +308,7 @@ public class ControllerCurso extends HttpServlet {
         List<String[]> lista = new ArrayList<>();
         ResultSet result = null;
         try {
-            daoModelCurso.getConnection();
+            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListAll();
             while (result.next()) {
                 String[] estado = {"success", "ok"};
@@ -344,7 +344,7 @@ public class ControllerCurso extends HttpServlet {
         List<String[]> lista = new ArrayList<>();
         ResultSet result = null;
         try {
-            daoModelCurso.getConnection();
+            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListAll("Seminarios");
             while (result.next()) {
                 String[] estado = {"success", "ok"};
@@ -377,7 +377,7 @@ public class ControllerCurso extends HttpServlet {
         String OptionsCursos = "";
         ResultSet result = null;
         try {
-            daoModelCurso.getConnection();
+            daoModelCurso = new ModelCurso();
             result = daoModelCurso.ListAll();
             while (result.next()) {
                 OptionsCursos += "<option value=\"" + result.getString("idCurso").trim() + "\">" + result.getString("nombreCurso").trim() + "</option>";
