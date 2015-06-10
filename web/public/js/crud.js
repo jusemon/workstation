@@ -1027,7 +1027,7 @@ var categoriaArticulo = {
     registrar: function () {
         limpiar('#formCategoriaArticulo');
         $('#miPopupCategoriaArticulo').find('#titulo').empty();
-        $('#miPopupCategoriaArticulo').find('#titulo').append('Registrar Categoría Artículo');        
+        $('#miPopupCategoriaArticulo').find('#titulo').append('Registrar Categoría Artículo');
         $('#miPopupCategoriaArticulo').find('#btnCategoriaArticulo').attr('value', 'Registrar');
         $('#miPopupCategoriaArticulo').modal('show');
     },
@@ -1564,6 +1564,7 @@ var venta = {
             },
             success: function (data, textStatus, jqXHR) {
                 venta.show('Consultar', data);
+                
             }
         });
     },
@@ -1637,7 +1638,6 @@ var venta = {
     show: function (tipo, datos) {
         $('#clienteRegistrado').parents('.row:first').hide();
         document.getElementById('tipoMovimiento').checked = false;
-        $('#tabMovimientos').find('#tipoMovimiento').parents('.row:first').show();
         $("#ddlArticulos").off();
         $("#ddlArticulos").on("select2:select", function (e) {
             var id = e.params.data.id;
@@ -1651,6 +1651,7 @@ var venta = {
         $('#tabMovimientos').find('#numero').text('Numero de Venta');
         $('#tabMovimientos').find('#total').text('Total venta');
         if (tipo === 'Registrar') {
+            $('#tabMovimientos').find('#tipoMovimiento').parents('.row:first').show();
             $('#tabMovimientos').find('#ddlIdentificacion option').prop('selected', false);
             $('#tabMovimientos').find('#ddlIdentificacion').attr('disabled', false);
             $('#tabMovimientos').find('#txtIdentificacion').val(null).attr('readOnly', false).parents('.row:first').show();
@@ -1663,6 +1664,7 @@ var venta = {
             $('#tabMovimientos').find('#btnArticulo').attr('disabled', false).parents('.row:first').show();
             venta.contador();
         } else if (tipo === 'Consultar') {
+            $('#tabMovimientos').find('#tipoMovimiento').parents('.row:first').hide();
             $('#tabMovimientos').find('#titulo').text('Consultar Venta');
             $('#btnGestionVentas').data('target', '#tabMovimientos').tab('show');
             $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + datos.Venta.fechaVenta);
