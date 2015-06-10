@@ -990,7 +990,7 @@ var matricula = {
         $.ajax({
             url: "ControllerMatricula",
             type: 'POST',
-            data: $('#formMatricula').serialize() + '&action=RegistrarAsistencia',
+            data: $('#formMatricula').serialize() + '&action=RegistrarAsistencia' + '&documentoUsuario' +  documentoUsuario,
             success: function (data) {
                 $('#miPopupMatricula').find('#idCursoMatricula').attr('disabled', true);
                 $('#miPopupMatricula').modal('hide');

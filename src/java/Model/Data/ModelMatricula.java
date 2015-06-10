@@ -123,7 +123,7 @@ public class ModelMatricula extends ConnectionDB {
         return resultado;
     }
 
-    public String[] RegistrarAsistencia(List<ObjClase> clases) {
+    public String[] RegistrarAsistencia(List<ObjClase> clases, String documentoUsuario) {
         String[] objReturn = new String[2];
         String sql = "call spActualizarClase(?,?,?,?)";
         try {

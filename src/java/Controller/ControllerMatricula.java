@@ -9,15 +9,19 @@ import Controller.Validaciones.Validador;
 import Model.DTO.ObjClase;
 import Model.DTO.ObjCurso;
 import Model.DTO.ObjUsuario;
+import Model.Data.ModelEstudiante;
 import Model.Data.ModelMatricula;
 import Model.Data.ModelPreinscripcion;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -229,22 +233,35 @@ public class ControllerMatricula extends HttpServlet {
     }
 
     private String RegistrarAsistencia(HttpServletRequest request) {
-        String documentoUsuario = request.getParameter("txtDocumento");
-        String estadoPago = request.getParameter("estadoPago") != null ? request.getParameter("estadoPago") : "off";
+        int beneficiario = 0;
+        String documentoUsuario = request.getParameter("documentoUsuario");
+        String documentoCliente = request.getParameter("txtDocumento");
+        ModelEstudiante daoModelEstudiante = new ModelEstudiante();
+        ResultSet rs = daoModelEstudiante.buscarPorID(documentoCliente);
+        String estadoPago = "on";
+        try {
+            if (rs.next()) {
+                beneficiario = rs.getInt("estadoBeneficiario");
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        if (beneficiario == 0) {
+           estadoPago = request.getParameter("estadoPago") != null ? request.getParameter("estadoPago") : "off";
+        }
         int idCurso = Integer.parseInt(request.getParameter("idCursoMatricula"));
         int numeroClases = Integer.parseInt(request.getParameter("txtClases"));
         List<ObjClase> clases = new ArrayList();
         for (int i = 0; i < numeroClases; i++) {
             _objClase = new ObjClase();
-            _objClase.setDocumentoUsuario(documentoUsuario);
+            _objClase.setDocumentoUsuario(documentoCliente);
             _objClase.setIdCurso(idCurso);
             _objClase.setEstadoPago((estadoPago.equals("on") ? 1 : 0));
             _objClase.setCreditoCreado((estadoPago.equals("off") ? 1 : 0));
             clases.add(_objClase);
-
         }
         daoModelMatricula = new ModelMatricula();
-        String[] aux = daoModelMatricula.RegistrarAsistencia(clases);
+        String[] aux = daoModelMatricula.RegistrarAsistencia(clases, documentoUsuario);
         daoModelMatricula.Signout();
         Map<String, String> respuesta = new LinkedHashMap<>();
         respuesta.put("tipo", aux[0]);
