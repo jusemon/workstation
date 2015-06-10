@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerEstudiante extends HttpServlet {
 
-    ModelEstudiante daoModelEstudiante = new ModelEstudiante();
+    ModelEstudiante daoModelEstudiante;
     public ObjUsuario _objUsuario = new ObjUsuario();
     public ObjDetalleUsuario _objDetalleUsuario = new ObjDetalleUsuario();
     public ModelAcudiente daoModelAcudiente = new ModelAcudiente();
@@ -173,7 +173,7 @@ public class ControllerEstudiante extends HttpServlet {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
         try {
-            daoModelEstudiante.getConnection();
+            daoModelEstudiante = new ModelEstudiante();
             result = daoModelEstudiante.ListAll();
             String[] arreglo;
             while (result.next()) {
@@ -205,7 +205,7 @@ public class ControllerEstudiante extends HttpServlet {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
         try {
-            daoModelEstudiante.getConnection();
+            daoModelEstudiante = new ModelEstudiante();
             result = daoModelEstudiante.ListPreinscritos();
             String[] arreglo;
             while (result.next()) {
@@ -249,7 +249,7 @@ public class ControllerEstudiante extends HttpServlet {
     private String Consultar(String id, String tipo) {
         ResultSet result = null;
         respuesta = new LinkedHashMap<>();
-        daoModelEstudiante.getConnection();
+        daoModelEstudiante = new ModelEstudiante();
         if (tipo != null) {
             if (tipo.equals("Preinscrito")) {
                 result = daoModelEstudiante.buscarPreinscritoPorID(id);

@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerMatricula extends HttpServlet {
 
-    ModelMatricula daoModelMatricula = new ModelMatricula();
-    ModelPreinscripcion daoModelPreinscripcion = new ModelPreinscripcion();
+    ModelMatricula daoModelMatricula;
+    ModelPreinscripcion daoModelPreinscripcion;
     ObjClase _objClase = new ObjClase();
     ObjCurso _objCurso = new ObjCurso();
     ObjUsuario _objUsuario = new ObjUsuario();
@@ -136,7 +136,9 @@ public class ControllerMatricula extends HttpServlet {
             _objCurso.setIdCurso(Integer.parseInt(request.getParameter("idCursoMatricula")));
             _objCurso.setCantidadClases(Integer.parseInt(request.getParameter("txtClases")));
             Map<String, String> objetos = new LinkedHashMap<>();
+            daoModelMatricula = new ModelMatricula();
             String[] respuestaBD = daoModelMatricula.Add(_objUsuario, _objCurso);
+            daoModelMatricula.Signout();
             objetos.put("tipo", respuestaBD[0]);
             objetos.put("mensaje", respuestaBD[1]);
             return new Gson().toJson(objetos);
@@ -168,7 +170,7 @@ public class ControllerMatricula extends HttpServlet {
 
     private String presincribir(int id, String documentoUsuario) {
         try {
-            daoModelPreinscripcion.getConnection();
+            daoModelPreinscripcion = new ModelPreinscripcion();
             return Mensaje(daoModelPreinscripcion.Add(id, documentoUsuario));
         } catch (Exception e) {
             return Mensaje(false, "", "Ha Ocurrido un Error");

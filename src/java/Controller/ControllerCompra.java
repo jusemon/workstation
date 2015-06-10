@@ -241,6 +241,8 @@ public class ControllerCompra extends HttpServlet {
             }
         } catch (Exception e) {
             System.err.println("Ha Ocurrido un error en el controller compra " + e.toString());
+        }finally{
+            daoModelCompra.Signout();
         }
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";

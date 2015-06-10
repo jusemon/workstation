@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-06-2015 a las 03:44:49
+-- Tiempo de generación: 10-06-2015 a las 17:22:49
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -56,6 +56,24 @@ BEGIN
 	UPDATE tblcategoriacurso SET 
             `nombreCategoriaCurso`=`nombreCategoria`
 	WHERE `idCategoriaCurso`=`idCategoria`;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarClase`(
+    IN `documentoUsuar` VARCHAR(30),
+    IN `idCur` INT,
+    IN `estadoPa` INT,
+    IN `creditoCrea` INT
+)
+BEGIN
+    declare idClas int;
+    set idClas = (select min(`idClase`) FROM tblclase WHERE `documentoUsuario`= `documentoUsuar` and `idCurso`=`idCur` and `estadoAsistencia`=0);    
+    UPDATE tblclase
+        SET fecha = now(),
+            `estadoPago`= `estadoPa`,
+            `estadoAsistencia`=1,
+            `creditoCreado`=`creditoCrea`
+    WHERE `idClase` = idClas;
+    select 'Asistencia registrada correctamente' as mensaje, 'success' as tipo;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCredito`(
@@ -225,7 +243,7 @@ BEGIN
         `documentoAcudiente`,
         `estadoBeneficiario`
     FROM `tblusuario` u inner join `tbldetalleusuario` du on (u.`idDetalleUsuario`= du.`idDetalleUsuario`)
-    WHERE idrol in (3, 4);
+    WHERE idrol in (3,4);
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCompraPorID`(IN idCompra int)
@@ -414,8 +432,7 @@ BEGIN
         `telefonoMovil`, 
         `generoUsuario`, 
         `idrol`, 
-        `documentoAcudiente` ,
-        `estadoBeneficiario`
+        `documentoAcudiente` 
     FROM `tblusuario` u inner join `tbldetalleusuario` du on (u.`idDetalleUsuario`= du.`idDetalleUsuario`)
     WHERE idrol=3;
 END$$
@@ -425,10 +442,10 @@ BEGIN
     SELECT 
         usu.`documentoUsuario` as `documentoUsuario`, 
         `nombreCurso`,  
-        (select count(`idClase`) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso`) as "numeroClases",
-        (select count(`idClase`) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso` and cl.`estadoAsistencia`=0) as "numeroClasesFaltantes",
-         ROUND("numeroClases" - "numeroClasesFaltantes" ,0) as numeroClasesAsistidas,
-        (select max(fecha) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso` and cl.`estadoAsistencia`=1) as fechaUltimaAsistencia,
+        (select count(`idClase`) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso`) as numeroClases,
+        (select count(`idClase`) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso` and `estadoAsistencia`=0) as numeroClasesFaltantes,
+        (select count(`idClase`) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso` and `estadoAsistencia`=1) as numeroClasesAsistidas,       
+        (select max(fecha) from tblclase where `documentoUsuario` = usu.`documentoUsuario` and `idCurso`=cu.`idCurso` and `estadoAsistencia`=1) as fechaUltimaAsistencia,
         cu.`idCurso` as idCurso
     FROM `tblclase` cl 
         inner join `tblcurso` cu 
@@ -459,6 +476,30 @@ BEGIN
         `idCategoriaCurso`
     FROM `tblcategoriacurso` 
     WHERE `nombreCategoriaCurso`='Seminario';
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarMatriculaPorDocumentoYIdCurso`(
+    IN documentoUsuar VARCHAR(20),
+    IN idCur int
+)
+BEGIN
+    SELECT 
+        usu.`documentoUsuario` as `documentoUsuario`,
+        `nombreUsuario`,
+        `apellidoUsuario`,
+        cu.`idCurso` as `idCurso`,
+        `nombreCurso`,
+        `precioCurso`,
+        `precioClase`,
+        `horasPorClase`
+    FROM `tblclase` cl 
+        inner join `tblcurso` cu 
+        on(cl.`idCurso` = cu.`idCurso`)
+        inner join tblusuario usu 
+        on (cl.`documentoUsuario`=usu.`documentoUsuario`)
+    WHERE usu.`documentoUsuario`=`documentoUsuar` AND cu.`idCurso` = `idCur`
+    GROUP BY usu.`documentoUsuario`, cl.`idCurso`;   
+    
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarPreinscritoPorID`(IN id VARCHAR(30))
@@ -734,10 +775,10 @@ BEGIN
         set msg= CONVERT('Este estudiante cuenta con clases sin pagar de este curso' using utf8);
         select msg as mensaje, 'error' as tipo;
     ELSEIF(exists (select `documentoUsuario` from tblclase WHERE `estadoPago` = 0  and `documentoUsuario` = `documentoUsuar` and `idCurso` IN (SELECT `idCurso` from tblcurso where idCurso!=`idCur` and `idCategoriaCurso` = (SELECT `idCategoriaCurso` from tblcurso where `idCurso`= `idCur`)))) THEN
-        set msg= CONVERT('Este estudiante cuenta con una matricula activa de un curso de la misma categoria' using utf8);
+        set msg= CONVERT('Este estudiante cuenta con una matrícula activa de un curso de la misma categoria' using utf8);
         select msg as mensaje, 'error' as tipo;
     ELSEIF((select if(count(1)>1, 1, null) from (select distinct `idCurso` from tblclase WHERE `estadoAsistencia` = 0  and `documentoUsuario` = `documentoUsuar` and `idCurso`!=`idCur` GROUP by `idCurso`) as temp)is not null) THEN
-        set msg= CONVERT('Este estudiante cuenta con dos matriculas activas' using utf8);        
+        set msg= CONVERT('Este estudiante cuenta con dos matrículas activas' using utf8);        
         select msg as mensaje, 'error' as tipo;
     ELSE
         INSERT INTO tblclase
@@ -1223,19 +1264,7 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
   `cantidadDisponible` mediumint(9) NOT NULL,
   `precioCompra` int(11) NOT NULL,
   `precioVenta` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `tblarticulo`
---
-
-INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioCompra`, `precioVenta`) VALUES
-(1, 1, 'Vinilo Aguamarina', 104, 1200, 1300),
-(2, 2, 'Vinilo Dorado', 58, 1400, 1500),
-(3, 2, 'Vinilo Plateado', 83, 1400, 1500),
-(4, 1, 'Pincel delgado', 0, 1000, 1200),
-(5, 1, 'Vinilo Negro', 0, 3000, 3000),
-(6, 1, 'Pincel Grueso', 0, 1200, 1500);
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1248,16 +1277,6 @@ CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
   `nombreCategoriaArticulo` varchar(50) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `tblcategoriaarticulo`
---
-
-INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArticulo`) VALUES
-(1, 'Pinceles'),
-(2, 'Vinilos'),
-(3, 'Categoria C'),
-(4, 'Categoria D');
-
 -- --------------------------------------------------------
 
 --
@@ -1268,17 +1287,6 @@ CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
 `idCategoriaCurso` int(11) NOT NULL,
   `nombreCategoriaCurso` varchar(45) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `tblcategoriacurso`
---
-
-INSERT INTO `tblcategoriacurso` (`idCategoriaCurso`, `nombreCategoriaCurso`) VALUES
-(1, 'Seminario'),
-(2, 'Primera Categoria'),
-(3, 'Categoria B'),
-(4, 'Categoria C'),
-(5, 'Categoria D');
 
 -- --------------------------------------------------------
 
@@ -1295,67 +1303,7 @@ CREATE TABLE IF NOT EXISTS `tblclase` (
   `precioClase` float NOT NULL,
   `idCurso` int(11) NOT NULL,
   `documentoUsuario` varchar(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `tblclase`
---
-
-INSERT INTO `tblclase` (`idClase`, `fecha`, `estadoPago`, `estadoAsistencia`, `creditoCreado`, `precioClase`, `idCurso`, `documentoUsuario`) VALUES
-(1, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(2, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(3, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(4, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(5, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(6, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(7, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(8, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(9, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(10, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(11, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(12, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(13, NULL, b'0', b'0', b'0', 8000, 5, 'CC32466217'),
-(14, NULL, b'0', b'0', b'0', 8000, 5, 'CC32466217'),
-(15, NULL, b'0', b'0', b'0', 8000, 5, 'CC32466217'),
-(16, NULL, b'0', b'0', b'0', 8000, 5, 'CC32466217'),
-(17, NULL, b'0', b'0', b'0', 8000, 5, 'CC32466217'),
-(18, NULL, b'0', b'0', b'0', 8000, 5, 'CC32466217'),
-(19, NULL, b'0', b'0', b'0', 8000, 5, 'CC32466217'),
-(26, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(27, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(28, NULL, b'0', b'0', b'0', 8000, 5, 'CC1017225673'),
-(34, NULL, b'0', b'0', b'0', 24000, 8, 'CC1017225673'),
-(35, NULL, b'0', b'0', b'0', 24000, 8, 'CC1017225673'),
-(36, NULL, b'0', b'0', b'0', 24000, 8, 'CC1017225673'),
-(37, NULL, b'0', b'0', b'0', 24000, 8, 'CC1017225673'),
-(38, NULL, b'0', b'0', b'0', 24000, 8, 'CC1017225673'),
-(39, NULL, b'0', b'0', b'0', 12000, 9, 'CE1017225673'),
-(40, NULL, b'0', b'0', b'0', 12000, 9, 'CE1017225673'),
-(41, NULL, b'0', b'0', b'0', 12000, 9, 'CC32466217'),
-(42, NULL, b'0', b'0', b'0', 12000, 9, 'CC32466217'),
-(43, NULL, b'0', b'0', b'0', 12000, 9, 'CC32466217'),
-(44, NULL, b'0', b'0', b'0', 12000, 9, 'CC32466217'),
-(45, NULL, b'0', b'0', b'0', 12000, 9, 'CC32466217'),
-(46, NULL, b'0', b'0', b'0', 12000, 9, 'CC32466217'),
-(47, NULL, b'0', b'0', b'0', 12000, 9, 'CC32466217'),
-(48, NULL, b'0', b'0', b'0', 12000, 9, 'CC32466217'),
-(49, NULL, b'0', b'0', b'0', 12000, 9, 'CC32466217'),
-(50, NULL, b'0', b'0', b'0', 12000, 9, 'CC32466217'),
-(51, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(52, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(53, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(54, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(55, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(56, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(57, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(58, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(59, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(60, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(61, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(62, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(63, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(64, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673'),
-(65, NULL, b'0', b'0', b'0', 8000, 5, 'CE1017225673');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1388,18 +1336,7 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `descripcionCurso` varchar(100) DEFAULT NULL,
   `precioCurso` int(11) DEFAULT NULL,
   `idCategoriaCurso` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `tblcurso`
---
-
-INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorClase`, `estadoCurso`, `descripcionCurso`, `precioCurso`, `idCategoriaCurso`) VALUES
-(5, 'Oleo', 15, 2, 1, 'Asd', 120000, 2),
-(6, 'Loquesea', 1, 5, 1, 'Seminario de lo que sea', 120000, 1),
-(7, 'Curso J', 10, 3, 1, 'La J es una letra, por la cual empieza mi nombre', 120000, 2),
-(8, 'Curso 3', 5, 3, 1, 'asdasdasd', 120000, 3),
-(9, 'Curso 4', 10, 10, 1, 'asdasdasd', 120000, 4);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1410,8 +1347,7 @@ INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorCla
 CREATE TABLE IF NOT EXISTS `tbldetallecredito` (
 `idDetalleCredito` int(11) NOT NULL,
   `idCredito` int(11) NOT NULL,
-  `idMovimiento` int(11) NOT NULL,
-  `fechaDetalle` date DEFAULT NULL
+  `idMovimiento` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1428,35 +1364,7 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
   `totalDetalleMovimiento` int(11) NOT NULL,
   `idMovimiento` int(11) NOT NULL,
   `precioArticulo` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `tbldetallemovimiento`
---
-
-INSERT INTO `tbldetallemovimiento` (`idDetalleMovimiento`, `idArticulo`, `cantidad`, `descuento`, `totalDetalleMovimiento`, `idMovimiento`, `precioArticulo`) VALUES
-(19, 2, 10, 3, 20000, 14, 2000),
-(20, 1, 10, 3, 25000, 14, 2500),
-(21, 3, 30, 3, 30000, 14, 1000),
-(22, 2, 9, 1, 18900, 15, 2100),
-(23, 1, 30, 1, 36000, 16, 1200),
-(24, 4, 30, 1, 36000, 17, 1200),
-(26, 4, 12, 1, 18792, 20, 1566),
-(27, 4, 234, 1, 5480982, 21, 23423),
-(28, 1, 1, 1, 1200, 22, 1200),
-(29, 2, 10, 1, 9000, 23, 900),
-(30, 3, 1, 1, 3243, 24, 3243),
-(31, 5, 30, 1, 30000, 25, 1000),
-(32, 5, 30, 1, 90000, 26, 3000),
-(33, 1, 10, 3, 12000, 27, 1200),
-(34, 2, 10, 3, 14000, 27, 1400),
-(35, 3, 10, 3, 14000, 27, 1400),
-(36, 1, 30, 3, 39000, 28, 1300),
-(37, 2, 30, 3, 45000, 28, 1500),
-(38, 3, 30, 3, 45000, 28, 1500),
-(39, 2, 10, 1, 15000, 29, 1500),
-(40, 1, 10, 1, 13000, 30, 1300),
-(41, 2, 2, 1, 3000, 31, 1500);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1471,18 +1379,7 @@ CREATE TABLE IF NOT EXISTS `tbldetalleusuario` (
   `telefonoMovil` varchar(15) NOT NULL,
   `generoUsuario` bit(1) NOT NULL,
   `estadoBeneficiario` bit(1) NOT NULL DEFAULT b'0'
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `tbldetalleusuario`
---
-
-INSERT INTO `tbldetalleusuario` (`idDetalleUsuario`, `direccionUsuario`, `telefonoFijo`, `telefonoMovil`, `generoUsuario`, `estadoBeneficiario`) VALUES
-(1, 'Calle 24 # 65 e 25', '5860529', '3218016237', b'1', b'0'),
-(2, 'Calle falsa 456', '56865245', '3218016237', b'1', b'0'),
-(3, 'asdasd', '123123123', '123123123123', b'0', b'0'),
-(4, 'ssdsdasdasd', '5861529', '3218016237', b'0', b'0'),
-(5, 'dasdasdasdasd', '123123123', '123123213212', b'1', b'0');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1498,13 +1395,6 @@ CREATE TABLE IF NOT EXISTS `tblempresa` (
   `telefonoContacto` varchar(50) NOT NULL,
   `emailContacto` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `tblempresa`
---
-
-INSERT INTO `tblempresa` (`nitEmpresa`, `nombreEmpresa`, `direccionEmpresa`, `nombreContacto`, `telefonoContacto`, `emailContacto`) VALUES
-('1017225673', 'OtherGames S.A.S', 'Calle 24 # 65 e 25', 'Juan Sebastian Montoya', '3218016237', 'thejuansebas03@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -1572,29 +1462,7 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
   `numeroAuxiliar` varchar(45) DEFAULT NULL,
   `nombreAuxiliar` varchar(45) DEFAULT NULL,
   `documentoAuxiliar` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `tblmovimiento`
---
-
-INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento`, `idtipoMovimiento`, `documentoUsuario`, `numeroAuxiliar`, `nombreAuxiliar`, `documentoAuxiliar`) VALUES
-(14, '2015-05-18 14:14:07', 75000, 1, '1017225673', '123', 'Sebas', NULL),
-(15, '2015-05-18 14:26:23', 18900, 1, '1017225673', '256', 'Sebas', NULL),
-(16, '2015-05-18 14:44:49', 36000, 1, '1017225673', 'asdasd', 'asd', NULL),
-(17, '2015-05-27 12:52:18', 36000, 1, '1017225673', '234234', 'asdasd', NULL),
-(20, '2015-06-01 17:02:26', 18792, 1, '1017225673', '1', 'tela', NULL),
-(21, '2015-06-01 17:21:48', 5480982, 3, '1017225673', '1', 'Categoria asdasd', 'CC567576576'),
-(22, '2015-06-01 17:26:02', 1200, 3, '1017225673', '2', 'Sebas', 'CC1017225673'),
-(23, '2015-06-01 17:30:38', 9000, 3, '1017225673', '3', 'Lorenzo', 'CC12312312'),
-(24, '2015-06-01 17:32:47', 3243, 3, '1017225673', '4', 'vintage', 'CC234234'),
-(25, '2015-06-02 17:54:48', 30000, 1, '1017225673', '1231321', 'Locoloco', NULL),
-(26, '2015-06-02 17:55:37', 90000, 3, '1017225673', '5', 'David', '12312321'),
-(27, '2015-06-02 18:03:36', 55000, 3, '1017225673', '6', 'Juan', 'CC1000'),
-(28, '2015-06-02 18:08:52', 129000, 3, '1017225673', '7', '1234234', 'sdfsdfsdf'),
-(29, '2015-06-08 22:49:01', 15000, 3, '1017225673', '8', 'Juancito Montoya', 'CC1017225673'),
-(30, '2015-06-08 22:59:33', 13000, 3, '1017225673', '9', 'Juanse DeOlla', 'CE1017225673'),
-(31, '2015-06-08 23:01:02', 3000, 3, '1017225673', '10', 'Maria Dolly Montoya Puerta', 'CC32466217');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1608,15 +1476,7 @@ CREATE TABLE IF NOT EXISTS `tblpreinscripcion` (
   `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `documentoUsuario` varchar(20) NOT NULL,
   `idCurso` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `tblpreinscripcion`
---
-
-INSERT INTO `tblpreinscripcion` (`idPreinscripcion`, `estado`, `fecha`, `documentoUsuario`, `idCurso`) VALUES
-(4, b'0', '2015-06-06 20:54:41', 'CC32466217', 6),
-(5, b'0', '2015-06-07 18:15:39', 'CC94110325805', 7);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1698,11 +1558,7 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
 --
 
 INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`) VALUES
-('1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL),
-('CC1017225673', '1994-11-03', 'Juancito', 'Montoya', 'thejuansebas03@gmail.com', '123', 0, 1, 3, NULL),
-('CC32466217', '1999-02-03', 'Maria Dolly', 'Montoya Puerta', 'micorreo@correo.com', '123', 0, 4, 3, NULL),
-('CC94110325805', '1990-03-02', 'Juan', 'Olla', 'nuevocorrep@correo.com', '123', 0, 5, 3, NULL),
-('CE1017225673', '1990-03-09', 'Juanse', 'DeOlla', 'juansmm@outlook.com', '123', 0, 2, 3, NULL);
+('1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -1830,7 +1686,7 @@ ALTER TABLE `tblusuario`
 -- AUTO_INCREMENT de la tabla `tblarticulo`
 --
 ALTER TABLE `tblarticulo`
-MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `tblcategoriaarticulo`
 --
@@ -1845,7 +1701,7 @@ MODIFY `idCategoriaCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 -- AUTO_INCREMENT de la tabla `tblclase`
 --
 ALTER TABLE `tblclase`
-MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=66;
+MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tblcredito`
 --
@@ -1855,7 +1711,7 @@ MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tblcurso`
 --
 ALTER TABLE `tblcurso`
-MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tbldetallecredito`
 --
@@ -1865,12 +1721,12 @@ MODIFY `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=42;
+MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tbldetalleusuario`
 --
 ALTER TABLE `tbldetalleusuario`
-MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tblmodulo`
 --
@@ -1880,12 +1736,12 @@ MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 -- AUTO_INCREMENT de la tabla `tblmovimiento`
 --
 ALTER TABLE `tblmovimiento`
-MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=32;
+MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --
 ALTER TABLE `tblpreinscripcion`
-MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tblrol`
 --
