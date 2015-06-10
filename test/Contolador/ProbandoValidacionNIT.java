@@ -16,28 +16,27 @@ import org.junit.Test;
  */
 public class ProbandoValidacionNIT {
 
-    private static String[] validEmails, invalidEmails;
+    private static String[] validNIT, invalidNIT;
 
     /**
      * Load data to run the tests.
      */
     @BeforeClass
     public static void NITProviderText() {
-        validEmails = new String[]{"123.456.789-1",
+        validNIT = new String[]{"123.456.789-1",
             "852.147.258-1", "123.111.111-2",
             "987.654.321-0", "123.123.123-2"};
-        invalidEmails = new String[]{"123456789", "12331321", "132.123.123.1", "123-123-123-1", "645-564.654-4"};
+        invalidNIT = new String[]{"123456789", "12331321", "132.123.123.1", "123-123-123-1", "645-564.654-4"};
     }
 
     /**
-     * Test which validate an array of valid e-mails.
+     * Test which validate an array of valid e.
      */
     @Test
-    public void validEmailTest() {
+    public void validNITTest() {
 
-        for (String temp : validEmails) {
+        for (String temp : validNIT) {
 
-            // Check if the e-mail is valid using our method.
             boolean valid = Validador.validarNIT(temp);
             System.out.println("NIT is valid : " + temp + " , " + valid);
 
@@ -48,15 +47,15 @@ public class ProbandoValidacionNIT {
     }
 
     /**
-     * Test which validate an array of invalid e-mails.
+     * Test which validate an array of invalid Nit.
      */
     @Test
-    public void invalidEmailTest() {
-        for (String temp : invalidEmails) {
-            // Check if the e-mail is valid using our method.
+    public void invalidNITTest() {
+        for (String temp : invalidNIT) {
+            // Check if the NIT is valid using our method.
             boolean valid = Validador.validarNIT(temp);
             System.out.println("Nit is valid : " + temp + " , " + valid);
-            // All of e-mails of this test must be invalid.
+            // All of NIT of this test must be invalid.
             Assert.assertEquals(valid, false);
         }
     }
