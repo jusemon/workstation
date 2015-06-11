@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-06-2015 a las 22:49:05
+-- Tiempo de generación: 11-06-2015 a las 00:53:10
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -724,6 +724,48 @@ BEGIN
     end if;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spGenerarVentaClases`(
+    in cantidadClases int,
+    IN `documentoUsuar` VARCHAR(30),
+    IN `documentoClien` VARCHAR(30),
+    IN `idCur` INT
+)
+BEGIN
+    declare idVen int;    
+    declare totalVen int;
+    declare nombreClien varchar (60);
+    declare msg varchar(40);    
+    set idVen = (SELECT max(`numeroAuxiliar`)+1 FROM `tblmovimiento` WHERE `idtipoMovimiento` = 3);   
+    IF (idVen is  null) THEN
+        set idVen=1;
+    END IF;    
+    set totalVen= cantidadClases*(select distinct `precioClase` FROM tblclase WHERE `documentoUsuario`= `documentoClien` and `idCurso`=`idCur`);
+    set nombreClien = (select convert(concat(`nombreUsuario`, ' ', `apellidoUsuario`) using utf8) from tblusuario WHERE `documentoUsuario` = `documentoClien`);        
+	if (exists(select numeroAuxiliar from tblMovimiento where numeroAuxiliar=`idVen` and `idtipoMovimiento`=3)) then
+		set msg="Esta venta ya existe";
+		select msg as Respuesta;
+	else
+            insert into tblMovimiento 
+            (
+                `fechaMovimiento`, 
+                `totalMovimiento`, 
+                `idtipoMovimiento`, 
+                `documentoUsuario`, 
+                `nombreAuxiliar`,
+                `numeroAuxiliar`,
+                documentoAuxiliar
+            ) VALUES (
+                NOW(),
+                totalVen,
+                3,
+                documentoUsuar,
+                nombreClien,
+                idVen,
+                documentoClien
+            );
+	end if;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarAbono`(
     in idAbo        int,
     in valorAbo     int,
@@ -1436,7 +1478,8 @@ CREATE TABLE IF NOT EXISTS `tbldetallecredito` (
 
 CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
   `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,
-  `idArticulo` int(11) NOT NULL,
+  `idArticulo` int(11) DEFAULT NULL,
+  `idClase` int(11) DEFAULT NULL,
   `cantidad` int(11) NOT NULL,
   `descuento` int(11) DEFAULT NULL,
   `totalDetalleMovimiento` int(11) NOT NULL,
@@ -1451,8 +1494,8 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
 -- Volcado de datos para la tabla `tbldetallemovimiento`
 --
 
-INSERT INTO `tbldetallemovimiento` (`idDetalleMovimiento`, `idArticulo`, `cantidad`, `descuento`, `totalDetalleMovimiento`, `idMovimiento`, `precioArticulo`) VALUES
-(1, 1, 30, 1, 36000, 1, 1200);
+INSERT INTO `tbldetallemovimiento` (`idDetalleMovimiento`, `idArticulo`, `idClase`, `cantidad`, `descuento`, `totalDetalleMovimiento`, `idMovimiento`, `precioArticulo`) VALUES
+(1, 1, NULL, 30, 1, 36000, 1, 1200);
 
 -- --------------------------------------------------------
 
@@ -1731,8 +1774,8 @@ ALTER TABLE `tbldetallecredito`
 -- Filtros para la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-  ADD CONSTRAINT `FK_tblDetalleVenta_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_tbldetallemovimiento_tblMovimiento1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_tbldetallemovimiento_tblMovimiento1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_tblDetalleVenta_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tblmodulorol`

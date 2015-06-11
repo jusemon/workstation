@@ -261,7 +261,7 @@ public class ControllerMatricula extends HttpServlet {
             clases.add(_objClase);
         }
         daoModelMatricula = new ModelMatricula();
-        String[] aux = daoModelMatricula.RegistrarAsistencia(clases, documentoUsuario);
+        String[] aux = daoModelMatricula.RegistrarAsistencia(clases, documentoUsuario, beneficiario);
         daoModelMatricula.Signout();
         Map<String, String> respuesta = new LinkedHashMap<>();
         respuesta.put("tipo", aux[0]);
