@@ -68,7 +68,7 @@ public class ControllerVenta extends HttpServlet {
                     } else {
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
-                        response.getWriter().write(Mensaje(false, null, "Lo sentimos, ha ingresado datos incorrectos"));
+                        response.getWriter().write(Mensaje(false, null, "Ha ingresado datos incorrectos"));
                         break;
                     }
 
@@ -142,7 +142,7 @@ public class ControllerVenta extends HttpServlet {
                         final Font helveticaBold = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
                         //Escribo y agrego un primer parrafo con los datos basicos de la compra         
                         Paragraph headerDerecha = new Paragraph();
-                        headerDerecha.add(new Chunk("Numero de la Venta: ", helveticaBold));
+                        headerDerecha.add(new Chunk("Id. de la Venta: ", helveticaBold));
                         headerDerecha.add(new Chunk(venta.get("numeroVenta") + "\n"));
                         headerDerecha.add(new Chunk("Nombre del Cliente: ", helveticaBold));
                         headerDerecha.add(new Chunk(venta.get("nombreCliente") + "\n"));
@@ -153,9 +153,9 @@ public class ControllerVenta extends HttpServlet {
                         //Escribo y agrego un segundo parrafo con los datos basicos de Stelarte  
                         Paragraph headerIzquierda = new Paragraph();
                         headerIzquierda.add(new Chunk("Stelarte.Decoracion \n", helveticaBold));
-                        headerIzquierda.add(new Chunk("Direccion: ", helveticaBold));
+                        headerIzquierda.add(new Chunk("Dirección: ", helveticaBold));
                         headerIzquierda.add(new Chunk("Calle Falsa 123 # 12a34\n"));
-                        headerIzquierda.add(new Chunk("Telefono: ", helveticaBold));
+                        headerIzquierda.add(new Chunk("Teléfono: ", helveticaBold));
                         headerIzquierda.add(new Chunk("2583697 \n"));
                         //Agrego los dos anteriores parrafos al Header
                         PdfPTable header = new PdfPTable(2);

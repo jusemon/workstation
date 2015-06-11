@@ -147,7 +147,7 @@ public class ControllerMatricula extends HttpServlet {
             objetos.put("mensaje", respuestaBD[1]);
             return new Gson().toJson(objetos);
         }
-        return Mensaje(false, null, "Uno o mas campos contienen datos incorrectos.");
+        return Mensaje(false, null, "Uno o más campos contienen datos incorrectos.");
     }
 
     public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {

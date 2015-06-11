@@ -83,7 +83,7 @@ public class ControllerEmpresa extends HttpServlet {
                     _objEmpresa.setTelefonoContacto(telefonoContacto);
                     String emailContacto = request.getParameter("txtEmailContacto").trim();
                     _objEmpresa.setEmailContacto(emailContacto);
-                    String salida = Mensaje(daoModelEmpresa.Edit(_objEmpresa), "La empresa ha sido actualizada", "Ha ocurrido un error al intentar actualizar la empresa");
+                    String salida = Mensaje(daoModelEmpresa.Edit(_objEmpresa), "Datos de la empresa actualizados", "Ha ocurrido un error al intentar actualizar los datos de la empresa seleccionada");
                     daoModelEmpresa.Signout();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");

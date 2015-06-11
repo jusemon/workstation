@@ -150,7 +150,7 @@
                                                 <label for="txtNombre">
                                                     Nombre Categoría Curso
                                                 </label>
-                                                <input name="txtNombre" id="txtNombreCategoriaCurso" type="text" class="form-control"  pattern="[ÁÉÍÓÚáéíóúñÑa-zA-Z ]{3,30}" title="Entre 3 y 30 letras y no se permiten numeros" placeholder="Ejm: Oleo" required>
+                                                <input name="txtNombre" id="txtNombreCategoriaCurso" type="text" class="form-control"  pattern="[ÁÉÍÓÚáéíóúñÑa-zA-Z ]{3,30}" title="Entre 3 y 30 letras y no se permiten números" placeholder="Ej: Oleo" required>
                                             </div>
                                         </div>
                                     </div>

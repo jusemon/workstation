@@ -51,7 +51,7 @@
                                 <th class="text-center">Documento</th>
                                 <th class="text-center">Nombres</th>
                                 <th class="text-center">Fecha Nacimiento</th>
-                                <th class="text-center">Telefono</th>
+                                <th class="text-center">Teléfono</th>
                                 <th class="text-center">Consultar</th>
                                 <th class="text-center">Editar</th>
                                 <th class="text-center">Matricular</th>
@@ -121,7 +121,7 @@
                                                 <label for="txtNombre">
                                                     Nombres
                                                 </label>
-                                                <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Juan Sebastian" required>
+                                                <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ej: Juan Sebastian" required>
                                             </div>
                                         </div>
                                     </div>
@@ -131,7 +131,7 @@
                                                 <label for="txtApellido">
                                                     Apellidos
                                                 </label>
-                                                <input name="txtApellido" id="txtApellido" type="text" class="form-control" placeholder="Ejm: Montoya Montoya" required>
+                                                <input name="txtApellido" id="txtApellido" type="text" class="form-control" placeholder="Ej: Montoya Montoya" required>
                                             </div>
                                         </div>
                                     </div>                                            
@@ -141,7 +141,7 @@
                                                 <label for="txtDireccion">
                                                     Teléfono
                                                 </label>
-                                                <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
+                                                <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ej: Calle 24 # 65E-25" required>
                                             </div>
                                         </div>
                                     </div>
@@ -151,7 +151,7 @@
                                                 <label for="txtDireccion">
                                                     Correo Electrónico
                                                 </label>
-                                                <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
+                                                <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ej: Calle 24 # 65E-25" required>
                                             </div>
                                         </div>
                                     </div>
@@ -161,7 +161,7 @@
                                                 <label for="txtDireccion">
                                                     Dirección
                                                 </label>
-                                                <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
+                                                <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ej: Calle 24 # 65 e 25" required>
                                             </div>
                                         </div>
                                     </div>
@@ -171,7 +171,7 @@
                                                 <label for="dateFechaNaciemiento">
                                                     Fecha de Nacimiento
                                                 </label>
-                                                <input name="dateFechaNaciemiento" id="dateFechaNaciemiento" type="text" class="form-control fecha" placeholder="Ejm: 10/10/2014" required>
+                                                <input name="dateFechaNaciemiento" id="dateFechaNaciemiento" type="text" class="form-control fecha" placeholder="Ej: 10/10/2014" required>
                                             </div>
                                         </div>
                                     </div>
@@ -197,7 +197,7 @@
                                                 <label for="txtIdentificacion">
                                                     Número de Identificación
                                                 </label>
-                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
+                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ej: 1017225673" required>
                                             </div>
                                         </div>
                                     </div>
@@ -374,7 +374,7 @@
                                                     <label for="txtIdentificacion">
                                                         Número
                                                     </label>
-                                                    <input name="txtIdentificacion" id="txtIdentificacion" type="text" pattern="[0-9]{5,15}"  title="Solo se permiten numeros y no deben ser menos de 5 o mas de 15" class="form-control" placeholder="Ejm: 1017225673" required>                                                    
+                                                    <input name="txtIdentificacion" id="txtIdentificacion" type="text" pattern="[0-9]{5,15}"  title="Solo se permiten números y no deben ser menos de 5 o más de 15" class="form-control" placeholder="Ej: 1017225673" required>                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -385,7 +385,7 @@
                                                 <label for="txtNombre">
                                                     Nombres
                                                 </label>
-                                                <input name="txtNombre" id="txtNombre" type="text" pattern="([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos nombres, Ejem: Maria Camila" class="form-control" placeholder="Ejm: Juan Sebastián" required>
+                                                <input name="txtNombre" id="txtNombre" type="text" pattern="([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})?" title="No se permiten números, tampoco más de dos nombres" class="form-control" placeholder="Ej: Juan Sebastián" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -393,7 +393,7 @@
                                                 <label for="txtApellido">
                                                     Apellidos
                                                 </label>
-                                                <input name="txtApellido" id="txtApellido" type="text" pattern="([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos apellidos, Ejem: Montoya Soto" class="form-control" placeholder="Ejm: Montoya Montoya" required>
+                                                <input name="txtApellido" id="txtApellido" type="text" pattern="([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑa-zA-Z]{3,15})?" title="No se permiten numeros, ni tampoco mas de dos apellidos, Ejem: Montoya Soto" class="form-control" placeholder="Ej: Montoya Montoya" required>
                                             </div>
                                         </div>
                                     </div>
@@ -403,7 +403,7 @@
                                                 <label for="dateFechaNacimiento">
                                                     Fecha de Nacimiento
                                                 </label>
-                                                <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[0-2]).([0-9]{4})" title="El formato de la fecha debe ser dd/mm/yyyy" class="form-control fecha" placeholder="Ejm: 10/10/2014" required>
+                                                <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[0-2]).([0-9]{4})" title="El formato de la fecha debe ser dd/mm/yyyy" class="form-control fecha" placeholder="Ej: 10/10/2014" required>
                                             </div>
                                         </div>
                                     </div>
@@ -413,7 +413,7 @@
                                                 <label for="txtDireccion">
                                                     Dirección
                                                 </label>
-                                                <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
+                                                <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ej: Calle 24 # 65 e 25" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -421,7 +421,7 @@
                                                 <label for="txtTelefono">
                                                     Teléfono
                                                 </label>
-                                                <input name="txtTelefono" id="txtTelefono" type="text" pattern="([0-9 ]{7,14})" title="Numeros, se permiten espacios, ejem: 5 86 15 29" class="form-control" placeholder="Ejm: 5 65 85 45" required>
+                                                <input name="txtTelefono" id="txtTelefono" type="text" pattern="([0-9 ]{7,14})" title="Números únicamente" class="form-control" placeholder="Ej: 5658545" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -429,7 +429,7 @@
                                                 <label for="txtCelular">
                                                     Celular
                                                 </label>
-                                                <input name="txtCelular" id="txtCelular" type="text" pattern="([0-9 ]{10,22})" title="Numeros, se permiten espacios, ejem: 321 801 62 37" class="form-control" placeholder="Ejm: 321 801 62 37">
+                                                <input name="txtCelular" id="txtCelular" type="text" pattern="([0-9 ]{10,22})" title="Numeros, se permiten espacios, ejem: 321 801 62 37" class="form-control" placeholder="Ej: 3218016237">
                                             </div>
                                         </div>
                                     </div>
@@ -439,7 +439,7 @@
                                                 <label for="txtCorreo">
                                                     Correo Electrónico
                                                 </label>
-                                                <input name="txtCorreo" id="txtCorreo" type="email" class="form-control" placeholder="Ejm: juansmm@outlook.com" required>
+                                                <input name="txtCorreo" id="txtCorreo" type="email" class="form-control" placeholder="Ej: juansmm@outlook.com" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">

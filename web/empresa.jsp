@@ -121,7 +121,7 @@
                                                 <label for="txtTelefonoContacto">
                                                     Teléfono
                                                 </label>
-                                                <input name="txtTelefonoContacto" id="txtTelefonoContacto" type="text" class="form-control" placeholder="Ejm: 3218016237">
+                                                <input name="txtTelefonoContacto" id="txtTelefonoContacto" type="text" class="form-control" placeholder="Ej: 3218016237">
                                             </div>
                                         </div>
                                     </div>
@@ -131,7 +131,7 @@
                                                 <label for="txtEmailContacto">
                                                     Email Contacto
                                                 </label>
-                                                <input name="txtEmailContacto" id="txtEmailContacto" type="email" class="form-control" placeholder="Ejm: direccion@correo.com" required>
+                                                <input name="txtEmailContacto" id="txtEmailContacto" type="email" class="form-control" placeholder="Ej: direccion@correo.com" required>
                                             </div>
                                         </div>
                                     </div>
