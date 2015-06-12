@@ -123,30 +123,74 @@ public class ModelMatricula extends ConnectionDB {
         return resultado;
     }
 
-    public String[] RegistrarAsistencia(List<ObjClase> clases, String documentoUsuario) {
+    public String[] RegistrarAsistencia(List<ObjClase> clases, String documentoUsuario, int beneficiario) {
         String[] objReturn = new String[2];
         String sql = "call spActualizarClase(?,?,?,?)";
         try {
-            getStmt();
-            connection.setAutoCommit(false);
-            for (ObjClase clase : clases) {
-                pStmt = connection.prepareCall(sql);
-                pStmt.setString(1, clase.getDocumentoUsuario());
-                pStmt.setInt(2, clase.getIdCurso());
-                pStmt.setInt(3, clase.getEstadoPago());
-                pStmt.setInt(4, clase.getCreditoCreado());
-                ResultSet rs = pStmt.executeQuery();
-                while (rs.next()) {
-                    objReturn[0] = rs.getString("tipo");
-                    objReturn[1] = rs.getString("mensaje");
-                    if (objReturn[0].equals("error")) {
+            if (beneficiario == 1) {
+                for (ObjClase clase : clases) {
+                    pStmt = connection.prepareCall(sql);
+                    pStmt.setString(1, clase.getDocumentoUsuario());
+                    pStmt.setInt(2, clase.getIdCurso());
+                    pStmt.setInt(3, clase.getEstadoPago());
+                    pStmt.setInt(4, clase.getCreditoCreado());
+                    ResultSet rs = pStmt.executeQuery();
+                    while (rs.next()) {
+                        objReturn[0] = rs.getString("tipo");
+                        objReturn[1] = rs.getString("mensaje");
+                        if (objReturn[0].equals("error")) {
+                            return objReturn;
+                        }
+                    }
+                }
+            } else {
+                int pago = 0;
+                String documentoCliente = null;
+                String sql2 = "call spGenerarVentaClases(?,?,?,?)";
+                int idCurso = 0;
+                getStmt();
+                connection.setAutoCommit(false);
+                for (ObjClase clase : clases) {
+                    if (clase.getEstadoPago() == 1) {
+                        pago = 1;
+                        documentoCliente = clase.getDocumentoUsuario();
+                        idCurso = clase.getIdCurso();
+                        break;
+                    }
+                }
+                if (pago == 1) {
+                    pStmt = connection.prepareCall(sql);
+                    pStmt.setInt(1, clases.size());
+                    pStmt.setString(2, documentoUsuario);
+                    pStmt.setString(3, documentoCliente);
+                    pStmt.setInt(4, idCurso);
+                    int execute = pStmt.executeUpdate();
+                    if (0 >= execute) {
                         connection.rollback();
+                        objReturn[0] = "error";
+                        objReturn[1] = "Ha ocurrido un error";
                         return objReturn;
                     }
                 }
+                for (ObjClase clase : clases) {
+                    pStmt = connection.prepareCall(sql);
+                    pStmt.setString(1, clase.getDocumentoUsuario());
+                    pStmt.setInt(2, clase.getIdCurso());
+                    pStmt.setInt(3, clase.getEstadoPago());
+                    pStmt.setInt(4, clase.getCreditoCreado());
+                    ResultSet rs = pStmt.executeQuery();
+                    while (rs.next()) {
+                        objReturn[0] = rs.getString("tipo");
+                        objReturn[1] = rs.getString("mensaje");
+                        if (objReturn[0].equals("error")) {
+                            connection.rollback();
+                            return objReturn;
+                        }
+                    }
+                }
+                connection.commit();
+                return objReturn;
             }
-            connection.commit();
-            return objReturn;
         } catch (SQLException sqlE) {
             try {
                 objReturn[0] = "error";
