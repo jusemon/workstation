@@ -10,14 +10,14 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-4 ">
+        <div class="col-md-3">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         Gestión de Empresa
                     </h3>
                 </div>
-                <div id="collapseOne" class="panel-collapse collapse in">
+                <div id="collapseOne" class="panel-collapse collapse">
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -31,7 +31,7 @@
 
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="active">
                     <a href="#empresa" role="tab" data-toggle="tab">Listado de Empresas</a>

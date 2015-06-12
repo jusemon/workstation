@@ -9,7 +9,7 @@
 <%@include file="WEB-INF/jspf/header.jspf" %>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -64,7 +64,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="active">
                     <a href="#cursos" role="tab" data-toggle="tab">Listado de Cursos</a>

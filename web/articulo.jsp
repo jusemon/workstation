@@ -8,7 +8,7 @@
 <%@include file="WEB-INF/jspf/header.jspf" %>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -18,7 +18,7 @@
                             </a>
                         </h4>
                     </div>
-                    <div id="collapseOne" class="panel-collapse collapse in">
+                    <div id="collapseOne" class="panel-collapse collapse">
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-12">
@@ -41,7 +41,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-9">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="active">
                     <a href="#articulos" role="tab" data-toggle="tab">Listado de Artículos</a>
