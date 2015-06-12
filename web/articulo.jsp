@@ -87,46 +87,5 @@
 </div>
 
 <%@include file="WEB-INF/jspf/modalArticulo.jspf" %>
-<div class="modal" id="miPopupCategoriaArticulo">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form id="formCategoriaArticulo" method="POST" action="ControllerCategoriaArticulo">
-                            <div class="panel">
-                                <div class="panel-heading estilo2">
-                                    <h3 class="panel-title">
-                                        <label id="titulo"></label>
-                                        <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                                    </h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <input type="hidden" id="idCategoriaArticulo" name="idCategoriaArticulo"/>
-                                        <div class="col-md-12">                                        
-                                            <div class="form-group">
-                                                Nombre
-                                                <input name="txtNombre" id="txtNombreCategoriaArticulo" type="text" pattern="[ÁÉÍÓÚáéíóúñÑ°a-zA-Z ]{3,15}" title="Entre 3 y 30 letras y no se permiten numeros" class="form-control" placeholder="Ejm: Vinilos" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel-footer">
-                                    <div class="row">
-                                        <div class="col-md-offset-3 col-md-6">
-                                            <div class="form-group">
-                                                <input  class="btn btn-default btn-block" id="btnCategoriaArticulo" onclick="categoriaArticulo.myAjax($('#btnCategoriaArticulo').val())" type="submit" name="action">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<%@include file="WEB-INF/jspf/modalCategoriaArticulo.jspf" %>
 <%@include file="WEB-INF/jspf/footer.jspf" %>
