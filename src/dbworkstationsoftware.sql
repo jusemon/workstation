@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-06-2015 a las 23:40:08
+-- Tiempo de generación: 16-06-2015 a las 23:05:49
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -95,6 +95,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCurso`(
 	in estadoCur        int,
         in descripcionCur   varchar(100),
         in precioCur        int,
+        in fechaSemina      varchar (50),
+        in cupoSemina       int,
         in idCategoriaCur   int
 )
 BEGIN
@@ -105,6 +107,8 @@ BEGIN
             `estadoCurso` = `estadoCur`,
             `descripcionCurso`=`descripcionCur`,
             `precioCurso`=`precioCur`,
+             fechaSeminario= fechaSemina,
+             cupoSeminario = cupoSemina,
             `idCategoriaCurso` = `idCategoriaCur`
         WHERE `idCurso`=`idCur`;       
 END$$
@@ -549,6 +553,8 @@ BEGIN
         `estadoCurso`, 
         `descripcionCurso`, 
         `precioCurso`, 
+         fechaSeminario,
+         cupoSeminario,
         cc.`idCategoriaCurso` as `idCategoriaCurso`,
         cc.`nombreCategoriaCurso` as `nombreCategoriaCurso`
     FROM `tblcurso` c INNER JOIN tblcategoriacurso cc ON (c.`idCategoriaCurso`=cc.`idCategoriaCurso`) 
@@ -699,6 +705,17 @@ BEGIN
         SELECT 1 as idArticulo;
     END IF;
 END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spContadorClase`()
+BEGIN
+    declare respuesta int;
+    set respuesta = (SELECT max(idClase)+1 FROM `tblclase` WHERE `tblcurso_idCurso` = idCurso);
+    IF (respuesta is not null) THEN
+        SELECT respuesta as idClase;
+    ELSE
+        SELECT 1 as idClase;
+    END IF;
+    END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spContadorVenta`()
 BEGIN
@@ -916,6 +933,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCurso`(
     in estado int,
     in descripcion varchar(100),
     in precio int,
+    in fecha DATETIME,
+    in cupo int,
     in idcategoria int
 )
 BEGIN
@@ -925,7 +944,9 @@ INSERT INTO `tblcurso`(
     `horasPorClase`, 
     `estadoCurso`, 
     `descripcionCurso`, 
-    `precioCurso`, 
+    `precioCurso`,
+     fechaSeminario,
+     cupoSeminario,
     `idCategoriaCurso`
 ) VALUES (
     nombre,
@@ -934,6 +955,8 @@ INSERT INTO `tblcurso`(
     estado,
     descripcion,
     precio,
+    fecha,
+    cupo,
     idcategoria
 );
 END$$
@@ -1443,6 +1466,8 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `estadoCurso` int(11) NOT NULL,
   `descripcionCurso` varchar(100) DEFAULT NULL,
   `precioCurso` int(11) DEFAULT NULL,
+  `fechaSeminario` datetime DEFAULT NULL,
+  `cupoSeminario` int(11) DEFAULT NULL,
   `idCategoriaCurso` int(11) NOT NULL,
   PRIMARY KEY (`idCurso`),
   KEY `fk_tblcurso_tblcategoriacurso1_idx` (`idCategoriaCurso`)
@@ -1452,8 +1477,8 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
 -- Volcado de datos para la tabla `tblcurso`
 --
 
-INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorClase`, `estadoCurso`, `descripcionCurso`, `precioCurso`, `idCategoriaCurso`) VALUES
-(1, 'Corte', 5, 3, 1, 'El curso de corte en madera sirve para...', 120000, 2);
+INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorClase`, `estadoCurso`, `descripcionCurso`, `precioCurso`, `fechaSeminario`, `cupoSeminario`, `idCategoriaCurso`) VALUES
+(1, 'Corte', 5, 3, 1, 'El curso de corte en madera sirve para...', 120000, NULL, NULL, 2);
 
 -- --------------------------------------------------------
 

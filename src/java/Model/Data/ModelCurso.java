@@ -29,7 +29,7 @@ public class ModelCurso extends ConnectionDB {
 
     public boolean Add(ObjCurso _objCurso) {
         boolean objReturn = false;
-        String sql = "call spIngresarCurso(?,?,?,?,?,?,?)";
+        String sql = "call spIngresarCurso(?,?,?,?,?,?,?,?,?)";
 
         try {
             getStmt();
@@ -40,7 +40,9 @@ public class ModelCurso extends ConnectionDB {
             pStmt.setInt(4, _objCurso.getEstadoCurso());
             pStmt.setString(5, _objCurso.getDescripcionCurso());
             pStmt.setInt(6, _objCurso.getPrecioCurso());
-            pStmt.setInt(7, _objCurso.getIdCategoriaCurso());
+            pStmt.setString(7, _objCurso.getFechaSeminario());
+            pStmt.setInt(8, _objCurso.getCupoSeminario());
+            pStmt.setInt(9, _objCurso.getIdCategoriaCurso());
 
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
@@ -98,6 +100,8 @@ public class ModelCurso extends ConnectionDB {
                 respuesta.put("descripcionCurso", rs.getString("descripcionCurso"));
                 respuesta.put("idCategoriaCurso", rs.getString("idCategoriaCurso"));
                 respuesta.put("nombreCategoriaCurso", rs.getString("nombreCategoriaCurso"));
+                respuesta.put("fechaSeminario", rs.getString("fechaSeminario"));
+                respuesta.put("cupoSeminario", rs.getString("cupoSeminario"));
             }
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());

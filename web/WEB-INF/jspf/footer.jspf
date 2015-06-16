@@ -117,6 +117,10 @@
 <script src="public/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 <script src="public/js/select2.min.js" type="text/javascript"></script>
 <script src="public/js/locales/select2/es.js" type="text/javascript"></script>
+<script src="public/js/moment.min.js" type="text/javascript"></script>
+<script src="public/js/locales.min.js" type="text/javascript"></script>
+<script src="public/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="public/js/locales/datetimepicker/es.js" type="text/javascript"></script>
 <script src="public/js/locales/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
 <script src="public/js/notify.min.js" type="text/javascript"></script>
 <script src="public/js/crud.js" type="text/javascript"></script>

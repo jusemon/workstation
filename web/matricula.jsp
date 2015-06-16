@@ -98,7 +98,7 @@
     </div>
 </div>
 
-<%@include file="WEB-INF/jspf/ModalAcudiente.jspf" %>
-<%@include file="WEB-INF/jspf/ModalEstudiante.jspf" %>
-<%@include file="WEB-INF/jspf/ModalMatricula.jspf" %>
+<%@include file="WEB-INF/jspf/modalAcudiente.jspf" %>
+<%@include file="WEB-INF/jspf/modalEstudiante.jspf" %>
+<%@include file="WEB-INF/jspf/modalMatricula.jspf" %>
 <%@include file="WEB-INF/jspf/footer.jspf" %>

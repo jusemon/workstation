@@ -44,8 +44,8 @@ public class ControllerCurso extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         if (request.getParameter("action") != null) {
-            String nombre, descripcion, aux, salida, tipo = "";
-            int estado = 0, cantidadClases, categoria, id, horasPorClase, precio;
+            String nombre, descripcion, aux, salida, tipo = "",fechaSeminario;
+            int estado = 0, cantidadClases, categoria, id, horasPorClase, precio,  cupoSeminario;
             switch (request.getParameter("action")) {
 
                 // <editor-fold defaultstate="collapsed" desc="Registrar un Curso o Seminario">
@@ -57,6 +57,9 @@ public class ControllerCurso extends HttpServlet {
                     precio = Integer.parseInt(request.getParameter("txtPrecio").trim());
                     estado = Integer.parseInt(request.getParameter("ddlEstado").trim());
                     horasPorClase = Integer.parseInt(request.getParameter("txtCantidadHoras").trim());
+                    fechaSeminario = request.getParameter("txtFechaSeminario").trim();
+                    cupoSeminario = Integer.parseInt(request.getParameter("txtCupoSeminario").trim());
+                    
                     if (tipo.equals("Seminario")) {
                         cantidadClases = 1;
                         daoModelCategoriaCurso = new ModelCategoriaCurso();
@@ -73,6 +76,8 @@ public class ControllerCurso extends HttpServlet {
                     _objCurso.setHorasPorClase(horasPorClase);
                     _objCurso.setEstadoCurso(estado);
                     _objCurso.setPrecioCurso(precio);
+                    _objCurso.setFechaSeminario(fechaSeminario);
+                    _objCurso.setCupoSeminario (cupoSeminario);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     salida = Mensaje(daoModelCurso.Add(_objCurso), "El Curso ha sido registrado", "Ha ocurrido un error al intentar registrar el Curso");

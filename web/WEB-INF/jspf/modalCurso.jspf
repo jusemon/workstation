@@ -19,7 +19,7 @@
                                     <input type="hidden" name="idCurso" id="idCurso"/>
                                     <input type="hidden" name="tipo" id="tipo"/>
                                     <input type="hidden" name="aux" id="aux"/>
-                                    <div class="row" id="ContenedorCategoria">
+                                    <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="ddlCategoria"> 
@@ -76,6 +76,24 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtFechaSeminario">
+                                                    Fecha del Seminario
+                                                </label>
+                                                <input name="txtFechaSeminario" id="txtFechaSeminario" type="text" class="form-control fecha2" placeholder="Ejm: 10" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtCupoSeminario">
+                                                   Cupos
+                                                </label>
+                                                <input name="txtCupoSeminario" id="txtCupoSeminario" type="number" min="1" max="50" class="form-control" placeholder="Ejm: 10" required>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
@@ -100,11 +118,10 @@
                                     </div>
                                 </div>
                             </div>
-                    </div>
                     </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
