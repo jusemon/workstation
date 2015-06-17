@@ -80,7 +80,7 @@ public class ControllerCurso extends HttpServlet {
                     _objCurso.setCupoSeminario (cupoSeminario);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
-                    salida = Mensaje(daoModelCurso.Add(_objCurso), "El Curso ha sido registrado", "Ha ocurrido un error al intentar registrar el Curso");
+                    salida = Mensaje(daoModelCurso.Add(_objCurso), "El curso ha sido registrado", "Ha ocurrido un error al intentar registrar el Curso");
                     daoModelCurso.Signout();
                     response.getWriter().write(salida);
                     break;
@@ -144,7 +144,7 @@ public class ControllerCurso extends HttpServlet {
                     _objCurso.setPrecioCurso(precio);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
-                    salida = Mensaje(daoModelCurso.Edit(_objCurso), "El Curso ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Curso");
+                    salida = Mensaje(daoModelCurso.Edit(_objCurso), "El curso ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Curso");
                     daoModelCurso.Signout();
                     response.getWriter().write(salida);
                     break;

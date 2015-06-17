@@ -135,9 +135,9 @@ public class ControllerCompra extends HttpServlet {
                         //Escribo y agrego un segundo parrafo con los datos basicos de Stelarte  
                         Paragraph headerIzquierda = new Paragraph();
                         headerIzquierda.add(new Chunk("Stelarte.Decoracion \n", helveticaBold));
-                        headerIzquierda.add(new Chunk("Direccion: ", helveticaBold));
+                        headerIzquierda.add(new Chunk("Dirección: ", helveticaBold));
                         headerIzquierda.add(new Chunk("Calle Falsa 123 # 12a34\n"));
-                        headerIzquierda.add(new Chunk("Telefono: ", helveticaBold));
+                        headerIzquierda.add(new Chunk("Teléfono: ", helveticaBold));
                         headerIzquierda.add(new Chunk("2583697 \n"));
                         //Agrego los dos anteriores parrafos al Header
                         PdfPTable header = new PdfPTable(2);

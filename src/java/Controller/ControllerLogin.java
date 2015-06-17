@@ -8,7 +8,6 @@ package Controller;
 import Model.DTO.ObjUsuario;
 import Model.Data.ModelModulo;
 import Model.Data.ModelUsuario;
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.io.IOException;
 import java.sql.ResultSet;
 import javax.servlet.ServletException;

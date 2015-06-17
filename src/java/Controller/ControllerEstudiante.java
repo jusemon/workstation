@@ -62,7 +62,7 @@ public class ControllerEstudiante extends HttpServlet {
                         Object[] datosEstudiante = ObtenerDatosFormulario(request);
                         if (datosEstudiante == null) {
                             response.setContentType("application/json");
-                            String salida = Mensaje(false, "", "Uno o mas campos contienen datos incorrectos.");
+                            String salida = Mensaje(false, "", "Uno o más campos contienen datos incorrectos.");
                             response.getWriter().write(salida);
                             break;
                         }
@@ -70,14 +70,14 @@ public class ControllerEstudiante extends HttpServlet {
                         _objDetalleUsuario = (ObjDetalleUsuario) datosEstudiante[1];
                         response.setContentType("application/json");
                         daoModelEstudiante = new ModelEstudiante();
-                        String salida = Mensaje(daoModelEstudiante.Add(_objUsuario, _objDetalleUsuario), "El estudiante ha sido registrado", "A ocurrido un error al intentar registrar al estudiante");
+                        String salida = Mensaje(daoModelEstudiante.Add(_objUsuario, _objDetalleUsuario), "El estudiante ha sido registrado", "Ha ocurrido un error al intentar registrar al estudiante");
                         daoModelEstudiante.Signout();
                         response.getWriter().write(salida);
                     } catch (NumberFormatException | IOException e) {
                         System.out.println("Ha ocurrido un error en el Controller Estudiante" + e.getMessage());
                     } catch (ParseException ex) {
                         response.setContentType("application/json");
-                        String salida = Mensaje(false, "", "A ocurrido un error con la fecha de nacimiento");
+                        String salida = Mensaje(false, "", "Ha ocurrido un error con la fecha de nacimiento");
                         response.getWriter().write(salida);
                     }
                     break;
@@ -138,7 +138,7 @@ public class ControllerEstudiante extends HttpServlet {
                         System.out.println(e.getMessage());
                     } catch (ParseException ex) {
                         response.setContentType("application/json");
-                        String salida = Mensaje(false, "", "A ocurrido un error con la fecha de nacimiento");
+                        String salida = Mensaje(false, "", "Ha ocurrido un error con la fecha de nacimiento");
                         response.getWriter().write(salida);
                     }
                     break;
@@ -158,7 +158,7 @@ public class ControllerEstudiante extends HttpServlet {
                     try {
                         response.getWriter().write(Formalizar(request));
                     } catch (ParseException ex) {
-                        String salida = Mensaje(false, "", "A ocurrido un error con la fecha de nacimiento");
+                        String salida = Mensaje(false, "", "Ha ocurrido un error con la fecha de nacimiento");
                         response.getWriter().write(salida);
 
                     }
@@ -191,7 +191,7 @@ public class ControllerEstudiante extends HttpServlet {
             }
 
         } catch (Exception e) {
-            System.err.println("Ha Ocurrido un error enlistando" + e.getMessage());
+            System.err.println("Ha ocurrido un error enlistando" + e.getMessage());
         } finally {
             daoModelEstudiante.Signout();
         }
@@ -222,7 +222,7 @@ public class ControllerEstudiante extends HttpServlet {
             }
 
         } catch (Exception e) {
-            System.err.println("Ha Ocurrido un error enlistando" + e.getMessage());
+            System.err.println("Ha ocurrido un error enlistando" + e.getMessage());
         } finally {
             daoModelEstudiante.Signout();
         }
@@ -297,7 +297,7 @@ public class ControllerEstudiante extends HttpServlet {
         _objDetalleUsuario = (ObjDetalleUsuario) datosEstudiante[1];
         if (datosEstudiante == null) {
             objetos.put("tipo", "error");
-            objetos.put("mensaje", "Uno o mas campos contienen datos incorrectos. 1");
+            objetos.put("mensaje", "Uno o más campos contienen datos incorrectos. 1");
         } else {
             daoModelEstudiante = new ModelEstudiante();
             String[] respuestaBD = daoModelEstudiante.AddInscrito(_objUsuario, _objDetalleUsuario);

@@ -142,7 +142,7 @@ var curso = {
         $(document).off('click', '.notifyjs-foo-base .yes');
         if (typeof (documentoUsuario) !== "undefined") {
             $(btn).notify({
-                title: '¿Estas seguro?',
+                title: '¿Estás seguro?',
                 button: 'Confirmar',
             }, {
                 style: 'foo',
@@ -174,7 +174,7 @@ var curso = {
             });
         }
         else {
-            $.notify('Lo siento, primero debes registrarte', 'error');
+            $.notify('Debe registrarse previamente.', 'error');
         }
     },
     mostrarDisponibles: function() {
@@ -485,7 +485,7 @@ var seminario = {
         $(document).off('click', '.notifyjs-foo-base .yes');
         if (typeof (documentoUsuario) !== "undefined") {
             $(btn).notify({
-                title: '¿Estas seguro?',
+                title: '¿Estás seguro?',
                 button: 'Confirmar',
             }, {
                 style: 'foo',
@@ -517,7 +517,7 @@ var seminario = {
             });
         }
         else {
-            $.notify('Lo siento, primero debes registrarte', 'error');
+            $.notify('Debe registrarse previamente.', 'error');
         }
     },
     mostrarDisponibles: function() {
@@ -687,10 +687,10 @@ var estudiante = {
         $('#miPopupMatricula').find('#txtNombre').text(data["nombreUsuario"] + " " + data["apellidoUsuario"]);
         $('#miPopupMatricula').find('#txtIdentificacion').text(data['numeroDocumento']);
         var tipo = data['tipoDocumento'];
-        tipo = (tipo === 'CC') ? 'Cedula' : tipo;
+        tipo = (tipo === 'CC') ? 'Cédula' : tipo;
         tipo = (tipo === 'TI') ? 'Tarjeta de Identidad' : tipo;
         tipo = (tipo === 'RC') ? 'Registro Civil' : tipo;
-        tipo = (tipo === 'CE') ? 'Cedula de Extranjeria' : tipo;
+        tipo = (tipo === 'CE') ? 'Cédula de Extranjeria' : tipo;
         $('#miPopupMatricula').find('#txtTipo').text(tipo);
         $('#miPopupMatricula').find('#txtDocumento').val(data['tipoDocumento'] + data['numeroDocumento']);
         $('#miPopupMatricula').find('#idCursoMatricula').prop('selected', false).attr('disabled', false);
@@ -954,10 +954,10 @@ var matricula = {
                 $('#miPopupMatricula').find('#txtNombre').text(data["nombreUsuario"] + " " + data["apellidoUsuario"]);
                 $('#miPopupMatricula').find('#txtIdentificacion').text(data['documentoUsuario'].substring(2));
                 var tipo = data['documentoUsuario'].substring(0, 2);
-                tipo = (tipo === 'CC') ? 'Cedula' : tipo;
+                tipo = (tipo === 'CC') ? 'Cédula' : tipo;
                 tipo = (tipo === 'TI') ? 'Tarjeta de Identidad' : tipo;
                 tipo = (tipo === 'RC') ? 'Registro Civil' : tipo;
-                tipo = (tipo === 'CE') ? 'Cedula de Extranjeria' : tipo;
+                tipo = (tipo === 'CE') ? 'Cédula de Extranjería' : tipo;
                 $('#miPopupMatricula').find('#txtTipo').text(tipo);
                 $('#miPopupMatricula').find('#txtDocumento').val(data.documentoUsuario);
                 $('#miPopupMatricula').find('#idCursoMatricula').empty().append('<option value="' + idCurso + '">' + data['nombreCurso'] + '</option>')
@@ -1229,7 +1229,7 @@ var articulo = {
                 $("#ddlArticulos").select2({
                     data: data,
                     language: "es",
-                    placeholder: "Selecciona los articulos",
+                    placeholder: "Selecciona los artículos",
                     allowClear: true
                 });
             }
@@ -1423,7 +1423,7 @@ var compra = {
                     }
                 });
             } else {
-                $.notify('Una compra debe contener almenos un artículo', 'error');
+                $.notify('Una compra debe contener al menos un artículo', 'error');
                 $(form).off();
                 return false;
             }
@@ -1633,7 +1633,7 @@ var venta = {
                     }
                 });
             } else {
-                $.notify('Una venta debe contener almenos un artículo', 'error');
+                $.notify('Una venta debe contener al menos un artículo', 'error');
                 $(form).off();
                 return false;
             }
@@ -1721,14 +1721,14 @@ var credito = {
         credito.limpiarDetalle();
         $('#contenidoDinamico').data('actual', 'credito');
         $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
-        $('#tabMovimientos').find('#numero').text('Numero del Credito');
-        $('#tabMovimientos').find('#total').text('Total Credito');
+        $('#tabMovimientos').find('#numero').text('Id. del Crédito');
+        $('#tabMovimientos').find('#total').text('Total Crédito');
         if (tipo === 'Registrar') {
-            $('#tabMovimientos').find('#titulo').text('Registrar Credito');
+            $('#tabMovimientos').find('#titulo').text('Registrar Crédito');
             $('#tabMovimientos').find('#txtNumero').attr('readOnly', true);
             $('#tabMovimientos').find('#txtFechaMovimiento').text('Fecha: ' + fecha());
             $('#tabMovimientos').find('#btnArticulo').hide();
-            $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'credito.registrarCredito()').val('Registrar Credito');
+            $('#tabMovimientos').find('#btnMovimiento').attr('onclick', 'credito.registrarCredito()').val('Registrar Crédito');
             $('#tabMovimientos').find('#ddlArticulos').attr('disabled', false).parents('.row:first').show();
             $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide;
             credito.contador();

@@ -224,7 +224,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                 <div class="col-md-12">
                                                     <div class="form-group">
                                                         <label for="tipoMovimiento">
-                                                            El cliente esta registrado: 
+                                                            El cliente está registrado: 
                                                         </label>
                                                         <input id="tipoMovimiento" name="tipoMovimiento" type="checkbox" value="registrado" onchange="venta.cambioDeTipo(this.checked)"/>
                                                     </div>
@@ -267,7 +267,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                             <label for="txtIdentificacion">
                                                                 Número
                                                             </label>
-                                                            <input name="txtIdentificacion" id="txtIdentificacion" type="text" pattern="[0-9]{5,15}"  title="Solo se permiten numeros y no deben ser menos de 5 o mas de 15" class="form-control" placeholder="Ejm: 1017225673" required>
+                                                            <input name="txtIdentificacion" id="txtIdentificacion" type="text" pattern="[0-9]{5,15}"  title="Solo se permiten números, y no deben ser menos de 5 o más de 15" class="form-control" placeholder="Ej: 1017225673" required>
                                                         </div>
                                                     </div>
                                                 </div>
