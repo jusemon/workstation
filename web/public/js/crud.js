@@ -12,6 +12,7 @@ $('.fecha').datepicker({
     orientation: "top left"
 });
 $('.fecha2').datetimepicker({
+    locale: "es"
 });
 
 var tablaCurso, tablaCategoriaCurso, tablaClases, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso, tablaPreinscritos;
