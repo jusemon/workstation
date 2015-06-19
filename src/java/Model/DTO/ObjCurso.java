@@ -13,7 +13,25 @@ public class ObjCurso {
     private int estadoCurso;
     private String descripcionCurso;
     private int precioCurso;
+    private int cupoSeminario;
+    private String fechaSeminario;
     private int idCategoriaCurso;
+
+    public int getCupoSeminario() {
+        return cupoSeminario;
+    }
+
+    public void setCupoSeminario(int cupoSeminario) {
+        this.cupoSeminario = cupoSeminario;
+    }
+
+    public String getFechaSeminario() {
+        return fechaSeminario;
+    }
+
+    public void setFechaSeminario(String fechaSeminario) {
+        this.fechaSeminario = fechaSeminario;
+    }
 
     public int getIdCurso() {
         return idCurso;

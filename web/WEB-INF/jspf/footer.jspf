@@ -107,25 +107,30 @@
         </div>
     </div>
 </div>
+<!--Librerías Principales de JQuery-->
 <script src="public/js/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="public/js/jquery-ui.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="public/js/bootstrap.min.js"></script>
+<!--Librería de Bootstrap, para el responsive-->
+<script src="public/js/bootstrap.min.js" type="text/javascript"></script>
+<!--Librería de DataTables (Plugin de JQuery) y una extensión para Bootstrap de DataTables, permite hacer las tablas dinamicas-->
 <script src="public/js/jquery.dataTables.min.js" type="text/javascript"></script>
-<script src="public/js/parsley.min.js" type="text/javascript"></script>
-<script src="public/js/locales/es.js" type="text/javascript"></script>
 <script src="public/js/dataTables.bootstrap.js" type="text/javascript"></script>
-<script src="public/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
-<script src="public/js/select2.min.js" type="text/javascript"></script>
-<script src="public/js/locales/select2/es.js" type="text/javascript"></script>
-<script src="public/js/moment.min.js" type="text/javascript"></script>
-<script src="public/js/locales.min.js" type="text/javascript"></script>
-<script src="public/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
-<script src="public/js/locales/datetimepicker/es.js" type="text/javascript"></script>
-<script src="public/js/locales/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
-<script src="public/js/notify.min.js" type="text/javascript"></script>
+<!--Librería de Validate (Plugin de JQuery) y su traducción, permite realizar validaciones-->
 <script src="public/js/jquery.validate.min.js" type="text/javascript"></script>
-<script src="public/js/additional-methods.min.js" type="text/javascript"></script>
-<script src="public/js/locales/messages_es.min.js" type="text/javascript"></script>
+<script src="public/js/locales/validate.es.min.js" type="text/javascript"></script>
+<!--Librería de Select2 y su traducción, permite implementar select con busqueda-->
+<script src="public/js/select2.min.js" type="text/javascript"></script>
+<script src="public/js/locales/select2.es.js" type="text/javascript"></script>
+<!--Librería de DatePicker (Plugin de Bootstrap) y su traducción, permite implementar calendarios-->
+<script src="public/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="public/js/locales/bootstrap-datepicker.es.min.js" type="text/javascript"></script>
+<!--Librería de DateTimePicker (Plugin de Bootstrap), una librería requerida y su traducción, permite implementar calendarios con hora-->
+<script src="public/js/moment.min.js" type="text/javascript"></script>
+<script src="public/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="public/js/locales/datetimepicker.es.js" type="text/javascript"></script>
+<!--Librería de Notify, permite implementar mensajes emergentes-->
+<script src="public/js/notify.min.js" type="text/javascript"></script>
+<!--Javascript del proyecto, con el respectivo crud y funciones especificas-->
 <script src="public/js/crud.js" type="text/javascript"></script>
 <script src="public/js/funciones.js" type="text/javascript"></script>
 <script src="public/js/javascript.js" type="text/javascript"></script>

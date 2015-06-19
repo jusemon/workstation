@@ -30,7 +30,7 @@ public class ModelCurso extends ConnectionDB {
 
     public boolean Add(ObjCurso _objCurso) {
         boolean objReturn = false;
-        String sql = "call spIngresarCurso(?,?,?,?,?,?,?)";
+        String sql = "call spIngresarCurso(?,?,?,?,?,?,?,?,?)";
 
         try {
             getStmt();

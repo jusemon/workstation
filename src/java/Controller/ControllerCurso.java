@@ -120,7 +120,7 @@ public class ControllerCurso extends HttpServlet {
                     _objCurso.setPrecioCurso(precio);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
-                    salida = Mensaje(daoModelCurso.Edit(_objCurso), "El Curso ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Curso");
+                    salida = Mensaje(daoModelCurso.Edit(_objCurso), "El curso ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Curso");
                     daoModelCurso.Signout();
                     response.getWriter().write(salida);
                     break;

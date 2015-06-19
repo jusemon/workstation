@@ -95,6 +95,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCurso`(
 	in estadoCur        int,
         in descripcionCur   varchar(100),
         in precioCur        int,
+        in fechaSemina      varchar (50),
+        in cupoSemina       int,
         in idCategoriaCur   int
 )
 BEGIN
@@ -105,6 +107,8 @@ BEGIN
             `estadoCurso` = `estadoCur`,
             `descripcionCurso`=`descripcionCur`,
             `precioCurso`=`precioCur`,
+             fechaSeminario= fechaSemina,
+             cupoSeminario = cupoSemina,
             `idCategoriaCurso` = `idCategoriaCur`
         WHERE `idCurso`=`idCur`;       
 END$$
@@ -128,14 +132,13 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstadoCredito`(
-    in idCredi          int,
-    in idCategoriaCredi int,
+    in idCredi          int,    
     in estadoCredi      int
 )
 BEGIN
 	UPDATE tblCredito SET 
             estadoCredito = estadoCredi 
-        WHERE idCredito = idCredi and idCategoriaCredito = idCategoriaCredi;
+        WHERE idCredito = idCredi;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstadoCurso`(
@@ -316,7 +319,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByDocumento`(
 )
 BEGIN
     select c.idCredito, c.documentoUsuario, c.fechaInicio, c.saldoInicial, c.saldoActual, c.estadoCredito
-    FROM tblCredito inner join usuario u on c.documentoUsuario = u.documentoUsuario
+    FROM tblCredito inner join tblUsuario u on c.documentoUsuario = u.documentoUsuario
     WHERE c.documentoUsuar = documentoUsuar;
 END$$
 
@@ -615,10 +618,7 @@ BEGIN
     WHERE `nombreCategoriaCurso`='Seminario' and `estadoCurso`=1;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarSubsidiosEmpresa`(
-
-	in idEmpre	int
-
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarSubsidiosEmpresa`(	in idEmpre	int
 )
 BEGIN
 	select * from tblSubsidio
@@ -937,13 +937,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCredito`(
  )
 BEGIN
 	declare msg varchar(40);    
-	if (exists(select documentoUsuario from tblCredito where documentoUsuario=documentoUsuar)) then
-		set msg="Este usuario ya tiene un credito activo.";
+	if (exists(select documentoUsuario from tblCredito where documentoUsuario=documentoUsuar)) then		 
+                set msg = CONVERT('Este usuario ya tiene un crédito activo.' using utf8);
 		select msg as Respuesta;
        	else
 		insert into tblCredito (documentoUsuario,fechaInicio,saldoInicial,saldoActual,estadoCredito) 
                 Values(documentoUsuar,fechaInic,saldoInic,saldoActu,estadoCredi);
-		set msg="El credito ha sido registrado correctamente.";
+                set msg = CONVERT('El crédito ha sido registrado correctamente.' using utf8);		
 		select msg as Respuesta; 
 	end if;
 END$$
@@ -955,6 +955,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCurso`(
     in estado int,
     in descripcion varchar(100),
     in precio int,
+    in fecha DATETIME,
+    in cupo int,
     in idcategoria int
 )
 BEGIN
@@ -973,6 +975,8 @@ INSERT INTO `tblcurso`(
     estado,
     descripcion,
     precio,
+    fecha,
+    cupo,
     idcategoria
 );
 END$$
@@ -1006,14 +1010,12 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleCredito`(
-    in idDetalleCredi      int,
     in idCredi      int,
-    in idMovimien    int,
-    in fechaDetal   datetime
+    in idMovimien    int    
  )
 BEGIN
-	insert into tblDetalleCredito (idCredito,idMovimiento,fechaDetalle) 
-        Values(idCredi,idMovimien,fechaDetal);
+	insert into tblDetalleCredito (idCredito,idMovimiento) 
+        Values(idCredi,idMovimien);
 
 END$$
 
@@ -1529,10 +1531,7 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
 --
 
 INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorClase`, `estadoCurso`, `descripcionCurso`, `precioCurso`, `fechaSeminario`, `cupoSeminario`, `idCategoriaCurso`) VALUES
-(1, 'Corte', 5, 3, 1, 'El curso de corte en madera sirve para...', 120000, NULL, NULL, 2),
-(2, 'caja', 10, 30, 1, 'vintaje', 300000, NULL, 0, 2),
-(3, 'taza', 5, 3, 1, 'pintar', 200000, NULL, NULL, 4),
-(6, 'Asd', 1, 12, 1, 'fghjk', 123456, NULL, NULL, 1);
+(1, 'Corte', 5, 3, 1, 'El curso de corte en madera sirve para...', 120000, NULL, NULL, 2);
 
 -- --------------------------------------------------------
 
@@ -1811,7 +1810,7 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
 
 INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`) VALUES
 ('1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL),
-('CC8101926', '1984-01-06', 'David', 'Cano Arango', 'dcano62@misena.edu.co', '123', 0, 2, 3, NULL),
+('CC8101926', '1984-01-06', 'David', 'Cano Arango', 'dcano62@misena.edu.co', '123', 1, 2, 1, NULL),
 ('CE5465465', '1969-12-28', 'Lorenzo', 'Chimeno Trenado', 'lchimeno37@misena.edu.co', '123', 0, 1, 3, NULL);
 
 --

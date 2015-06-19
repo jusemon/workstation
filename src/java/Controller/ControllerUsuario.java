@@ -82,12 +82,12 @@ public class ControllerUsuario extends HttpServlet {
                         _objUsuario.setIdrol(rol);
                         response.setContentType("application/json");
                         daoModelUsuario = new ModelUsuario();
-                        String salida = Mensaje(daoModelUsuario.Add(_objUsuario), nombre + " ha sido registrado existosamente", "A ocurrido un error al intentar registrar al estudiante");
+                        String salida = Mensaje(daoModelUsuario.Add(_objUsuario), nombre + " ha sido registrado correctamente", "Ha ocurrido un error al intentar registrar al estudiante");
                         daoModelUsuario.Signout();
                         response.getWriter().write(salida);
                     } catch (NumberFormatException | IOException | ParseException e) {
                         response.setContentType("application/json");
-                        String salida = Mensaje(false, "", "A ocurrido un error" + e.getMessage());
+                        String salida = Mensaje(false, "", "Ha ocurrido un error" + e.getMessage());
                         response.getWriter().write(salida);
                     }
                     break;
@@ -116,7 +116,7 @@ public class ControllerUsuario extends HttpServlet {
                         response.getWriter().write(salida);
                     } catch (SQLException | IOException e) {
                         response.setContentType("application/json");
-                        String salida = Mensaje(false, "", "A ocurrido un error" + e.getMessage());
+                        String salida = Mensaje(false, "", "Ha ocurrido un error" + e.getMessage());
                         response.getWriter().write(salida);
                     }
                     break;
