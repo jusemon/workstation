@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-06-2015 a las 23:40:08
+-- Tiempo de generación: 18-06-2015 a las 23:07:09
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -179,6 +179,32 @@ BEGIN
         `telefonoMovil`=`telefonoMov`,
         `generoUsuario`=`generoUsuar`
     WHERE `idDetalleUsuario` = (SELECT `idDetalleUsuario` FROM tblusuario WHERE `documentoUsuario`=`documentoUsuar`);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarSeminario`(
+        in idCur            int,
+	in nombreCur        varchar(50),
+	in cantidadClas     int,
+	in horasPorCla      int,
+	in estadoCur        int,
+        in descripcionCur   varchar(100),
+        in precioCur        int,
+        in fechaSemina      varchar (50),
+        in cupoSemina       int,
+        in idCategoriaCur   int
+)
+BEGIN
+	UPDATE tblcurso SET 
+            `nombreCurso`=`nombreCur`,
+            `cantidadClases`=`cantidadClas`,
+            `horasPorClase`=`horasPorCla`,
+            `estadoCurso` = `estadoCur`,
+            `descripcionCurso`=`descripcionCur`,
+            `precioCurso`=`precioCur`,
+             fechaSeminario= fechaSemina,
+             cupoSeminario = cupoSemina,
+            `idCategoriaCurso` = `idCategoriaCur`
+        WHERE `idCurso`=`idCur`;       
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarVenta`(
@@ -549,6 +575,8 @@ BEGIN
         `estadoCurso`, 
         `descripcionCurso`, 
         `precioCurso`, 
+         fechaSeminario,
+         cupoSeminario,
         cc.`idCategoriaCurso` as `idCategoriaCurso`,
         cc.`nombreCategoriaCurso` as `nombreCategoriaCurso`
     FROM `tblcurso` c INNER JOIN tblcategoriacurso cc ON (c.`idCategoriaCurso`=cc.`idCategoriaCurso`) 
@@ -699,6 +727,17 @@ BEGIN
         SELECT 1 as idArticulo;
     END IF;
 END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spContadorClase`()
+BEGIN
+    declare respuesta int;
+    set respuesta = (SELECT max(idClase)+1 FROM `tblclase` WHERE `tblcurso_idCurso` = idCurso);
+    IF (respuesta is not null) THEN
+        SELECT respuesta as idClase;
+    ELSE
+        SELECT 1 as idClase;
+    END IF;
+    END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spContadorVenta`()
 BEGIN
@@ -925,7 +964,7 @@ INSERT INTO `tblcurso`(
     `horasPorClase`, 
     `estadoCurso`, 
     `descripcionCurso`, 
-    `precioCurso`, 
+    `precioCurso`,
     `idCategoriaCurso`
 ) VALUES (
     nombre,
@@ -1184,6 +1223,41 @@ declare msg varchar(60);
 end if;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSeminario`(
+    in nombre varchar(30),
+    in cantidad int,
+    in horas int,
+    in estado int,
+    in descripcion varchar(100),
+    in precio int,
+    in fecha DATETIME,
+    in cupo int,
+    in idcategoria int
+)
+BEGIN
+INSERT INTO `tblcurso`(
+    `nombreCurso`, 
+    `cantidadClases`, 
+    `horasPorClase`, 
+    `estadoCurso`, 
+    `descripcionCurso`, 
+    `precioCurso`,
+     fechaSeminario,
+     cupoSeminario,
+    `idCategoriaCurso`
+) VALUES (
+    nombre,
+    cantidad,
+    horas,
+    estado,
+    descripcion,
+    precio,
+    fecha,
+    cupo,
+    idcategoria
+);
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSubsidio`(IN `idSubsid` INT, IN `nitEmpre` INT, IN `idClien` VARCHAR(30), IN `fechaAsignaci` DATETIME, IN `valorSubsid` int)
 BEGIN
 	declare msg varchar(40);    
@@ -1397,7 +1471,7 @@ CREATE TABLE IF NOT EXISTS `tblclase` (
   `documentoUsuario` varchar(20) NOT NULL,
   PRIMARY KEY (`idClase`),
   KEY `idCurso_idx` (`idCurso`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Volcado de datos para la tabla `tblclase`
@@ -1443,17 +1517,22 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `estadoCurso` int(11) NOT NULL,
   `descripcionCurso` varchar(100) DEFAULT NULL,
   `precioCurso` int(11) DEFAULT NULL,
+  `fechaSeminario` datetime DEFAULT NULL,
+  `cupoSeminario` int(11) DEFAULT NULL,
   `idCategoriaCurso` int(11) NOT NULL,
   PRIMARY KEY (`idCurso`),
   KEY `fk_tblcurso_tblcategoriacurso1_idx` (`idCategoriaCurso`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Volcado de datos para la tabla `tblcurso`
 --
 
-INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorClase`, `estadoCurso`, `descripcionCurso`, `precioCurso`, `idCategoriaCurso`) VALUES
-(1, 'Corte', 5, 3, 1, 'El curso de corte en madera sirve para...', 120000, 2);
+INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorClase`, `estadoCurso`, `descripcionCurso`, `precioCurso`, `fechaSeminario`, `cupoSeminario`, `idCategoriaCurso`) VALUES
+(1, 'Corte', 5, 3, 1, 'El curso de corte en madera sirve para...', 120000, NULL, NULL, 2),
+(2, 'caja', 10, 30, 1, 'vintaje', 300000, NULL, 0, 2),
+(3, 'taza', 5, 3, 1, 'pintar', 200000, NULL, NULL, 4),
+(6, 'Asd', 1, 12, 1, 'fghjk', 123456, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
