@@ -5,14 +5,27 @@
  */
 $.validator.addMethod("nombres", function(value, element) {
     return this.optional(element) || /^[ÁÉÍÓÚáéíóúñÑa-zA-Z ]{3,15}/.test(value);
-}, 'Entre 3 y 15 letras y no se permiten numeros');
+}, 'Entre 3 y 15 letras y no se permiten números');
 
 $.validator.addMethod("fechaMayor", function(value, element) {
     var fecha = new Date();
     //var fechaSeminario = new Date(value.substr(6,4),value.substr(3,2),value.substr(0,2),value.substr(11,2),value.substr(14,2));    
-    dformat = [fecha.getDate(), fecha.getMonth() + 1, fecha.getFullYear()].join('/') + ' ' + [fecha.getHours(), fecha.getMinutes()].join(':');
-    return this.optional(element) || value > dformat;
-}, 'No se puede registrar un seminario el mismo dia de su realización');
+    var dia, mes, año;
+    dia = value.substr(0, 2);
+    mes = value.substr(3, 2);
+    año = value.substr(6, 4);
+    if (año >= fecha.getFullYear()) {
+        if (mes >= fecha.getMonth() + 1) {
+            if (mes == fecha.getMonth() + 1) {
+                return dia > fecha.getDate();
+            }
+            else {
+                return true;
+            }
+        }
+    }
+
+}, 'La fecha no puede ser menor o igual');
 
 var fecha = new Date();
 dformat = [fecha.getDate(), fecha.getMonth() + 1, fecha.getFullYear()].join('/') + ' ' + [fecha.getHours(), fecha.getMinutes()].join(':');

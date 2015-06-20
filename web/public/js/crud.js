@@ -446,12 +446,13 @@ var seminario = {
         $('#miPopupCurso').find('#idCurso').val(data['idCurso']);
         $('#miPopupCurso').find('#txtNombreCurso').val(data['nombreCurso']);
         $('#miPopupCurso').find('#txtCantidadClases').val(data['cantidadClases']);
-        $('#miPopupCurso').find('#ContenedorCategoria').hide().find('#ddlCategoria').attr('disabled', true);
+        $('#miPopupCurso').find('#ddlCategoria').empty();
+        $('#miPopupCurso').find('#ddlCategoria').append('<option>Seminario</option>').attr('disabled', true);
         $('#miPopupCurso').find('#txtCantidadHoras').val(data['horasPorClase']);
         $('#miPopupCurso').find('#txtDescripcionCurso').val(data['descripcionCurso']);
         $('#miPopupCurso').find('#txtPrecio').val(data['precioCurso']);
-        $('#miPopupCurso').find('#txtFechaSeminario').parents('.row:first').show();
-        $('#miPopupCurso').find('#txtCupoSeminario').parents('.row:first').show();
+        $('#miPopupCurso').find('#txtFechaSeminario').val(data['fechaSeminario']).parents('.row:first').show();
+        $('#miPopupCurso').find('#txtCupoSeminario').val(data['cupoSeminario']).parents('.row:first').show();
         $('#miPopupCurso').find('#ddlEstado option').prop('selected', false).filter('[value="' + data['estadoCurso'] + '"]').prop('selected', true);
         $('#miPopupCurso').find('#btnCurso').attr('type', 'hidden').attr('disabled', true);
         desabilitar('#formCurso');
@@ -459,7 +460,7 @@ var seminario = {
     },
     registrar: function() {
         limpiar('#formCurso');
-        habilitar ('#formCurso');
+        habilitar('#formCurso');
         $('#miPopupCurso').find('#titulo').empty();
         $('#miPopupCurso').find('#titulo').append('Registrar Seminario');
         $('#miPopupCurso').find('#tipo').val('Seminario');
@@ -468,7 +469,7 @@ var seminario = {
         $('#miPopupCurso').find('#txtCantidadClases').val(1).attr('readOnly', true);
         $('#miPopupCurso').find('#ddlCategoria').empty();
         $('#miPopupCurso').find('#ddlCategoria').append('<option>Seminario</option>').attr('disabled', true);
-        $('#miPopupCurso').find('#btnCurso').attr('value', 'Registrar');
+        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupCurso').modal('show');
     },
     editar: function(data) {

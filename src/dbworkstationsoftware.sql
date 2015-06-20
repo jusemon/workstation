@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-06-2015 a las 20:05:36
+-- Tiempo de generación: 19-06-2015 a las 22:52:33
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -31,11 +31,17 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarArticulo`(
         in precioVen            int
 )
 BEGIN
+    declare precioCompra int;
+    set precioCompra = (select precioCompra from tblarticulo where idArticulo = idArticu);
+    IF(precioCompra>precioVen) THEN
+        SELECT -1;
+    ELSE
 	UPDATE tblarticulo SET 
             `idCategoriaArticulo` = `idCategoriaArticu`, 
             `descripcionArticulo`=`descripcionArticu`,
             `precioVenta`=`precioVen`
         WHERE `idArticulo`=`idArticu`;
+    END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCategoriaArticulo`(
@@ -829,21 +835,27 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarArticulo`(
     IN `precioComp` int, 
     IN `precioVen` int
 )
-BEGIN
-INSERT INTO `tblarticulo`(
-    `idCategoriaArticulo`, 
-    `descripcionArticulo`, 
-    `cantidadDisponible`,   
-    `precioCompra`, 
-    `precioVenta`
-) 
-VALUES (
-    `idCategoriaArticu`, 
-    `descripcionArticu`, 
-     0,   
-    `precioComp`, 
-    `precioVen`
-);
+BEGIN    
+    IF (precioComp> precioVen) THEN 
+        SELECT -1;
+    ELSEIF ((SELECT idarticulo FROM tblarticulo WHERE LOWER(`descripcionArticulo`) = LOWER(`descripcionArticu`))IS NOT NULL) THEN
+        SELECT -1;
+    ELSE
+        INSERT INTO `tblarticulo`(
+            `idCategoriaArticulo`, 
+            `descripcionArticulo`, 
+            `cantidadDisponible`,   
+            `precioCompra`, 
+            `precioVenta`
+        ) 
+        VALUES (
+            `idCategoriaArticu`, 
+            `descripcionArticu`, 
+             0,   
+            `precioComp`, 
+            `precioVen`
+        );
+    END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCategoriaArticulo`(IN `nombre` VARCHAR(30))
@@ -958,23 +970,27 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCurso`(
     in idcategoria int
 )
 BEGIN
-INSERT INTO `tblcurso`(
-    `nombreCurso`, 
-    `cantidadClases`, 
-    `horasPorClase`, 
-    `estadoCurso`, 
-    `descripcionCurso`, 
-    `precioCurso`,
-    `idCategoriaCurso`
-) VALUES (
-    nombre,
-    cantidad,
-    horas,
-    estado,
-    descripcion,
-    precio,
-    idcategoria
-);
+    IF ((SELECT idcurso FROM tblcurso WHERE LOWER(`nombreCurso`) = LOWER(`nombre`) AND idcategoria!=1)IS NOT NULL) THEN
+        SELECT -1;
+    ELSE
+        INSERT INTO `tblcurso`(
+            `nombreCurso`, 
+            `cantidadClases`, 
+            `horasPorClase`, 
+            `estadoCurso`, 
+            `descripcionCurso`, 
+            `precioCurso`,
+            `idCategoriaCurso`
+        ) VALUES (
+            nombre,
+            cantidad,
+            horas,
+            estado,
+            descripcion,
+            precio,
+            idcategoria
+        );
+    END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleCompra`(
@@ -1235,6 +1251,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSeminario`(
     in idcategoria int
 )
 BEGIN
+IF ((SELECT idcurso FROM tblcurso WHERE LOWER(`nombreCurso`) = LOWER(`nombre`) AND idcategoria=1)IS NOT NULL) THEN
+        SELECT -1;
+    ELSE
 INSERT INTO `tblcurso`(
     `nombreCurso`, 
     `cantidadClases`, 
@@ -1256,6 +1275,7 @@ INSERT INTO `tblcurso`(
     cupo,
     idcategoria
 );
+END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSubsidio`(IN `idSubsid` INT, IN `nitEmpre` INT, IN `idClien` VARCHAR(30), IN `fechaAsignaci` DATETIME, IN `valorSubsid` int)
@@ -1401,7 +1421,7 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
   `precioVenta` int(11) DEFAULT NULL,
   PRIMARY KEY (`idArticulo`),
   KEY `FK_tblArticulo_idCategoriaArticulo` (`idCategoriaArticulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Volcado de datos para la tabla `tblarticulo`
@@ -1409,7 +1429,8 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
 
 INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioCompra`, `precioVenta`) VALUES
 (1, 1, 'Vinilo Rojo', 30, 1200, 1500),
-(2, 1, 'Vinilo Azul', 0, 1200, 1300);
+(2, 1, 'Vinilo Azul', 0, 1200, 1300),
+(3, 1, 'asdasd', 0, 1200, 1300);
 
 -- --------------------------------------------------------
 
@@ -1522,7 +1543,7 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `idCategoriaCurso` int(11) NOT NULL,
   PRIMARY KEY (`idCurso`),
   KEY `fk_tblcurso_tblcategoriacurso1_idx` (`idCategoriaCurso`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Volcado de datos para la tabla `tblcurso`
@@ -1532,7 +1553,7 @@ INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorCla
 (1, 'Corte', 5, 3, 1, 'El curso de corte en madera sirve para...', 120000, NULL, NULL, 2),
 (2, 'caja', 10, 30, 1, 'vintaje', 300000, NULL, 0, 2),
 (3, 'taza', 5, 3, 1, 'pintar', 200000, NULL, NULL, 4),
-(6, 'Asd', 1, 12, 1, 'fghjk', 123456, NULL, NULL, 1);
+(7, 'Oleo', 1, 5, 1, 'asdasdasd', 120000, '2015-12-31 00:00:00', 20, 1);
 
 -- --------------------------------------------------------
 
