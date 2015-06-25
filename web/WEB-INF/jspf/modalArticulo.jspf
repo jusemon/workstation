@@ -23,7 +23,7 @@
                                                 <label for="txtDescripcion">
                                                     Descripción Artículo:
                                                 </label>
-                                                <input name="txtDescripcion" id="txtDescripcion" type="text" pattern="[áéíóúÁÉÍÓÚñÑ°.,:'&quot;0-9a-zA-Z ]{3,30}" class="form-control" title="Entre 3 y 30 letras, se permiten numeros y algunos caracteres como , y ."  placeholder="Ejm: Vinilo Rojo" required>
+                                                <input name="txtDescripcion" id="txtDescripcion" type="text" class="form-control"  placeholder="Ejm: Vinilo Rojo" required>
                                             </div>
                                         </div>
                                     </div>
@@ -33,7 +33,7 @@
                                                 <label for="txtPrecioCompra">
                                                     Precio Compra:
                                                 </label>
-                                                <input name="txtPrecioCompra" id="txtPrecioCompra" type="number" min="1" max="10000000" class="form-control" placeholder="Ejm: 10000" required>
+                                                <input name="txtPrecioCompra" id="txtPrecioCompra" type="number"  class="form-control" placeholder="Ejm: 10000" required>
                                             </div>
                                             <div class="form-group">
                                                 <label for="txtPrecioVenta">

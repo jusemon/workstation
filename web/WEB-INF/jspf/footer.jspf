@@ -131,8 +131,8 @@
 <!--Librería de Notify, permite implementar mensajes emergentes-->
 <script src="public/js/notify.min.js" type="text/javascript"></script>
 <!--Javascript del proyecto, con el respectivo crud y funciones especificas-->
-<script src="public/js/crud.js" type="text/javascript"></script>
 <script src="public/js/funciones.js" type="text/javascript"></script>
+<script src="public/js/crud.js" type="text/javascript"></script>
 <script src="public/js/javascript.js" type="text/javascript"></script>
 <script src="public/js/validaciones.js" type="text/javascript"></script>
 </body>

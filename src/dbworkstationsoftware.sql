@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-06-2015 a las 22:52:33
+-- Tiempo de generación: 25-06-2015 a las 20:03:47
 -- Versión del servidor: 5.6.16
 -- Versión de PHP: 5.5.11
 
@@ -859,18 +859,27 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCategoriaArticulo`(IN `nombre` VARCHAR(30))
-    NO SQL
-insert into tblCategoriaArticulo (nombreCategoriaArticulo) values (nombre)$$
+BEGIN
+    declare msg varchar(100);
+    if((select nombreCategoriaArticulo from tblCategoriaArticulo where  lower(`nombreCategoriaArticulo`) = lower(nombre))is not null) then
+        set msg = CONVERT('Ya existe un Art��culo con ese nombre' using utf8);
+        select msg as mensaje, 'error' as tipo;
+    else
+        insert into tblCategoriaArticulo (nombreCategoriaArticulo) values (nombre);
+        set msg = CONVERT(CONCAT('El Art��culo ', nombre, ' ha sido registrado') using utf8);
+        select msg as mensaje, 'success' as tipo;
+    end if;
+END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCategoriaCurso`(IN `nombre` VARCHAR(30))
 BEGIN
     declare msg varchar(100);
     if((select nombreCategoriaCurso from tblCategoriaCurso where  lower(`nombreCategoriaCurso`) = lower(nombre))is not null) then
-        set msg = CONVERT('Ya existe una categoría con ese nombre' using utf8);
+        set msg = CONVERT('Ya existe una categor��a con ese nombre' using utf8);
         select msg as mensaje, 'error' as tipo;
     else
         insert into tblCategoriaCurso (nombreCategoriaCurso) values (nombre);
-        set msg = CONVERT(CONCAT('La categoría ', nombre, ' ha sido registrada') using utf8);
+        set msg = CONVERT(CONCAT('La categor��a ', nombre, ' ha sido registrada') using utf8);
         select msg as mensaje, 'success' as tipo;
     end if;
 END$$
@@ -1421,7 +1430,7 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
   `precioVenta` int(11) DEFAULT NULL,
   PRIMARY KEY (`idArticulo`),
   KEY `FK_tblArticulo_idCategoriaArticulo` (`idCategoriaArticulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Volcado de datos para la tabla `tblarticulo`
@@ -1430,7 +1439,9 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
 INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioCompra`, `precioVenta`) VALUES
 (1, 1, 'Vinilo Rojo', 30, 1200, 1500),
 (2, 1, 'Vinilo Azul', 0, 1200, 1300),
-(3, 1, 'asdasd', 0, 1200, 1300);
+(3, 1, 'asdasd', 0, 1200, 1300),
+(4, 3, 'caja 20x 20', 0, 2500, 5000),
+(5, 5, 'pincel n 2', 0, 1000, 25000);
 
 -- --------------------------------------------------------
 
@@ -1442,7 +1453,7 @@ CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
   `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,
   `nombreCategoriaArticulo` varchar(50) NOT NULL,
   PRIMARY KEY (`idCategoriaArticulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Volcado de datos para la tabla `tblcategoriaarticulo`
@@ -1450,7 +1461,8 @@ CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
 
 INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArticulo`) VALUES
 (1, 'Vinilos'),
-(2, 'Pinceles');
+(3, 'Madera'),
+(5, 'Pincel');
 
 -- --------------------------------------------------------
 

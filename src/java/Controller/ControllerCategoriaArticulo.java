@@ -46,7 +46,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
 
                 //<editor-fold defaultstate="collapsed" desc="Registrar una Categoría de Artículo">
                 case "Registrar": {
-                    String nombreCategoriaArticulo = request.getParameter("txtNombre");
+                    String nombreCategoriaArticulo = request.getParameter("txtNombre").trim();
                     _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                     daoModelCategoriaArticulo = new ModelCategoriaArticulo();
                     String salida = Mensaje(daoModelCategoriaArticulo.Add(_objCategoriaArticulo), "La categoría ha sido registrada correctamente.", "Ha ocurrido un error al intentar registrar la categoría");
@@ -60,8 +60,8 @@ public class ControllerCategoriaArticulo extends HttpServlet {
 
                 //<editor-fold defaultstate="collapsed" desc="Editar una Categoría de Artículo">
                 case "Editar": {
-                    int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoriaArticulo"));
-                    String nombreCategoriaArticulo = request.getParameter("txtNombre");
+                    int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoriaArticulo").trim());
+                    String nombreCategoriaArticulo = request.getParameter("txtNombre").trim();
                     _objCategoriaArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
                     _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                     daoModelCategoriaArticulo = new ModelCategoriaArticulo();
