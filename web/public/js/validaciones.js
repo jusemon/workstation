@@ -56,7 +56,6 @@ validationCurso = $('#formCurso').validate({
             minlength: 3,
             maxlength: 100,
             required: true
-
         },
         txtPrecio: {
             min: 100000,
@@ -93,7 +92,18 @@ validationArticulo = $('#formArticulo').validate({
             required: true,
             min: 50,
             max: 100000
+        },
+          txtPrecioVenta: {
+            required: true,
+            min: 50,
+            max: 100000
+        },
+          txtCantidadArticulo: {
+            required: true,
+            min: 0,
+            max: 1000
         }
+        
     }
 });
 

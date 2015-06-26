@@ -39,7 +39,7 @@
                                                 <label for="txtPrecioVenta">
                                                     Precio Venta:
                                                 </label>
-                                                <input name="txtPrecioVenta" id="txtPrecioVenta" type="number" min="1" max="10000000" class="form-control" placeholder="Ejm: 10000" required>
+                                                <input name="txtPrecioVenta" id="txtPrecioVenta" type="number" class="form-control" placeholder="Ejm: 10000" required>
                                             </div>
                                         </div>
                                     </div>
@@ -49,7 +49,7 @@
                                                 <label for="txtCantidad">
                                                     Cantidad disponible:
                                                 </label>
-                                                <input name="txtCantidad" id="txtCantidadArticulo" type="number" min="0" max="1000" class="form-control" placeholder="Ejm: 30" required>
+                                                <input name="txtCantidad" id="txtCantidadArticulo" type="number"  class="form-control" placeholder="Ejm: 30" required>
                                             </div>
                                         </div>
                                     </div>
