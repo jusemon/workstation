@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Controller.Validaciones.Validador;
 import com.google.gson.Gson;
 import Model.DTO.ObjCurso;
 import Model.DTO.ObjSeminario;
@@ -407,46 +408,54 @@ public class ControllerCurso extends HttpServlet {
         daoModelCurso = new ModelCurso();
         String nombre, descripcion, salida, fechaSeminario = null;
         int estado = 0, cantidadClases, categoria, horasPorClase, precio, cupoSeminario = 0;
-        nombre = request.getParameter("txtNombre").trim();
-        descripcion = request.getParameter("txtDescripcion").trim();
-        precio = Integer.parseInt(request.getParameter("txtPrecio").trim());
-        estado = Integer.parseInt(request.getParameter("ddlEstado").trim());
-        horasPorClase = Integer.parseInt(request.getParameter("txtCantidadHoras").trim());
-        if (tipo.equals("Curso")) {
-            cantidadClases = Integer.parseInt(request.getParameter("txtCantidadClases").trim());
-            categoria = Integer.parseInt(request.getParameter("ddlCategoria").trim());
-            _objCurso = new ObjCurso();
-            _objCurso.setIdCategoriaCurso(categoria);
-            _objCurso.setDescripcionCurso(descripcion);
-            _objCurso.setNombreCurso(nombre);
-            _objCurso.setCantidadClases(cantidadClases);
-            _objCurso.setHorasPorClase(horasPorClase);
-            _objCurso.setEstadoCurso(estado);
-            _objCurso.setPrecioCurso(precio);
-            salida = Mensaje(daoModelCurso.Add(_objCurso), "El Curso ha sido registrado", "Ha ocurrido un error al intentar registrar el Curso");
-            daoModelCurso.Signout();
-            return (salida);
-        } else {
-            fechaSeminario = request.getParameter("txtFechaSeminario").trim();
-            cupoSeminario = Integer.parseInt(request.getParameter("txtCupoSeminario").trim());
-            cantidadClases = 1;
-            daoModelCategoriaCurso = new ModelCategoriaCurso();
-            categoria = daoModelCategoriaCurso.GetIDCategoriaSeminario();
-            daoModelCategoriaCurso.Signout();
-            _objSeminario = new ObjSeminario();
-            _objSeminario.setDescripcionCurso(descripcion);
-            _objSeminario.setNombreCurso(nombre);
-            _objSeminario.setHorasPorClase(horasPorClase);
-            _objSeminario.setEstadoCurso(estado);
-            _objSeminario.setPrecioCurso(precio);
-            _objSeminario.setIdCategoriaCurso(categoria);
-            _objSeminario.setCantidadClases(cantidadClases);
-            _objSeminario.setCupoSeminario(cupoSeminario);
-            _objSeminario.setFechaSeminario(formatearFecha(fechaSeminario));
-            salida = Mensaje(daoModelCurso.Add(_objSeminario), "El Seminario ha sido registrado", "Ha ocurrido un error al intentar registrar el Seminario");
-            daoModelCurso.Signout();
-            return (salida);
+        if (Validador.validarString(request.getParameter("txtNombre").trim())
+                && Validador.validarString(request.getParameter("txtDescripcion").trim())
+                && Validador.validarString(request.getParameter("txtPrecio").trim())
+                && Validador.validarString(request.getParameter("ddlEstado"))) {
+            nombre = request.getParameter("txtNombre").trim();
+            descripcion = request.getParameter("txtDescripcion").trim();
+            precio = Integer.parseInt(request.getParameter("txtPrecio").trim());
+            estado = Integer.parseInt(request.getParameter("ddlEstado").trim());
+            horasPorClase = Integer.parseInt(request.getParameter("txtCantidadHoras").trim());
+            if (tipo.equals("Curso")) {
+                cantidadClases = Integer.parseInt(request.getParameter("txtCantidadClases").trim());
+                categoria = Integer.parseInt(request.getParameter("ddlCategoria").trim());
+                _objCurso = new ObjCurso();
+                _objCurso.setIdCategoriaCurso(categoria);
+                _objCurso.setDescripcionCurso(descripcion);
+                _objCurso.setNombreCurso(nombre);
+                _objCurso.setCantidadClases(cantidadClases);
+                _objCurso.setHorasPorClase(horasPorClase);
+                _objCurso.setEstadoCurso(estado);
+                _objCurso.setPrecioCurso(precio);
+                salida = Mensaje(daoModelCurso.Add(_objCurso), "El Curso ha sido registrado", "Ha ocurrido un error al intentar registrar el Curso");
+                daoModelCurso.Signout();
+                return (salida);
+            } else {
+                fechaSeminario = request.getParameter("txtFechaSeminario").trim();
+                cupoSeminario = Integer.parseInt(request.getParameter("txtCupoSeminario").trim());
+                cantidadClases = 1;
+                daoModelCategoriaCurso = new ModelCategoriaCurso();
+                categoria = daoModelCategoriaCurso.GetIDCategoriaSeminario();
+                daoModelCategoriaCurso.Signout();
+                _objSeminario = new ObjSeminario();
+                _objSeminario.setDescripcionCurso(descripcion);
+                _objSeminario.setNombreCurso(nombre);
+                _objSeminario.setHorasPorClase(horasPorClase);
+                _objSeminario.setEstadoCurso(estado);
+                _objSeminario.setPrecioCurso(precio);
+                _objSeminario.setIdCategoriaCurso(categoria);
+                _objSeminario.setCantidadClases(cantidadClases);
+                _objSeminario.setCupoSeminario(cupoSeminario);
+                _objSeminario.setFechaSeminario(formatearFecha(fechaSeminario));
+                salida = Mensaje(daoModelCurso.Add(_objSeminario), "El Seminario ha sido registrado", "Ha ocurrido un error al intentar registrar el Seminario");
+                daoModelCurso.Signout();
+                return (salida);
+            }
+        } else{
+            return Mensaje(false, null, "Uno o mas campos contienen datos erroneos");
         }
+        
     }
 
     public String editar(HttpServletRequest request, String tipo) {

@@ -50,7 +50,7 @@
                                 <th class="text-center">Documento</th>
                                 <th class="text-center">Nombres</th>
                                 <th class="text-center">Fecha Nacimiento</th>
-                                <th class="text-center">Teléfono</th>
+                                <th class="text-center">Telefono</th>
                                 <th class="text-center">Consultar</th>
                                 <th class="text-center">Editar</th>
                                 <th class="text-center">Matricular</th>
@@ -101,4 +101,5 @@
 <%@include file="WEB-INF/jspf/modalAcudiente.jspf" %>
 <%@include file="WEB-INF/jspf/modalEstudiante.jspf" %>
 <%@include file="WEB-INF/jspf/modalMatricula.jspf" %>
+<%@include file="WEB-INF/jspf/modalBeneficiario.jspf" %>
 <%@include file="WEB-INF/jspf/footer.jspf" %>

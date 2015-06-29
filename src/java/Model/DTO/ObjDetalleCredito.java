@@ -15,7 +15,7 @@ public class ObjDetalleCredito {
     private int idDetalleCredito;
     private int idCredito;
     private int idMovimiento;
-    private String fechaDetalle;
+    
 
     public int getIdDetalleCredito() {
         return idDetalleCredito;
@@ -40,13 +40,4 @@ public class ObjDetalleCredito {
     public void setIdMovimiento(int idMovimiento) {
         this.idMovimiento = idMovimiento;
     }
-
-    public String getFechaDetalle() {
-        return fechaDetalle;
-    }
-
-    public void setFechaDetalle(String fechaDetalle) {
-        this.fechaDetalle = fechaDetalle;
-    }
-    
 }

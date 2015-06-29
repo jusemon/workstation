@@ -1,0 +1,58 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+<!--Emergente para asignar empresa a beneficiario-->
+<div class="modal" id="miPopupBeneficiario">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form id="formBeneficiario" class="" action="ControllerEstudiante" method="POST">
+                            <div class="panel">
+                                <div class="panel-heading estilo2">
+                                    <h3 class="panel-title">
+                                        <label id="titulo">Asignar Empresa a Beneficiario</label>
+                                        <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="ddlEstudiante">
+                                                    Estudiante:
+                                                </label>
+                                                <select name="ddlEstudiante" id="ddlEstudiante" class="form-control" required>
+                                                    <option value="">Seleccionar...</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="ddlEmpresa">
+                                                    Empresa:
+                                                </label>
+                                                <select name="ddlEmpresa" id="ddlEmpresa" class="form-control" required>
+                                                    <option value="">Seleccionar...</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-offset-3 col-md-6">
+                                            <div class="form-group">
+                                                <input class="btn btn-default btn-block" type="button" value="Asignar" id="btnBeneficio" name="action" onclick="matricula.asignarEmpresa()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

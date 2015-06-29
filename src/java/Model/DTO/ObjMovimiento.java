@@ -12,7 +12,27 @@ public class ObjMovimiento {
     private int totalMovimiento;
     private int idtipoMovimiento;
     private String documentoUsuario;
+    private String documentoAuxiliar;
+    private String nombreAuxiliar;
 
+    public String getDocumentoAuxiliar() {
+        return documentoAuxiliar;
+    }
+
+    public void setDocumentoAuxiliar(String documentoAuxiliar) {
+        this.documentoAuxiliar = documentoAuxiliar;
+    }
+
+    public String getNombreAuxiliar() {
+        return nombreAuxiliar;
+    }
+
+    public void setNombreAuxiliar(String nombreAuxiliar) {
+        this.nombreAuxiliar = nombreAuxiliar;
+    }
+
+    
+    
     public int getIdMovimiento() {
         return idMovimiento;
     }

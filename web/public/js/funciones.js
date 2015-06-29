@@ -5,17 +5,17 @@
  * and open the template in the editor.
  */
 
-/* global articulo */
+/* global articulo, compra, venta, credito */
 
 function limpiar(miForm) {
     $(':input', miForm).each(function () {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
-        if (type == 'text' || type == 'password' || tag == 'textarea' || type == 'number' || type == 'hidden' || type == 'date' || type == 'email')
+        if (type === 'text' || type === 'password' || tag === 'textarea' || type === 'number' || type === 'hidden' || type === 'date' || type === 'email')
             this.value = "";
-        else if (type == 'checkbox' || type == 'radio')
+        else if (type === 'checkbox' || type === 'radio')
             this.checked = false;
-        else if (tag == 'select')
+        else if (tag === 'select')
             this.selectedIndex = -1;
         else if (false)
             this.value = 0;
@@ -31,7 +31,7 @@ function habilitar(miForm) {
     $(':input', miForm).each(function () {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
-        if (type == 'checkbox' || type == 'radio' || tag == 'select')
+        if (type === 'checkbox' || type === 'radio' || tag === 'select')
             this.disabled = false;
         else
             this.disabled = false;
@@ -45,7 +45,7 @@ function desabilitar(miForm) {
     $(':input', miForm).each(function () {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
-        if (type == 'checkbox' || type == 'radio' || tag == 'select')
+        if (type === 'checkbox' || type === 'radio' || tag === 'select')
             this.disabled = true;
         else
             this.readOnly = true;
@@ -56,6 +56,13 @@ function mensaje(data) {
     $.notify(data['mensaje'], data['tipo']);
 }
 
+function fecha() {
+    var fullDate = new Date();
+    var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
+    var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
+    return currentDate;
+}
+
 $('#tabListas').tab('show');
 
 $('#btnGestionCompras').on('click', function () {
@@ -63,7 +70,7 @@ $('#btnGestionCompras').on('click', function () {
     habilitar('#formMovimiento');
     limpiar('#formMovimiento');
     var actual = $('#contenidoDinamico').data('actual');
-    if (actual == 'listas' || actual == 'venta' || actual == 'credito') {
+    if (actual === 'listas' || actual === 'venta' || actual === 'credito') {
         compra.show('Registrar');
         articulo.listarArticulos('Compras');
         $('#btnGestionVentas').data('target', '#tabMovimientos');
@@ -83,8 +90,8 @@ $('#btnGestionVentas').on('click', function () {
     habilitar('#formMovimiento');
     limpiar('#formMovimiento');
     var actual = $('#contenidoDinamico').data('actual');
-    if (actual == 'listas' || actual == 'compra' || actual == 'credito') {
-        venta.show('Registrar')
+    if (actual === 'listas' || actual === 'compra' || actual === 'credito') {
+        venta.show('Registrar');
         articulo.listarArticulos('Venta');
         $('#btnGestionCompras').data('target', '#tabMovimientos');
         $('#btnGestionCredito').data('target', '#tabMovimientos');
@@ -102,7 +109,7 @@ $('#btnGestionCredito').on('click', function () {
     habilitar('#formMovimiento');
     limpiar('#formMovimiento');
     var actual = $('#contenidoDinamico').data('actual');
-    if (actual == 'listas' || actual == 'venta' || actual == 'compra') {
+    if (actual === 'listas' || actual === 'venta' || actual === 'compra') {
         credito.show('Registrar');
         articulo.listarArticulos('Venta');
         $('#btnGestionVentas').data('target', '#tabMovimientos');
@@ -122,7 +129,7 @@ $('#btnGestionCredito').on('click', function () {
     habilitar('#formMovimiento');
     limpiar('#formMovimiento');
     var actual = $('#contenidoDinamico').data('actual');
-    if (actual == 'listas' || actual == 'venta' || actual == 'compra') {
+    if (actual === 'listas' || actual === 'venta' || actual === 'compra') {
         credito.show('Registrar');
         articulo.listarArticulos('Venta');
         $('#btnGestionVentas').data('target', '#tabMovimientos');
@@ -169,17 +176,11 @@ $.notify.addStyle('foo', {
             "</div>"
 });
 
-function fecha() {
-    var fullDate = new Date();
-    var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
-    var currentDate = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
-    return currentDate;
-}
 
 function formatearTexto() {
     var aux = $('#txtNitEmpresa').val();
     if (aux.length === 10) {
-        var respuesta = aux.substr(0, 3) + '.' + aux.substr(3, 3) + '.' + aux.substr(6, 3) + '-' + aux.substr(9)
+        var respuesta = aux.substr(0, 3) + '.' + aux.substr(3, 3) + '.' + aux.substr(6, 3) + '-' + aux.substr(9);
         $('#txtNitEmpresa').val(respuesta);
     }
 

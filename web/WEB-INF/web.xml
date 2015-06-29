@@ -60,6 +60,10 @@
         <servlet-name>ControllerMatricula</servlet-name>
         <servlet-class>Controller.ControllerMatricula</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControllerCredito</servlet-name>
+        <servlet-class>Controller.ControllerCredito</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControllerCliente</servlet-name>
         <url-pattern>/ControllerCliente</url-pattern>
@@ -119,6 +123,10 @@
     <servlet-mapping>
         <servlet-name>ControllerMatricula</servlet-name>
         <url-pattern>/ControllerMatricula</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControllerCredito</servlet-name>
+        <url-pattern>/ControllerCredito</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

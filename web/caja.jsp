@@ -42,19 +42,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         </h4>
                     </div>
                 </div>
-                <!--Gestión de abonos-->
-                <div class="panel panel-default">
-                    <!--
-                    Aqui el boton que desplegara la gestión de Abonos
-                    -->
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a id="btnGestionVentas" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas">
-                                Gestión de Abonos
-                            </a>
-                        </h4>
-                    </div>
-                </div>
+
                 <!--Gestión de créditos-->
                 <div class="panel panel-default">
                     <!--

@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -127,6 +129,7 @@ public class ModelMatricula extends ConnectionDB {
         String[] objReturn = new String[2];
         String sql = "call spActualizarClase(?,?,?,?)";
         try {
+            connection.setAutoCommit(false);
             if (beneficiario == 1) {
                 for (ObjClase clase : clases) {
                     pStmt = connection.prepareCall(sql);
@@ -139,6 +142,7 @@ public class ModelMatricula extends ConnectionDB {
                         objReturn[0] = rs.getString("tipo");
                         objReturn[1] = rs.getString("mensaje");
                         if (objReturn[0].equals("error")) {
+                            connection.rollback();
                             return objReturn;
                         }
                     }
@@ -149,7 +153,6 @@ public class ModelMatricula extends ConnectionDB {
                 String sql2 = "call spGenerarVentaClases(?,?,?,?)";
                 int idCurso = 0;
                 getStmt();
-                connection.setAutoCommit(false);
                 for (ObjClase clase : clases) {
                     if (clase.getEstadoPago() == 1) {
                         pago = 1;
@@ -159,7 +162,7 @@ public class ModelMatricula extends ConnectionDB {
                     }
                 }
                 if (pago == 1) {
-                    pStmt = connection.prepareCall(sql);
+                    pStmt = connection.prepareCall(sql2);
                     pStmt.setInt(1, clases.size());
                     pStmt.setString(2, documentoUsuario);
                     pStmt.setString(3, documentoCliente);
@@ -202,6 +205,26 @@ public class ModelMatricula extends ConnectionDB {
             }
         }
         return objReturn;
+    }
+
+    public String[] asignarEmpresa(String nitEmpresa, String documentoEstudiante) {
+        String[] resultado = new String[2];
+        String sql = "call spAsignarEmpresaBeneficiario(?,?)";
+        try {
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, nitEmpresa);
+            pStmt.setString(2, documentoEstudiante);
+            ResultSet rs = pStmt.executeQuery();
+            while (rs.next()) {
+                resultado[0] = rs.getString("tipo");
+                resultado[1] = rs.getString("mensaje");
+            }
+        } catch (SQLException ex) {
+            resultado[0] = "error";
+            resultado[1] = "Ha ocurrido un error en el modelo: " + ex;
+        }
+        return resultado;
+
     }
 
 }

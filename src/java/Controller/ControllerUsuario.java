@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,101 +47,29 @@ public class ControllerUsuario extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         if (request.getParameter("action") != null) {
             String action = request.getParameter("action");
             switch (action) {
                 case "Registrar": {
-                    try {
-                        String tipoDocumento = null;
-                        if (Validador.validarNumero(request.getParameter("ddlIdentificacion").trim())) {
-                            System.out.println("ddl true");
-
-                        } else {
-                            System.out.println("ddl false");
-                        }
-                        if (Validador.validarTipoDocumento(request.getParameter("txtIdentificacion").trim())) {
-                            System.out.println("txtIdentificacion true");
-                        } else {
-                            System.out.println("txtIdentificacion false");
-                        }
-                        tipoDocumento = request.getParameter("ddlIdentificacion").trim();
-                        long numeroIdentificacion = Long.parseLong(request.getParameter("txtIdentificacion").trim());
-                        String identificacion = tipoDocumento + numeroIdentificacion;
-                        String nombre = request.getParameter("txtNombre").trim();
-                        String apellido = request.getParameter("txtApellido").trim();
-                        String fechaNacimiento = request.getParameter("dateFechaNacimiento").trim();
-                        String correo = request.getParameter("txtCorreo").trim();
-                        int estado = 1;
-                        int rol = 4;
-                        String pass = request.getParameter("txtPass").trim();
-                        _objUsuario.setDocumentoUsuario(identificacion);
-                        _objUsuario.setNombreUsuario(nombre);
-                        _objUsuario.setApellidoUsuario(apellido);
-                        _objUsuario.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
-                        _objUsuario.setEmailUsuario(correo);
-                        _objUsuario.setEstadoUsuario(estado);
-                        _objUsuario.setPassword(pass);
-                        _objUsuario.setIdrol(rol);
-                        response.setContentType("application/json");
-                        daoModelUsuario = new ModelUsuario();
-                        String salida = Mensaje(daoModelUsuario.Add(_objUsuario), nombre + " ha sido registrado correctamente", "Ha ocurrido un error al intentar registrar al estudiante");
-                        daoModelUsuario.Signout();
-                        response.getWriter().write(salida);
-                    } catch (NumberFormatException | IOException | ParseException e) {
-                        response.setContentType("application/json");
-                        String salida = Mensaje(false, "", "Ha ocurrido un error" + e.getMessage());
-                        response.getWriter().write(salida);
-                    }
+                    response.getWriter().write(Registrar(request));
                     break;
                 }
-                case "Consultar": {
-                    String id = request.getParameter("id");
-                    try {
-                        Map<String, String> respuesta = new LinkedHashMap<>();
-                        daoModelUsuario = new ModelUsuario();
-                        ResultSet result = daoModelUsuario.buscarPorID(id);
-                        while (result.next()) {
-                            respuesta.put("tipoDocumento", result.getString("documentoUsuario").substring(0, 2));
-                            respuesta.put("numeroDocumento", result.getString("documentoUsuario").substring(2));
-                            respuesta.put("fechaNacimiento", result.getString("fechaNacimiento"));
-                            respuesta.put("nombreUsuario", result.getString("nombreUsuario"));
-                            respuesta.put("apellidoUsuario", result.getString("apellidoUsuario"));
-                            respuesta.put("emailUsuario", result.getString("emailUsuario"));
-                            respuesta.put("password", result.getString("password"));
-                            respuesta.put("estadoUsuario", result.getString("estadoUsuario"));
-                            respuesta.put("idrol", result.getString("idrol"));
-                        }
-                        daoModelUsuario.Signout();
-                        String salida = new Gson().toJson(respuesta);
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
-                        response.getWriter().write(salida);
-                    } catch (SQLException | IOException e) {
-                        response.setContentType("application/json");
-                        String salida = Mensaje(false, "", "Ha ocurrido un error" + e.getMessage());
-                        response.getWriter().write(salida);
-                    }
+                case "Consultar": {                    
+                    response.getWriter().write(Consultar(request));
                     break;
                 }
+                case "Actualizar":
                 case "Editar": {
-
+                    response.getWriter().write(Editar(request));
                     break;
                 }
-                case "Matricular": {
-
-                    break;
-                }
-                case "Preinscribir": {
-
-                    break;
-                }
-                case "Estado": {
-
+                case "MiPerfil": {
+                    response.getWriter().write(MiPerfil(request));
                     break;
                 }
                 case "getOptionsClientes": {
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getOptionsClientes());
                     break;
                 }
@@ -182,6 +112,36 @@ public class ControllerUsuario extends HttpServlet {
         return retorno;
     }
 
+    private String Consultar(HttpServletRequest request) {
+        String salida;
+        String id = request.getParameter("id");
+        try {
+            Map<String, String> respuesta = new LinkedHashMap<>();
+            daoModelUsuario = new ModelUsuario();
+            ResultSet result = daoModelUsuario.buscarPorID(id);
+            while (result.next()) {
+                respuesta.put("tipoDocumento", result.getString("documentoUsuario").substring(0, 2));
+                respuesta.put("numeroDocumento", result.getString("documentoUsuario").substring(2));
+                try {
+                    respuesta.put("fechaNacimiento", formatoFechaEntrada.format(formatoFechaSalida.parse(result.getString("fechaNacimiento"))));
+                } catch (ParseException ex) {
+                    respuesta.put("fechaNacimiento", (result.getString("fechaNacimiento")));
+                }
+                respuesta.put("nombreUsuario", result.getString("nombreUsuario"));
+                respuesta.put("apellidoUsuario", result.getString("apellidoUsuario"));
+                respuesta.put("emailUsuario", result.getString("emailUsuario"));
+                respuesta.put("password", result.getString("password"));
+                respuesta.put("estadoUsuario", result.getString("estadoUsuario"));
+                respuesta.put("idrol", result.getString("idrol"));
+            }
+            daoModelUsuario.Signout();
+            salida = new Gson().toJson(respuesta);
+        } catch (SQLException e) {
+            salida = Mensaje(false, "", "A ocurrido un error" + e.getMessage());
+        }
+        return salida;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -220,5 +180,108 @@ public class ControllerUsuario extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>   
+
+    private String MiPerfil(HttpServletRequest request) {
+        String salida;
+        String id = request.getParameter("documentoUsuario").trim();
+        try {
+            Map<String, String> respuesta = new LinkedHashMap<>();
+            daoModelUsuario = new ModelUsuario();
+            ResultSet result = daoModelUsuario.buscarPorID(id);
+            while (result.next()) {
+                respuesta.put("nombreUsuario", result.getString("nombreUsuario"));
+                respuesta.put("apellidoUsuario", result.getString("apellidoUsuario"));
+            }
+            daoModelUsuario.Signout();
+            salida = new Gson().toJson(respuesta);
+        } catch (SQLException e) {
+            salida = Mensaje(false, "", "A ocurrido un error" + e.getMessage());
+        }
+        return salida;
+    }
+
+    private String Editar(HttpServletRequest request) {
+        String salida;
+        try {
+            String tipoDocumento = null;
+            if (Validador.validarNumero(request.getParameter("ddlIdentificacion").trim())) {
+                System.out.println("ddl true");
+
+            } else {
+                System.out.println("ddl false");
+            }
+            if (Validador.validarTipoDocumento(request.getParameter("txtIdentificacion").trim())) {
+                System.out.println("txtIdentificacion true");
+            } else {
+                System.out.println("txtIdentificacion false");
+            }
+            tipoDocumento = request.getParameter("ddlIdentificacion").trim();
+            long numeroIdentificacion = Long.parseLong(request.getParameter("txtIdentificacion").trim());
+            String identificacion = tipoDocumento + numeroIdentificacion;
+            String nombre = request.getParameter("txtNombre").trim();
+            String apellido = request.getParameter("txtApellido").trim();
+            String fechaNacimiento = request.getParameter("dateFechaNacimiento").trim();
+            String correo = request.getParameter("txtCorreo").trim();
+            int estado = 1;
+            int rol = 4;
+            String pass = request.getParameter("txtPass").trim();
+            _objUsuario.setDocumentoUsuario(identificacion);
+            _objUsuario.setNombreUsuario(nombre);
+            _objUsuario.setApellidoUsuario(apellido);
+            _objUsuario.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
+            _objUsuario.setEmailUsuario(correo);
+            _objUsuario.setEstadoUsuario(estado);
+            _objUsuario.setPassword(pass);
+            _objUsuario.setIdrol(rol);
+            daoModelUsuario = new ModelUsuario();
+            salida = Mensaje(daoModelUsuario.Edit(_objUsuario), nombre + " ha sido actualizado correctamente", "Ha ocurrido un error al intentar actualizar al usuario");
+            daoModelUsuario.Signout();
+        } catch (NumberFormatException | ParseException e) {
+            salida = Mensaje(false, "", "Ha ocurrido un error" + e.getMessage());
+        }
+        return salida;
+    }
+
+    private String Registrar(HttpServletRequest request) {
+        String salida;
+        try {
+            String tipoDocumento = null;
+            if (Validador.validarNumero(request.getParameter("ddlIdentificacion").trim())) {
+                System.out.println("ddl true");
+
+            } else {
+                System.out.println("ddl false");
+            }
+            if (Validador.validarTipoDocumento(request.getParameter("txtIdentificacion").trim())) {
+                System.out.println("txtIdentificacion true");
+            } else {
+                System.out.println("txtIdentificacion false");
+            }
+            tipoDocumento = request.getParameter("ddlIdentificacion").trim();
+            long numeroIdentificacion = Long.parseLong(request.getParameter("txtIdentificacion").trim());
+            String identificacion = tipoDocumento + numeroIdentificacion;
+            String nombre = request.getParameter("txtNombre").trim();
+            String apellido = request.getParameter("txtApellido").trim();
+            String fechaNacimiento = request.getParameter("dateFechaNacimiento").trim();
+            String correo = request.getParameter("txtCorreo").trim();
+            int estado = 1;
+            int rol = 4;
+            String pass = request.getParameter("txtPass").trim();
+            _objUsuario.setDocumentoUsuario(identificacion);
+            _objUsuario.setNombreUsuario(nombre);
+            _objUsuario.setApellidoUsuario(apellido);
+            _objUsuario.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
+            _objUsuario.setEmailUsuario(correo);
+            _objUsuario.setEstadoUsuario(estado);
+            _objUsuario.setPassword(pass);
+            _objUsuario.setIdrol(rol);
+            daoModelUsuario = new ModelUsuario();
+            salida = Mensaje(daoModelUsuario.Add(_objUsuario), nombre + " ha sido registrado correctamente", "Ha ocurrido un error al intentar registrar al usuario");
+            daoModelUsuario.Signout();
+        } catch (NumberFormatException | ParseException e) {
+            salida = Mensaje(false, "", "Ha ocurrido un error" + e.getMessage());
+        }
+        return salida;
+    }
 
 }

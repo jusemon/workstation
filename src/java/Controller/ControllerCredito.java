@@ -51,7 +51,7 @@ public class ControllerCredito extends HttpServlet {
             switch (request.getParameter("action")) {
 
                 // <editor-fold defaultstate="collapsed" desc="Ingresar un crédito nuevo">
-                case "Registrar": {
+                /*case "Registrar": {
                     String documentoUsuario = request.getParameter("txtDocumentoUsuario").trim();
                     _ObjCredito.setDocumentoUsuario(documentoUsuario);
                     String fechaInicio = request.getParameter("txtFechaInicio").trim();
@@ -70,6 +70,7 @@ public class ControllerCredito extends HttpServlet {
                     response.getWriter().write(salida);
                     break;
                 }
+                */
                 // </editor-fold>
                 // <editor-fold defaultstate="collapsed" desc="Listar los créditos">
                 case "Enlistar": {
@@ -83,7 +84,6 @@ public class ControllerCredito extends HttpServlet {
                 case "Estado": {
                     aux = request.getParameter("idCredito");
                     id = Integer.parseInt(aux);
-                    tipo = request.getParameter("type");
                     salida = cambiarEstado(id);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -117,13 +117,13 @@ public class ControllerCredito extends HttpServlet {
             ResultSet result;
             result = daoModelCredito.buscarCreditoByID(idCredito);
             while (result.next()) {
-                estadoCredito = Integer.parseInt(result.getString("ddlEstadoCredito"));
+                estadoCredito = Integer.parseInt(result.getString("estadoCredito"));
             }
             estadoCredito = estadoCredito > 0 ? 0 : 1;
             _ObjCredito = new ObjCredito();
             _ObjCredito.setIdCredito(idCredito);
             _ObjCredito.setEstadoCredito(estadoCredito);
-            objReturn = Mensaje(daoModelCredito.cambiarEstadoCredito(_ObjCredito), "El estado del crédito ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
+            objReturn = Mensaje(daoModelCredito.cambiarEstadoCredito(_ObjCredito), "El estado del crédito ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado del crédito");
         } catch (SQLException | NumberFormatException e) {
             objReturn = Mensaje(false, "", "Ha ocurrido un error en el controlador " + e.getMessage());
         } finally {
@@ -184,13 +184,13 @@ public class ControllerCredito extends HttpServlet {
                     estado[0] = "danger";
                     estado[1] = "remove";
                 }
-                String[] arreglo = new String[8];
+                String[] arreglo = new String[7];
                 arreglo[0] = result.getString("idCredito").trim();
                 arreglo[1] = result.getString("documentoUsuario").trim();
                 arreglo[2] = result.getString("fechaInicio").trim();
                 arreglo[3] = result.getString("saldoInicial").trim();
                 arreglo[4] = result.getString("saldoActual").trim();
-                arreglo[5] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"credito.myAjax('Estado'," + arreglo[0] + ", '','Credito')\">"
+                arreglo[5] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"credito.estado(" + arreglo[0] + ")\">"
                         + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
                 arreglo[6] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"credito.myAjax('Consultar'," + arreglo[0] + ", '', 'Credito')\">"
                         + "<span class=\"glyphicon glyphicon-search\"></span></a>";
@@ -205,7 +205,8 @@ public class ControllerCredito extends HttpServlet {
         salida = "{\"data\":" + salida + "}";
         return salida;
     }
-
+    
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

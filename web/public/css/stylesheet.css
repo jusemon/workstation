@@ -166,3 +166,7 @@ div.dataTables_wrapper {
   margin: 2px;
   width: 60px;
 }
+
+.error{
+    color: #d43f3a
+}

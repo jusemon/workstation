@@ -34,7 +34,6 @@ public class ModelDetalleCredito  extends ConnectionDB{
             pStmt.setInt(1, _objDetalleCredito.getIdDetalleCredito());            
             pStmt.setInt(2, _objDetalleCredito.getIdCredito());
             pStmt.setInt(3, _objDetalleCredito.getIdMovimiento());
-            pStmt.setString(4, _objDetalleCredito.getFechaDetalle());
             
             
             int updateCount = pStmt.executeUpdate();

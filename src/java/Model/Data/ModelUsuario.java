@@ -127,4 +127,28 @@ public class ModelUsuario extends ConnectionDB {
         }
         return null;
     }
+
+    public boolean Edit(ObjUsuario _objUsuario) {
+        boolean objReturn = false;
+        String sql = "call spActualizarUsuario (?,?,?,?,?,?,?,?)";
+        try {
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, _objUsuario.getDocumentoUsuario());
+            pStmt.setDate(2, Date.valueOf(_objUsuario.getFechaNacimiento()));
+            pStmt.setString(3, _objUsuario.getNombreUsuario());
+            pStmt.setString(4, _objUsuario.getApellidoUsuario());
+            pStmt.setString(5, _objUsuario.getEmailUsuario());
+            pStmt.setString(6, _objUsuario.getPassword());
+            pStmt.setInt(7, _objUsuario.getEstadoUsuario());
+            pStmt.setInt(8, _objUsuario.getIdrol());
+
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
 }

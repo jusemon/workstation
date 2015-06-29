@@ -8,20 +8,16 @@
 $('.fecha').datepicker({
     format: "dd/mm/yyyy",
     language: "es",
-    autoclose: true,
     orientation: "top left"
 });
 $('.fecha2').datetimepicker({
     locale: "es"
 });
-
-var validationCurso, validationArticulo;
-
-var tablaCurso, tablaCategoriaCurso, tablaClases, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso, tablaPreinscritos;
-
+var validationCurso, validationArticulo, validationEstudiante, validationUsuario, validationEmpresa, validationUsuarioPerfil;
+var tablaCurso, tablaCategoriaCurso, tablaClases, tablaCredito, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso, tablaPreinscritos, tablaPreincripciones;
 var curso = {
     myAjax: function (accion, id, aux, typo) {
-        if (accion == 'Estado') {
+        if (accion === 'Estado') {
             $.ajax({
                 url: "ControllerCurso",
                 type: 'POST',
@@ -36,7 +32,7 @@ var curso = {
                 }
             });
         }
-        else if (accion == 'Consultar') {
+        else if (accion === 'Consultar') {
             $.ajax({
                 url: "ControllerCurso",
                 type: 'POST',
@@ -46,7 +42,7 @@ var curso = {
                     type: typo
                 },
                 success: function (data) {
-                    if (aux == 'Editar') {
+                    if (aux === 'Editar') {
                         curso.editar(data);
                     }
                     else {
@@ -55,9 +51,8 @@ var curso = {
                 }
 
             });
-
         }
-        else if (accion == 'Registrar'||accion == 'Editar') {
+        else if (accion === 'Registrar' || accion === 'Editar') {
             if (validationCurso.valid()) {
                 var formulario = $('#formCurso');
                 $.ajax({
@@ -70,11 +65,11 @@ var curso = {
                     }
 
                 });
-            }else{
+            } else {
                 $.notify('Ups, uno o mas campos contienen datos erroneos', 'error');
             }
         }
-        else if (accion == 'getOptionsCursos') {
+        else if (accion === 'getOptionsCursos') {
             $.ajax({
                 url: "ControllerCurso",
                 type: 'POST',
@@ -85,7 +80,6 @@ var curso = {
                 },
                 success: function (data) {
                     curso.cargarOpciones(data);
-
                 }
             });
         }
@@ -175,10 +169,10 @@ var curso = {
         $('.notifyjs-foo-base ').trigger('notify-hide');
         $(document).off('click', '.notifyjs-foo-base .no');
         $(document).off('click', '.notifyjs-foo-base .yes');
-        if (typeof (documentoUsuario) !== "undefined") {
+        if (typeof (documentoUsuario) !== 'undefined') {
             $(btn).notify({
                 title: '¿Estás seguro?',
-                button: 'Confirmar',
+                button: 'Confirmar'
             }, {
                 style: 'foo',
                 autoHide: false,
@@ -277,7 +271,6 @@ var curso = {
         tablaCurso.ajax.reload();
     }
 };
-
 var categoriaCurso = {
     myAjax: function (accion) {
         var form = $('#form_categoriaCurso');
@@ -346,7 +339,6 @@ var categoriaCurso = {
         $('#miPopupCurso').find('#ddlCategoria').append(data);
     }
 };
-
 var clase = {
     myAjax: function (accion, id) {
         var form = $('#formFicha');
@@ -357,15 +349,15 @@ var clase = {
                 url: $(form).attr('action'),
                 data: $(form).serialize() + '&action=' + accion + '&id=' + id,
                 success: function (data) {
-                    if (accion == 'Estado' || accion == 'Editar' || accion == 'Registrar') {
-                        if (accion != 'Estado') {
+                    if (accion === 'Estado' || accion === 'Editar' || accion === 'Registrar') {
+                        if (accion !== 'Estado') {
                             $('#miPopupFicha').modal('hide');
                         }
                         clase.actualizarTabla();
                         mensaje(data);
-                    } else if (accion == 'getOptionsClases') {
+                    } else if (accion === 'getOptionsClases') {
                         clase.cargarOpciones(data);
-                    } else if (accion == 'cursosDisponibles') {
+                    } else if (accion === 'cursosDisponibles') {
                         clase.mostrarDisponibles(data);
                     }
                 }
@@ -420,7 +412,6 @@ var clase = {
         $('#formMatricula').find('#idCursoFicha').append(data);
     }
 };
-
 var cliente = {
     seleccionar: function (id) {
         $.ajax({
@@ -431,46 +422,37 @@ var cliente = {
                 id: id
             },
             success: function (data, textStatus, jqXHR) {
-                $('#tabMovimientos').find('#txtIdentificacion').val(id.substring(2))
+                $('#tabMovimientos').find('#txtIdentificacion').val(id.substring(2));
                 $('#tabMovimientos').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + id.substring(0, 2) + '"]').prop('selected', true);
                 $('#tabMovimientos').find('#txtNombre').val(data.nombreUsuario + ' ' + data.apellidoUsuario).attr('readOnly', true);
             }
         });
     }
-}
-
+};
 var seminario = {
     myAjax: function (accion, id, aux, typo) {
         var form = $('#formCurso');
-        $(form).off();
-        $(form).on('submit', function () {
-            $.ajax({
-                type: $(form).attr('method'),
-                url: $(form).attr('action'),
-                data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&type=' + typo,
-                success: function (data) {
-                    if (accion == 'Consultar') {
-                        if (aux == 'Editar') {
-                            seminario.editar(data);
-                        }
-                        else
-                            seminario.consultar(data);
+        $.ajax({
+            type: $(form).attr('method'),
+            url: $(form).attr('action'),
+            data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&type=' + typo,
+            success: function (data) {
+                if (accion === 'Consultar') {
+                    if (aux === 'Editar') {
+                        seminario.editar(data);
                     }
-                    else if (accion == 'Editar' || accion == 'Estado') {
-                        if (accion != 'Estado') {
-                            $('#miPopupCurso').modal('hide');
-                        }
-                        mensaje(data);
-                        seminario.actualizarTabla();
-                    }
+                    else
+                        seminario.consultar(data);
                 }
-            });
-            $(form).off();
-            return false;
+                else if (accion === 'Editar' || accion === 'Estado') {
+                    if (accion !== 'Estado') {
+                        $('#miPopupCurso').modal('hide');
+                    }
+                    mensaje(data);
+                    seminario.actualizarTabla();
+                }
+            }
         });
-        if (accion === 'Estado' || accion === 'Consultar') {
-            $(form).submit();
-        }
     },
     consultar: function (data) {
         limpiar("#formCurso");
@@ -503,7 +485,7 @@ var seminario = {
         $('#miPopupCurso').find('#txtCantidadClases').val(1).attr('readOnly', true);
         $('#miPopupCurso').find('#ddlCategoria').empty();
         $('#miPopupCurso').find('#ddlCategoria').append('<option>Seminario</option>').attr('disabled', true);
-        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
+        $('#miPopupCurso').find('#btnCurso').attr('type', 'button').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupCurso').modal('show');
     },
     editar: function (data) {
@@ -514,7 +496,7 @@ var seminario = {
         $('#miPopupCurso').find('#titulo').empty();
         $('#miPopupCurso').find('#titulo').append('Editar Seminario');
         $('#miPopupCurso').find('#tipo').val('Seminario');
-        $('#miPopupCurso').find('#btnCurso').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
+        $('#miPopupCurso').find('#btnCurso').attr('type', 'button').attr('value', 'Editar').attr('disabled', false);
     },
     preinscripcion: function (idCurso, btn) {
         $('.notifyjs-foo-base ').trigger('notify-hide');
@@ -523,7 +505,7 @@ var seminario = {
         if (typeof (documentoUsuario) !== "undefined") {
             $(btn).notify({
                 title: '¿Estás seguro?',
-                button: 'Confirmar',
+                button: 'Confirmar'
             }, {
                 style: 'foo',
                 autoHide: false,
@@ -592,7 +574,6 @@ var seminario = {
         tablaSeminario.ajax.reload();
     }
 };
-
 var abono = {
     myAjax: function (accion, id, aux) {
         var form = $('#formAbono');
@@ -602,18 +583,18 @@ var abono = {
                 url: $(form).attr('action'),
                 data: $(form).serialize() + '&action=' + accion + '&id=' + id,
                 success: function (data) {
-                    if (accion == 'Consultar') {
-                        if (aux == 'Editar') {
+                    if (accion === 'Consultar') {
+                        if (aux === 'Editar') {
                             abono.editar(data);
                         } else
                             abono.consultar(data);
                     }
-                    else if (accion == 'Registrar' || accion == 'Editar') {
+                    else if (accion === 'Registrar' || accion === 'Editar') {
                         $('#miPopupAbono').modal('hide');
                         abono.mensaje(data);
                         abono.actualizarTabla();
                     }
-                    else if (accion == 'Estado') {
+                    else if (accion === 'Estado') {
                         abono.mensaje(data);
                         abono.actualizarTabla();
                     }
@@ -670,51 +651,96 @@ var abono = {
         tablaAbono.ajax.reload();
     }
 };
-
 var estudiante = {
     myAjax: function (accion, id, tipo, aux, aux2) {
         var form = $('#form_estudiante');
-        $(form).off();
-        $(form).on('submit', function () {
-            $('#miPopupEstudiante').find('#ddlIdentificacion').attr('disabled', false);
+        $('#miPopupEstudiante').find('#ddlIdentificacion').attr('disabled', false);
+        if (accion === 'Consultar') {
             $.ajax({
-                type: $(form).attr('method'),
-                url: $(form).attr('action'),
-                data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
-                success: function (data) {
-                    if (accion === 'Consultar') {
-                        if (tipo == 'Editar') {
-                            estudiante.editar(data);
-                        } else if (tipo == 'Matricular') {
-                            estudiante.matricular(data);
-                        } else if (tipo == 'Preinscrito') {
-                            if (aux === 'Inscribir') {
-                                estudiante.preinscribir(data, aux2);
-                            } else
-                                estudiante.consultarPreinscrito(data);
-
+                url: "ControllerEstudiante",
+                type: 'POST',
+                data: {
+                    action: accion,
+                    id: id,
+                    tipo: tipo
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (tipo === 'Editar') {
+                        estudiante.editar(data);
+                    } else if (tipo === 'Matricular') {
+                        estudiante.matricular(data);
+                    } else if (tipo === 'Preinscrito') {
+                        if (aux === 'Inscribir') {
+                            estudiante.preinscribir(data, aux2);
                         } else
-                            estudiante.consultar(data);
-                    }
-                    else if (accion === 'Registrar' || accion === 'Editar' || accion === 'Estado') {
-                        if (accion != 'Estado') {
-                            $('#miPopupEstudiante').modal('hide');
+                            estudiante.consultarPreinscrito(data);
+                    } else
+                        estudiante.consultar(data);
+                }
+            });
+        }
+        else if (accion === 'Registrar' || accion === 'Editar') {
+            if (validationEstudiante.valid()) {
+                $.ajax({
+                    type: $(form).attr('method'),
+                    url: $(form).attr('action'),
+                    data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
+                    success: function (data) {
+                        if (data['tipo'] !== 'error') {
+                            var identificacion = $('#miPopupEstudiante').find('#ddlIdentificacion').val() + $('#miPopupEstudiante').find('#txtIdentificacion').val();
+                            matricula.registrarBeneficiario(identificacion);
                         }
+                        $('#miPopupEstudiante').modal('hide');
                         mensaje(data);
                         estudiante.actualizarTabla();
                     }
-                    else if (accion === 'getOptionsFichas') {
-                        clase.cargarOpciones(data);
-                    } else if (accion === 'Formalizar Inscripción') {
-                        estudiante.formalizar(data);
-                    }
+                });
+            } else {
+                $.notify('Uno o mas campos contienen datos erroneos', 'error');
+            }
+        }
+        else if (accion === 'getOptionsFichas') {
+            $.ajax({
+                url: "ControllerEstudiante",
+                type: 'POST',
+                data: {
+                    action: accion,
+                    id: id,
+                    tipo: tipo
+                },
+                success: function (data) {
+                    clase.cargarOpciones(data);
                 }
             });
-            $(form).off();
-            return false;
-        });
-        if (accion === 'Estado' || accion === 'Consultar' || accion === 'Seleccion') {
-            $(form).submit();
+        }
+        else if (accion === 'Formalizar Inscripción') {
+            $.ajax({
+                url: "ControllerEstudiante",
+                type: 'POST',
+                data: {
+                    action: accion,
+                    id: id,
+                    tipo: tipo
+                },
+                success: function (data) {
+                    estudiante.formalizar(data);
+                }
+            });
+        }
+        else if (accion === 'Estado') {
+            $.ajax({
+                url: "ControllerEstudiante",
+                type: 'POST',
+                data: {
+                    action: accion,
+                    id: id,
+                    tipo: tipo
+                },
+                success: function (data) {
+                    mensaje(data);
+                    estudiante.actualizarTabla();
+                }
+            });
         }
     },
     matricular: function (data) {
@@ -752,15 +778,14 @@ var estudiante = {
         $('#miPopupEstudiante').find('#txtCorreo').val(data['emailUsuario']);
         $('#miPopupEstudiante').find('#txtPass').val(data['password']);
         $('#miPopupEstudiante').find('#radioGeneroFemenino').parents('.row:first').show();
-        if (data['generoUsuario'] == 0)
+        if (parseInt(data['generoUsuario']) === 0)
             $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', true).parents('.row:first').show();
         else
             $('#miPopupEstudiante').find('#radioGeneroMasculino').prop('checked', true);
-
-        if (data['estadoBeneficiario'] == 0)
+        if (parseInt(data['estadoBeneficiario']) === 0)
             $('#miPopupEstudiante').find('#radioNoBeneficiario').prop('checked', true);
         else
-            $('#miPopupEstudiante').find('#radioSiBeneficiario').prop('checked', true)
+            $('#miPopupEstudiante').find('#radioSiBeneficiario').prop('checked', true);
 
         $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'hidden').attr('disabled', true);
         desabilitar('#form_estudiante');
@@ -793,7 +818,7 @@ var estudiante = {
         limpiar("#form_estudiante");
         $('#miPopupEstudiante').find('#titulo').empty();
         $('#miPopupEstudiante').find('#titulo').append('Registrar Estudiante');
-        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
+        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'button').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupEstudiante').modal('show');
     },
     editar: function (data) {
@@ -802,7 +827,7 @@ var estudiante = {
         $('#miPopupEstudiante').find('#titulo').empty();
         $('#miPopupEstudiante').find('#titulo').append('Editar Estudiante');
         habilitar('#form_estudiante');
-        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
+        $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'button').attr('value', 'Editar').attr('disabled', false);
     },
     cargar: function () {
         tablaEstudiante = $('#tblEstudiantes').DataTable({
@@ -831,7 +856,6 @@ var estudiante = {
         }
     }
 };
-
 var preinscrito = {
     cargar: function () {
         tablaPreinscritos = $('#tblPreinscritos').DataTable({
@@ -850,39 +874,93 @@ var preinscrito = {
         tablaPreinscritos.ajax.reload();
     }
 };
-
+var preinscripcion = {
+    cargar: function () {
+        tablaPreincripciones = $('#tblPreinscripciones').DataTable({
+            "ajax": {
+                "url": "ControllerMatricula",
+                "type": "POST",
+                "data": {
+                    action: 'ConsultarPreinscripcionesCliente',
+                    documentoUsuario: documentoUsuario
+                }
+            }, "language": {
+                "url": "public/js/locales/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaPreincripciones.ajax.reload();
+    }
+};
 var usuario = {
     myAjax: function (accion, id, tipo, aux) {
-        var form = $('#formUsuario');
-        $(form).off();
-        $(form).on('submit', function () {
+        if (accion === 'Consultar') {
             $.ajax({
-                type: $(form).attr('method'),
-                url: $(form).attr('action'),
-                data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
-                success: function (data) {
-                    if (accion == 'Consultar') {
-                        if (aux == 'Editar') {
-                            usuario.editar(data);
-                        } else if (aux == 'Preinscribir') {
-                            usuario.preinscribir(data);
-                        } else
-                            usuario.consultar(data);
-                    }
-                    else if (accion == 'Registrar' || accion == 'Editar' || accion == 'Estado') {
-                        if (accion != 'Estado') {
-                            $('#miPopupUsuario').modal('hide');
-                        }
+                url: "ControllerUsuario",
+                type: 'POST',
+                data: {
+                    action: accion,
+                    id: id,
+                    tipo: tipo
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (aux === 'Editar') {
+                        usuario.editar(data);
+                    } else if (aux === 'Preinscribir') {
+                        usuario.preinscribir(data);
+                    } else
+                        usuario.consultar(data);
+                }
+            });
+        }
+        else if (accion === 'Registrar' || accion === 'Editar') {
+            if (validationUsuario.valid()) {
+                var form = $('#formUsuario');
+                $.ajax({
+                    type: $(form).attr('method'),
+                    url: $(form).attr('action'),
+                    data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
+                    success: function (data) {
+                        $('#miPopupUsuario').modal('hide');
                         mensaje(data);
                         usuario.actualizarTabla();
                     }
+                });
+            } else {
+                $.notify('Uno o mas campos contienen datos erroneos', 'error');
+            }
+        }
+        else if (accion === 'Actualizar') {
+            if (validationUsuarioPerfil.valid()) {
+                var form = $('#formActualizarDatos');
+                $.ajax({
+                    type: $(form).attr('method'),
+                    url: $(form).attr('action'),
+                    data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
+                    success: function (data) {
+                        $('#miPopupConfiguracion').modal('hide');
+                        mensaje(data);
+                    }
+                });
+            } else {
+                $.notify('Uno o mas campos contienen datos erroneos', 'error');
+            }
+        }
+        else if (accion === 'Estado') {
+            $.ajax({
+                url: "ControllerUsuario",
+                type: 'POST',
+                data: {
+                    action: accion,
+                    id: id,
+                    tipo: tipo
+                },
+                success: function (data, textStatus, jqXHR) {
+                    mensaje(data);
+                    usuario.actualizarTabla();
                 }
             });
-            $(form).off();
-            return false;
-        });
-        if (accion === 'Estado' || accion === 'Consultar') {
-            $(form).submit();
         }
     },
     preinscribir: function (data) {
@@ -895,14 +973,14 @@ var usuario = {
     consultar: function (data) {
         usuario.habilitar();
         limpiar("#formUsuario");
-        $('#miPopupUsuario').find('#titulo').empty();
-        $('#miPopupUsuario').find('#titulo').append('Consultar Usuario');
+        $('#miPopupUsuario').find('#titulo').text('Consultar Usuario');
         $('#miPopupUsuario').find('#txtIdentificacion').val(data['numeroDocumento']);
         $('#miPopupUsuario').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + data['tipoDocumento'] + '"]').prop('selected', true);
         $('#miPopupUsuario').find('#txtNombre').val(data['nombreUsuario']);
         $('#miPopupUsuario').find('#txtApellido').val(data['apellidoUsuario']);
         $('#miPopupUsuario').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
         $('#miPopupUsuario').find('#txtCorreo').val(data['emailUsuario']);
+        $('#miPopupUsuario').find('#txtPass').val(data['password']);
         $('#miPopupUsuario').find('#btnUsuario').attr('type', 'hidden').attr('disabled', true);
         desabilitar('#formUsuario');
         $('#miPopupUsuario').modal('show');
@@ -913,16 +991,15 @@ var usuario = {
         limpiar("#formUsuario");
         $('#miPopupUsuario').find('#titulo').empty();
         $('#miPopupUsuario').find('#titulo').append('Registro');
-        $('#miPopupUsuario').find('#btnUsuario').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
+        $('#miPopupUsuario').find('#btnUsuario').attr('type', 'button').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupUsuario').modal('show');
     },
     editar: function (data) {
         limpiar("#formUsuario");
         usuario.consultar(data);
-        $('#miPopupUsuario').find('#titulo').empty();
-        $('#miPopupUsuario').find('#titulo').append('Actualizar Datos');
+        $('#miPopupUsuario').find('#titulo').text('Actualizar Datos');
         habilitar('#formUsuario');
-        $('#miPopupUsuario').find('#btnUsuario').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
+        $('#miPopupUsuario').find('#btnUsuario').attr('type', 'button').attr('value', 'Editar').attr('disabled', false);
     },
     cargar: function () {
         tablaUsuario = $('#tblUsuarios').DataTable({
@@ -954,9 +1031,43 @@ var usuario = {
         $('#miPopupUsuario').find('#txtNombre').attr('type', 'text').attr('disabled', false).parents('.row:first').show();
         $('#miPopupUsuario').find('#txtApellido').attr('type', 'text').attr('disabled', false).parents('.row:first').show();
         $('#miPopupUsuario').find('#dateFechaNacimiento').attr('type', 'text').attr('disabled', false).parents('.row:first').show();
+    },
+    miPerfil: function (documento) {
+        $.ajax({
+            url: "ControllerUsuario",
+            type: 'POST',
+            data: {
+                action: 'MiPerfil',
+                documentoUsuario: documento
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#miPopupConfiguracion').find('#txtNombre').text(data.nombreUsuario + " " + data.apellidoUsuario);
+                $('#miPopupConfiguracion').modal('show');
+            }
+        });
+    },
+    actualizarDatos: function (documento) {
+        $.ajax({
+            url: "ControllerUsuario",
+            type: 'POST',
+            data: {
+                action: 'Consultar',
+                id: documento
+            },
+            success: function (data, textStatus, jqXHR) {
+                limpiar("#formActualizarDatos");
+                $('#formActualizarDatos').find('#txtIdentificacion').val(data['numeroDocumento']);
+                $('#formActualizarDatos').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + data['tipoDocumento'] + '"]').prop('selected', true);
+                $('#formActualizarDatos').find('#txtNombre').val(data['nombreUsuario']);
+                $('#formActualizarDatos').find('#txtApellido').val(data['apellidoUsuario']);
+                $('#formActualizarDatos').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
+                $('#formActualizarDatos').find('#txtCorreo').val(data['emailUsuario']);
+                $('#formActualizarDatos').find('#txtPass').val(data['password']);
+                $('#formActualizarDatos').find('#btnUsuario').attr('type', 'button').attr('value', 'Actualizar').attr('disabled', false);
+            }
+        });
     }
 };
-
 var matricula = {
     actualizarTabla: function () {
         tablaMatricula.ajax.reload();
@@ -997,7 +1108,7 @@ var matricula = {
                 tipo = (tipo === 'CE') ? 'Cédula de Extranjería' : tipo;
                 $('#miPopupMatricula').find('#txtTipo').text(tipo);
                 $('#miPopupMatricula').find('#txtDocumento').val(data.documentoUsuario);
-                $('#miPopupMatricula').find('#idCursoMatricula').empty().append('<option value="' + idCurso + '">' + data['nombreCurso'] + '</option>')
+                $('#miPopupMatricula').find('#idCursoMatricula').empty().append('<option value="' + idCurso + '">' + data['nombreCurso'] + '</option>');
                 $('#miPopupMatricula').find('#idCursoMatricula option').prop('selected', false).filter('[value="' + idCurso + '"]').prop('selected', true);
                 $('#miPopupMatricula').find('#idCursoMatricula').attr('disabled', true);
                 $('#miPopupMatricula').find('#txtPrecioCurso').text(data['precioCurso']);
@@ -1036,11 +1147,12 @@ var matricula = {
         });
     },
     registrarAsistencia: function () {
+        var precioClase = $("#txtPrecioClases").text();
         $('#miPopupMatricula').find('#idCursoMatricula').attr('disabled', false);
         $.ajax({
             url: "ControllerMatricula",
             type: 'POST',
-            data: $('#formMatricula').serialize() + '&action=RegistrarAsistencia' + '&documentoUsuario' + documentoUsuario,
+            data: $('#formMatricula').serialize() + '&action=RegistrarAsistencia' + '&documentoUsuario=' + documentoUsuario + '&precio=' + precioClase,
             success: function (data) {
                 $('#miPopupMatricula').find('#idCursoMatricula').attr('disabled', true);
                 $('#miPopupMatricula').modal('hide');
@@ -1048,9 +1160,54 @@ var matricula = {
                 mensaje(data);
             }
         });
+    },
+    optionsBeneficio: function (estudiante) {
+        $.ajax({
+            url: "ControllerMatricula",
+            type: 'POST',
+            data: {
+                action: 'getOptionsBeneficio'
+            },
+            success: function (data, textStatus, jqXHR) {
+                $('#miPopupBeneficiario').find('#ddlEstudiante').select2({
+                    data: data.estudiantes,
+                    language: "es",
+                    placeholder: "Selecciona el estudiante",
+                    allowClear: true
+                }).select2("val", estudiante);
+                $('#miPopupBeneficiario').find('#ddlEmpresa').select2({
+                    data: data.empresas,
+                    language: "es",
+                    placeholder: "Selecciona la empresa",
+                    allowClear: true
+                });
+            }
+        });
+        //$('#miPopupBeneficiario').find('#ddlEstudiante option').prop('selected', false).filter('[value="' + estudiante + '"]').prop('selected', true);
+        $('#miPopupBeneficiario').modal('show');
+    },
+    registrarBeneficiario: function (identificacion) {
+        var beneficiario;
+        beneficiario = $('input:radio[name=radioBeneficiario]:checked').val();
+        if (beneficiario === '1') {
+            matricula.optionsBeneficio(identificacion);
+            $('#miPopupBeneficiario').modal('show');
+        }
+    },
+    asignarEmpresa: function () {
+        var idEstudiante = $('#miPopupBeneficiario').find('#ddlEstudiante').val();
+        var idEmpresa = $('#miPopupBeneficiario').find('#ddlEmpresa').val();
+        $.ajax({
+            url: "ControllerMatricula",
+            type: 'POST',
+            data: {
+                action: 'asignarEmpresa',
+                nitEmpresa: idEmpresa,
+                documentoEstudiante: idEstudiante
+            }
+        });
     }
 };
-
 var categoriaArticulo = {
     myAjax: function (accion) {
         var form = $('#formCategoriaArticulo');
@@ -1122,7 +1279,6 @@ var categoriaArticulo = {
         });
     }
 };
-
 var articulo = {
     myAjax: function (accion) {
         var form = $('#formArticulo');
@@ -1133,13 +1289,13 @@ var articulo = {
                 url: $(form).attr('action'),
                 data: $(form).serialize() + '&action=' + accion,
                 success: function (data) {
-                    if (accion == 'Registrar' || accion == 'Editar') {
+                    if (accion === 'Registrar' || accion === 'Editar') {
                         $('#miPopupArticulo').modal('hide');
                         mensaje(data);
                         articulo.actualizarTabla();
                         $("#ddlArticulos").select2('destroy');
                         articulo.listarArticulos();
-                    } else if (accion == 'ConsultarCodigo') {
+                    } else if (accion === 'ConsultarCodigo') {
                         articulo.registrar(data);
                     }
                     else if (accion === 'getOptionsArticulos') {
@@ -1151,7 +1307,7 @@ var articulo = {
             $(form).off();
             return false;
         });
-        if (accion === 'getOptionsCategorias' || accion == 'ConsultarCodigo') {
+        if (accion === 'getOptionsCategorias' || accion === 'ConsultarCodigo') {
             $(form).submit();
         }
     },
@@ -1178,7 +1334,7 @@ var articulo = {
         $('#miPopupArticulo').find('#txtPrecioCompra').val(data[4]).attr('readOnly', true);
         $('#miPopupArticulo').find('#txtPrecioVenta').val(data[5]);
         $('#miPopupArticulo').find('#idCategoriaArticulo option').prop('selected', false).filter(function () {
-            return ($(this).text() == data[1]);
+            return ($(this).text() === data[1]);
         }).prop('selected', true);
         $('#miPopupArticulo').find('#btnArticulo').val('Editar');
         $('#miPopupArticulo').modal('show');
@@ -1219,7 +1375,7 @@ var articulo = {
     noExiste: function (id) {
         var flag = true;
         $('#tablaDetalleMovimiento tbody tr').each(function () {
-            if ($(this).data('id') == id) {
+            if (parseInt($(this).data('id')) === parseInt(id)) {
                 flag = false;
             }
         });
@@ -1227,7 +1383,7 @@ var articulo = {
     },
     remover: function (id) {
         $('#tablaDetalleMovimiento tbody tr').each(function () {
-            if ($(this).data('id') == id) {
+            if (parseInt($(this).data('id')) === parseInt(id)) {
                 $(this).remove();
             }
         });
@@ -1288,7 +1444,6 @@ var articulo = {
         });
     }
 };
-
 var empresa = {
     myAjax: function (accion, id) {
         var form = $('#formEmpresa');
@@ -1299,11 +1454,11 @@ var empresa = {
                 url: $(form).attr('action'),
                 data: $(form).serialize() + '&action=' + accion + '&id=' + id,
                 success: function (data) {
-                    if (accion == 'Editar' || accion == 'Registrar') {
+                    if (accion === 'Editar' || accion === 'Registrar') {
                         $('#miPopupEmpresa').modal('hide');
                         empresa.actualizarTabla();
                         mensaje(data);
-                    } else if (accion == 'getOptionsEmpresas') {
+                    } else if (accion === 'getOptionsEmpresas') {
                         empresa.cargarOpciones(data);
                     }
                 }
@@ -1357,7 +1512,6 @@ var empresa = {
         $('#form_estudiante').find('#idEmpresa').append(data);
     }
 };
-
 var compra = {
     myAjax: function (accion, id) {
         var form = $('#formMovimiento');
@@ -1368,7 +1522,7 @@ var compra = {
                 url: $(form).attr('action'),
                 data: $(form).serialize() + '&action=' + accion + '&id=' + id,
                 success: function (data) {
-                    if (accion == 'Consultar') {
+                    if (accion === 'Consultar') {
                         $('#btnGestionCompras').tab('show');
                         compra.consultar(data);
                     }
@@ -1382,7 +1536,7 @@ var compra = {
             $(form).off();
             return false;
         });
-        if (accion === 'Estado' || accion == 'Consultar' || accion === 'getOptionsCompra') {
+        if (accion === 'Estado' || accion === 'Consultar' || accion === 'getOptionsCompra') {
             $(form).submit();
         }
     },
@@ -1467,7 +1621,6 @@ var compra = {
             $(form).off();
             return false;
         });
-
     },
     actualizarTabla: function () {
         tablaCompra.ajax.reload();
@@ -1489,7 +1642,7 @@ var compra = {
         $("#ddlArticulos").off();
         $("#ddlArticulos").on("select2:select", function (e) {
             var id = e.params.data.id;
-            if (id != '-1') {
+            if (parseInt(id) !== -1) {
                 articulo.seleccionar(id, 'Compra');
             }
         });
@@ -1533,7 +1686,6 @@ var compra = {
         }
     }
 };
-
 var venta = {
     actualizarTabla: function () {
         tablaVenta.ajax.reload();
@@ -1576,7 +1728,7 @@ var venta = {
                     $("#clienteRegistrado").off();
                     $("#clienteRegistrado").on("select2:select", function (e) {
                         var id = e.params.data.id;
-                        if (id != '-1') {
+                        if (parseInt(id) !== -1) {
                             cliente.seleccionar(id);
                         }
                     });
@@ -1614,7 +1766,6 @@ var venta = {
             },
             success: function (data, textStatus, jqXHR) {
                 venta.show('Consultar', data);
-
             }
         });
     },
@@ -1677,7 +1828,6 @@ var venta = {
             $(form).off();
             return false;
         });
-
     },
     imprimir: function (idMovimiento) {
         var link = document.createElement('a');
@@ -1691,7 +1841,7 @@ var venta = {
         $("#ddlArticulos").off();
         $("#ddlArticulos").on("select2:select", function (e) {
             var id = e.params.data.id;
-            if (id != '-1') {
+            if (parseInt(id) !== -1) {
                 articulo.seleccionar(id, 'Venta');
             }
         });
@@ -1745,20 +1895,36 @@ var venta = {
         });
     }
 };
-
 var credito = {
+    actualizarTabla: function () {
+        tablaCredito.ajax.reload();
+    },
+    cargar: function () {
+        tablaCredito = $('#tblCreditos').DataTable({
+            "ajax": {
+                url: 'ControllerCredito',
+                type: 'POST',
+                data: {
+                    action: 'Enlistar'
+                }
+            },
+            "language": {
+                "url": "public/js/locales/Spanish.json"
+            }
+        });
+    },
     show: function (tipo, datos) {
         $("#ddlArticulos").off();
         $("#ddlArticulos").on("select2:select", function (e) {
             var id = e.params.data.id;
-            if (id != '-1') {
+            if (parseInt(id) !== -1) {
                 articulo.seleccionar(id, 'Venta');
             }
         });
         credito.limpiarDetalle();
         $('#contenidoDinamico').data('actual', 'credito');
         $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
-        $('#tabMovimientos').find('#numero').text('Id. del Crédito');
+        $('#tabMovimientos').find('#numero').text('Id. Crédito');
         $('#tabMovimientos').find('#total').text('Total Crédito');
         if (tipo === 'Registrar') {
             $('#tabMovimientos').find('#titulo').text('Registrar Crédito');
@@ -1788,9 +1954,22 @@ var credito = {
                 $('#tabMovimientos').find('#txtNumero').val(data['numero']);
             }
         });
+    },
+    estado: function (id) {
+        $.ajax({
+            type: 'POST',
+            url: "ControllerCredito",
+            data: {
+                idCredito: id,
+                action: 'Estado'
+            },
+            success: function (data, textStatus, jqXHR) {
+                mensaje(data);
+                credito.actualizarTabla();
+            }
+        });
     }
 };
-
 compra.cargar();
 venta.cargar();
 categoriaCurso.cargar();
@@ -1803,6 +1982,9 @@ articulo.cargar();
 matricula.cargar();
 empresa.cargar();
 usuario.cargar();
-//credito.cargar()
+credito.cargar();
 categoriaArticulo.cargarOpciones();
 preinscrito.cargar();
+if (typeof documentoUsuario !== 'undefined') {
+    preinscripcion.cargar();
+}

@@ -90,5 +90,18 @@ public class ModelPreinscripcion extends ConnectionDB {
         }
         return rs;
     }
-
+    
+    public ResultSet ConsultarPreinscripcionesPorID(String documentoCliente) throws Exception {
+        ResultSet rs = null;
+        String sql = "call spConsultarPreinscritoPorID(?)";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, documentoCliente);
+            rs = pStmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;
+    }
 }
