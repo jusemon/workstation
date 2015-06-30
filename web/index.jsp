@@ -10,7 +10,7 @@
 <!--
 Este contenedor tiene el contenido de la pagina, en este caso un carrusel que pasa productos de Stellarte Decoracion
 -->
-<div class="container-fluid">
+<div class="container-fluid" style="height: 100%;">
     <div class="row col-md-10 col-md-offset-2">
         <div id="ejemplo_carrusel" class="carousel slide thumbnail col-md-10 " style="margin: 0 auto">
             <!-- Indicadores circulares -->

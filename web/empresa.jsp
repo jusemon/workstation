@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <%@include file="WEB-INF/jspf/header.jspf" %>
 
-<div class="container-fluid">
+<div class="container-fluid" style="height: 100%;">
     <div class="row">
         <div class="col-md-3">
             <div class="panel panel-default">
