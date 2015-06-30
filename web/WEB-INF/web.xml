@@ -64,6 +64,14 @@
         <servlet-name>ControllerCredito</servlet-name>
         <servlet-class>Controller.ControllerCredito</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Incrito</servlet-name>
+        <servlet-class>Model.DTO.Incrito</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ObjIncrito</servlet-name>
+        <servlet-class>Model.DTO.ObjIncrito</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControllerCliente</servlet-name>
         <url-pattern>/ControllerCliente</url-pattern>
@@ -127,6 +135,14 @@
     <servlet-mapping>
         <servlet-name>ControllerCredito</servlet-name>
         <url-pattern>/ControllerCredito</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Incrito</servlet-name>
+        <url-pattern>/Incrito</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ObjIncrito</servlet-name>
+        <url-pattern>/ObjIncrito</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
