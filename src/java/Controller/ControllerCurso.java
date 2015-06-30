@@ -8,9 +8,11 @@ package Controller;
 import Controller.Validaciones.Validador;
 import com.google.gson.Gson;
 import Model.DTO.ObjCurso;
+import Model.DTO.ObjIncrito;
 import Model.DTO.ObjSeminario;
 import Model.Data.ModelCategoriaCurso;
 import Model.Data.ModelCurso;
+import Model.Data.ModelInscrito;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,8 +35,10 @@ public class ControllerCurso extends HttpServlet {
 
     ObjCurso _objCurso = new ObjCurso();
     ObjSeminario _objSeminario = new ObjSeminario();
+    ObjIncrito _objIncrito = new ObjIncrito();
     ModelCurso daoModelCurso;
     ModelCategoriaCurso daoModelCategoriaCurso;
+    ModelInscrito daoModelInscrito;
     Map<String, String> respuesta;
 
     /**
@@ -155,6 +159,15 @@ public class ControllerCurso extends HttpServlet {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(detalleSeminario(request));
+                    break;
+                }
+                //</editor-fold>
+
+                // <editor-fold defaultstate="collapsed" desc="Obtener las opciones de los Cursos">
+                case "RegistrarAsistente": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(registrarAsistente(request));
                     break;
                 }
                 //</editor-fold>
@@ -548,7 +561,7 @@ public class ControllerCurso extends HttpServlet {
         int idSeminario = Integer.parseInt(request.getParameter("idSeminario"));
         List<Object> registrados = new ArrayList<>();
         Map<String, String> auxiliar;
-         Map<String, Object>  salida = new LinkedHashMap<>();
+        Map<String, Object> salida = new LinkedHashMap<>();
         daoModelCurso = new ModelCurso();
         ResultSet rs = daoModelCurso.ListAsistentes(idSeminario);
         Map seminario = daoModelCurso.buscarSeminarioPorID(idSeminario);
@@ -557,7 +570,7 @@ public class ControllerCurso extends HttpServlet {
                 auxiliar = new LinkedHashMap<>();
                 auxiliar.put("idinscrito", rs.getString("idinscrito"));
                 auxiliar.put("tipoDocumento", rs.getString("documento").substring(0, 2));
-                auxiliar.put("numeroDocumento", rs.getString("documento").substring( 2));
+                auxiliar.put("numeroDocumento", rs.getString("documento").substring(2));
                 auxiliar.put("nombre", rs.getString("nombre"));
                 auxiliar.put("telefono", rs.getString("telefono"));
                 auxiliar.put("correo", rs.getString("correo"));
@@ -573,4 +586,33 @@ public class ControllerCurso extends HttpServlet {
 
     }
 
+    private String registrarAsistente(HttpServletRequest request) {
+        String documento = null, nombres = null, correo = null, telefono = null;
+        int idSeminario;
+        if (request.getParameter("ddlIdentificacion") == null | request.getParameter("txtIdentificacion") == null) {
+            documento = "";
+        } else {
+            try {
+                documento = request.getParameter("ddlIdentificacion") + request.getParameter("txtIdentificacion");
+            } catch (Exception e) {
+                documento = "";
+            }
+        }
+        if (Validador.validarNombresCompletos(request.getParameter("txtNombre").trim())
+                && Validador.validarTelefono(request.getParameter("txtTelefono").trim())
+                && Validador.validarEmail(request.getParameter("txtCorreo").trim())) {
+            nombres = request.getParameter("txtNombre").trim();
+            telefono = request.getParameter("txtTelefono").trim();
+            correo = request.getParameter("txtCorreo").trim();
+            idSeminario = Integer.parseInt(request.getParameter("idSeminario").trim());
+            _objIncrito = new ObjIncrito();
+            _objIncrito.setIdseminario(idSeminario);
+            _objIncrito.setDocumento(documento);
+            _objIncrito.setNombres(nombres);
+            _objIncrito.setTelefono(telefono);
+            _objIncrito.setCorreo(correo);
+            return Mensaje(daoModelInscrito.Add(_objIncrito), "Inscripción realizada", "Ha ocurrido un error");
+        }
+        return Mensaje(false, "", "Uno o más campos contienen errores");
+    }
 }

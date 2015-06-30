@@ -17,7 +17,7 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body">
-                                    <input type="hidden" id="idCategoriaCurso" name="idCategoriaCurso"/>
+                                    <input type="hidden" id="idSeminario" name="idSeminario"/>
                                     <div class="row">
                                         <label class="col-md-12">Identificación</label>
                                         <div class="col-md-3">                                            
@@ -56,6 +56,16 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
+                                                <label for="txtTelefono">
+                                                    Teléfono
+                                                </label>
+                                                <input name="txtTelefono" id="txtTelefono" type="text" class="form-control" placeholder="Ejm: 1234567" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
                                                 <label for="txtCorreo">
                                                     Correo Electrónico
                                                 </label>
@@ -68,7 +78,7 @@
                                     <div class="row">
                                         <div class="col-md-offset-3 col-md-6">
                                             <div class="form-group">
-                                                <input id="btnAsistenteSeminario" class="btn btn-default btn-block" type="button" name="action" onclick="seminario.registrarAsistente()">
+                                                <input id="btnAsistenteSeminario" class="btn btn-default btn-block" type="button" name="action" onclick="seminario.registrarAsistente()" value="Registrar">
                                             </div>
                                         </div>
                                     </div>

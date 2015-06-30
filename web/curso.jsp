@@ -125,6 +125,6 @@
 
 <%@include file="WEB-INF/jspf/modalCurso.jspf" %>
 <%@include file="WEB-INF/jspf/modalCategoriaCurso.jspf" %>
-<%@include file="WEB-INF/jspf/modalAsistenteSeminario.jspf" %>
 <%@include file="WEB-INF/jspf/modalDetalleSeminario.jspf" %>
+<%@include file="WEB-INF/jspf/modalAsistenteSeminario.jspf" %>
 <%@include file="WEB-INF/jspf/footer.jspf" %>

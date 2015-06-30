@@ -31,12 +31,17 @@ $.validator.addMethod("fechaMayor", function (value, element) {
     mes = parseInt(value.substr(3, 2));
     año = parseInt(value.substr(6, 4));
     if (año >= fecha.getFullYear()) {
-        if (mes >= fecha.getMonth() + 1) {
-            if (mes === fecha.getMonth() + 1) {
-                return dia > fecha.getDate();
-            }
-            else {
-                return true;
+        if (año > fecha.getFullYear()) {
+            return true;
+        }
+        else {
+            if (mes >= fecha.getMonth() + 1) {
+                if (mes === fecha.getMonth() + 1) {
+                    return dia > fecha.getDate();
+                }
+                else {
+                    return true;
+                }
             }
         }
     }
@@ -327,3 +332,37 @@ $('#miPopupOperario').on('show.bs.modad', function () {
 //$.validator.addMethod("nombres", function(value) {
 //    return ;
 //}, '');
+
+function validacionFechaRegistroASeminario(fechaSeminario) {
+    var fecha = new Date();
+    //var fechaSeminario = new Date(value.substr(6,4),value.substr(3,2),value.substr(0,2),value.substr(11,2),value.substr(14,2));    
+    var dia, mes, año, hora, minuto;
+    dia = parseInt(fechaSeminario.substr(0, 2));
+    mes = parseInt(fechaSeminario.substr(3, 2));
+    año = parseInt(fechaSeminario.substr(6, 4));
+    hora = parseInt(fechaSeminario.substr(11, 2));
+    minuto = parseInt(fechaSeminario.substr(14, 2));
+    if (año >= fecha.getFullYear()) {
+        if (año > fecha.getFullYear()) {
+            return true;
+        }
+        else {
+            if (mes >= fecha.getMonth() + 1) {
+                if (mes === fecha.getMonth() + 1) {
+                    if (dia > fecha.getDate()) {
+                        return true;
+                    } else if (dia === fecha.getDate()) {
+                        if (hora >= fecha.getHours()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            }
+            else {
+                return true;
+            }
+        }
+    }
+}

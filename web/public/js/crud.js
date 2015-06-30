@@ -609,7 +609,30 @@ var seminario = {
                 });
                 cupos -= contador;
                 $('#miPopupDetalleSeminario').find('#restantes').val(cupos);
+                $('#miPopupDetalleSeminario').find('#idSeminario').val(idSeminario);
                 $('#miPopupDetalleSeminario').modal('show');
+            }
+        });
+    },
+    mostrarRegistroAsistente: function () {
+        var fechaSeminario = $('#fecha').text();
+        if (validacionFechaRegistroASeminario(fechaSeminario) === true) {
+            var idSeminario = $('#formDetalleSeminario').find('#idSeminario').val();
+            $('#formAsistenteSeminario').find('#idSeminario').val(idSeminario);
+            $('#miPopupAsistenteSeminario').modal('show');
+
+        }
+    },
+    registrarAsistente: function () {
+        limpiar('#formAsistenteSeminario');
+
+        $.ajax({
+            url: $('#formAsistenteSeminario').attr('action'),
+            type: $('#formAsistenteSeminario').attr('method'),
+            data: $('#formAsistenteSeminario').serialize() + '&action=RegistrarAsistente',
+            success: function (data) {
+                mensaje(data);
+                $('#formAsistenteSeminario').modal('show');
             }
         });
     }
