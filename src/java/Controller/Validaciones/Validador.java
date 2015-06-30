@@ -16,7 +16,7 @@ public class Validador {
     private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static final String PATTERN_NUMERO = "^[0-9]{1,}";
-    private static final String PATTERN_NOMBRE = "^([ÁÉÍÓÚáéíóúñÑaºª-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑaºª-zA-Z]{3,15})?";
+    private static final String PATTERN_NOMBRE = "^([ÁÉÍÓÚáéíóúñÑºªa-zA-Z]{3,15})+([ ]{1})?([ÁÉÍÓÚáéíóúñÑºªa-zA-Z]{3,15})?";
     private static final String PATTERN_NOMBRES_COMPLETOS = "^([ÁÉÍÓÚáéíóúñÑaºª-zA-Z ]{3,50})";
     private static final String PATTERN_FECHA = "^(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[0-2]).([0-9]{4})";
     private static final String PATTERN_TIPO_DOCUMENTO = "^(C{2}|TI{1}|CE{1}|RC{1})";

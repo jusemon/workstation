@@ -30,8 +30,7 @@ public class ModelCurso extends ConnectionDB {
 
     public boolean Add(ObjCurso _objCurso) {
         boolean objReturn = false;
-        String sql = "call spIngresarCurso(?,?,?,?,?,?,?,?,?)";
-
+        String sql = "call spIngresarCurso(?,?,?,?,?,?,?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
@@ -291,4 +290,17 @@ public class ModelCurso extends ConnectionDB {
         }
         return lista;
     }
+
+    public ResultSet ListAsistentes(int idSeminario) {
+ResultSet rs = null;
+        String sql = "call spConsultarAsistentesSeminario(?)";
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, idSeminario);
+            rs = pStmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+        return rs;    }
 }

@@ -84,8 +84,7 @@
                                 <th class="text-center">Código</th>
                                 <th class="text-center">Nombre</th>
                                 <th class="text-center">Estado</th>
-                                <th class="text-center">Consultar</th>
-                                <th class="text-center">Editar</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -112,8 +111,7 @@
                                 <th class="text-center">Código</th>
                                 <th class="text-center">Nombre</th>
                                 <th class="text-center">Estado</th>
-                                <th class="text-center">Consultar</th>
-                                <th class="text-center">Editar</th>
+                                 <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -127,4 +125,6 @@
 
 <%@include file="WEB-INF/jspf/modalCurso.jspf" %>
 <%@include file="WEB-INF/jspf/modalCategoriaCurso.jspf" %>
+<%@include file="WEB-INF/jspf/modalAsistenteSeminario.jspf" %>
+<%@include file="WEB-INF/jspf/modalDetalleSeminario.jspf" %>
 <%@include file="WEB-INF/jspf/footer.jspf" %>

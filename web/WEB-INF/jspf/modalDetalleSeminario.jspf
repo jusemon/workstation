@@ -1,0 +1,89 @@
+<%@ page pageEncoding="UTF-8" %>
+<!-- 
+    Emergente para registrar Categorias de Cursos
+-->
+<div class="modal" id="miPopupDetalleSeminario">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">                               
+                        <form id="formDetalleSeminario" action="ControllerCurso" method="POST">
+                            <div class="panel">
+                                <div class="panel-heading estilo2">
+                                    <h3 class="panel-title">
+                                        <label id="titulo"></label>
+                                        <label id="fecha" style="margin-left: 35%;"></label>
+                                        <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <input type="hidden" id="idCategoriaCurso" name="idCategoriaCurso"/>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtNombre">
+                                                    Inscritos
+                                                </label>
+                                                <div class="col-md-12 table-responsive">
+                                                    <table id="tablaDetalleSeminario" class="table table-bordered table-hover table-sortable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">
+                                                                    Id
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Tipo
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Documento
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Nombres
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Teléfono
+                                                                </th>
+                                                                <th class="text-center">
+                                                                    Correo
+                                                                </th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="ui-sortable">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="txtNombre">
+                                                    Cupos Disponibles
+                                                </label>
+                                                <input name="restantes" id="restantes" type="number" readonly="true" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-offset-3 col-md-6">
+                                            <div class="form-group">
+                                                <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="submit" name="action" onclick="categoriaCurso.myAjax($('#btnCategoriaCurso').val())">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

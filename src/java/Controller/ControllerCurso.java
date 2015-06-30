@@ -13,10 +13,13 @@ import Model.Data.ModelCategoriaCurso;
 import Model.Data.ModelCurso;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -143,6 +146,15 @@ public class ControllerCurso extends HttpServlet {
                     response.setContentType("application/text");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getOptionsCursos());
+                    break;
+                }
+                //</editor-fold>
+
+                // <editor-fold defaultstate="collapsed" desc="Obtener las opciones de los Cursos">
+                case "DetalleSeminario": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(detalleSeminario(request));
                     break;
                 }
                 //</editor-fold>
@@ -276,15 +288,22 @@ public class ControllerCurso extends HttpServlet {
                     estado[0] = "danger";
                     estado[1] = "remove";
                 }
-                String[] arreglo = new String[5];
+                String[] arreglo = new String[4];
                 arreglo[0] = String.valueOf(result.getInt("idCurso"));
                 arreglo[1] = result.getString("nombreCurso").trim();
-                arreglo[2] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"curso.myAjax('Estado'," + arreglo[0] + ", '','Curso')\">"
+                arreglo[2] = "<a class=\"btn btn-block btn-" + estado[0] + "\" href=\"javascript:void(0)\"  onclick=\"curso.myAjax('Estado'," + arreglo[0] + ", '','Curso')\">"
                         + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
-                arreglo[3] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ", '', 'Curso')\">"
-                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
-                arreglo[4] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ",'Editar', 'Curso')\">"
-                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
+                arreglo[3] = "<div class=\"btn-group\">\n"
+                        + "  <button type=\"button\" class=\"btn btn-info btn-block dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n"
+                        + "    Acciones <span class=\"caret\"></span>\n"
+                        + "  </button>\n"
+                        + "  <ul class=\"dropdown-menu\">\n"
+                        + "    <li><a class=\"btn btn-success\" href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ", '', 'Curso')\">"
+                        + "<span class=\"glyphicon glyphicon-search\"></span>Consultar</a></li>\n"
+                        + "    <li><a class=\"btn btn-primary \"  href=\"javascript:void(0)\" onclick=\"curso.myAjax('Consultar'," + arreglo[0] + ",'Editar', 'Curso')\">"
+                        + "<span class=\"glyphicon glyphicon-edit\"></span>Editar</a></li>\n"
+                        + "  </ul>\n"
+                        + "</div>";
                 lista.add(arreglo);
             }
         } catch (Exception e) {
@@ -312,15 +331,24 @@ public class ControllerCurso extends HttpServlet {
                     estado[0] = "danger";
                     estado[1] = "remove";
                 }
-                String[] arreglo = new String[5];
+                String[] arreglo = new String[6];
                 arreglo[0] = result.getString("idCurso").trim();
                 arreglo[1] = result.getString("nombreCurso").trim();
-                arreglo[2] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"seminario.myAjax('Estado'," + arreglo[0] + ", '','Seminario')\">"
+                arreglo[2] = "<a class=\"btn btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"seminario.myAjax('Estado'," + arreglo[0] + ", '','Seminario')\">"
                         + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
-                arreglo[3] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"seminario.myAjax('Consultar'," + arreglo[0] + ", '','Seminario')\">"
-                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
-                arreglo[4] = "<a class=\"btn-sm btn-primary btn-block \"  href=\"javascript:void(0)\" onclick=\"seminario.myAjax('Consultar'," + arreglo[0] + ",'Editar','Seminario')\">"
-                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
+                arreglo[3] = "<div class=\"btn-group\">\n"
+                        + "  <button type=\"button\" class=\"btn btn-info btn-block dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n"
+                        + "    Acciones <span class=\"caret\"></span>\n"
+                        + "  </button>\n"
+                        + "  <ul class=\"dropdown-menu\">\n"
+                        + "    <li><a class=\"btn btn-success \" href=\"javascript:void(0)\" onclick=\"seminario.myAjax('Consultar'," + arreglo[0] + ", '','Seminario')\">"
+                        + "<span class=\"glyphicon glyphicon-search\"></span> Consultar</a></li>\n"
+                        + "    <li><a class=\"btn btn-primary \"  href=\"javascript:void(0)\" onclick=\"seminario.myAjax('Consultar'," + arreglo[0] + ",'Editar','Seminario')\">"
+                        + "<span class=\"glyphicon glyphicon-edit\"></span> Editar</a></li>\n"
+                        + "    <li><a class=\"btn btn-info \"  href=\"javascript:void(0)\" onclick=\"seminario.consultarDetalle(" + arreglo[0] + ")\">"
+                        + "<span class=\"glyphicon glyphicon-list-alt\"></span> Detalle</a></li>\n"
+                        + "  </ul>\n"
+                        + "</div>";
                 lista.add(arreglo);
             }
         } catch (Exception e) {
@@ -452,10 +480,10 @@ public class ControllerCurso extends HttpServlet {
                 daoModelCurso.Signout();
                 return (salida);
             }
-        } else{
+        } else {
             return Mensaje(false, null, "Uno o mas campos contienen datos erroneos");
         }
-        
+
     }
 
     public String editar(HttpServletRequest request, String tipo) {
@@ -515,4 +543,34 @@ public class ControllerCurso extends HttpServlet {
         salida[3] = fecha.substring(11);
         return salida[0] + "-" + salida[1] + "-" + salida[2] + " " + salida[3];
     }
+
+    private String detalleSeminario(HttpServletRequest request) {
+        int idSeminario = Integer.parseInt(request.getParameter("idSeminario"));
+        List<Object> registrados = new ArrayList<>();
+        Map<String, String> auxiliar;
+         Map<String, Object>  salida = new LinkedHashMap<>();
+        daoModelCurso = new ModelCurso();
+        ResultSet rs = daoModelCurso.ListAsistentes(idSeminario);
+        Map seminario = daoModelCurso.buscarSeminarioPorID(idSeminario);
+        try {
+            while (rs.next()) {
+                auxiliar = new LinkedHashMap<>();
+                auxiliar.put("idinscrito", rs.getString("idinscrito"));
+                auxiliar.put("tipoDocumento", rs.getString("documento").substring(0, 2));
+                auxiliar.put("numeroDocumento", rs.getString("documento").substring( 2));
+                auxiliar.put("nombre", rs.getString("nombre"));
+                auxiliar.put("telefono", rs.getString("telefono"));
+                auxiliar.put("correo", rs.getString("correo"));
+                registrados.add(auxiliar);
+            }
+            salida.put("seminario", seminario);
+            salida.put("registrados", registrados);
+        } catch (SQLException ex) {
+            Logger.getLogger(ControllerCurso.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return new Gson().toJson(salida);
+
+    }
+
 }
