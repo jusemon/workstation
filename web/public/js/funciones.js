@@ -186,4 +186,28 @@ function formatearTexto() {
 
 }
 
+function mayorDeEdad(value) {
+    var fecha = new Date();
+    //var fechaSeminario = new Date(value.substr(6,4),value.substr(3,2),value.substr(0,2),value.substr(11,2),value.substr(14,2));    
+    var dia, mes, año;
+    dia = parseInt(value.substr(0, 2));
+    mes = parseInt(value.substr(3, 2));
+    año = parseInt(value.substr(6, 4));
+    if (año <= fecha.getFullYear() - 18) {
+        if (año < fecha.getFullYear() - 18) {
+            return true;
+        }
+        else {
+            if (mes <= fecha.getMonth() + 1) {
+                if (mes === fecha.getMonth() + 1) {
+                    return dia < fecha.getDate();
+                }
+                else {
+                    return true;
+                }
+            }
+        }
+    }
+}
+
 var actual = $('#tabCompras').find('#txtTotalCompra').val();

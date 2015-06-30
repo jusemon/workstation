@@ -3,27 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-$.validator.addMethod("nombres", function(value, element) {
+$.validator.addMethod("nombres", function (value, element) {
     return this.optional(element) || /^[ÁÉÍÓÚáéíóúñÑa-zA-Z ]{3,15}/.test(value);
 }, 'Entre 3 y 15 letras y no se permiten números.');
 
-$.validator.addMethod("descripcionArticulo", function(value, element) {
+$.validator.addMethod("descripcionArticulo", function (value, element) {
     return this.optional(element) || /^[áéíóúÁÉÍÓÚñÑ°.,:'&quot;0-9a-zA-Z ]{3,30}/.test(value);
 }, 'Entre 3 y 30 letras, se permiten números y algunos caracteres como , y .');
 var salida;
-$.validator.addMethod("pass", function(value, element) {
+$.validator.addMethod("pass", function (value, element) {
     return this.optional(element) || /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(value);
 }, 'La contraseña debe contener al menos una letra minúscula, otra mayúscula y un número, la contraseña no debe ser menor a seis dígitos.');
 
-$.validator.addMethod("identificacion", function(value, element) {
+$.validator.addMethod("identificacion", function (value, element) {
     return this.optional(element) || /^[0-9]{5,15}/.test(value);
 }, 'Entre 5 y  15 dígitos.');
 
-$.validator.addMethod("fecha", function(value, element) {
+$.validator.addMethod("fecha", function (value, element) {
     return this.optional(element) || /^(0[1-9]|1[0-9]|2[0-9]|3[01]).(0[1-9]|1[0-2]).([0-9]{4})/.test(value);
 }, 'El formato de la fecha debe ser dd/mm/yyyy');
 
-$.validator.addMethod("fechaMayor", function(value, element) {
+$.validator.addMethod("fechaMayor", function (value, element) {
     var fecha = new Date();
     //var fechaSeminario = new Date(value.substr(6,4),value.substr(3,2),value.substr(0,2),value.substr(11,2),value.substr(14,2));    
     var dia, mes, año;
@@ -43,7 +43,7 @@ $.validator.addMethod("fechaMayor", function(value, element) {
 }, 'La fecha ingresada no puede ser menor o igual a la actual.');
 
 //Validación para calcular que el cliente cuenta con por lo menos 5 años de edad
-$.validator.addMethod("edad", function(value, element) {
+$.validator.addMethod("edad", function (value, element) {
     var fecha = new Date();
     //var fechaSeminario = new Date(value.substr(6,4),value.substr(3,2),value.substr(0,2),value.substr(11,2),value.substr(14,2));    
     var dia, mes, año;
@@ -66,6 +66,11 @@ $.validator.addMethod("edad", function(value, element) {
         }
     }
 }, 'Para registrarse debe contar con por lo menos 5 años de edad.');
+
+//Validación para calcular que el cliente cuenta con por lo menos 18 años de edad
+$.validator.addMethod("mayorDeEdad", function (value, element) {
+    return this.optional(element) | mayorDeEdad(value);
+}, 'Para registrarse debe ser mayor de edad');
 
 jQuery.validator.setDefaults({
     debug: true,
@@ -250,6 +255,7 @@ if (document.getElementById('formActualizarDatos') !== null) {
     });
 
 }
+
 if (document.getElementById('formBeneficiario') !== null) {
     validationBeneficiario = $('formBeneficiario');
     validationBeneficiario.validate({
@@ -263,20 +269,60 @@ if (document.getElementById('formBeneficiario') !== null) {
     });
 }
 
-$('#miPopupCurso').on('shown.bs.modal', function() {
+if (document.getElementById('formOperario') !== null) {
+    validationOperarios = $('#formOperario');
+    validationOperarios.validate({
+        rules: {
+            ddlIdentificacion: {
+                required: true
+            },
+            txtIdentificacion: {
+                required: true,
+                identificacion: true,
+                digits: true
+            },
+            txtNombre: {
+                required: true,
+                nombres: true
+            },
+            txtApellido: {
+                required: true,
+                nombres: true
+            },
+            dateFechaNacimiento: {
+                required: true,
+                fecha: true,
+                mayorDeEdad: true
+            },
+            txtPass: {
+                required: true,
+                pass: true
+            },
+            txtCorreo: {
+                required: true,
+                email: true
+            }
+        }
+    });
+}
+
+$('#miPopupCurso').on('shown.bs.modal', function () {
     validationCurso.validate().resetForm();
 });
-$('#miPopupUsuario').on('shown.bs.modal', function() {
+$('#miPopupUsuario').on('shown.bs.modal', function () {
     validationUsuario.validate().resetForm();
 });
-$('#miPopupArticulo').on('shown.bs.modal', function() {
+$('#miPopupArticulo').on('shown.bs.modal', function () {
     validationArticulo.validate().resetForm();
 });
-$('#miPopupEstudiante').on('shown.bs.modal', function() {
+$('#miPopupEstudiante').on('shown.bs.modal', function () {
     validationEstudiante.validate().resetForm();
 });
-$('#miPopupBeneficiario').on('show.bs.modad', function() {
+$('#miPopupBeneficiario').on('show.bs.modad', function () {
     validationBeneficiario.validate().resetForm();
+});
+$('#miPopupOperario').on('show.bs.modad', function () {
+    validationOperarios.validate().resetForm();
 });
 //$.validator.addMethod("nombres", function(value) {
 //    return ;

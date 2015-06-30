@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +54,7 @@ public class ControllerUsuario extends HttpServlet {
                     response.getWriter().write(Registrar(request));
                     break;
                 }
-                case "Consultar": {                    
+                case "Consultar": {
                     response.getWriter().write(Consultar(request));
                     break;
                 }
@@ -71,6 +69,10 @@ public class ControllerUsuario extends HttpServlet {
                 }
                 case "getOptionsClientes": {
                     response.getWriter().write(getOptionsClientes());
+                    break;
+                }
+                case "EnlistarOperarios": {
+                    response.getWriter().write(EnlistarOperarios());
                     break;
                 }
             }
@@ -233,6 +235,11 @@ public class ControllerUsuario extends HttpServlet {
             _objUsuario.setEstadoUsuario(estado);
             _objUsuario.setPassword(pass);
             _objUsuario.setIdrol(rol);
+            if (request.getParameter("tipo") != null) {
+                if (request.getParameter("tipo").equals("Operario")) {
+                    _objUsuario.setIdrol(2);
+                }
+            }
             daoModelUsuario = new ModelUsuario();
             salida = Mensaje(daoModelUsuario.Edit(_objUsuario), nombre + " ha sido actualizado correctamente", "Ha ocurrido un error al intentar actualizar al usuario");
             daoModelUsuario.Signout();
@@ -275,12 +282,48 @@ public class ControllerUsuario extends HttpServlet {
             _objUsuario.setEstadoUsuario(estado);
             _objUsuario.setPassword(pass);
             _objUsuario.setIdrol(rol);
+            if (request.getParameter("tipo") != null) {
+                if (request.getParameter("tipo").equals("Operario")) {
+                    _objUsuario.setIdrol(2);
+                }
+            }
+
             daoModelUsuario = new ModelUsuario();
             salida = Mensaje(daoModelUsuario.Add(_objUsuario), nombre + " ha sido registrado correctamente", "Ha ocurrido un error al intentar registrar al usuario");
             daoModelUsuario.Signout();
         } catch (NumberFormatException | ParseException e) {
             salida = Mensaje(false, "", "Ha ocurrido un error" + e.getMessage());
         }
+        return salida;
+    }
+
+    private String EnlistarOperarios() {
+         ResultSet result;
+        List<String[]> lista = new ArrayList<>();
+        String[] arreglo;
+        try {
+            daoModelUsuario = new ModelUsuario();
+            result = daoModelUsuario.ListOperarios();
+            while (result.next()) {
+                arreglo = new String[6];
+                arreglo[0] = result.getString("documentoUsuario").trim();
+                arreglo[1] = result.getString("nombreCurso").trim();
+                arreglo[2] = result.getString("numeroClases").trim();
+                //arreglo[3] = result.getString("numeroClasesFaltantes").trim();
+                arreglo[3] = result.getString("numeroClasesAsistidas").trim();
+                arreglo[4] = "<a class=\"btn-sm btn-success btn-block \" href=\"javascript:void(0)\"  onclick=\"matricula.consultar('" + result.getString("documentoUsuario").trim() + "'," + result.getString("idCurso").trim() + ")\">"
+                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
+                arreglo[5] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"matricula.asistencia('" + result.getString("documentoUsuario").trim() + "'," + result.getString("idCurso").trim() + ")\">"
+                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
+                lista.add(arreglo);
+            }
+        } catch (Exception e) {
+            System.err.println("Ha ocurrido un error." + e.getMessage());
+        } finally {
+            daoModelUsuario.Signout();
+        }
+        String salida = new Gson().toJson(lista);
+        salida = "{\"data\":" + salida + "}";
         return salida;
     }
 

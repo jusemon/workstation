@@ -1,13 +1,13 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
-<!-- Emergete de Cliente -->
-<div class="modal" id="miPopupUsuario">
+<!-- Emergete de Operario -->
+<div class="modal" id="miPopupOperario">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <form id="formUsuario" action="ControllerUsuario" method="POST">
+                        <form id="formOperario" action="ControllerUsuario" method="POST">
                             <div class="panel">
                                 <div class="panel-heading estilo2">
                                     <h3 class="panel-title">
@@ -27,8 +27,6 @@
                                                     <option value="">Seleccionar...</option>
                                                     <option value="CC" > Cédula </option>
                                                     <option value="CE" > Cédula Extranjería </option>
-                                                    <option value="TI" > Tarjeta de Identidad </option>
-                                                    <option value="RC" > Registro Civil </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -90,7 +88,7 @@
                                     <div class="row">
                                         <div class="col-md-offset-3 col-md-6">
                                             <div class="form-group">
-                                                <input class="btn btn-default btn-block" type="button" id="btnUsuario" name="btnUsuario" onclick="usuario.myAjax($('#formUsuario').find('#btnUsuario').val())">
+                                                <input class="btn btn-default btn-block" type="button" id="btnOperario" name="btnOperario" onclick="operario.myAjax($('#btnOperario').val())">
                                             </div>
                                         </div>
                                     </div>

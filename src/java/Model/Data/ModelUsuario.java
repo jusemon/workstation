@@ -151,4 +151,8 @@ public class ModelUsuario extends ConnectionDB {
         }
         return objReturn;
     }
+
+    public ResultSet ListOperarios() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
