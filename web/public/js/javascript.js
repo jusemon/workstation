@@ -36,9 +36,6 @@ $(document).ready(function () {
     else {
         $('#btnindex').attr('class', 'active');
     }
-    $('.imgIndex').on('load', function () {
-        $('.imgIndex').height('80%');
-    });
     $('#fecha').on('load', function () {
         var f = new Date();
         var x = (f.getDate() + "-" + (f.getMonth() + 1) + "-" + f.getFullYear());

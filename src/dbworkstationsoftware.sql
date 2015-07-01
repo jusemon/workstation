@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-07-2015 a las 20:06:44
+-- Tiempo de generación: 02-07-2015 a las 00:47:04
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -1286,13 +1286,33 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarInscripcion`(
 BEGIN
 	declare msg varchar(40);    
 	if (exists(select idIncripcion from tblInscripcion where idIncripcion=idIncripci)) then
-		set msg="Esta inscripciÃ³n ya existe";
+		set msg="Esta inscripción ya existe";
 		select msg as Respuesta;
 	else
 		insert into tblInscripcion (idIncripcion,idSeminario, precioSeminario, fechaAsistencia,idVenta) Values(idIncripci,idSeminar,precioSeminar,fechaAsistenc,idVen);
-		set msg="La inscripciï¿½ï¿½n se ha registrado exitosamente";
+		set msg="La inscripci������������n se ha registrado exitosamente";
 		select msg as Respuesta; 
 	end if;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarInscritoSeminario`(
+ in `documen` varchar(20),
+ in `nombr` varchar(50),
+ in `telefo` varchar (20),
+in  `corr` varchar (30), 
+ in `idseminar` int
+ )
+BEGIN
+    IF ((select `cupoSeminario` from tblcurso where `idCurso` = `idseminar`)>0) then
+    INSERT INTO `tblinscrito`
+        (
+            `documento`, `nombres`, `telefono`, `correo`, `idseminario`
+        ) 
+    VALUES (`documen`, `nombr`, `telefo`, `corr`, `idseminar`);
+    UPDATE tblcurso SET `cupoSeminario` = `cupoSeminario`-1 WHERE `idCurso` = `idseminar`;
+    ELSE 
+        select -1 as respuesta;
+    END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarMovimientoCredito`(
@@ -1410,6 +1430,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarUsuario`(
     in `fechaNacimien` date, 
     in `nombreUsuar` varchar(40), 
     in `apellidoUsuar` varchar(40), 
+    in `telefonoFij` varchar(40), 
     in `emailUsuar` varchar(40), 
     in `passwo` varchar(40), 
     in `estadoUsuar` int, 
@@ -1422,6 +1443,7 @@ INSERT INTO `tblusuario`
     `fechaNacimiento`, 
     `nombreUsuario`, 
     `apellidoUsuario`, 
+    `telefonoFijo`, 
     `emailUsuario`, 
     `password`, 
     `estadoUsuario`, 
@@ -1433,6 +1455,7 @@ VALUES
     `fechaNacimien`, 
     `nombreUsuar`, 
     `apellidoUsuar`, 
+    `telefonoFij`, 
     `emailUsuar`, 
     `passwo`, 
     `estadoUsuar`, 
@@ -1669,7 +1692,7 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
 --
 
 INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorClase`, `estadoCurso`, `descripcionCurso`, `precioCurso`, `fechaSeminario`, `cupoSeminario`, `idCategoriaCurso`) VALUES
-(1, 'Madera', 1, 5, 1, 'hacer un vintage sobre una caja de 20 x 20', 120000, '2015-06-30 16:25:00', 20, 1),
+(1, 'Madera', 1, 5, 1, 'hacer un vintage sobre una caja de 20 x 20', 120000, '2015-06-30 16:25:00', 18, 1),
 (2, 'Mesas', 24, 3, 1, 'asdasdasd', 120000, NULL, NULL, 2);
 
 -- --------------------------------------------------------
@@ -1767,7 +1790,15 @@ CREATE TABLE IF NOT EXISTS `tblinscrito` (
   `telefono` varchar(20) NOT NULL,
   `correo` varchar(40) NOT NULL,
   `idseminario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tblinscrito`
+--
+
+INSERT INTO `tblinscrito` (`idinscrito`, `documento`, `nombres`, `telefono`, `correo`, `idseminario`) VALUES
+(7, '', 'Juan Montoya', '321321321', 'jsmontya@asd.com', 1),
+(8, 'CE4565852', 'lorenzo Chimeno', '9874563', 'lorenzo@lor.com', 1);
 
 -- --------------------------------------------------------
 
@@ -1944,10 +1975,10 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
 --
 
 INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`, `telefonoFijo`) VALUES
-('CC101722567', '1981-03-13', 'Juan', 'Montoya', 'correo@correo.co', 'Esdfgdfg4', 0, 1, 3, NULL, '2359731'),
+('CC101722567', '1981-03-13', 'Juan', 'Montoya', 'correo@correo.co', 'Esdfgdfg4', 1, 1, 3, NULL, '2359731'),
 ('CC1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL, '5861529'),
-('CC1017225674', '1996-01-18', 'Operario', 'Operar', 'jsmontoya378@outlook.com', 'Es120300', 1, NULL, 2, NULL, '5861529'),
-('CC1017225678', '2001-03-02', 'Vanessa', 'Soto', 'jsun@asd.co', 'Abcde123', 0, 2, 3, NULL, '2359731'),
+('CC1017225674', '1996-01-18', 'Operario', 'Operar', 'jsmontoya378@outlook.com', 'Es120300', 1, NULL, 2, NULL, '2359732'),
+('CC1017225678', '2001-03-02', 'Vanessa', 'Soto', 'jsun@asd.co', 'Abcde123', 1, 2, 3, NULL, '2359731'),
 ('CC8101926', '1984-01-06', 'David', 'Cano Arango', 'dcano62@misena.edu.co', '123', 1, NULL, 1, NULL, '1234567'),
 ('CE5465465', '1969-12-28', 'Lorenzo', 'Chimeno Trenado', 'lchimeno37@misena.edu.co', '123', 1, NULL, 1, NULL, '9876543');
 
@@ -2128,7 +2159,7 @@ MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- AUTO_INCREMENT de la tabla `tblinscrito`
 --
 ALTER TABLE `tblinscrito`
-MODIFY `idinscrito` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idinscrito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT de la tabla `tblmodulo`
 --

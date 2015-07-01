@@ -5,7 +5,7 @@
     Emergente para registrar Categorias de Cursos
 -->
 <div class="modal" id="miPopupDetalleSeminario">
-    <div class="modal-dialog ">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="row">
@@ -27,8 +27,8 @@
                                                 <label for="txtNombre">
                                                     Inscritos
                                                 </label>
-                                                <div class="col-md-12 table-responsive">
-                                                    <table id="tablaDetalleSeminario" class="table table-bordered table-hover table-sortable">
+                                                <div class="col-md-12">
+                                                    <table id="tblDetalleSeminario" class="table table-bordered table-hover table-sortable">
                                                         <thead>
                                                             <tr>
                                                                 <th class="text-center">
@@ -49,7 +49,6 @@
                                                                 <th class="text-center">
                                                                     Correo
                                                                 </th>
-
                                                             </tr>
                                                         </thead>
                                                         <tbody class="ui-sortable">

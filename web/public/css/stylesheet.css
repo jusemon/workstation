@@ -170,3 +170,7 @@ div.dataTables_wrapper {
 .error{
     color: #d43f3a
 }
+
+.imgIndex{
+    height: 50% !important;
+}

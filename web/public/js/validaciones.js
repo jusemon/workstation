@@ -303,6 +303,28 @@ if (document.getElementById('formBeneficiario') !== null) {
         }
     });
 }
+if (document.getElementById('formAsistenteSeminario') !== null) {
+    validationAsistenteSeminario= $('#formAsistenteSeminario');
+    validationAsistenteSeminario.validate({
+        rules: {
+          txtNombre: {
+              required: true,
+              minlength: 10,
+              maxlength: 50
+          },
+          txtTelefono: {
+              required: true,
+              minlength: 7,
+              maxlength: 15,
+              digits: true
+          },
+          txtCorreo:{
+              required:true,
+              email:true
+          }
+        }
+    });
+}
 
 if (document.getElementById('formOperario') !== null) {
     validationOperarios = $('#formOperario');
@@ -368,6 +390,9 @@ $('#miPopupBeneficiario').on('shown.bs.modal', function () {
 });
 $('#miPopupOperario').on('shown.bs.modal', function () {
     validationOperarios.validate().resetForm();
+});
+$('#miPopupAsistenteSeminario').on('shown.bs.modal', function () {
+    validationAsistenteSeminario.validate().resetForm();
 });
 //$.validator.addMethod("nombres", function(value) {
 //    return ;

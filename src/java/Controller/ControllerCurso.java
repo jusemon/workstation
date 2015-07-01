@@ -8,7 +8,7 @@ package Controller;
 import Controller.Validaciones.Validador;
 import com.google.gson.Gson;
 import Model.DTO.ObjCurso;
-import Model.DTO.ObjIncrito;
+import Model.DTO.ObjInscrito;
 import Model.DTO.ObjSeminario;
 import Model.Data.ModelCategoriaCurso;
 import Model.Data.ModelCurso;
@@ -35,7 +35,7 @@ public class ControllerCurso extends HttpServlet {
 
     ObjCurso _objCurso = new ObjCurso();
     ObjSeminario _objSeminario = new ObjSeminario();
-    ObjIncrito _objIncrito = new ObjIncrito();
+    ObjInscrito _objInscrito = new ObjInscrito();
     ModelCurso daoModelCurso;
     ModelCategoriaCurso daoModelCategoriaCurso;
     ModelInscrito daoModelInscrito;
@@ -154,7 +154,7 @@ public class ControllerCurso extends HttpServlet {
                 }
                 //</editor-fold>
 
-                // <editor-fold defaultstate="collapsed" desc="Obtener las opciones de los Cursos">
+                // <editor-fold defaultstate="collapsed" desc="Obtener el detalle del Seminario">
                 case "DetalleSeminario": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -162,8 +162,16 @@ public class ControllerCurso extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
+                // <editor-fold defaultstate="collapsed" desc="Obtener el detalle del Seminario">
+                case "DetalleAsistentesSeminario": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(detalleSAsistentesSeminario(request));
+                    break;
+                }
+                //</editor-fold>
 
-                // <editor-fold defaultstate="collapsed" desc="Obtener las opciones de los Cursos">
+                // <editor-fold defaultstate="collapsed" desc="Registrar asistente al seminario">
                 case "RegistrarAsistente": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
@@ -559,29 +567,11 @@ public class ControllerCurso extends HttpServlet {
 
     private String detalleSeminario(HttpServletRequest request) {
         int idSeminario = Integer.parseInt(request.getParameter("idSeminario"));
-        List<Object> registrados = new ArrayList<>();
-        Map<String, String> auxiliar;
         Map<String, Object> salida = new LinkedHashMap<>();
         daoModelCurso = new ModelCurso();
-        ResultSet rs = daoModelCurso.ListAsistentes(idSeminario);
         Map seminario = daoModelCurso.buscarSeminarioPorID(idSeminario);
-        try {
-            while (rs.next()) {
-                auxiliar = new LinkedHashMap<>();
-                auxiliar.put("idinscrito", rs.getString("idinscrito"));
-                auxiliar.put("tipoDocumento", rs.getString("documento").substring(0, 2));
-                auxiliar.put("numeroDocumento", rs.getString("documento").substring(2));
-                auxiliar.put("nombre", rs.getString("nombre"));
-                auxiliar.put("telefono", rs.getString("telefono"));
-                auxiliar.put("correo", rs.getString("correo"));
-                registrados.add(auxiliar);
-            }
-            salida.put("seminario", seminario);
-            salida.put("registrados", registrados);
-        } catch (SQLException ex) {
-            Logger.getLogger(ControllerCurso.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        salida.put("seminario", seminario);
+        daoModelCurso.Signout();
         return new Gson().toJson(salida);
 
     }
@@ -605,14 +595,56 @@ public class ControllerCurso extends HttpServlet {
             telefono = request.getParameter("txtTelefono").trim();
             correo = request.getParameter("txtCorreo").trim();
             idSeminario = Integer.parseInt(request.getParameter("idSeminario").trim());
-            _objIncrito = new ObjIncrito();
-            _objIncrito.setIdseminario(idSeminario);
-            _objIncrito.setDocumento(documento);
-            _objIncrito.setNombres(nombres);
-            _objIncrito.setTelefono(telefono);
-            _objIncrito.setCorreo(correo);
-            return Mensaje(daoModelInscrito.Add(_objIncrito), "Inscripción realizada", "Ha ocurrido un error");
+            _objInscrito = new ObjInscrito();
+            _objInscrito.setIdseminario(idSeminario);
+            _objInscrito.setDocumento(documento);
+            _objInscrito.setNombres(nombres);
+            _objInscrito.setTelefono(telefono);
+            _objInscrito.setCorreo(correo);
+            String aux = "";
+            try {
+                daoModelInscrito = new ModelInscrito();
+                aux = Mensaje(daoModelInscrito.Add(_objInscrito), "Inscripción realizada", "Ha ocurrido un error");
+                daoModelInscrito.Signout();
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+            return aux;
         }
         return Mensaje(false, "", "Uno o más campos contienen errores");
+    }
+
+    private String detalleSAsistentesSeminario(HttpServletRequest request) {
+        int idSeminario = Integer.parseInt(request.getParameter("idSeminario"));
+        List registrados = new ArrayList();
+        String[] auxiliar;
+        daoModelCurso = new ModelCurso();
+        ResultSet rs = daoModelCurso.ListAsistentes(idSeminario);
+        try {
+            int contador = 1;
+            while (rs.next()) {
+                auxiliar = new String[6];
+                auxiliar[0] = String.valueOf(contador);
+                try {
+                    auxiliar[1] = rs.getString("documento").substring(0, 2);
+                    auxiliar[2] = rs.getString("documento").substring(2);
+                } catch (Exception e) {
+                    auxiliar[1] = "NA";
+                    auxiliar[2] = "No registrado";
+                }
+
+                auxiliar[3] = rs.getString("nombres");
+                auxiliar[4] = rs.getString("telefono");
+                auxiliar[5] = rs.getString("correo");
+                registrados.add(auxiliar);
+                contador++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControllerCurso.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            daoModelCurso.Signout();
+        }
+        String resultado = new Gson().toJson(registrados);
+        return "{\"data\":"+resultado+"}";
     }
 }
