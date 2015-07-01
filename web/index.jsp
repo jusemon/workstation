@@ -11,49 +11,50 @@
 Este contenedor tiene el contenido de la pagina, en este caso un carrusel que pasa productos de Stellarte Decoracion
 -->
 <div class="container-fluid" style="height: 100%;">
-    <div class="row col-md-10 col-md-offset-2">
-        <div id="ejemplo_carrusel" class="carousel slide thumbnail col-md-10 " style="margin: 0 auto">
-            <!-- Indicadores circulares -->
-            <ol class="carousel-indicators">
-                <li data-target="#ejemplo_carrusel" data-slide-to="0" class="active"></li>
-                <li data-target="#ejemplo_carrusel" data-slide-to="1"></li>
-                <li data-target="#ejemplo_carrusel" data-slide-to="2"></li>
-            </ol>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div id="ejemplo_carrusel" class="carousel slide" style="">
+                <!-- Indicadores circulares -->
+                <ol class="carousel-indicators">
+                    <li data-target="#ejemplo_carrusel" data-slide-to="0" class="active"></li>
+                    <li data-target="#ejemplo_carrusel" data-slide-to="1"></li>
+                    <li data-target="#ejemplo_carrusel" data-slide-to="2"></li>
+                </ol>
 
-            <!-- Bloque para las imágenes -->
-            <div class="carousel-inner center">
-
-                <div class="item active">
-                    <img class="imgIndex" src="public/images/vintage1.jpg">
-                    <div class="carousel-caption">
-                        <h3>Vintage</h3>
-                        <p>Revistero</p>
+                <!-- Bloque para las imágenes -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img class="imgIndex" src="public/images/ceramica.JPG" alt="300px">
+                        <div class="carousel-caption">
+                            <h3>Ceramica</h3>
+                            <p></p>
+                        </div>
                     </div>
+                    <div class="item text-center">
+                        <img class="imgIndex" src="public/images/marmolina.JPG" alt="300px">
+                        <div class="carousel-caption">
+                            <h3>Marmilona</h3>
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="item text-center">
+                        <img class="imgIndex" src="public/images/vintage1.JPG" alt="300px">
+                        <div class="carousel-caption">
+                            <h3>Vintage</h3>
+                            <p></p>
+                        </div>
+                    </div>    
                 </div>
-                <div class="item text-center">
-                    <img class="imgIndex" src="public/images/tela1.JPG">
-                    <div class="carousel-caption">
-                        <h3>Tela</h3>
-                        <p>Colcha de retazos</p>
-                    </div>
-                </div>
-                <div class="item text-center">
-                    <img class="imgIndex" src="public/images/country2.jpg">
-                    <div class="carousel-caption">
-                        <h3>Country</h3>
-                        <p>Joyero</p>
-                    </div>
-                </div>    
-            </div>
 
-            <!-- Controles -->
-            <a class="left carousel-control" href="#ejemplo_carrusel" data-slide="prev">
-                <span class="icon-prev"></span>
-            </a>
-            <a class="right carousel-control" href="#ejemplo_carrusel" data-slide="next">
-                <span class="icon-next"></span>
-            </a>
-        </div>    
+                <!-- Controles -->
+                <a class="left carousel-control" href="#ejemplo_carrusel" data-slide="prev">
+                    <span class="icon-prev"></span>
+                </a>
+                <a class="right carousel-control" href="#ejemplo_carrusel" data-slide="next">
+                    <span class="icon-next"></span>
+                </a>
+            </div>    
+        </div>
     </div>
 </div>
 <%@include file="WEB-INF/jspf/footer.jspf" %>

@@ -13,8 +13,8 @@ $('.fecha').datepicker({
 $('.fecha2').datetimepicker({
     locale: "es"
 });
-var validationCurso, validationArticulo, validationEstudiante, validationUsuario, validationEmpresa, validationUsuarioPerfil, validationBeneficiario, validationOperarios;
-var tablaCurso, tablaCategoriaCurso, tablaClases, tablaCredito, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso, tablaPreinscritos, tablaPreincripciones, tablaOperarios;
+var validationCurso, validationArticulo, validationEstudiante, validationUsuario, validationEmpresa, validationUsuarioPerfil, validationBeneficiario, validationOperarios, validationAsistenteSeminario;
+var tablaCurso, tablaCategoriaCurso, tablaClases, tablaCredito, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso, tablaPreinscritos, tablaPreincripciones, tablaOperarios, tablaDetalleSeminario;
 var curso = {
     myAjax: function (accion, id, aux, typo) {
         if (accion === 'Estado') {
@@ -581,6 +581,33 @@ var seminario = {
 //            ]
         });
     },
+    cargarDetalle: function (idSeminario) {
+        tablaDetalleSeminario = $('#tblDetalleSeminario').DataTable({
+            "ajax": {
+                "url": "ControllerCurso",
+                "type": "POST",
+                "data": {
+                    action: 'DetalleAsistentesSeminario',
+                    idSeminario: idSeminario
+                }
+            },
+            "language": {
+                "url": "public/js/locales/Spanish.json"
+            },
+//            "bAutoWidth": false,
+//            "aoColumns": [
+//                {sWidth: '20%'},
+//                {sWidth: '20%'},
+//                {sWidth: '15%'},
+//                {sWidth: '15%'},
+//                {sWidth: '15%'},
+//                {sWidth: '15%'}
+//            ]
+        });
+    },
+    recargarDetalle: function (idSeminario) {
+        tablaDetalleSeminario.ajax.reload();
+    },
     actualizarTabla: function () {
         tablaSeminario.ajax.reload();
     },
@@ -592,25 +619,11 @@ var seminario = {
             success: function (data, textStatus, jqXHR) {
                 $('#miPopupDetalleSeminario').find('#titulo').text('Seminario ' + data.seminario.nombreCurso);
                 $('#miPopupDetalleSeminario').find('#fecha').text(data.seminario.fechaSeminario);
-                var contador = 0;
                 var cupos = data.seminario.cupoSeminario;
-                $.each(data.registrados, function (index, registrado) {
-                    var fila = '<tr  data-id="' + registrado.idinscrito + '">';
-                    fila += '<td>' + registrado.idinscrito + '</td>';
-                    fila += '<td>' + registrado.tipoDocumento + '</td>';
-                    fila += '<td>' + registrado.numeroDocumento + '</td>';
-                    fila += '<td>' + registrado.nombre + '</td>';
-                    fila += '<td>' + registrado.telefono + '</td>';
-                    fila += '<td>' + registrado.correo + '</td>';
-                    fila += '<td>' + '</td>';
-                    fila += '</tr>';
-                    $('#tablaDetalleSeminario tbody').append(fila);
-                    contador++;
-                });
-                cupos -= contador;
-                $('#miPopupDetalleSeminario').find('#restantes').val(cupos);
                 $('#miPopupDetalleSeminario').find('#idSeminario').val(idSeminario);
                 $('#miPopupDetalleSeminario').modal('show');
+                seminario.cargarDetalle(idSeminario);
+                $('#miPopupDetalleSeminario').find('#restantes').val(cupos);
             }
         });
     },
@@ -620,21 +633,28 @@ var seminario = {
             var idSeminario = $('#formDetalleSeminario').find('#idSeminario').val();
             $('#formAsistenteSeminario').find('#idSeminario').val(idSeminario);
             $('#miPopupAsistenteSeminario').modal('show');
-
         }
     },
     registrarAsistente: function () {
-        limpiar('#formAsistenteSeminario');
+        if (validationAsistenteSeminario.valid()) {
+            $.ajax({
+                url: $('#formAsistenteSeminario').attr('action'),
+                type: $('#formAsistenteSeminario').attr('method'),
+                data: $('#formAsistenteSeminario').serialize() + '&action=RegistrarAsistente',
+                success: function (data) {
+                    mensaje(data);
+                    if (data['tipo'] === 'success') {
+                        var cupos = $('#miPopupDetalleSeminario').find('#restantes').val();
+                        $('#miPopupDetalleSeminario').find('#restantes').val(cupos-1);
+                        seminario.recargarDetalle();
+                    }
+                    $('#miPopupAsistenteSeminario').modal('hide');
+                }
+            });
+        } else {
+            $.notify("Uno o más campos contienen errores", "error")
+        }
 
-        $.ajax({
-            url: $('#formAsistenteSeminario').attr('action'),
-            type: $('#formAsistenteSeminario').attr('method'),
-            data: $('#formAsistenteSeminario').serialize() + '&action=RegistrarAsistente',
-            success: function (data) {
-                mensaje(data);
-                $('#formAsistenteSeminario').modal('show');
-            }
-        });
     }
 };
 var abono = {
@@ -850,7 +870,6 @@ var estudiante = {
             $('#miPopupEstudiante').find('#radioNoBeneficiario').prop('checked', true);
         else
             $('#miPopupEstudiante').find('#radioSiBeneficiario').prop('checked', true);
-
         $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'hidden').attr('disabled', true);
         desabilitar('#form_estudiante');
         $('#miPopupEstudiante').modal('show');
@@ -1435,7 +1454,7 @@ var articulo = {
                         fila += '<td>' + '<input type="number" id="valor" onblur="compra.actualizarTotal(\'valor\')" name="valor" min="50" required>' + '</td>';
                     } else {
                         fila += '<td>' + '<input type="number" id="cantidad" onblur="compra.actualizarTotal(\'cantidad\')" name="cantidad" min="1" max="' + data['cantidadDisponible'] + '" required>' + '</td>';
-                        fila += '<td>' + '<input type="number" id="valor" onblur="compra.actualizarTotal(\'valor\')" name="valor" min="' + (parseInt(data['precioCompra']) + 1 )+ '" value="' + data['precioVenta'] + '" required>' + '</td>';
+                        fila += '<td>' + '<input type="number" id="valor" onblur="compra.actualizarTotal(\'valor\')" name="valor" min="' + (parseInt(data['precioCompra']) + 1) + '" value="' + data['precioVenta'] + '" required>' + '</td>';
                     }
                     fila += '<td>' + '<button class="btn btn-danger glyphicon glyphicon-remove row-remove" onclick="articulo.remover(' + data['idArticulo'] + ')"></button>' + '</td>';
                     fila += '</tr>';

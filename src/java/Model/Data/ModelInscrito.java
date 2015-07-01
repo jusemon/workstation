@@ -5,7 +5,7 @@
  */
 package Model.Data;
 
-import Model.DTO.ObjIncrito;
+import Model.DTO.ObjInscrito;
 import Model.JDBC.ConnectionDB;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,31 +17,35 @@ import java.sql.SQLException;
  */
 public class ModelInscrito extends ConnectionDB {
 
-    PreparedStatement pStmt;
+    private PreparedStatement pStmt;
 
     public ModelInscrito() {
         getConnection();
     }
 
-    public boolean Add(ObjIncrito _objIncrito) {
+    public boolean Add(ObjInscrito _objInscrito) {
         boolean objReturn = false;
         String sql = "call spIngresarInscritoSeminario(?,?,?,?,?)";
 
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
-            pStmt.setString(1, _objIncrito.getDocumento());
-            pStmt.setString(2, _objIncrito.getNombres());
-            pStmt.setString(3, _objIncrito.getTelefono());
-            pStmt.setString(4, _objIncrito.getCorreo());
-            pStmt.setInt(5, _objIncrito.getIdseminario());
+            pStmt.setString(1, _objInscrito.getDocumento());
+            pStmt.setString(2, _objInscrito.getNombres());
+            pStmt.setString(3, _objInscrito.getTelefono());
+            pStmt.setString(4, _objInscrito.getCorreo());
+            pStmt.setInt(5, _objInscrito.getIdseminario());
             if (pStmt.executeUpdate()>0) {
                 objReturn = true;
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return objReturn;
+    }
+
+    public ResultSet EnlistarPorSeminario(int idSeminario) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

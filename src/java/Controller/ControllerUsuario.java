@@ -29,6 +29,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerUsuario extends HttpServlet {
 
+    final private String correoSistema = "stelarte.decoracion@gmail.com";
+    final private String passSistema = "stelarte1";
+    String servidorSMTP = "smtp.gmail.com";
+    String puertoEnvio = "465";
+    
     public ObjUsuario _objUsuario = new ObjUsuario();
     ModelUsuario daoModelUsuario;
     SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
@@ -274,6 +279,7 @@ public class ControllerUsuario extends HttpServlet {
             String identificacion = tipoDocumento + numeroIdentificacion;
             String nombre = request.getParameter("txtNombre").trim();
             String apellido = request.getParameter("txtApellido").trim();
+            String telefonoFijo = request.getParameter("txtTelefono").trim();
             String fechaNacimiento = request.getParameter("dateFechaNacimiento").trim();
             String correo = request.getParameter("txtCorreo").trim();
             int estado = 1;
@@ -282,6 +288,7 @@ public class ControllerUsuario extends HttpServlet {
             _objUsuario.setDocumentoUsuario(identificacion);
             _objUsuario.setNombreUsuario(nombre);
             _objUsuario.setApellidoUsuario(apellido);
+            _objUsuario.setTelefonoFijo(telefonoFijo);
             _objUsuario.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
             _objUsuario.setEmailUsuario(correo);
             _objUsuario.setEstadoUsuario(estado);
@@ -321,9 +328,9 @@ public class ControllerUsuario extends HttpServlet {
                 arreglo[1] = result.getString("nombreUsuario").trim() + " " + result.getString("nombreUsuario").trim();
                 arreglo[2] = result.getString("emailUsuario").trim();
                 //arreglo[3] = result.getString("numeroClasesFaltantes").trim();
-                arreglo[3] = result.getString("telefonoFijo").trim();                
+                arreglo[3] = result.getString("telefonoFijo").trim();
                 arreglo[4] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"operario.myAjax('Estado','" + arreglo[0] + "')\">"
-                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";                
+                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
                 arreglo[5] = "<div class=\"btn-group\">\n"
                         + "  <button type=\"button\" class=\"btn btn-info btn-block dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n"
                         + "    Acciones <span class=\"caret\"></span>\n"

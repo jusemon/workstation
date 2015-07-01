@@ -70,7 +70,7 @@
     </servlet>
     <servlet>
         <servlet-name>ObjIncrito</servlet-name>
-        <servlet-class>Model.DTO.ObjIncrito</servlet-class>
+        <servlet-class>Model.DTO._objIsncrito</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ControllerCliente</servlet-name>

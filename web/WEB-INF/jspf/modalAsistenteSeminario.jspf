@@ -39,7 +39,7 @@
                                                 <label for="txtIdentificacion">
                                                     Número
                                                 </label>
-                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
+                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673">
                                             </div>
                                         </div>
                                     </div>

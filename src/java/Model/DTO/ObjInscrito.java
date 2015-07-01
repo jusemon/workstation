@@ -9,7 +9,7 @@ package Model.DTO;
  *
  * @author Administrador
  */
-public class ObjIncrito {
+public class ObjInscrito {
 
     private int idincrito;
     private String documento;
