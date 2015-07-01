@@ -13,6 +13,7 @@ public class ObjUsuario {
     private String fechaNacimiento;
     private String nombreUsuario;
     private String apellidoUsuario;
+    private String telefonoFijo;
     private String emailUsuario;
     private String password;
     private int estadoUsuario;
@@ -52,6 +53,14 @@ public class ObjUsuario {
         this.apellidoUsuario = apellidoUsuario;
     }
 
+    public String getTelefonoFijo() {
+        return telefonoFijo;
+    }
+
+    public void setTelefonoFijo(String telefonoFijo) {
+        this.telefonoFijo = telefonoFijo;
+    }
+    
     public String getEmailUsuario() {
         return emailUsuario;
     }

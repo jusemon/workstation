@@ -34,7 +34,7 @@ public class ModelEstudiante extends ConnectionDB {
             connection.setAutoCommit(false);
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objDetalleUsuario.getDireccionUsuario());
-            pStmt.setString(2, _objDetalleUsuario.getTelefonoFijo());
+            pStmt.setString(2, _objUsuario.getTelefonoFijo());
             pStmt.setString(3, _objDetalleUsuario.getTelefonoMovil());
             pStmt.setInt(4, _objDetalleUsuario.getGeneroUsuario());
             int updateCount = pStmt.executeUpdate();
@@ -128,7 +128,7 @@ public class ModelEstudiante extends ConnectionDB {
             pStmt.setInt(7, _objUsuario.getEstadoUsuario());
             pStmt.setString(8, _objUsuario.getDocumentoAcudiente());
             pStmt.setString(9, _objDetalleUsuario.getDireccionUsuario());
-            pStmt.setString(10, _objDetalleUsuario.getTelefonoFijo());
+            pStmt.setString(10, _objUsuario.getTelefonoFijo());
             pStmt.setString(11, _objDetalleUsuario.getTelefonoMovil());
             pStmt.setInt(12, _objDetalleUsuario.getGeneroUsuario());
             int updateCount = pStmt.executeUpdate();
@@ -164,7 +164,7 @@ public class ModelEstudiante extends ConnectionDB {
             connection.setAutoCommit(false);
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objDetalleUsuario.getDireccionUsuario());
-            pStmt.setString(2, _objDetalleUsuario.getTelefonoFijo());
+            pStmt.setString(2, _objUsuario.getTelefonoFijo());
             pStmt.setString(3, _objDetalleUsuario.getTelefonoMovil());
             pStmt.setInt(4, _objDetalleUsuario.getGeneroUsuario());
             int updateCount = pStmt.executeUpdate();

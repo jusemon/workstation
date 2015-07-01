@@ -215,7 +215,9 @@ if (document.getElementById('form_estudiante') !== null) {
             },
             txtTelefono: {
                 required: true,
-                maxlength: 50
+                minlength: 7,
+                maxlength: 15,
+                digits: true
             },
             txtCelular: {
                 required: true,
@@ -303,6 +305,12 @@ if (document.getElementById('formOperario') !== null) {
                 required: true,
                 pass: true
             },
+            txtTelefono: {
+                required: true,
+                minlength: 7,
+                maxlength: 15,
+                digits: true
+            },
             txtCorreo: {
                 required: true,
                 email: true
@@ -323,10 +331,10 @@ $('#miPopupArticulo').on('shown.bs.modal', function () {
 $('#miPopupEstudiante').on('shown.bs.modal', function () {
     validationEstudiante.validate().resetForm();
 });
-$('#miPopupBeneficiario').on('show.bs.modad', function () {
+$('#miPopupBeneficiario').on('shown.bs.modal', function () {
     validationBeneficiario.validate().resetForm();
 });
-$('#miPopupOperario').on('show.bs.modad', function () {
+$('#miPopupOperario').on('shown.bs.modal', function () {
     validationOperarios.validate().resetForm();
 });
 //$.validator.addMethod("nombres", function(value) {

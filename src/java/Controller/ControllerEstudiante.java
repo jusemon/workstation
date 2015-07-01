@@ -123,7 +123,7 @@ public class ControllerEstudiante extends HttpServlet {
                         _objDetalleUsuario.setGeneroUsuario(genero);
                         _objUsuario.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
                         _objDetalleUsuario.setDireccionUsuario(direccion);
-                        _objDetalleUsuario.setTelefonoFijo(telefono);
+                        _objUsuario.setTelefonoFijo(telefono);
                         _objDetalleUsuario.setTelefonoMovil(celular);
                         _objUsuario.setEmailUsuario(correo);
                         _objUsuario.setEstadoUsuario(estado);
@@ -357,7 +357,7 @@ public class ControllerEstudiante extends HttpServlet {
             _objDetalleUsuario.setGeneroUsuario(genero);
             _objUsuario.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
             _objDetalleUsuario.setDireccionUsuario(direccion);
-            _objDetalleUsuario.setTelefonoFijo(telefono);
+            _objUsuario.setTelefonoFijo(telefono);
             _objDetalleUsuario.setTelefonoMovil(celular);
             _objUsuario.setEmailUsuario(correo);
             _objUsuario.setEstadoUsuario(estado);

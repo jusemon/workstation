@@ -8,7 +8,6 @@ public class ObjDetalleUsuario {
 
     private int idDetalleUsuario;
     private String direccionUsuario;
-    private String telefonoFijo;
     private String telefonoMovil;
     private int generoUsuario;
     private int estadoBeneficiario;
@@ -27,14 +26,6 @@ public class ObjDetalleUsuario {
 
     public void setDireccionUsuario(String direccionUsuario) {
         this.direccionUsuario = direccionUsuario;
-    }
-
-    public String getTelefonoFijo() {
-        return telefonoFijo;
-    }
-
-    public void setTelefonoFijo(String telefonoFijo) {
-        this.telefonoFijo = telefonoFijo;
     }
 
     public String getTelefonoMovil() {

@@ -2090,7 +2090,7 @@ var operario = {
     registrar: function () {
         habilitar('formOperario');
         limpiar('formOperario');
-        $('#miPopupOperario').find('#titulo').val('Registrar Operario');
+        $('#miPopupOperario').find('#titulo').text('Registrar Operario');
         $('#miPopupOperario').find('#btnOperario').val('Registrar').attr('type', 'button');
         $('#miPopupOperario').modal('show');
     },
@@ -2115,7 +2115,7 @@ var operario = {
         $('#miPopupOperario').find('#btnOperario').val('Editar').attr('type', 'button');
     },
     cargar: function () {
-        tablaOperarios = $('#tblCursos').DataTable({
+        tablaOperarios = $('#tblOperarios').DataTable({
             "ajax": {
                 "url": "ControllerUsuario",
                 "type": "POST",

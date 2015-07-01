@@ -284,6 +284,7 @@ public class ControllerUsuario extends HttpServlet {
             _objUsuario.setIdrol(rol);
             if (request.getParameter("tipo") != null) {
                 if (request.getParameter("tipo").equals("Operario")) {
+                    _objUsuario.setTelefonoFijo(request.getParameter("txtTelefono"));
                     _objUsuario.setIdrol(2);
                 }
             }
@@ -298,22 +299,27 @@ public class ControllerUsuario extends HttpServlet {
     }
 
     private String EnlistarOperarios() {
-         ResultSet result;
+        ResultSet result;
         List<String[]> lista = new ArrayList<>();
         String[] arreglo;
         try {
             daoModelUsuario = new ModelUsuario();
             result = daoModelUsuario.ListOperarios();
             while (result.next()) {
+                String[] estado = {"success", "ok"};
+                if (result.getInt("estadoUsuario") == 0) {
+                    estado[0] = "danger";
+                    estado[1] = "remove";
+                }
                 arreglo = new String[6];
                 arreglo[0] = result.getString("documentoUsuario").trim();
-                arreglo[1] = result.getString("nombreCurso").trim();
-                arreglo[2] = result.getString("numeroClases").trim();
+                arreglo[1] = result.getString("nombreUsuario").trim() + " " + result.getString("nombreUsuario").trim();
+                arreglo[2] = result.getString("emailUsuario").trim();
                 //arreglo[3] = result.getString("numeroClasesFaltantes").trim();
-                arreglo[3] = result.getString("numeroClasesAsistidas").trim();
-                arreglo[4] = "<a class=\"btn-sm btn-success btn-block \" href=\"javascript:void(0)\"  onclick=\"matricula.consultar('" + result.getString("documentoUsuario").trim() + "'," + result.getString("idCurso").trim() + ")\">"
-                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
-                arreglo[5] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"matricula.asistencia('" + result.getString("documentoUsuario").trim() + "'," + result.getString("idCurso").trim() + ")\">"
+                arreglo[3] = result.getString("telefonoFijo").trim();                
+                arreglo[4] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"operario.myAjax(" + arreglo[0] + ")\">"
+                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
+                arreglo[5] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"matricula.asistencia('" + result.getString("documentoUsuario").trim()+")\">"
                         + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
                 lista.add(arreglo);
             }

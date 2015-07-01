@@ -40,7 +40,7 @@
                                         </div>
                                     </div>
                                     <div class="row">                                        
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="txtNombre">
                                                     Nombres
@@ -48,7 +48,7 @@
                                                 <input name="txtNombre" id="txtNombre" type="text"  class="form-control" placeholder="Ejm: Juan Sebastián">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="txtApellido">
                                                     Apellidos
@@ -56,7 +56,15 @@
                                                 <input name="txtApellido" id="txtApellido" type="text" class="form-control" placeholder="Ejm: Montoya Montoya">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="txtTelefono">
+                                                    Teléfono
+                                                </label>
+                                                <input name="txtTelefono" id="txtTelefono" type="tel" class="form-control" placeholder="Ejm: 5 65 85 45" >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="dateFechaNacimiento">
                                                     Fecha de Nacimiento

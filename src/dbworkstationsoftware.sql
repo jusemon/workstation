@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.12
+-- version 4.2.11
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-06-2015 a las 02:33:52
--- Versión del servidor: 5.6.16
--- Versión de PHP: 5.5.11
+-- Tiempo de generación: 01-07-2015 a las 06:03:02
+-- Versión del servidor: 5.6.21
+-- Versión de PHP: 5.6.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -562,6 +562,22 @@ BEGIN
     WHERE usu.`documentoUsuario`=`documentoUsuar` AND cu.`idCurso` = `idCur`
     GROUP BY usu.`documentoUsuario`, cl.`idCurso`;   
     
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarOperarios`()
+BEGIN
+    SELECT 
+        `documentoUsuario`, 
+        DATE_FORMAT(`fechaNacimiento`,'%d/%m/%Y') as `fechaNacimiento`, 
+        `nombreUsuario`, 
+        `apellidoUsuario`, 
+        telefonoFijo,
+        `emailUsuario`, 
+        `password`, 
+        `estadoUsuario`, 
+        `idrol`        
+    FROM `tblusuario`
+    WHERE idrol = 2;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarPreinscritoPorID`(IN id VARCHAR(30))
@@ -1405,7 +1421,7 @@ VALUES
     `emailUsuar`, 
     `passwo`, 
     `estadoUsuar`, 
-     4
+    `idr`
 );
 END$$
 
@@ -1485,8 +1501,7 @@ CREATE TABLE IF NOT EXISTS `tblacudiente` (
   `documentoAcudiente` varchar(20) NOT NULL,
   `nombreAcudiente` varchar(50) NOT NULL,
   `telefonoAcudiente` varchar(50) NOT NULL,
-  `fechaNacimiento` date NOT NULL,
-  PRIMARY KEY (`documentoAcudiente`)
+  `fechaNacimiento` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1496,15 +1511,13 @@ CREATE TABLE IF NOT EXISTS `tblacudiente` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblarticulo` (
-  `idArticulo` int(11) NOT NULL AUTO_INCREMENT,
+`idArticulo` int(11) NOT NULL,
   `idCategoriaArticulo` int(11) NOT NULL,
   `descripcionArticulo` varchar(50) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `cantidadDisponible` mediumint(9) NOT NULL,
   `precioCompra` int(11) NOT NULL,
-  `precioVenta` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idArticulo`),
-  KEY `FK_tblArticulo_idCategoriaArticulo` (`idCategoriaArticulo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `precioVenta` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1513,10 +1526,9 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
-  `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,
-  `nombreCategoriaArticulo` varchar(50) NOT NULL,
-  PRIMARY KEY (`idCategoriaArticulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+`idCategoriaArticulo` int(11) NOT NULL,
+  `nombreCategoriaArticulo` varchar(50) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblcategoriaarticulo`
@@ -1534,10 +1546,9 @@ INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArtic
 --
 
 CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
-  `idCategoriaCurso` int(11) NOT NULL AUTO_INCREMENT,
-  `nombreCategoriaCurso` varchar(45) NOT NULL,
-  PRIMARY KEY (`idCategoriaCurso`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+`idCategoriaCurso` int(11) NOT NULL,
+  `nombreCategoriaCurso` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblcategoriacurso`
@@ -1557,17 +1568,45 @@ INSERT INTO `tblcategoriacurso` (`idCategoriaCurso`, `nombreCategoriaCurso`) VAL
 --
 
 CREATE TABLE IF NOT EXISTS `tblclase` (
-  `idClase` int(11) NOT NULL AUTO_INCREMENT,
+`idClase` int(11) NOT NULL,
   `fecha` date DEFAULT NULL,
   `estadoPago` bit(1) NOT NULL DEFAULT b'0',
   `estadoAsistencia` bit(1) NOT NULL DEFAULT b'0',
   `creditoCreado` bit(1) NOT NULL DEFAULT b'0',
   `precioClase` float NOT NULL,
   `idCurso` int(11) NOT NULL,
-  `documentoUsuario` varchar(20) NOT NULL,
-  PRIMARY KEY (`idClase`),
-  KEY `idCurso_idx` (`idCurso`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `documentoUsuario` varchar(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tblclase`
+--
+
+INSERT INTO `tblclase` (`idClase`, `fecha`, `estadoPago`, `estadoAsistencia`, `creditoCreado`, `precioClase`, `idCurso`, `documentoUsuario`) VALUES
+(1, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(2, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(3, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(4, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(5, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(6, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(7, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(8, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(9, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(10, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(11, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(12, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(13, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(14, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(15, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(16, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(17, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(18, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(19, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(20, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(21, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(22, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(23, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
+(24, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567');
 
 -- --------------------------------------------------------
 
@@ -1576,15 +1615,13 @@ CREATE TABLE IF NOT EXISTS `tblclase` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblcredito` (
-  `idCredito` int(11) NOT NULL AUTO_INCREMENT,
+`idCredito` int(11) NOT NULL,
   `documentoUsuario` varchar(20) NOT NULL,
   `fechaInicio` datetime DEFAULT CURRENT_TIMESTAMP,
   `saldoInicial` int(11) NOT NULL DEFAULT '0',
   `saldoActual` int(11) NOT NULL DEFAULT '0',
-  `estadoCredito` tinyint(4) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`idCredito`),
-  KEY `fk_tblcredito_tblusuario1` (`documentoUsuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `estadoCredito` tinyint(4) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1593,7 +1630,7 @@ CREATE TABLE IF NOT EXISTS `tblcredito` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblcurso` (
-  `idCurso` int(11) NOT NULL AUTO_INCREMENT,
+`idCurso` int(11) NOT NULL,
   `nombreCurso` varchar(50) NOT NULL,
   `cantidadClases` int(11) NOT NULL,
   `horasPorClase` int(11) NOT NULL,
@@ -1602,10 +1639,8 @@ CREATE TABLE IF NOT EXISTS `tblcurso` (
   `precioCurso` int(11) DEFAULT NULL,
   `fechaSeminario` datetime DEFAULT NULL,
   `cupoSeminario` int(11) DEFAULT NULL,
-  `idCategoriaCurso` int(11) NOT NULL,
-  PRIMARY KEY (`idCurso`),
-  KEY `fk_tblcurso_tblcategoriacurso1_idx` (`idCategoriaCurso`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+  `idCategoriaCurso` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblcurso`
@@ -1622,13 +1657,10 @@ INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorCla
 --
 
 CREATE TABLE IF NOT EXISTS `tbldetallecredito` (
-  `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT,
+`idDetalleCredito` int(11) NOT NULL,
   `idCredito` int(11) NOT NULL,
-  `idMovimiento` int(11) NOT NULL,
-  PRIMARY KEY (`idDetalleCredito`),
-  KEY `idMovimiento` (`idMovimiento`),
-  KEY `idCredito` (`idCredito`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `idMovimiento` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1637,18 +1669,15 @@ CREATE TABLE IF NOT EXISTS `tbldetallecredito` (
 --
 
 CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
-  `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,
+`idDetalleMovimiento` int(11) NOT NULL,
   `idArticulo` int(11) DEFAULT NULL,
   `idClase` int(11) DEFAULT NULL,
   `cantidad` int(11) NOT NULL,
   `descuento` int(11) DEFAULT NULL,
   `totalDetalleMovimiento` int(11) NOT NULL,
   `idMovimiento` int(11) NOT NULL,
-  `precioArticulo` int(11) NOT NULL,
-  PRIMARY KEY (`idDetalleMovimiento`),
-  KEY `FK_tblDetalleVenta_idArticulo` (`idArticulo`),
-  KEY `fk_tbldetallemovimiento_tblMovimiento1_idx` (`idMovimiento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `precioArticulo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1657,21 +1686,19 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
 --
 
 CREATE TABLE IF NOT EXISTS `tbldetalleusuario` (
-  `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,
+`idDetalleUsuario` int(11) NOT NULL,
   `direccionUsuario` varchar(50) NOT NULL,
-  `telefonoFijo` varchar(11) NOT NULL,
   `telefonoMovil` varchar(15) NOT NULL,
   `generoUsuario` bit(1) NOT NULL,
-  `estadoBeneficiario` bit(1) NOT NULL DEFAULT b'0',
-  PRIMARY KEY (`idDetalleUsuario`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `estadoBeneficiario` bit(1) NOT NULL DEFAULT b'0'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbldetalleusuario`
 --
 
-INSERT INTO `tbldetalleusuario` (`idDetalleUsuario`, `direccionUsuario`, `telefonoFijo`, `telefonoMovil`, `generoUsuario`, `estadoBeneficiario`) VALUES
-(1, 'asdasdasd', '5861529', '3218016237', b'1', b'0');
+INSERT INTO `tbldetalleusuario` (`idDetalleUsuario`, `direccionUsuario`, `telefonoMovil`, `generoUsuario`, `estadoBeneficiario`) VALUES
+(1, 'asdasdasd', '3218016237', b'1', b'0');
 
 -- --------------------------------------------------------
 
@@ -1685,8 +1712,7 @@ CREATE TABLE IF NOT EXISTS `tblempresa` (
   `direccionEmpresa` varchar(50) NOT NULL,
   `nombreContacto` varchar(50) NOT NULL,
   `telefonoContacto` varchar(50) NOT NULL,
-  `emailContacto` varchar(50) NOT NULL,
-  PRIMARY KEY (`nitEmpresa`)
+  `emailContacto` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -1703,14 +1729,13 @@ INSERT INTO `tblempresa` (`nitEmpresa`, `nombreEmpresa`, `direccionEmpresa`, `no
 --
 
 CREATE TABLE IF NOT EXISTS `tblinscrito` (
-  `idinscrito` int(11) NOT NULL AUTO_INCREMENT,
+`idinscrito` int(11) NOT NULL,
   `documento` varchar(20) DEFAULT NULL,
   `nombres` varchar(40) NOT NULL,
   `telefono` varchar(20) NOT NULL,
   `correo` varchar(40) NOT NULL,
-  `idseminario` int(11) NOT NULL,
-  PRIMARY KEY (`idinscrito`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `idseminario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1719,11 +1744,10 @@ CREATE TABLE IF NOT EXISTS `tblinscrito` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblmodulo` (
-  `idmodulo` int(11) NOT NULL AUTO_INCREMENT,
+`idmodulo` int(11) NOT NULL,
   `enlace` varchar(30) NOT NULL,
-  `nombre` varchar(30) NOT NULL,
-  PRIMARY KEY (`idmodulo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+  `nombre` varchar(30) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblmodulo`
@@ -1736,7 +1760,8 @@ INSERT INTO `tblmodulo` (`idmodulo`, `enlace`, `nombre`) VALUES
 (5, 'articulo.jsp', 'Artículos'),
 (6, 'caja.jsp', 'Caja'),
 (7, 'nuestro.jsp', 'Nuestros Cursos'),
-(8, 'acerca.jsp', 'Acerca de Nosotros');
+(8, 'acerca.jsp', 'Acerca de Nosotros'),
+(9, 'operario.jsp', 'Operarios');
 
 -- --------------------------------------------------------
 
@@ -1746,9 +1771,7 @@ INSERT INTO `tblmodulo` (`idmodulo`, `enlace`, `nombre`) VALUES
 
 CREATE TABLE IF NOT EXISTS `tblmodulorol` (
   `idmodulo` int(11) NOT NULL,
-  `idrol` int(11) NOT NULL,
-  PRIMARY KEY (`idmodulo`,`idrol`),
-  KEY `idrol` (`idrol`)
+  `idrol` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -1761,6 +1784,7 @@ INSERT INTO `tblmodulorol` (`idmodulo`, `idrol`) VALUES
 (3, 1),
 (5, 1),
 (6, 1),
+(9, 1),
 (7, 3),
 (8, 3),
 (7, 4),
@@ -1773,18 +1797,15 @@ INSERT INTO `tblmodulorol` (`idmodulo`, `idrol`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `tblmovimiento` (
-  `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,
+`idMovimiento` int(11) NOT NULL,
   `fechaMovimiento` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `totalMovimiento` int(11) NOT NULL,
   `idtipoMovimiento` int(11) NOT NULL,
   `documentoUsuario` varchar(20) NOT NULL,
   `numeroAuxiliar` varchar(45) DEFAULT NULL,
   `nombreAuxiliar` varchar(45) DEFAULT NULL,
-  `documentoAuxiliar` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idMovimiento`),
-  KEY `fk_tblMovimiento_tblTipoMovimiento1_idx` (`idtipoMovimiento`),
-  KEY `fk_tblMovimiento_tblusuario1_idx` (`documentoUsuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `documentoAuxiliar` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1793,13 +1814,12 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblpreinscripcion` (
-  `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,
+`idPreinscripcion` int(11) NOT NULL,
   `estado` bit(1) DEFAULT NULL,
   `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `documentoUsuario` varchar(20) NOT NULL,
-  `idCurso` int(11) NOT NULL,
-  PRIMARY KEY (`idPreinscripcion`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `idCurso` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1810,9 +1830,8 @@ CREATE TABLE IF NOT EXISTS `tblpreinscripcion` (
 CREATE TABLE IF NOT EXISTS `tblrol` (
   `nombre` varchar(20) NOT NULL,
   `descripcion` varchar(40) NOT NULL,
-  `idrol` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`idrol`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+`idrol` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblrol`
@@ -1831,15 +1850,12 @@ INSERT INTO `tblrol` (`nombre`, `descripcion`, `idrol`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `tblsubsidio` (
-  `idSubsidio` int(11) NOT NULL AUTO_INCREMENT,
+`idSubsidio` int(11) NOT NULL,
   `fechaAsignacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `valorSubsidio` int(11) NOT NULL,
   `nitEmpresa` varchar(20) NOT NULL,
-  `documentoUsuario` varchar(20) NOT NULL,
-  PRIMARY KEY (`idSubsidio`),
-  KEY `fk_tblsubsidio_tblempresa1_idx` (`nitEmpresa`),
-  KEY `fk_tblsubsidio_tblusuario1_idx` (`documentoUsuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `documentoUsuario` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1849,8 +1865,7 @@ CREATE TABLE IF NOT EXISTS `tblsubsidio` (
 
 CREATE TABLE IF NOT EXISTS `tbltipomovimiento` (
   `idtipoMovimiento` int(11) NOT NULL,
-  `descripcion` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idtipoMovimiento`)
+  `descripcion` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1880,23 +1895,223 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
   `idDetalleUsuario` int(11) DEFAULT NULL,
   `idrol` int(11) NOT NULL,
   `documentoAcudiente` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`documentoUsuario`),
-  UNIQUE KEY `emailUsuario_UNIQUE` (`emailUsuario`),
-  KEY `fk_tblestudiante_tblDetalleCliente1_idx` (`idDetalleUsuario`),
-  KEY `fk_tblusuario_tblrol1_idx` (`idrol`),
-  KEY `fk_tblusuario_tblacudiente1_idx` (`documentoAcudiente`)
+  `telefonoFijo` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblusuario`
 --
 
-INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`) VALUES
-('CC101722567', '1981-03-13', 'Juan', 'Montoya', 'correo@correo.co', 'Esdfgdfg4', 1, 1, 3, NULL),
-('CC1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL),
-('CC8101926', '1984-01-06', 'David', 'Cano Arango', 'dcano62@misena.edu.co', '123', 1, NULL, 1, NULL),
-('CE5465465', '1969-12-28', 'Lorenzo', 'Chimeno Trenado', 'lchimeno37@misena.edu.co', '123', 1, NULL, 1, NULL);
+INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`, `telefonoFijo`) VALUES
+('CC101722567', '1981-03-13', 'Juan', 'Montoya', 'correo@correo.co', 'Esdfgdfg4', 1, 1, 3, NULL, '2359732'),
+('CC1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL, '5861529'),
+('CC1017225674', '1996-01-17', 'Operario', 'Operar', 'jsmontoya378@outlook.com', 'Es12030000', 1, NULL, 2, NULL, '5861529'),
+('CC8101926', '1984-01-06', 'David', 'Cano Arango', 'dcano62@misena.edu.co', '123', 1, NULL, 1, NULL, '1234567'),
+('CE5465465', '1969-12-28', 'Lorenzo', 'Chimeno Trenado', 'lchimeno37@misena.edu.co', '123', 1, NULL, 1, NULL, '9876543');
 
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `tblacudiente`
+--
+ALTER TABLE `tblacudiente`
+ ADD PRIMARY KEY (`documentoAcudiente`);
+
+--
+-- Indices de la tabla `tblarticulo`
+--
+ALTER TABLE `tblarticulo`
+ ADD PRIMARY KEY (`idArticulo`), ADD KEY `FK_tblArticulo_idCategoriaArticulo` (`idCategoriaArticulo`);
+
+--
+-- Indices de la tabla `tblcategoriaarticulo`
+--
+ALTER TABLE `tblcategoriaarticulo`
+ ADD PRIMARY KEY (`idCategoriaArticulo`);
+
+--
+-- Indices de la tabla `tblcategoriacurso`
+--
+ALTER TABLE `tblcategoriacurso`
+ ADD PRIMARY KEY (`idCategoriaCurso`);
+
+--
+-- Indices de la tabla `tblclase`
+--
+ALTER TABLE `tblclase`
+ ADD PRIMARY KEY (`idClase`), ADD KEY `idCurso_idx` (`idCurso`);
+
+--
+-- Indices de la tabla `tblcredito`
+--
+ALTER TABLE `tblcredito`
+ ADD PRIMARY KEY (`idCredito`), ADD KEY `fk_tblcredito_tblusuario1` (`documentoUsuario`);
+
+--
+-- Indices de la tabla `tblcurso`
+--
+ALTER TABLE `tblcurso`
+ ADD PRIMARY KEY (`idCurso`), ADD KEY `fk_tblcurso_tblcategoriacurso1_idx` (`idCategoriaCurso`);
+
+--
+-- Indices de la tabla `tbldetallecredito`
+--
+ALTER TABLE `tbldetallecredito`
+ ADD PRIMARY KEY (`idDetalleCredito`), ADD KEY `idMovimiento` (`idMovimiento`), ADD KEY `idCredito` (`idCredito`);
+
+--
+-- Indices de la tabla `tbldetallemovimiento`
+--
+ALTER TABLE `tbldetallemovimiento`
+ ADD PRIMARY KEY (`idDetalleMovimiento`), ADD KEY `FK_tblDetalleVenta_idArticulo` (`idArticulo`), ADD KEY `fk_tbldetallemovimiento_tblMovimiento1_idx` (`idMovimiento`);
+
+--
+-- Indices de la tabla `tbldetalleusuario`
+--
+ALTER TABLE `tbldetalleusuario`
+ ADD PRIMARY KEY (`idDetalleUsuario`);
+
+--
+-- Indices de la tabla `tblempresa`
+--
+ALTER TABLE `tblempresa`
+ ADD PRIMARY KEY (`nitEmpresa`);
+
+--
+-- Indices de la tabla `tblinscrito`
+--
+ALTER TABLE `tblinscrito`
+ ADD PRIMARY KEY (`idinscrito`);
+
+--
+-- Indices de la tabla `tblmodulo`
+--
+ALTER TABLE `tblmodulo`
+ ADD PRIMARY KEY (`idmodulo`);
+
+--
+-- Indices de la tabla `tblmodulorol`
+--
+ALTER TABLE `tblmodulorol`
+ ADD PRIMARY KEY (`idmodulo`,`idrol`), ADD KEY `idrol` (`idrol`);
+
+--
+-- Indices de la tabla `tblmovimiento`
+--
+ALTER TABLE `tblmovimiento`
+ ADD PRIMARY KEY (`idMovimiento`), ADD KEY `fk_tblMovimiento_tblTipoMovimiento1_idx` (`idtipoMovimiento`), ADD KEY `fk_tblMovimiento_tblusuario1_idx` (`documentoUsuario`);
+
+--
+-- Indices de la tabla `tblpreinscripcion`
+--
+ALTER TABLE `tblpreinscripcion`
+ ADD PRIMARY KEY (`idPreinscripcion`);
+
+--
+-- Indices de la tabla `tblrol`
+--
+ALTER TABLE `tblrol`
+ ADD PRIMARY KEY (`idrol`);
+
+--
+-- Indices de la tabla `tblsubsidio`
+--
+ALTER TABLE `tblsubsidio`
+ ADD PRIMARY KEY (`idSubsidio`), ADD KEY `fk_tblsubsidio_tblempresa1_idx` (`nitEmpresa`), ADD KEY `fk_tblsubsidio_tblusuario1_idx` (`documentoUsuario`);
+
+--
+-- Indices de la tabla `tbltipomovimiento`
+--
+ALTER TABLE `tbltipomovimiento`
+ ADD PRIMARY KEY (`idtipoMovimiento`);
+
+--
+-- Indices de la tabla `tblusuario`
+--
+ALTER TABLE `tblusuario`
+ ADD PRIMARY KEY (`documentoUsuario`), ADD UNIQUE KEY `emailUsuario_UNIQUE` (`emailUsuario`), ADD KEY `fk_tblestudiante_tblDetalleCliente1_idx` (`idDetalleUsuario`), ADD KEY `fk_tblusuario_tblrol1_idx` (`idrol`), ADD KEY `fk_tblusuario_tblacudiente1_idx` (`documentoAcudiente`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `tblarticulo`
+--
+ALTER TABLE `tblarticulo`
+MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tblcategoriaarticulo`
+--
+ALTER TABLE `tblcategoriaarticulo`
+MODIFY `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `tblcategoriacurso`
+--
+ALTER TABLE `tblcategoriacurso`
+MODIFY `idCategoriaCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT de la tabla `tblclase`
+--
+ALTER TABLE `tblclase`
+MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
+--
+-- AUTO_INCREMENT de la tabla `tblcredito`
+--
+ALTER TABLE `tblcredito`
+MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tblcurso`
+--
+ALTER TABLE `tblcurso`
+MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `tbldetallecredito`
+--
+ALTER TABLE `tbldetallecredito`
+MODIFY `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tbldetallemovimiento`
+--
+ALTER TABLE `tbldetallemovimiento`
+MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tbldetalleusuario`
+--
+ALTER TABLE `tbldetalleusuario`
+MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `tblinscrito`
+--
+ALTER TABLE `tblinscrito`
+MODIFY `idinscrito` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tblmodulo`
+--
+ALTER TABLE `tblmodulo`
+MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT de la tabla `tblmovimiento`
+--
+ALTER TABLE `tblmovimiento`
+MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tblpreinscripcion`
+--
+ALTER TABLE `tblpreinscripcion`
+MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tblrol`
+--
+ALTER TABLE `tblrol`
+MODIFY `idrol` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT de la tabla `tblsubsidio`
+--
+ALTER TABLE `tblsubsidio`
+MODIFY `idSubsidio` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Restricciones para tablas volcadas
 --
@@ -1905,68 +2120,68 @@ INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`
 -- Filtros para la tabla `tblarticulo`
 --
 ALTER TABLE `tblarticulo`
-  ADD CONSTRAINT `FK_tblArticulo_idCategoriaArticulo` FOREIGN KEY (`idCategoriaArticulo`) REFERENCES `tblcategoriaarticulo` (`idCategoriaArticulo`);
+ADD CONSTRAINT `FK_tblArticulo_idCategoriaArticulo` FOREIGN KEY (`idCategoriaArticulo`) REFERENCES `tblcategoriaarticulo` (`idCategoriaArticulo`);
 
 --
 -- Filtros para la tabla `tblclase`
 --
 ALTER TABLE `tblclase`
-  ADD CONSTRAINT `tblclase_ibfk_1` FOREIGN KEY (`idCurso`) REFERENCES `tblcurso` (`idCurso`);
+ADD CONSTRAINT `tblclase_ibfk_1` FOREIGN KEY (`idCurso`) REFERENCES `tblcurso` (`idCurso`);
 
 --
 -- Filtros para la tabla `tblcredito`
 --
 ALTER TABLE `tblcredito`
-  ADD CONSTRAINT `fk_tblcredito_tblusuario1` FOREIGN KEY (`documentoUsuario`) REFERENCES `tblusuario` (`documentoUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `fk_tblcredito_tblusuario1` FOREIGN KEY (`documentoUsuario`) REFERENCES `tblusuario` (`documentoUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `tblcurso`
 --
 ALTER TABLE `tblcurso`
-  ADD CONSTRAINT `fk_tblcurso_tblcategoriacurso1` FOREIGN KEY (`idCategoriaCurso`) REFERENCES `tblcategoriacurso` (`idCategoriaCurso`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `fk_tblcurso_tblcategoriacurso1` FOREIGN KEY (`idCategoriaCurso`) REFERENCES `tblcategoriacurso` (`idCategoriaCurso`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tbldetallecredito`
 --
 ALTER TABLE `tbldetallecredito`
-  ADD CONSTRAINT `tbldetallecredito_ibfk_1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`),
-  ADD CONSTRAINT `tbldetallecredito_ibfk_2` FOREIGN KEY (`idCredito`) REFERENCES `tblcredito` (`idCredito`);
+ADD CONSTRAINT `tbldetallecredito_ibfk_1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`),
+ADD CONSTRAINT `tbldetallecredito_ibfk_2` FOREIGN KEY (`idCredito`) REFERENCES `tblcredito` (`idCredito`);
 
 --
 -- Filtros para la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-  ADD CONSTRAINT `fk_tbldetallemovimiento_tblMovimiento1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_tblDetalleVenta_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `FK_tblDetalleVenta_idArticulo` FOREIGN KEY (`idArticulo`) REFERENCES `tblarticulo` (`idArticulo`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `fk_tbldetallemovimiento_tblMovimiento1` FOREIGN KEY (`idMovimiento`) REFERENCES `tblmovimiento` (`idMovimiento`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tblmodulorol`
 --
 ALTER TABLE `tblmodulorol`
-  ADD CONSTRAINT `tblmodulorol_ibfk_1` FOREIGN KEY (`idmodulo`) REFERENCES `tblmodulo` (`idmodulo`),
-  ADD CONSTRAINT `tblmodulorol_ibfk_2` FOREIGN KEY (`idrol`) REFERENCES `tblrol` (`idrol`);
+ADD CONSTRAINT `tblmodulorol_ibfk_1` FOREIGN KEY (`idmodulo`) REFERENCES `tblmodulo` (`idmodulo`),
+ADD CONSTRAINT `tblmodulorol_ibfk_2` FOREIGN KEY (`idrol`) REFERENCES `tblrol` (`idrol`);
 
 --
 -- Filtros para la tabla `tblmovimiento`
 --
 ALTER TABLE `tblmovimiento`
-  ADD CONSTRAINT `fk_tblMovimiento_tblTipoMovimiento1` FOREIGN KEY (`idtipoMovimiento`) REFERENCES `tbltipomovimiento` (`idtipoMovimiento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_tblMovimiento_tblusuario1` FOREIGN KEY (`documentoUsuario`) REFERENCES `tblusuario` (`documentoUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `fk_tblMovimiento_tblTipoMovimiento1` FOREIGN KEY (`idtipoMovimiento`) REFERENCES `tbltipomovimiento` (`idtipoMovimiento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_tblMovimiento_tblusuario1` FOREIGN KEY (`documentoUsuario`) REFERENCES `tblusuario` (`documentoUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `tblsubsidio`
 --
 ALTER TABLE `tblsubsidio`
-  ADD CONSTRAINT `fk_tblsubsidio_tblempresa1` FOREIGN KEY (`nitEmpresa`) REFERENCES `tblempresa` (`nitEmpresa`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_tblsubsidio_tblusuario1` FOREIGN KEY (`documentoUsuario`) REFERENCES `tblusuario` (`documentoUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `fk_tblsubsidio_tblempresa1` FOREIGN KEY (`nitEmpresa`) REFERENCES `tblempresa` (`nitEmpresa`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_tblsubsidio_tblusuario1` FOREIGN KEY (`documentoUsuario`) REFERENCES `tblusuario` (`documentoUsuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `tblusuario`
 --
 ALTER TABLE `tblusuario`
-  ADD CONSTRAINT `fk_tblusuario_tblacudiente1` FOREIGN KEY (`documentoAcudiente`) REFERENCES `tblacudiente` (`documentoAcudiente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_tblusuario_tblrol1` FOREIGN KEY (`idrol`) REFERENCES `tblrol` (`idrol`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `tblusuario_ibfk_1` FOREIGN KEY (`idDetalleUsuario`) REFERENCES `tbldetalleusuario` (`idDetalleUsuario`) ON DELETE SET NULL ON UPDATE CASCADE;
+ADD CONSTRAINT `fk_tblusuario_tblacudiente1` FOREIGN KEY (`documentoAcudiente`) REFERENCES `tblacudiente` (`documentoAcudiente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_tblusuario_tblrol1` FOREIGN KEY (`idrol`) REFERENCES `tblrol` (`idrol`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `tblusuario_ibfk_1` FOREIGN KEY (`idDetalleUsuario`) REFERENCES `tbldetalleusuario` (`idDetalleUsuario`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

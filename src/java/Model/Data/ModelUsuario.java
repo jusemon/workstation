@@ -153,6 +153,14 @@ public class ModelUsuario extends ConnectionDB {
     }
 
     public ResultSet ListOperarios() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ResultSet rs = null;
+        String sql = "call spConsultarOperarios()";
+        try {
+            pStmt = connection.prepareCall(sql);
+            rs = pStmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("SQLException: " + e.getMessage());
+        }
+        return rs;
     }
 }
