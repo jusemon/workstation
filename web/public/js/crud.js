@@ -1871,6 +1871,7 @@ var venta = {
                 var numeroVenta = $('#tabMovimientos').find('#txtNumero').val();
                 var documentoCliente = $('#tabMovimientos').find('#ddlIdentificacion').val() + $('#tabMovimientos').find('#txtIdentificacion').val();
                 var total = $('#tabMovimientos').find('#txtTotalMovimiento').val();
+                var chkCredito = document.getElementById('chkAddCredito').checked;
                 $.ajax({
                     type: 'POST',
                     url: "ControllerVenta",
@@ -1881,7 +1882,9 @@ var venta = {
                         txtNombreCliente: nombre, txtNumeroVenta: numeroVenta,
                         txtTotalVenta: total,
                         documentoUsuario: documentoUsuario,
-                        documentoCliente: documentoCliente
+                        documentoCliente: documentoCliente,
+                        credito: chkCredito
+                        
                     },
                     success: function (data, textStatus, jqXHR) {
                         venta.limpiarDetalle();
@@ -1890,6 +1893,9 @@ var venta = {
                         mensaje(data);
                         venta.contador();
                         venta.actualizarTabla();
+                        if (chkCredito) {
+                            credito.actualizarTabla();
+                        }
                     }
                 });
             } else {

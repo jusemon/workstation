@@ -306,7 +306,7 @@ public class ControllerMatricula extends HttpServlet {
                             _objCredito.setSaldoActual(50000 - _objClase.getPrecioClase());
                             _objMovimiento.setDocumentoUsuario(documentoUsuario);
                             _objMovimiento.setDocumentoAuxiliar(documentoCliente);
-                            daoModelCredito.Add(_objCredito, _objMovimiento);
+                            daoModelCredito.Add(_objCredito, _objMovimiento, null, null);
                         } else {
                             while (rs2.next()) {
                                 _objCredito.setDocumentoUsuario(rs2.getString("documentoUsuario"));
@@ -320,12 +320,11 @@ public class ControllerMatricula extends HttpServlet {
                     } catch (SQLException ex) {
                         Logger.getLogger(ControllerMatricula.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
+                } 
                 daoModelCredito.Signout();
             }
             clases.add(_objClase);
         }
-
         daoModelMatricula = new ModelMatricula();
         String[] aux = daoModelMatricula.RegistrarAsistencia(clases, documentoUsuario, beneficiario);
         daoModelMatricula.Signout();
