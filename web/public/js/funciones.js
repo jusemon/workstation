@@ -11,7 +11,7 @@ function limpiar(miForm) {
     $(':input', miForm).each(function () {
         var type = this.type;
         var tag = this.tagName.toLowerCase();
-        if (type === 'text' || type === 'password' || tag === 'textarea' || type === 'number' || type === 'hidden' || type === 'date' || type === 'email')
+        if (type === 'text' || type === 'password' || tag === 'textarea' || type === 'number' || type === 'hidden' || type === 'date' || type === 'email' || type==='tel')
             this.value = "";
         else if (type === 'checkbox' || type === 'radio')
             this.checked = false;

@@ -163,4 +163,25 @@ public class ModelUsuario extends ConnectionDB {
         }
         return rs;
     }
+
+    public boolean cambiarEstado(ObjUsuario _objUsuario) {
+        boolean objReturn = false;
+        String sql = "call spActualizarEstadoUsuario(?,?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, _objUsuario.getDocumentoUsuario());
+            pStmt.setInt(2, _objUsuario.getEstadoUsuario());
+
+            int updateCount = pStmt.executeUpdate();
+            if (updateCount > 0) {
+                objReturn = true;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return objReturn;
+    }
 }

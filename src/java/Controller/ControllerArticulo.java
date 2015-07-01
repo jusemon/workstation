@@ -215,6 +215,7 @@ public class ControllerArticulo extends HttpServlet {
                 salida.put("descripcionArticulo", result.getString("descripcionArticulo"));
                 salida.put("cantidadDisponible", result.getString("cantidadDisponible"));
                 salida.put("precioVenta", result.getString("precioVenta"));
+                salida.put("precioCompra", result.getString("precioCompra"));
             }
         } catch (Exception e) {
             salida.put("tipo", "error");

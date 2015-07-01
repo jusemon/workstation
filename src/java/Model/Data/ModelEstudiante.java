@@ -27,16 +27,15 @@ public class ModelEstudiante extends ConnectionDB {
 
     public boolean Add(ObjUsuario _objUsuario, ObjDetalleUsuario _objDetalleUsuario) {
         boolean objReturn = false;
-        String sql = "call spIngresarDetalleEstudiante(?,?,?,?)";
-        String sql2 = "call spIngresarEstudiante(?,?,?,?,?,?,?,?)";
+        String sql = "call spIngresarDetalleEstudiante(?,?,?)";
+        String sql2 = "call spIngresarEstudiante(?,?,?,?,?,?,?,?,?)";
         try {
             getStmt();
             connection.setAutoCommit(false);
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objDetalleUsuario.getDireccionUsuario());
-            pStmt.setString(2, _objUsuario.getTelefonoFijo());
-            pStmt.setString(3, _objDetalleUsuario.getTelefonoMovil());
-            pStmt.setInt(4, _objDetalleUsuario.getGeneroUsuario());
+            pStmt.setString(2, _objDetalleUsuario.getTelefonoMovil());
+            pStmt.setInt(3, _objDetalleUsuario.getGeneroUsuario());
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 objReturn = true;
@@ -45,10 +44,11 @@ public class ModelEstudiante extends ConnectionDB {
                 pStmt.setDate(2, Date.valueOf(_objUsuario.getFechaNacimiento()));
                 pStmt.setString(3, _objUsuario.getNombreUsuario());
                 pStmt.setString(4, _objUsuario.getApellidoUsuario());
-                pStmt.setString(5, _objUsuario.getEmailUsuario());
-                pStmt.setString(6, _objUsuario.getPassword());
-                pStmt.setInt(7, _objUsuario.getEstadoUsuario());
-                pStmt.setString(8, _objUsuario.getDocumentoAcudiente());
+                pStmt.setString(5, _objUsuario.getTelefonoFijo());
+                pStmt.setString(6, _objUsuario.getEmailUsuario());
+                pStmt.setString(7, _objUsuario.getPassword());
+                pStmt.setInt(8, _objUsuario.getEstadoUsuario());
+                pStmt.setString(9, _objUsuario.getDocumentoAcudiente());
                 if (pStmt.executeUpdate() > 0) {
                     objReturn = true;
                 } else {
@@ -164,9 +164,8 @@ public class ModelEstudiante extends ConnectionDB {
             connection.setAutoCommit(false);
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objDetalleUsuario.getDireccionUsuario());
-            pStmt.setString(2, _objUsuario.getTelefonoFijo());
-            pStmt.setString(3, _objDetalleUsuario.getTelefonoMovil());
-            pStmt.setInt(4, _objDetalleUsuario.getGeneroUsuario());
+            pStmt.setString(2, _objDetalleUsuario.getTelefonoMovil());
+            pStmt.setInt(3, _objDetalleUsuario.getGeneroUsuario());
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
                 pStmt = connection.prepareCall(sql2);
@@ -174,10 +173,11 @@ public class ModelEstudiante extends ConnectionDB {
                 pStmt.setDate(2, Date.valueOf(_objUsuario.getFechaNacimiento()));
                 pStmt.setString(3, _objUsuario.getNombreUsuario());
                 pStmt.setString(4, _objUsuario.getApellidoUsuario());
-                pStmt.setString(5, _objUsuario.getEmailUsuario());
-                pStmt.setString(6, _objUsuario.getPassword());
-                pStmt.setInt(7, _objUsuario.getEstadoUsuario());
-                pStmt.setString(8, _objUsuario.getDocumentoAcudiente());
+                pStmt.setString(5, _objUsuario.getTelefonoFijo());
+                pStmt.setString(6, _objUsuario.getEmailUsuario());
+                pStmt.setString(7, _objUsuario.getPassword());
+                pStmt.setInt(8, _objUsuario.getEstadoUsuario());
+                pStmt.setString(9, _objUsuario.getDocumentoAcudiente());
                 ResultSet rs = pStmt.executeQuery();
                 while (rs.next()) {
                     objReturn[0] = rs.getString("tipo");

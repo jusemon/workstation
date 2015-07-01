@@ -840,6 +840,7 @@ var estudiante = {
         $('#miPopupEstudiante').find('#txtCelular').val(data['telefonoMovil']);
         $('#miPopupEstudiante').find('#txtCorreo').val(data['emailUsuario']);
         $('#miPopupEstudiante').find('#txtPass').val(data['password']);
+        $('#miPopupEstudiante').find('#txtPass2').val(data['password']);
         $('#miPopupEstudiante').find('#radioGeneroFemenino').parents('.row:first').show();
         if (parseInt(data['generoUsuario']) === 0)
             $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', true).parents('.row:first').show();
@@ -1044,6 +1045,7 @@ var usuario = {
         $('#miPopupUsuario').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
         $('#miPopupUsuario').find('#txtCorreo').val(data['emailUsuario']);
         $('#miPopupUsuario').find('#txtPass').val(data['password']);
+        $('#miPopupUsuario').find('#txtPass2').val(data['password']);
         $('#miPopupUsuario').find('#btnUsuario').attr('type', 'hidden').attr('disabled', true);
         desabilitar('#formUsuario');
         $('#miPopupUsuario').modal('show');
@@ -1124,8 +1126,10 @@ var usuario = {
                 $('#formActualizarDatos').find('#txtNombre').val(data['nombreUsuario']);
                 $('#formActualizarDatos').find('#txtApellido').val(data['apellidoUsuario']);
                 $('#formActualizarDatos').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
+                $('#formActualizarDatos').find('#txtTelefono').val(data['telefonoFijo']);
                 $('#formActualizarDatos').find('#txtCorreo').val(data['emailUsuario']);
                 $('#formActualizarDatos').find('#txtPass').val(data['password']);
+                $('#formActualizarDatos').find('#txtPass2').val(data['password']);
                 $('#formActualizarDatos').find('#btnUsuario').attr('type', 'button').attr('value', 'Actualizar').attr('disabled', false);
             }
         });
@@ -1358,8 +1362,11 @@ var articulo = {
                         $('#miPopupArticulo').modal('hide');
                         mensaje(data);
                         articulo.actualizarTabla();
-                        $("#ddlArticulos").select2('destroy');
-                        articulo.listarArticulos();
+                        if (document.getElementById('ddlArticulos') !== null) {
+                            $("#ddlArticulos").select2('destroy');
+                            articulo.listarArticulos();
+                        }
+
                     } else if (accion === 'ConsultarCodigo') {
                         articulo.registrar(data);
                     }
@@ -1428,7 +1435,7 @@ var articulo = {
                         fila += '<td>' + '<input type="number" id="valor" onblur="compra.actualizarTotal(\'valor\')" name="valor" min="50" required>' + '</td>';
                     } else {
                         fila += '<td>' + '<input type="number" id="cantidad" onblur="compra.actualizarTotal(\'cantidad\')" name="cantidad" min="1" max="' + data['cantidadDisponible'] + '" required>' + '</td>';
-                        fila += '<td>' + '<input type="number" id="valor" onblur="compra.actualizarTotal(\'valor\')" name="valor" min="50" value="' + data['precioVenta'] + '" required>' + '</td>';
+                        fila += '<td>' + '<input type="number" id="valor" onblur="compra.actualizarTotal(\'valor\')" name="valor" min="' + (parseInt(data['precioCompra']) + 1 )+ '" value="' + data['precioVenta'] + '" required>' + '</td>';
                     }
                     fila += '<td>' + '<button class="btn btn-danger glyphicon glyphicon-remove row-remove" onclick="articulo.remover(' + data['idArticulo'] + ')"></button>' + '</td>';
                     fila += '</tr>';
@@ -2043,7 +2050,7 @@ var operario = {
                 type: 'POST',
                 data: {
                     action: 'Estado',
-                    documentoOperario: id
+                    id: id
                 },
                 success: function (data, textStatus, jqXHR) {
                     mensaje(data);
@@ -2057,13 +2064,13 @@ var operario = {
                 type: 'POST',
                 data: {
                     action: 'Consultar',
-                    documentoOperario: id
+                    id: id
                 },
                 success: function (data, textStatus, jqXHR) {
-                    if (aux==='Editar') {
+                    if (aux === 'Editar') {
                         operario.editar(data);
                     }
-                    else{
+                    else {
                         operario.consultar(data);
                     }
                 }
@@ -2097,21 +2104,23 @@ var operario = {
     consultar: function (data) {
         limpiar('formOperario');
         desabilitar('formOperario');
-        $('#miPopupOperario').find('#titulo').val('Consultar Operario');
+        $('#miPopupOperario').find('#titulo').text('Consultar Operario');
         $('#miPopupOperario').find('#txtIdentificacion').val(data['numeroDocumento']);
         $('#miPopupOperario').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + data['tipoDocumento'] + '"]').prop('selected', true);
         $('#miPopupOperario').find('#txtNombre').val(data['nombreUsuario']);
         $('#miPopupOperario').find('#txtApellido').val(data['apellidoUsuario']);
-        $('#miPopupOperario').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
+        $('#miPopupOperario').find('#txtTelefono').val(data['telefonoFijo']);
         $('#miPopupOperario').find('#txtCorreo').val(data['emailUsuario']);
+        $('#miPopupOperario').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
         $('#miPopupOperario').find('#txtPass').val(data['password']);
+        $('#miPopupOperario').find('#txtPass2').val(data['password']);
         $('#miPopupOperario').find('#btnOperario').attr('type', 'hidden');
         $('#miPopupOperario').modal('show');
     },
     editar: function (data) {
         operario.consultar(data);
         habilitar('formOperario');
-        $('#miPopupOperario').find('#titulo').val('Editar Operario');
+        $('#miPopupOperario').find('#titulo').text('Editar Operario');
         $('#miPopupOperario').find('#btnOperario').val('Editar').attr('type', 'button');
     },
     cargar: function () {

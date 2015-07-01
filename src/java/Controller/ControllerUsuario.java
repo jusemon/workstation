@@ -75,6 +75,10 @@ public class ControllerUsuario extends HttpServlet {
                     response.getWriter().write(EnlistarOperarios());
                     break;
                 }
+                case "Estado": {
+                    response.getWriter().write(Estado(request));
+                    break;
+                }
             }
         }
     }
@@ -131,6 +135,7 @@ public class ControllerUsuario extends HttpServlet {
                 }
                 respuesta.put("nombreUsuario", result.getString("nombreUsuario"));
                 respuesta.put("apellidoUsuario", result.getString("apellidoUsuario"));
+                respuesta.put("telefonoFijo", result.getString("telefonoFijo"));
                 respuesta.put("emailUsuario", result.getString("emailUsuario"));
                 respuesta.put("password", result.getString("password"));
                 respuesta.put("estadoUsuario", result.getString("estadoUsuario"));
@@ -317,10 +322,19 @@ public class ControllerUsuario extends HttpServlet {
                 arreglo[2] = result.getString("emailUsuario").trim();
                 //arreglo[3] = result.getString("numeroClasesFaltantes").trim();
                 arreglo[3] = result.getString("telefonoFijo").trim();                
-                arreglo[4] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"operario.myAjax(" + arreglo[0] + ")\">"
-                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
-                arreglo[5] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"matricula.asistencia('" + result.getString("documentoUsuario").trim()+")\">"
-                        + "<span class=\"glyphicon glyphicon-edit\"></span></a>";
+                arreglo[4] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"operario.myAjax('Estado','" + arreglo[0] + "')\">"
+                        + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";                
+                arreglo[5] = "<div class=\"btn-group\">\n"
+                        + "  <button type=\"button\" class=\"btn btn-info btn-block dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n"
+                        + "    Acciones <span class=\"caret\"></span>\n"
+                        + "  </button>\n"
+                        + "  <ul class=\"dropdown-menu\">\n"
+                        + "    <li><a class=\"btn btn-success\" href=\"javascript:void(0)\" onclick=\"operario.myAjax('Consultar','" + arreglo[0] + "', null, 'Operario')\">"
+                        + "<span class=\"glyphicon glyphicon-search\"></span>Consultar</a></li>\n"
+                        + "    <li><a class=\"btn btn-primary \"  href=\"javascript:void(0)\" onclick=\"operario.myAjax('Consultar','" + arreglo[0] + "','Editar', 'Operario')\">"
+                        + "<span class=\"glyphicon glyphicon-edit\"></span>Editar</a></li>\n"
+                        + "  </ul>\n"
+                        + "</div>";
                 lista.add(arreglo);
             }
         } catch (Exception e) {
@@ -331,6 +345,30 @@ public class ControllerUsuario extends HttpServlet {
         String salida = new Gson().toJson(lista);
         salida = "{\"data\":" + salida + "}";
         return salida;
+    }
+
+    private String Estado(HttpServletRequest request) {
+        ResultSet rs;
+        int estado = 0;
+        try {
+            String documentoUsuario = request.getParameter("id");
+            daoModelUsuario = new ModelUsuario();
+            rs = daoModelUsuario.buscarPorID(documentoUsuario);
+            while (rs.next()) {
+                estado = rs.getInt("estadoUsuario");
+            }
+
+            estado = estado > 0 ? 0 : 1;
+            _objUsuario = new ObjUsuario();
+            _objUsuario.setDocumentoUsuario(documentoUsuario);
+            _objUsuario.setEstadoUsuario(estado);
+            return Mensaje(daoModelUsuario.cambiarEstado(_objUsuario), "El estado ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
+
+        } catch (Exception e) {
+            return Mensaje(false, "", "Ha ocurrido un error en el controller " + e.getMessage());
+        } finally {
+            daoModelUsuario.Signout();
+        }
     }
 
 }

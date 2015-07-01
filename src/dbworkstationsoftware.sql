@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-07-2015 a las 06:03:02
+-- Tiempo de generación: 01-07-2015 a las 20:06:44
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -153,6 +153,16 @@ BEGIN
         WHERE `idCurso`=`idCur`;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstadoUsuario`(
+    in documentoUsuar        varchar(20),
+    in estadoUsuar int
+)
+BEGIN
+	UPDATE tblusuario SET 
+            `estadoUsuario`=`estadoUsuar` 
+        WHERE `documentoUsuar`=`documentoUsuar`;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstudiante`(
     in documentoUsuar   varchar(20),
     in fechaNacimien    DATE,
@@ -172,6 +182,7 @@ BEGIN
         `fechaNacimiento`=`fechaNacimien`,
         `nombreUsuario`=`nombreUsuar`,
         `apellidoUsuario`=`apellidoUsuar`,
+        `telefonoFijo`=`telefonoFi`,
         `emailUsuario`=`emailUsuar`,
         password=passwo,
         `estadoUsuario`=`estadoUsuar`,
@@ -180,7 +191,6 @@ BEGIN
 
     UPDATE tbldetalleusuario SET 
         `direccionUsuario` = `direccionUsuar`,
-        `telefonoFijo`=`telefonoFi`,
         `telefonoMovil`=`telefonoMov`,
         `generoUsuario`=`generoUsuar`
     WHERE `idDetalleUsuario` = (SELECT `idDetalleUsuario` FROM tblusuario WHERE `documentoUsuario`=`documentoUsuar`);
@@ -217,6 +227,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarUsuario`(
     in fechaNacimien    DATE,
     in nombreUsuar      varchar(30),
     in apellidoUsuar    varchar(30),
+    in telefonoFi       varchar(20),
     in emailUsuar       varchar(50),
     in passwo           varchar(45),
     in estadoUsuar      int,
@@ -227,6 +238,7 @@ BEGIN
         `fechaNacimiento`=`fechaNacimien`,
         `nombreUsuario`=`nombreUsuar`,
         `apellidoUsuario`=`apellidoUsuar`,
+        `telefonoFijo`=`telefonoFi`,
         `emailUsuario`=`emailUsuar`,
         password=passwo,
         `estadoUsuario`=`estadoUsuar`
@@ -699,6 +711,7 @@ BEGIN
         `fechaNacimiento`, 
         `nombreUsuario`, 
         `apellidoUsuario`, 
+        `telefonoFijo`,
         `emailUsuario`, 
         `password`, 
         `estadoUsuario`,
@@ -1082,19 +1095,16 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleEstudiante`(
     in direccionUsuar   varchar(50),
-    in telefonoFi       varchar(11),
     in telefonoMov      varchar(15),
     in generoUsuar      bit
 )
 BEGIN
     INSERT INTO `tbldetalleusuario`(
         `direccionUsuario`, 
-        `telefonoFijo`, 
         `telefonoMovil`, 
         `generoUsuario`
     ) VALUES (
         direccionUsuar,
-        telefonoFi,
         telefonoMov,
         generoUsuar
     );
@@ -1179,6 +1189,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarEstudiante`(
     in fechaNacimien    DATE,
     in nombreUsuar      varchar(30),
     in apellidoUsuar    varchar(30),
+    in telefonoFi       varchar(20),
     in emailUsuar       varchar(50),
     in passwo           varchar(45),
     in estadoUsuar      int,
@@ -1190,6 +1201,7 @@ INSERT INTO `tblusuario`(
     `fechaNacimiento`, 
     `nombreUsuario`, 
     `apellidoUsuario`, 
+    `telefonoFijo`, 
     `emailUsuario`, 
     `password`, 
     `estadoUsuario`, 
@@ -1201,6 +1213,7 @@ INSERT INTO `tblusuario`(
     fechaNacimien,
     nombreUsuar,
     apellidoUsuar,
+    telefonoFi,
     emailUsuar,
     passwo,
     estadoUsuar,
@@ -1214,6 +1227,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarEstudianteApartirDePreins
     in fechaNacimien    DATE,
     in nombreUsuar      varchar(30),
     in apellidoUsuar    varchar(30),
+    in telefonoFi    varchar(20),
     in emailUsuar       varchar(50),
     in passwo           varchar(45),
     in estadoUsuar      int,
@@ -1229,6 +1243,7 @@ ELSE
         SET `fechaNacimiento` = `fechaNacimien`,
             `nombreUsuario` = `nombreUsuar`,
             `apellidoUsuario` = `apellidoUsuar`,
+            `telefonoFijo`=`telefonoFi`,
             `emailUsuario` = `emailUsuar`,
             password = passwo,
             `estadoUsuario` = `estadoUsuar`,
@@ -1517,7 +1532,14 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
   `cantidadDisponible` mediumint(9) NOT NULL,
   `precioCompra` int(11) NOT NULL,
   `precioVenta` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tblarticulo`
+--
+
+INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioCompra`, `precioVenta`) VALUES
+(1, 1, 'Vinilo', 1, 1200, 1300);
 
 -- --------------------------------------------------------
 
@@ -1677,7 +1699,16 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
   `totalDetalleMovimiento` int(11) NOT NULL,
   `idMovimiento` int(11) NOT NULL,
   `precioArticulo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tbldetallemovimiento`
+--
+
+INSERT INTO `tbldetallemovimiento` (`idDetalleMovimiento`, `idArticulo`, `idClase`, `cantidad`, `descuento`, `totalDetalleMovimiento`, `idMovimiento`, `precioArticulo`) VALUES
+(1, 1, NULL, 12, 1, 14400, 1, 1200),
+(2, 1, NULL, 10, 1, 12000, 2, 1200),
+(3, 1, NULL, 1, 1, 1300, 3, 1300);
 
 -- --------------------------------------------------------
 
@@ -1691,14 +1722,15 @@ CREATE TABLE IF NOT EXISTS `tbldetalleusuario` (
   `telefonoMovil` varchar(15) NOT NULL,
   `generoUsuario` bit(1) NOT NULL,
   `estadoBeneficiario` bit(1) NOT NULL DEFAULT b'0'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbldetalleusuario`
 --
 
 INSERT INTO `tbldetalleusuario` (`idDetalleUsuario`, `direccionUsuario`, `telefonoMovil`, `generoUsuario`, `estadoBeneficiario`) VALUES
-(1, 'asdasdasd', '3218016237', b'1', b'0');
+(1, 'asdasdasd', '3218016237', b'1', b'0'),
+(2, 'Calle 45', '3214752456', b'1', b'0');
 
 -- --------------------------------------------------------
 
@@ -1805,7 +1837,16 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
   `numeroAuxiliar` varchar(45) DEFAULT NULL,
   `nombreAuxiliar` varchar(45) DEFAULT NULL,
   `documentoAuxiliar` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tblmovimiento`
+--
+
+INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento`, `idtipoMovimiento`, `documentoUsuario`, `numeroAuxiliar`, `nombreAuxiliar`, `documentoAuxiliar`) VALUES
+(1, '2015-07-01 13:00:05', 14400, 1, 'CC1017225673', '123', 'Sebas', NULL),
+(2, '2015-07-01 13:00:33', 12000, 3, 'CC1017225673', '1', 'Juan Montoya', 'CC101722567'),
+(3, '2015-07-01 13:05:30', 1300, 3, 'CC1017225673', '2', 'Juan Montoya', 'CC101722567');
 
 -- --------------------------------------------------------
 
@@ -1903,9 +1944,10 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
 --
 
 INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`, `telefonoFijo`) VALUES
-('CC101722567', '1981-03-13', 'Juan', 'Montoya', 'correo@correo.co', 'Esdfgdfg4', 1, 1, 3, NULL, '2359732'),
+('CC101722567', '1981-03-13', 'Juan', 'Montoya', 'correo@correo.co', 'Esdfgdfg4', 0, 1, 3, NULL, '2359731'),
 ('CC1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL, '5861529'),
-('CC1017225674', '1996-01-17', 'Operario', 'Operar', 'jsmontoya378@outlook.com', 'Es12030000', 1, NULL, 2, NULL, '5861529'),
+('CC1017225674', '1996-01-18', 'Operario', 'Operar', 'jsmontoya378@outlook.com', 'Es120300', 1, NULL, 2, NULL, '5861529'),
+('CC1017225678', '2001-03-02', 'Vanessa', 'Soto', 'jsun@asd.co', 'Abcde123', 0, 2, 3, NULL, '2359731'),
 ('CC8101926', '1984-01-06', 'David', 'Cano Arango', 'dcano62@misena.edu.co', '123', 1, NULL, 1, NULL, '1234567'),
 ('CE5465465', '1969-12-28', 'Lorenzo', 'Chimeno Trenado', 'lchimeno37@misena.edu.co', '123', 1, NULL, 1, NULL, '9876543');
 
@@ -2041,7 +2083,7 @@ ALTER TABLE `tblusuario`
 -- AUTO_INCREMENT de la tabla `tblarticulo`
 --
 ALTER TABLE `tblarticulo`
-MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `tblcategoriaarticulo`
 --
@@ -2076,12 +2118,12 @@ MODIFY `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `tbldetalleusuario`
 --
 ALTER TABLE `tbldetalleusuario`
-MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `tblinscrito`
 --
@@ -2096,7 +2138,7 @@ MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 -- AUTO_INCREMENT de la tabla `tblmovimiento`
 --
 ALTER TABLE `tblmovimiento`
-MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --

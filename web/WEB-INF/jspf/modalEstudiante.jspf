@@ -100,7 +100,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="txtCorreo">
                                                     Correo Electrónico
@@ -108,12 +108,20 @@
                                                 <input name="txtCorreo" id="txtCorreo" type="email" class="form-control" placeholder="Ejm: juansmm@outlook.com" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="txtPass">
                                                     Contraseña                                                
                                                 </label>
                                                 <input name="txtPass" id="txtPass" type="password" class="form-control" required="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="txtPass2">
+                                                    Repita la Contraseña                                                
+                                                </label>
+                                                <input name="txtPass2" id="txtPass2" type="password" class="form-control" required="">
                                             </div>
                                         </div>
                                     </div>

@@ -7,6 +7,10 @@ $.validator.addMethod("nombres", function (value, element) {
     return this.optional(element) || /^[ÁÉÍÓÚáéíóúñÑa-zA-Z ]{3,15}/.test(value);
 }, 'Entre 3 y 15 letras y no se permiten números.');
 
+$.validator.addMethod("precioMin", function (value, element) {
+    return this.optional(element) || precioMin(value);
+}, 'El precio de venta no debe ser menor al de compra');
+
 $.validator.addMethod("descripcionArticulo", function (value, element) {
     return this.optional(element) || /^[áéíóúÁÉÍÓÚñÑ°.,:'&quot;0-9a-zA-Z ]{3,30}/.test(value);
 }, 'Entre 3 y 30 letras, se permiten números y algunos caracteres como , y .');
@@ -136,7 +140,13 @@ if (document.getElementById('formArticulo') !== null) {
             txtPrecioCompra: {
                 required: true,
                 min: 50,
-                max: 100000
+                max: 10000000,
+                digits:true
+            },
+            txtPrecioVenta:{
+              required: true,
+              digits:true,
+              precioMin: true
             }
         }
     });
@@ -170,6 +180,16 @@ if (document.getElementById('formUsuario') !== null) {
             txtPass: {
                 required: true,
                 pass: true
+            },
+            txtPass2: {
+                required: true,
+                equalTo: txtPass
+            },
+            txtTelefono: {
+                required: true,
+                minlength: 7,
+                maxlength: 15,
+                digits: true
             },
             txtCorreo: {
                 required: true,
@@ -208,6 +228,10 @@ if (document.getElementById('form_estudiante') !== null) {
             txtPass: {
                 required: true,
                 pass: true
+            },
+            txtPass2: {
+                required: true,
+                equalTo: txtPass
             },
             txtDireccion: {
                 required: true,
@@ -253,6 +277,10 @@ if (document.getElementById('formActualizarDatos') !== null) {
                 required: true,
                 fecha: true,
                 edad: true
+            },
+            txtPass2: {
+                required: true,
+                equalTo: txtPass
             },
             txtPass: {
                 required: true,
@@ -304,6 +332,10 @@ if (document.getElementById('formOperario') !== null) {
             txtPass: {
                 required: true,
                 pass: true
+            },
+            txtPass2: {
+                required: true,
+                equalTo: txtPass
             },
             txtTelefono: {
                 required: true,
@@ -373,4 +405,9 @@ function validacionFechaRegistroASeminario(fechaSeminario) {
             }
         }
     }
+}
+
+function precioMin(precioVenta) {
+    var precioCompra = parseInt($('#formArticulo').find('#txtPrecioCompra').val());
+    return precioCompra<precioVenta;
 }

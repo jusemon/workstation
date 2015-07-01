@@ -29,7 +29,9 @@ $(document).ready(function () {
     } else if (URLactual.indexOf('articulo') !== -1) {
         $('#btnarticulo').attr('class', 'active');
     } else if (URLactual.indexOf('caja') !== -1) {
-        $('#btncaja').attr('class', 'active');
+        $('#btncaja').attr('class', 'active');    
+    } else if (URLactual.indexOf('operario') !== -1) {
+        $('#btnoperario').attr('class', 'active');
     }
     else {
         $('#btnindex').attr('class', 'active');
