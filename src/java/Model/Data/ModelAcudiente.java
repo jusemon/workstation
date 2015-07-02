@@ -24,9 +24,9 @@ public class ModelAcudiente extends ConnectionDB {
         getConnection();
     }
 
-    public boolean Add(ObjAcudiente _objAcudiente) {
+    public boolean Add(ObjAcudiente _objAcudiente, String documentoEstudiante) {
         boolean objReturn = false;
-        String sql = "call spIngresarAcudiente(?,?,?,?)";
+        String sql = "call spIngresarAcudiente(?,?,?,?,?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
@@ -34,6 +34,7 @@ public class ModelAcudiente extends ConnectionDB {
             pStmt.setString(2, _objAcudiente.getNombreAcudiente());
             pStmt.setString(3, _objAcudiente.getTelefonoAcudiente());
             pStmt.setDate(4, Date.valueOf(_objAcudiente.getFechaNacimiento()));
+            pStmt.setString(5, documentoEstudiante);
 
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {

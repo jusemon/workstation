@@ -276,6 +276,11 @@ public class ControllerEstudiante extends HttpServlet {
                 respuesta.put("password", result.getString("password"));
                 respuesta.put("estadoUsuario", result.getString("estadoUsuario"));
                 respuesta.put("idrol", result.getString("idrol"));
+                try {
+                    respuesta.put("documentoAcudiente", result.getString("documentoAcudiente"));
+                    respuesta.put("nombreAcudiente", result.getString("nombreAcudiente"));
+                } catch (Exception e) {
+                }
                 if (tipo.equals("Inscrito")) {
                     respuesta.put("idDetalleUsuario", result.getString("idDetalleUsuario"));
                     respuesta.put("direccionUsuario", result.getString("direccionUsuario"));
@@ -414,7 +419,7 @@ public class ControllerEstudiante extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private String asignarEmpresa(HttpServletRequest request) {        
+    private String asignarEmpresa(HttpServletRequest request) {
         String nitEmpresa = request.getParameter("nitEmpresa");
         String documentoEstudiante = request.getParameter("documentoEstudiante");
         int valorBeneficio = Integer.parseInt(request.getParameter("valorBeneficio"));
@@ -425,7 +430,7 @@ public class ControllerEstudiante extends HttpServlet {
         ModelSubsidio daoModelSubsidio = new ModelSubsidio();
         String salida = Mensaje(daoModelSubsidio.Add(_objSubsidio), "Se ha registrado el beneficio", "Ha ocurrido un error al intentar registrar el beneficio");
         daoModelSubsidio.Signout();
-        return  salida;
+        return salida;
     }
 
 }
