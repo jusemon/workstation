@@ -30,7 +30,7 @@ public class ModelUsuario extends ConnectionDB {
 
     public boolean Add(ObjUsuario _objUsuario) {
         boolean objReturn = false;
-        String sql = "call spIngresarUsuario (?,?,?,?,?,?,?,?)";
+        String sql = "call spIngresarUsuario (?,?,?,?,?,?,?,?,?)";
         try {
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objUsuario.getDocumentoUsuario());
@@ -95,8 +95,8 @@ public class ModelUsuario extends ConnectionDB {
     }
 
     public List<Map<String, String>> ListClientesYEstudiantes() {
-        ResultSet rs = null;
-        Map<String, String> respuesta = null;
+        ResultSet rs;
+        Map<String, String> respuesta;
         List<Map<String, String>> salida = new ArrayList<>();
         String sql = "call spConsultarClientesYEstudiantes()";
         try {

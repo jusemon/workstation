@@ -39,7 +39,7 @@
                                                 <label for="txtIdentificacion">
                                                     Número
                                                 </label>
-                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673">
+                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 456550">
                                             </div>
                                         </div>
                                     </div>
@@ -49,7 +49,7 @@
                                                 <label for="txtNombre">
                                                     Nombres y Apellidos
                                                 </label>
-                                                <input name="txtNombre" id="txtNombre" type="text"  class="form-control" placeholder="Ejm: Juan Sebastián">
+                                                <input name="txtNombre" id="txtNombre" type="text"  class="form-control" placeholder="Ejm: Lorenzo Chimeno">
                                             </div>
                                         </div>
                                     </div>
@@ -69,7 +69,7 @@
                                                 <label for="txtCorreo">
                                                     Correo Electrónico
                                                 </label>
-                                                <input name="txtCorreo" id="txtCorreo" type="email" class="form-control" placeholder="Ejm: jsmontoya37@misena.edu.co" >
+                                                <input name="txtCorreo" id="txtCorreo" type="email" class="form-control" placeholder="Ejm: lchimeno@misena.edu.co" >
                                             </div>
                                         </div>
                                     </div>

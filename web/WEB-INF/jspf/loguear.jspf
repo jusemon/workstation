@@ -10,7 +10,7 @@ Aqui se encuentra el login, tambien tiene para recuperar la contraseña.
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <span class="glyphicon glyphicon-user"></span> 
-            <strong>Aun no has iniciado sesion</strong>
+            <strong>Aún no has iniciado sesion</strong>
             <span class="glyphicon glyphicon-chevron-down"></span>
         </a>
         <ul class="dropdown-menu">
@@ -49,11 +49,11 @@ Aqui se encuentra el login, tambien tiene para recuperar la contraseña.
                                                     <input class="btn btn-success btn-block btn-sm" id="btnLogin" value="Iniciar Sesion" type="submit" name="Action">
                                                 </div>
                                             </div>
-                                            <div class="col-md-offset-2 col-sm-offset-4 col-md-8">
+                                            <!--<div class="col-md-offset-2 col-sm-offset-4 col-md-8">
                                                 <div class="form-group">
                                                     <input class="btn btn-danger btn-block btn-sm" id="btnLogin" value="Recuperar Contraseña" type="button" onclick="usuario.recuperarPass()">
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <div class="col-md-offset-3 col-sm-offset-3 col-sm-6 col-md-6">
                                                 <div class="form-group">
                                                     <input class="btn btn-warning btn-block btn-sm" id="btnLogin" value="Registrarse" type="button" onclick="usuario.registrar()">

@@ -13,7 +13,7 @@ $('.fecha').datepicker({
 $('.fecha2').datetimepicker({
     locale: "es"
 });
-var validationCurso, validationArticulo, validationEstudiante, validationUsuario, validationEmpresa, validationUsuarioPerfil, validationBeneficiario, validationOperarios, validationAsistenteSeminario;
+var validationCurso, validationArticulo, validationEstudiante, validationUsuario, validationEmpresa, validationUsuarioPerfil, validationBeneficiario, validationOperarios, validationAsistenteSeminario, validationAcudiente;
 var tablaCurso, tablaCategoriaCurso, tablaClases, tablaCredito, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso, tablaPreinscritos, tablaPreincripciones, tablaOperarios, tablaDetalleSeminario;
 var curso = {
     myAjax: function (accion, id, aux, typo) {
@@ -216,6 +216,7 @@ var curso = {
             data: {
                 action: 'cursosDisponibles'
             },
+            async: false,
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
                     var html = '<div class="col-md-6">'
@@ -549,6 +550,7 @@ var seminario = {
             data: {
                 action: 'seminariosDisponibles'
             },
+            async: false,
             success: function (data) {
                 var html = data;
                 $("#seminariosDisponibles").append(html);
@@ -605,7 +607,7 @@ var seminario = {
 //            ]
         });
     },
-    recargarDetalle: function (idSeminario) {
+    recargarDetalle: function () {
         tablaDetalleSeminario.ajax.reload();
     },
     actualizarTabla: function () {
@@ -628,11 +630,13 @@ var seminario = {
         });
     },
     mostrarRegistroAsistente: function () {
-        var fechaSeminario = $('#fecha').text();
+        var fechaSeminario = $('#miPopupDetalleSeminario').find('#fecha').text();
         if (validacionFechaRegistroASeminario(fechaSeminario) === true) {
             var idSeminario = $('#formDetalleSeminario').find('#idSeminario').val();
             $('#formAsistenteSeminario').find('#idSeminario').val(idSeminario);
             $('#miPopupAsistenteSeminario').modal('show');
+        } else {
+            $.notify('El seminario ya paso', 'error');
         }
     },
     registrarAsistente: function () {
@@ -645,7 +649,7 @@ var seminario = {
                     mensaje(data);
                     if (data['tipo'] === 'success') {
                         var cupos = $('#miPopupDetalleSeminario').find('#restantes').val();
-                        $('#miPopupDetalleSeminario').find('#restantes').val(cupos-1);
+                        $('#miPopupDetalleSeminario').find('#restantes').val(cupos - 1);
                         seminario.recargarDetalle();
                     }
                     $('#miPopupAsistenteSeminario').modal('hide');
@@ -655,6 +659,83 @@ var seminario = {
             $.notify("Uno o más campos contienen errores", "error")
         }
 
+    }
+};
+var abono = {
+    myAjax: function (accion, id, aux) {
+        var form = $('#formAbono');
+        $(form).on('submit', function () {
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize() + '&action=' + accion + '&id=' + id,
+                success: function (data) {
+                    if (accion === 'Consultar') {
+                        if (aux === 'Editar') {
+                            abono.editar(data);
+                        } else
+                            abono.consultar(data);
+                    }
+                    else if (accion === 'Registrar' || accion === 'Editar') {
+                        $('#miPopupAbono').modal('hide');
+                        abono.mensaje(data);
+                        abono.actualizarTabla();
+                    }
+                    else if (accion === 'Estado') {
+                        abono.mensaje(data);
+                        abono.actualizarTabla();
+                    }
+                }
+            });
+            $(form).off();
+            return false;
+        });
+        if (accion === 'Estado' || accion === 'Consultar') {
+            $(form).submit();
+        }
+    },
+    consultar: function (data) {
+        limpiar("#formAbono");
+        $('#miPopupAbono').find('#titulo').empty();
+        $('#miPopupAbono').find('#titulo').append('Consultar Abono');
+        $('#miPopupAbono').find('#idAbono').val(data['idAbono']);
+        $('#miPopupAbono').find('#txtIdCredito').val(data['idCredito']);
+        $('#miPopupAbono').find('#txtValorAbono').val(data['valorAbono']);
+        $('#miPopupAbono').find('#dateFechaPago').val(data['fechaPago']);
+        $('#miPopupAbono').find('#btnAbono').attr('type', 'hidden').attr('disabled', true);
+        $('#miPopupAbono').modal('show');
+    },
+    registrar: function () {
+        limpiar("#formAbono");
+        $('#miPopupAbono').find('#titulo').empty();
+        $('#miPopupAbono').find('#titulo').append('Registrar Abono');
+        $('#miPopupAbono').find('#btnAbono').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
+        $('#miPopupAbono').modal('show');
+    },
+    editar: function (data) {
+        abono.consultar(data);
+        $('#miPopupAbono').find('#titulo').empty();
+        $('#miPopupAbono').find('#titulo').append('Editar Abono');
+        $('#miPopupAbono').find('#btnAbono').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
+    },
+    mensaje: function (data) {
+        $.notify(data['mensaje'], data['tipo']);
+    },
+    cargar: function () {
+        tablaAbono = $('#tblAbono').DataTable({
+            "ajax": {
+                "url": "ControllerAbono",
+                "type": "POST",
+                "data": {
+                    action: 'Enlistar'
+                }
+            }, "language": {
+                "url": "public/js/locales/Spanish.json"
+            }
+        });
+    },
+    actualizarTabla: function () {
+        tablaAbono.ajax.reload();
     }
 };
 var estudiante = {
@@ -692,9 +773,14 @@ var estudiante = {
                     url: $(form).attr('action'),
                     data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
                     success: function (data) {
-                        if (data['tipo'] !== 'error') {
-                            var identificacion = $('#miPopupEstudiante').find('#ddlIdentificacion').val() + $('#miPopupEstudiante').find('#txtIdentificacion').val();
-                            matricula.registrarBeneficiario(identificacion);
+                        if (accion === 'Editar') {
+
+                        }
+                        else {
+                            if (data['tipo'] !== 'error') {
+                                var identificacion = $('#miPopupEstudiante').find('#ddlIdentificacion').val() + $('#miPopupEstudiante').find('#txtIdentificacion').val();
+                                matricula.registrarBeneficiario(identificacion);
+                            }
                         }
                         $('#miPopupEstudiante').modal('hide');
                         mensaje(data);
@@ -860,6 +946,32 @@ var estudiante = {
             curso.seleccionar(data['idCurso']);
             preinscrito.actualizarTabla();
         }
+    },
+    registrarAcudiente: function () {
+        if (validationAcudiente.valid()) {
+            $.ajax({
+                url: "ControllerAcudiente",
+                type: 'POST',
+                data: $('#formAcudiente').serialize() + '&action=Registrar',
+                success: function (data) {
+                    if (data['tipo'] !== 'error') {
+                        var identificacion = $('#miPopupAcudiente').find('#txtIdentificacionEstudiante').val();
+                        var beneficiario = $('#miPopupAcudiente').find('#beneficiario').val();
+                        if (beneficiario == 1) {
+                            matricula.optionsBeneficio(identificacion);
+                            $('#miPopupAcudiente').modal('hide');
+                            $('#miPopupBeneficiario').modal('show');
+                        } else {
+                            $('#miPopupAcudiente').modal('hide');
+                        }
+                        matricula.registrarBeneficiario(identificacion);
+                    }
+                }
+            });
+        }
+        else {
+
+        }
     }
 };
 var preinscrito = {
@@ -963,8 +1075,15 @@ var usuario = {
                     tipo: tipo
                 },
                 success: function (data, textStatus, jqXHR) {
-                    mensaje(data);
-                    usuario.actualizarTabla();
+                    if (tipo === 'cuenta') {
+                        mensaje(data);
+                        setTimeout(function () {
+                            location.href = 'index.jsp';
+                        }, 2000);
+                    } else {
+                        mensaje(data);
+                        usuario.actualizarTabla();
+                    }
                 }
             });
         }
@@ -1049,6 +1168,27 @@ var usuario = {
             },
             success: function (data, textStatus, jqXHR) {
                 $('#miPopupConfiguracion').find('#txtNombre').text(data.nombreUsuario + " " + data.apellidoUsuario);
+                if (parseInt(data.idrol) === 1) {
+                    $('#opcionActualizarDatos').removeClass('active');
+                    $('#actualizarDatos').removeClass('active');
+                    $('#opcionPreincripciones').hide();
+                    $('#opcionInhabilitar').hide();
+                }
+                else if (parseInt(data.idrol) === 2) {
+                    $('#opcionActualizarDatos').removeClass('active');
+                    $('#actualizarDatos').removeClass('active');
+                    $('#opcionPreincripciones').hide();
+                    $('#opcionInhabilitar').show().removeClass('active');
+                    $('#inhabilitar').removeClass('active');
+                }
+                else if (parseInt(data.idrol) === 3) {
+                    $('#opcionActualizarDatos').removeClass('active');
+                    $('#actualizarDatos').removeClass('active');
+                    $('#opcionPreincripciones').show().removeClass('active');
+                    $('#preincripciones').removeClass('active');
+                    $('#opcionInhabilitar').show().removeClass('active');
+                    $('#inhabilitar').removeClass('active');
+                }
                 $('#miPopupConfiguracion').modal('show');
             }
         });
@@ -1196,16 +1336,25 @@ var matricula = {
         $('#miPopupBeneficiario').modal('show');
     },
     registrarBeneficiario: function (identificacion) {
-        var beneficiario;
-        beneficiario = $('input:radio[name=radioBeneficiario]:checked').val();
-        if (beneficiario === '1') {
-            matricula.optionsBeneficio(identificacion);
-            $('#miPopupBeneficiario').modal('show');
+        var beneficiario, menor;
+        beneficiario = $('inputradio[name=radioBeneficiario]:checked').val();
+        menor = mayorDeEdad($('#miPopupEstudiante').find('#dateFechaNacimiento').val());
+        if (menor !== true) {
+            $('#miPopupAcudiente').modal('show');
+            $('#miPopupAcudiente').find('#txtIdentificacionEstudiante').val(identificacion);
+            $('#miPopupAcudiente').find('#beneficiario').val(beneficiario);
+        }
+        else {
+            if (beneficiario === '1') {
+                matricula.optionsBeneficio(identificacion);
+                $('#miPopupBeneficiario').modal('show');
+            }
         }
     },
     asignarEmpresa: function () {
         var idEstudiante = $('#miPopupBeneficiario').find('#ddlEstudiante').val();
         var idEmpresa = $('#miPopupBeneficiario').find('#ddlEmpresa').val();
+        var valorBeneficio = $('#miPopupBeneficiario').find('#txtValorBeneficio').val();
         if (validationBeneficiario.valid()) {
             $.ajax({
                 url: "ControllerMatricula",
@@ -1213,7 +1362,8 @@ var matricula = {
                 data: {
                     action: 'asignarEmpresa',
                     nitEmpresa: idEmpresa,
-                    documentoEstudiante: idEstudiante
+                    documentoEstudiante: idEstudiante,
+                    valorBeneficio: valorBeneficio
                 }
             });
         }
@@ -1456,85 +1606,6 @@ var articulo = {
                 $('#miPopupArticulo').find('#txtIdArticulo').text('Codigo: ' + data['idArticulo']);
             }
         });
-    }
-};
-var abono = {
-    myAjax: function (accion, id, aux) {
-        var form = $('#formAbono');
-        $(form).on('submit', function () {
-            $.ajax({
-                type: $(form).attr('method'),
-                url: $(form).attr('action'),
-                data: $(form).serialize() + '&action=' + accion + '&id=' + id,
-                success: function (data) {
-                    if (accion === 'Consultar') {
-                        if (aux === 'Editar') {
-                            abono.editar(data);
-                        } else
-                            abono.consultar(data);
-                    }
-                    else if (accion === 'Registrar' || accion === 'Abonar') {
-                        $('#miPopupAbono').modal('show');
-                        abono.registrar();
-                        abono.mensaje(data);
-                    }
-                    else if (accion === 'Estado') {
-                        abono.mensaje(data);
-                        abono.actualizarTabla();
-                    }
-                }
-            });
-            $(form).off();
-            return false;
-        });
-        if (accion === 'Estado' || accion === 'Consultar') {
-            $(form).submit();
-        }
-    },
-    consultar: function (data) {
-        limpiar("#formAbono");
-        $('#miPopupAbono').find('#titulo').empty();
-        $('#miPopupAbono').find('#titulo').append('Consultar Abono');
-        $('#miPopupAbono').find('#idAbono').val(data['idAbono']);
-        $('#miPopupAbono').find('#txtIdCredito').val(data['idCredito']);
-        $('#miPopupAbono').find('#txtValorAbono').val(data['valorAbono']);
-        $('#miPopupAbono').find('#dateFechaPago').val(data['fechaPago']);
-        $('#miPopupAbono').find('#btnAbono').attr('type', 'hidden').attr('disabled', true);
-        $('#miPopupAbono').modal('show');
-    },
-    registrar: function () {
-        limpiar("#formAbono");        
-        $('#miPopupAbono').find('#titulo').empty();
-        $('#miPopupAbono').find('#titulo').append('Registrar Abono');
-        $('#miPopupAbono').find('#btnAbono').attr('value', 'Registrar');
-        $('#miPopupAbono').find('#txtIdCredito').attr('readOnly', true);
-        $('#miPopupAbono').find('#txtValorAbono').attr('readOnly', false);
-        $('#miPopupAbono').modal('show');
-    },
-    editar: function (data) {
-        abono.consultar(data);
-        $('#miPopupAbono').find('#titulo').empty();
-        $('#miPopupAbono').find('#titulo').append('Editar Abono');
-        $('#miPopupAbono').find('#btnAbono').attr('type', 'submit').attr('value', 'Editar').attr('disabled', false);
-    },
-    mensaje: function (data) {
-        $.notify(data['mensaje'], data['tipo']);
-    },
-    cargar: function () {
-        tablaAbono = $('#tblAbono').DataTable({
-            "ajax": {
-                "url": "ControllerAbono",
-                "type": "POST",
-                "data": {
-                    action: 'Enlistar'
-                }
-            }, "language": {
-                "url": "public/js/locales/Spanish.json"
-            }
-        });
-    },
-    actualizarTabla: function () {
-        tablaAbono.ajax.reload();
     }
 };
 var empresa = {
@@ -1905,7 +1976,7 @@ var venta = {
                         documentoUsuario: documentoUsuario,
                         documentoCliente: documentoCliente,
                         credito: chkCredito
-                        
+
                     },
                     success: function (data, textStatus, jqXHR) {
                         venta.limpiarDetalle();
@@ -2122,15 +2193,15 @@ var operario = {
         }
     },
     registrar: function () {
-        habilitar('formOperario');
-        limpiar('formOperario');
+        limpiar('#formOperario');
+        habilitar('#formOperario');
         $('#miPopupOperario').find('#titulo').text('Registrar Operario');
         $('#miPopupOperario').find('#btnOperario').val('Registrar').attr('type', 'button');
         $('#miPopupOperario').modal('show');
     },
     consultar: function (data) {
-        limpiar('formOperario');
-        desabilitar('formOperario');
+        limpiar('#formOperario');
+        desabilitar('#formOperario');
         $('#miPopupOperario').find('#titulo').text('Consultar Operario');
         $('#miPopupOperario').find('#txtIdentificacion').val(data['numeroDocumento']);
         $('#miPopupOperario').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + data['tipoDocumento'] + '"]').prop('selected', true);
@@ -2146,7 +2217,7 @@ var operario = {
     },
     editar: function (data) {
         operario.consultar(data);
-        habilitar('formOperario');
+        habilitar('#formOperario');
         $('#miPopupOperario').find('#titulo').text('Editar Operario');
         $('#miPopupOperario').find('#btnOperario').val('Editar').attr('type', 'button');
     },
@@ -2166,13 +2237,13 @@ var operario = {
     actualizarTabla: function () {
         tablaOperarios.ajax.reload();
     }
-}
+};
 compra.cargar();
 venta.cargar();
 categoriaCurso.cargar();
 curso.cargar();
 seminario.cargar();
-abono.cargar();
+//abono.cargar();
 estudiante.cargar();
 categoriaArticulo.cargar();
 articulo.cargar();
@@ -2186,3 +2257,6 @@ operario.cargar();
 if (typeof documentoUsuario !== 'undefined') {
     preinscripcion.cargar();
 }
+$('#miPopupDetalleSeminario').on('hidden.bs.modal', function () {
+    tablaDetalleSeminario.destroy();
+});

@@ -10,94 +10,68 @@
                             <div class="panel">
                                 <div class="panel-heading estilo2">
                                     <h3 class="panel-title">
-                                        <label id="titulo"></label>
+                                        <label id="titulo">Registrar Acudiente</label>
                                         <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                     </h3>
                                 </div>
                                 <div class="panel-body">
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <input type="hidden" name="txtIdentificacionEstudiante" id="txtIdentificacionEstudiante">
+                                        <label class="col-md-12">Identificación</label>
+                                        <div class="col-md-3">                                            
+                                            <div class="form-group">
+                                                <label for="ddlIdentificacion">
+                                                    Tipo
+                                                </label>
+                                                <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control">
+                                                    <option value="">Seleccionar...</option>
+                                                    <option value="CC" > Cédula </option>
+                                                    <option value="CE" > Cédula Extranjería </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <label for="txtIdentificacion">
+                                                    Número
+                                                </label>
+                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">                                        
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="txtNombre">
                                                     Nombres
                                                 </label>
-                                                <input name="txtNombre" id="txtNombre" type="text" class="form-control" placeholder="Ejm: Juan Sebastian" required>
+                                                <input name="txtNombre" id="txtNombre" type="text"  class="form-control" placeholder="Ejm: Juan Sebastián">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="txtApellido">
                                                     Apellidos
                                                 </label>
-                                                <input name="txtApellido" id="txtApellido" type="text" class="form-control" placeholder="Ejm: Montoya Montoya" required>
+                                                <input name="txtApellido" id="txtApellido" type="text" class="form-control" placeholder="Ejm: Montoya Montoya">
                                             </div>
                                         </div>
-                                    </div>                                            
-                                    <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="txtDireccion">
-                                                    Teléfono
-                                                </label>
-                                                <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txtDireccion">
-                                                    Correo Electrónico
-                                                </label>
-                                                <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txtDireccion">
-                                                    Dirección
-                                                </label>
-                                                <input name="txtDireccion" id="txtDireccion" type="text" class="form-control" placeholder="Ejm: Calle 24 # 65 e 25" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="dateFechaNaciemiento">
+                                                <label for="dateFechaNacimiento">
                                                     Fecha de Nacimiento
                                                 </label>
-                                                <input name="dateFechaNaciemiento" id="dateFechaNaciemiento" type="text" class="form-control fecha" placeholder="Ejm: 10/10/2014" required>
+                                                <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" class="form-control fecha" placeholder="Ejm: 10/10/2014">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="ddlIdentificacion">
-                                                    Tipo de Identificación
+                                                <label for="txtTelefono">
+                                                    Teléfono
                                                 </label>
-                                                <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control" required>
-                                                    <option value="">Seleccionar...</option>
-                                                    <option value="0" > Cédula </option>
-                                                    <option value="1" > Cédula Extranjeria </option>
-                                                    <option value="3" > Tarjeta de Identidad </option>
-                                                    <option value="4" > Registro Civil </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="txtIdentificacion">
-                                                    Número de Identificación
-                                                </label>
-                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
+                                                <input name="txtTelefono" id="txtTelefono" type="tel" class="form-control" placeholder="Ejm: 5861529" >
                                             </div>
                                         </div>
                                     </div>
@@ -105,7 +79,7 @@
                                 <div class="panel-footer">
                                     <div class="col-md-offset-3 col-md-6">
                                         <div class="form-group">
-                                            <input  class="btn btn-default btn-block" type="submit" name="action" value="Añadir">
+                                            <input  class="btn btn-default btn-block" type="submit" name="action" value="Registrar" onclick="estudiante.registrarAcudiente()">
                                         </div>
                                     </div>
                                 </div>

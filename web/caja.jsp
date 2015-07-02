@@ -42,11 +42,24 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         </h4>
                     </div>
                 </div>
-                <!-- Gestion de Diario de Caja-->
+                <!--Gestión de créditos-->
                 <div class="panel panel-default">
                     <!--
-                    Aquí el botón que desplegara la gestión Diario de Caja
+                    Aqui el boton que desplegara la gestión de créditos
                     -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a id="btnGestionCredito" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas">
+                                Gestión de Créditos
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+                <!-- Gestion de Diario de Caja-->
+                <!---div class="panel panel-default">
+                    <!--
+                    Aquí el botón que desplegara la gestión Diario de Caja
+                    >
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
@@ -57,7 +70,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                     <!--
                     Aquí el contenido de la gestión de Diario de Caja, en este caso un boton para registrar  Movimientos diarios
                     
-                    -->                              
+                    >                              
                     <div id="collapseFour" class="panel-collapse collapse">
                         <div class="panel-body">
                             <div class="row">
@@ -69,7 +82,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                             </div>
                         </div>
                     </div>
-                </div>
+                </div-->
             </div>
         </div>
         <div id="contenedor" class="col-md-9">
@@ -83,11 +96,14 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                             <a href="#ventas" role="tab" data-toggle="tab">Listado de Ventas</a>
                         </li>
                         <li>
-                            <a href="#creditos" role="tab" data-toggle="tab">Listado de Créditos</a>                            
+                            <a href="#abonos" role="tab" data-toggle="tab">Listado de Abonos</a>                            
                         </li>                            
                         <li>
+                            <a href="#creditos" role="tab" data-toggle="tab">Listado de Créditos</a>                            
+                        </li>                            
+                        <!--li>
                             <a href="#diario" role="tab" data-toggle="tab">Diario de caja</a>
-                        </li>
+                        </li-->
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade in active" id="compra">
@@ -109,12 +125,26 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                             <table id="tblVentas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Id. Venta</th>
+                                        <th class="text-center">Número Venta</th>
                                         <th class="text-center">Fecha</th>
-                                        <th class="text-center">Cédula Cliente</th>
+                                        <th class="text-center">Cedula Cliente</th>
                                         <th class="text-center">Nombre Cliente</th>
                                         <th class="text-center">Total </th>                                
                                         <th class="text-center">Consultar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="abonos">
+                            <table id="tblAbono" class="table table-responsive table-hover" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Id. Abono</th>
+                                        <th class="text-center">Id. Crédito</th>
+                                        <th class="text-center">Valor Abono ($)</th>                                
+                                        <th class="text-center">Fecha Pago</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -138,7 +168,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane fade" id="diario">
+                        <!--div class="tab-pane fade" id="diario">
                             <table id="tblDiario" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
@@ -162,7 +192,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
+                        </div-->
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade in" id="tabMovimientos" style="height: 100%">

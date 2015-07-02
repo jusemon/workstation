@@ -6,6 +6,9 @@ $(document).ready(function () {
     else if (enlace.indexOf('mensaje=1') !== -1) {
         $.notify('Bienvenido al Sistema WorkStation', 'success');
     }
+    else if (enlace.indexOf('mensaje=3') !== -1) {
+        $.notify('Su cuenta se encuentra desactivada, ponganse en contacto con el administrador', 'warning');
+    }
     var URLactual = window.location.pathname;
     if (URLactual.indexOf('index') !== -1) {
         $('#btnindex').attr('class', 'active');

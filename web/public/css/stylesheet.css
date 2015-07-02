@@ -129,8 +129,8 @@ div.dataTables_wrapper {
 
 .panelCursos-Heading {
     color: #FFFFFF;
-    background-color: #AEAEAE;
-    border-color: #AEAEAE;
+    background-color: #044F98;
+    border-color: #044F98;
 }
 
 .table-sortable tbody tr {
@@ -172,5 +172,17 @@ div.dataTables_wrapper {
 }
 
 .imgIndex{
-    height: 50% !important;
+    width: 100%;
+    height: auto;
+}
+
+.item{
+    overflow: hidden;
+    width: auto;
+    max-height: 500px;
+}
+
+#ejemplo_carrusel{
+    max-height: 100%;
+       
 }

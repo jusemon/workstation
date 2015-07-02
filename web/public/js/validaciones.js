@@ -105,7 +105,7 @@ if (document.getElementById('formCurso') !== null) {
                 required: true
             },
             txtPrecio: {
-                min: 100000,
+                min: 24000,
                 max: 500000,
                 required: true
             },
@@ -141,12 +141,12 @@ if (document.getElementById('formArticulo') !== null) {
                 required: true,
                 min: 50,
                 max: 10000000,
-                digits:true
+                digits: true
             },
-            txtPrecioVenta:{
-              required: true,
-              digits:true,
-              precioMin: true
+            txtPrecioVenta: {
+                required: true,
+                digits: true,
+                precioMin: true
             }
         }
     });
@@ -177,13 +177,13 @@ if (document.getElementById('formUsuario') !== null) {
                 fecha: true,
                 edad: true
             },
-            txtPass: {
+            txtPass4: {
                 required: true,
                 pass: true
             },
             txtPass2: {
                 required: true,
-                equalTo: txtPass
+                equalTo: "#txtPass4"
             },
             txtTelefono: {
                 required: true,
@@ -194,6 +194,41 @@ if (document.getElementById('formUsuario') !== null) {
             txtCorreo: {
                 required: true,
                 email: true
+            }
+        }
+    });
+}
+
+if (document.getElementById('formAcudiente') !== null) {
+    validationAcudiente = $('#formAcudiente');
+    validationAcudiente.validate({
+        rules: {
+            ddlIdentificacion: {
+                required: true
+            },
+            txtIdentificacion: {
+                required: true,
+                identificacion: true,
+                digits: true
+            },
+            txtNombre: {
+                required: true,
+                nombres: true
+            },
+            txtApellido: {
+                required: true,
+                nombres: true
+            },
+            dateFechaNacimiento: {
+                required: true,
+                fecha: true,
+                mayorDeEdad: true
+            },
+            txtTelefono: {
+                required: true,
+                minlength: 7,
+                maxlength: 15,
+                digits: true
             }
         }
     });
@@ -231,7 +266,7 @@ if (document.getElementById('form_estudiante') !== null) {
             },
             txtPass2: {
                 required: true,
-                equalTo: txtPass
+                equalTo: "#txtPass"
             },
             txtDireccion: {
                 required: true,
@@ -303,25 +338,26 @@ if (document.getElementById('formBeneficiario') !== null) {
         }
     });
 }
+
 if (document.getElementById('formAsistenteSeminario') !== null) {
-    validationAsistenteSeminario= $('#formAsistenteSeminario');
+    validationAsistenteSeminario = $('#formAsistenteSeminario');
     validationAsistenteSeminario.validate({
         rules: {
-          txtNombre: {
-              required: true,
-              minlength: 10,
-              maxlength: 50
-          },
-          txtTelefono: {
-              required: true,
-              minlength: 7,
-              maxlength: 15,
-              digits: true
-          },
-          txtCorreo:{
-              required:true,
-              email:true
-          }
+            txtNombre: {
+                required: true,
+                minlength: 10,
+                maxlength: 50
+            },
+            txtTelefono: {
+                required: true,
+                minlength: 7,
+                maxlength: 15,
+                digits: true
+            },
+            txtCorreo: {
+                required: true,
+                email: true
+            }
         }
     });
 }
@@ -379,6 +415,9 @@ $('#miPopupCurso').on('shown.bs.modal', function () {
 $('#miPopupUsuario').on('shown.bs.modal', function () {
     validationUsuario.validate().resetForm();
 });
+$('#miPopupAcudiente').on('shown.bs.modal', function () {
+    validationAcudiente.validate().resetForm();
+});
 $('#miPopupArticulo').on('shown.bs.modal', function () {
     validationArticulo.validate().resetForm();
 });
@@ -412,8 +451,8 @@ function validacionFechaRegistroASeminario(fechaSeminario) {
             return true;
         }
         else {
-            if (mes >= fecha.getMonth() + 1) {
-                if (mes === fecha.getMonth() + 1) {
+            if (mes >= (fecha.getMonth() + 1)) {
+                if (mes === (fecha.getMonth() + 1)) {
                     if (dia > fecha.getDate()) {
                         return true;
                     } else if (dia === fecha.getDate()) {
@@ -422,11 +461,16 @@ function validacionFechaRegistroASeminario(fechaSeminario) {
                         } else {
                             return false;
                         }
+                    } else {
+
+                        return false;
                     }
+                } else {
+                    return true;
                 }
             }
-            else {
-                return true;
+            else {                
+                return false;
             }
         }
     }
@@ -434,5 +478,5 @@ function validacionFechaRegistroASeminario(fechaSeminario) {
 
 function precioMin(precioVenta) {
     var precioCompra = parseInt($('#formArticulo').find('#txtPrecioCompra').val());
-    return precioCompra<precioVenta;
+    return precioCompra < precioVenta;
 }

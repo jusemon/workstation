@@ -36,7 +36,7 @@
                     <a href="#estudiantes" role="tab" data-toggle="tab">Listado de Estudiantes</a>
                 </li>
                 <li>
-                    <a href="#matriculas" role="tab" data-toggle="tab">Listado de Matriculas</a>
+                    <a href="#matriculas" role="tab" data-toggle="tab">Listado de Matrículas</a>
                 </li>
                 <li>
                     <a href="#preinscritos" role="tab" data-toggle="tab">Listado de Preinscritos</a>
@@ -98,8 +98,8 @@
     </div>
 </div>
 
-<%@include file="WEB-INF/jspf/modalAcudiente.jspf" %>
 <%@include file="WEB-INF/jspf/modalEstudiante.jspf" %>
+<%@include file="WEB-INF/jspf/modalAcudiente.jspf" %>
 <%@include file="WEB-INF/jspf/modalMatricula.jspf" %>
 <%@include file="WEB-INF/jspf/modalBeneficiario.jspf" %>
 <%@include file="WEB-INF/jspf/footer.jspf" %>
