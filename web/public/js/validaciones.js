@@ -105,7 +105,7 @@ if (document.getElementById('formCurso') !== null) {
                 required: true
             },
             txtPrecio: {
-                min: 100000,
+                min: 24000,
                 max: 500000,
                 required: true
             },
@@ -141,12 +141,12 @@ if (document.getElementById('formArticulo') !== null) {
                 required: true,
                 min: 50,
                 max: 10000000,
-                digits:true
+                digits: true
             },
-            txtPrecioVenta:{
-              required: true,
-              digits:true,
-              precioMin: true
+            txtPrecioVenta: {
+                required: true,
+                digits: true,
+                precioMin: true
             }
         }
     });
@@ -303,25 +303,26 @@ if (document.getElementById('formBeneficiario') !== null) {
         }
     });
 }
+
 if (document.getElementById('formAsistenteSeminario') !== null) {
-    validationAsistenteSeminario= $('#formAsistenteSeminario');
+    validationAsistenteSeminario = $('#formAsistenteSeminario');
     validationAsistenteSeminario.validate({
         rules: {
-          txtNombre: {
-              required: true,
-              minlength: 10,
-              maxlength: 50
-          },
-          txtTelefono: {
-              required: true,
-              minlength: 7,
-              maxlength: 15,
-              digits: true
-          },
-          txtCorreo:{
-              required:true,
-              email:true
-          }
+            txtNombre: {
+                required: true,
+                minlength: 10,
+                maxlength: 50
+            },
+            txtTelefono: {
+                required: true,
+                minlength: 7,
+                maxlength: 15,
+                digits: true
+            },
+            txtCorreo: {
+                required: true,
+                email: true
+            }
         }
     });
 }
@@ -412,8 +413,8 @@ function validacionFechaRegistroASeminario(fechaSeminario) {
             return true;
         }
         else {
-            if (mes >= fecha.getMonth() + 1) {
-                if (mes === fecha.getMonth() + 1) {
+            if (mes >= (fecha.getMonth() + 1)) {
+                if (mes === (fecha.getMonth() + 1)) {
                     if (dia > fecha.getDate()) {
                         return true;
                     } else if (dia === fecha.getDate()) {
@@ -422,11 +423,16 @@ function validacionFechaRegistroASeminario(fechaSeminario) {
                         } else {
                             return false;
                         }
+                    } else {
+
+                        return false;
                     }
+                } else {
+                    return true;
                 }
             }
-            else {
-                return true;
+            else {                
+                return false;
             }
         }
     }
@@ -434,5 +440,5 @@ function validacionFechaRegistroASeminario(fechaSeminario) {
 
 function precioMin(precioVenta) {
     var precioCompra = parseInt($('#formArticulo').find('#txtPrecioCompra').val());
-    return precioCompra<precioVenta;
+    return precioCompra < precioVenta;
 }

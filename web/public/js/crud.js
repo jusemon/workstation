@@ -605,7 +605,7 @@ var seminario = {
 //            ]
         });
     },
-    recargarDetalle: function (idSeminario) {
+    recargarDetalle: function () {
         tablaDetalleSeminario.ajax.reload();
     },
     actualizarTabla: function () {
@@ -628,11 +628,13 @@ var seminario = {
         });
     },
     mostrarRegistroAsistente: function () {
-        var fechaSeminario = $('#fecha').text();
+        var fechaSeminario = $('#miPopupDetalleSeminario').find('#fecha').text();
         if (validacionFechaRegistroASeminario(fechaSeminario) === true) {
             var idSeminario = $('#formDetalleSeminario').find('#idSeminario').val();
             $('#formAsistenteSeminario').find('#idSeminario').val(idSeminario);
             $('#miPopupAsistenteSeminario').modal('show');
+        } else {
+            $.notify('El seminario ya paso', 'error');
         }
     },
     registrarAsistente: function () {
@@ -1042,7 +1044,9 @@ var usuario = {
                 success: function (data, textStatus, jqXHR) {
                     if (tipo === 'cuenta') {
                         mensaje(data);
-                        setTimeout(function(){location.href='index.jsp';},2000);
+                        setTimeout(function () {
+                            location.href = 'index.jsp';
+                        }, 2000);
                     } else {
                         mensaje(data);
                         usuario.actualizarTabla();
@@ -2210,3 +2214,6 @@ operario.cargar();
 if (typeof documentoUsuario !== 'undefined') {
     preinscripcion.cargar();
 }
+$('#miPopupDetalleSeminario').on('hidden.bs.modal', function () {
+    tablaDetalleSeminario.destroy();
+});
