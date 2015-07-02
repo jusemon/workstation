@@ -26,7 +26,7 @@ Este contenedor tiene el contenido de la pagina, en este caso un carrusel que pa
                     <div class="item text-center active">
                         <img class="imgIndex" src="public/images/ceramica.JPG">
                         <div class="carousel-caption">
-                            <h3>Ceramica</h3>
+                            <h3>Cerámica</h3>
                             <p></p>
                         </div>
                     </div>
