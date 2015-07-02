@@ -1,0 +1,72 @@
+<%-- any content can be specified here e.g.: --%>
+<%@page import="Controller.ControllerLogin"%>
+<%@ page pageEncoding="UTF-8" %>
+
+
+<!--
+Aqui se encuentra el login, tambien tiene para recuperar la contraseña.
+-->
+<ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-user"></span> 
+            <strong>Aun no has iniciado sesion</strong>
+            <span class="glyphicon glyphicon-chevron-down"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <div class="navbar-login">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form action="ControllerLogin" method="POST">
+                                <div class="panel">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="nom">
+                                                        Ingresa tu Correo
+                                                    </label>
+                                                    <input name="nom" id="nom" type="email" class="form-control" placeholder="Ejm: jsmontoya37@misena.edu.co" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="pass">
+                                                        Ingresa tu Contraseña
+                                                    </label>
+                                                    <input name="pass" id="pass" type="password" class="form-control" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-offset-3 col-sm-offset-3 col-sm-6 col-md-6">
+                                                <div class="form-group">
+                                                    <input class="btn btn-success btn-block btn-sm" id="btnLogin" value="Iniciar Sesion" type="submit" name="Action">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-offset-2 col-sm-offset-4 col-md-8">
+                                                <div class="form-group">
+                                                    <input class="btn btn-danger btn-block btn-sm" id="btnLogin" value="Recuperar Contraseña" type="button" onclick="usuario.recuperarPass()">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-offset-3 col-sm-offset-3 col-sm-6 col-md-6">
+                                                <div class="form-group">
+                                                    <input class="btn btn-warning btn-block btn-sm" id="btnLogin" value="Registrarse" type="button" onclick="usuario.registrar()">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </li>
+</ul>

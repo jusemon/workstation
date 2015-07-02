@@ -1,0 +1,127 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+<!-- Emergente para registrar los cursos y seminarios -->
+<div class="modal" id="miPopupCurso">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">                               
+                        <form id="formCurso" action="ControllerCurso" method="POST">
+                            <div class="panel">
+                                <div class="panel-heading estilo2">
+                                    <h3 class="panel-title">
+                                        <label id="titulo"></label>
+                                        <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <input type="hidden" name="idCurso" id="idCurso"/>
+                                    <input type="hidden" name="tipo" id="tipo"/>
+                                    <input type="hidden" name="aux" id="aux"/>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="ddlCategoria"> 
+                                                    Categoría
+                                                </label>
+                                                <select name="ddlCategoria" id="ddlCategoria" class="form-control" required>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtNombre">
+                                                    Nombre
+                                                </label>
+                                                <input name="txtNombre" id="txtNombreCurso" type="text" class="form-control" placeholder="Ejm: Oleo" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtDescripcion">
+                                                    Descripción
+                                                </label>
+                                                <textarea rows="2" name="txtDescripcion" id="txtDescripcionCurso"  class="form-control" placeholder="Ejm: El oleo es un curso dedicado al..." ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtPrecio">
+                                                    Precio
+                                                </label>
+                                                <input name="txtPrecio" id="txtPrecio" type="number" class="form-control" placeholder="Ejm: 100000" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtCantidadClases">
+                                                    Cantidad de Clases
+                                                </label>
+                                                <input name="txtCantidadClases" id="txtCantidadClases" type="number" class="form-control" placeholder="Ejm: 10">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtCantidadHoras">
+                                                    Cantidad de Horas (Por clase)
+                                                </label>
+                                                <input name="txtCantidadHoras" id="txtCantidadHoras" type="number" class="form-control" placeholder="Ejm: 10">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtFechaSeminario">
+                                                    Fecha del Seminario
+                                                </label>
+                                                <input name="txtFechaSeminario" id="txtFechaSeminario" type="text" class="form-control fecha2" placeholder="Ejm: 10">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtCupoSeminario">
+                                                    Cupos
+                                                </label>
+                                                <input name="txtCupoSeminario" id="txtCupoSeminario" type="number"class="form-control" placeholder="Ejm: 10">
+                                            </div>
+                                        </div>
+                                    </div>                                  
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="ddlEstado">
+                                                    Estado
+                                                </label>
+                                                <select name="ddlEstado" id="ddlEstado" class="form-control" required>
+                                                    <option value="1">Activo</option>
+                                                    <option value="0">Inactivo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-md-offset-3 col-md-6">
+                                        <div class="form-group">
+                                            <input class="btn btn-default btn-block" id="btnCurso" type="button" name="action" onclick="curso.myAjax($('#btnCurso').val())">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

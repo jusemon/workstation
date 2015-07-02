@@ -1,0 +1,92 @@
+<%@ page pageEncoding="UTF-8" %>
+<div class="modal" id="miPopupEmpresa">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">                               
+                        <form id="formEmpresa" method="POST" action="ControllerEmpresa">
+                            <div class="panel">
+                                <div class="panel-heading estilo2">
+                                    <h3 class="panel-title">
+                                        <label id="titulo"></label>
+                                        <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtNitEmpresa">
+                                                    NIT
+                                                </label>
+                                                <input name="txtNitEmpresa" id="txtNitEmpresa" pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{1}" type="text" class="form-control" onblur="formatearTexto()" placeholder="Ej: 123.456.789-0" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtNombreEmpresa">
+                                                    Nombre
+                                                </label>
+                                                <input name="txtNombreEmpresa" id="txtNombreEmpresa" type="text" class="form-control" placeholder="Ej: UNE S.A" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtDireccionEmpresa">
+                                                    Dirección
+                                                </label>
+                                                <input name="txtDireccionEmpresa" id="txtDireccionEmpresa" type="text" class="form-control" placeholder="Ej: Calle 1 # 2-34" required>
+                                            </div>
+                                        </div>
+                                    </div>                                
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtNombreContacto">
+                                                    Responsable
+                                                </label>
+                                                <input name="txtNombreContacto" id="txtNombreContacto" type="text" class="form-control" placeholder="Ej: David Cano Arango" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtTelefonoContacto">
+                                                    Teléfono
+                                                </label>
+                                                <input name="txtTelefonoContacto" id="txtTelefonoContacto" type="text" class="form-control" placeholder="Ejm: 3218016237">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtEmailContacto">
+                                                    Email Contacto
+                                                </label>
+                                                <input name="txtEmailContacto" id="txtEmailContacto" type="email" class="form-control" placeholder="Ejm: direccion@correo.com" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="col-md-offset-3 col-md-6">
+                                        <div class="form-group">
+                                            <input  class="btn btn-default btn-block" id="btnEmpresa" type="submit" onclick="empresa.myAjax($('#btnEmpresa').val())" name="action" value="Registrar">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

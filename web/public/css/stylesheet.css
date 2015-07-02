@@ -1,0 +1,176 @@
+body{
+    padding-top: 70px;
+    height: 100%;
+}
+
+.navbar{
+
+    padding: 0 10px 0 10px;
+}
+
+tbody > tr {
+    cursor: pointer;
+}
+
+.result{
+    margin-top:20px;
+}
+
+.navbar-login
+{
+    width: 305px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.navbar-login-session
+{
+    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.icon-size
+{
+    font-size: 87px;
+}
+
+/*Lista*/
+
+.custab{
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5% 0;
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+}
+.custab:hover{
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+}
+
+.panel-info{
+    border-color: #222;
+}
+
+.panel-info>.panel-heading {
+    color: #FFF;
+    background-color: #222;
+    border-color: #222;
+}
+
+/*Estilo del login*/
+.estilo1{
+    color: #AAA;
+}
+
+#radioBtn .notActive{
+    color: #000;
+    background-color: #fff;
+}
+
+#radioBtn2 .notActive{
+    color: #000;
+    background-color: #fff;
+}
+
+#radio1 {
+    color: #fff;
+    background-color: #222;
+    border-color: #222;
+}
+
+
+#radio2 {
+    color: #fff;
+    background-color: #222;
+    border-color: #222;
+}
+
+
+.estilo2 {
+    color: #FFF;
+    background-color: #317eac;
+    border-color: #317eac;
+}
+
+
+#cerrar1{
+    color: #FFF;
+    opacity: 1.0;
+}
+
+.scroll{
+    position: absolute;
+    top: 9%; /* demo only--accounts for image whitespace */
+    right: 17%; /* demo only--accounts for image whitespace */
+    left: 15.6%; /* demo only--accounts for image whitespace */
+    height: 58%;
+    overflow: auto;
+}
+
+.contenedor{
+    overflow: hidden;
+    position: relative;
+}
+
+.mac {
+    position: relative;
+}
+
+th, td { white-space: nowrap;  text-align: center;}
+
+div.dataTables_wrapper {
+    margin: 0 auto;
+}
+.tab-content{
+    margin-top: 1%;
+}
+
+.panelCursos-Heading {
+    color: #FFFFFF;
+    background-color: #AEAEAE;
+    border-color: #AEAEAE;
+}
+
+.table-sortable tbody tr {
+    cursor: move;
+}
+
+.notifyjs-foo-base {
+    opacity: 0.85;
+    width: 200px;
+    background: #F5F5F5;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.notifyjs-foo-base .title {
+    width: 100px;
+    float: left;
+    margin: 10px 0 0 10px;
+    text-align: right;
+}
+
+.notifyjs-foo-base .buttons {
+    width: 70px;
+    float: right;
+    font-size: 9px;
+    padding: 5px;
+    margin: 2px;
+}
+
+.notifyjs-foo-base button {
+    font-size: 9px;
+    padding: 5px;
+    margin: 2px;
+    width: 60px;
+}
+
+.error{
+    color: #d43f3a
+}
+
+.imgIndex{
+    height: 50% !important;
+}

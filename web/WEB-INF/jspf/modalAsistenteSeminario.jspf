@@ -1,0 +1,93 @@
+<%@ page pageEncoding="UTF-8" %>
+<!-- 
+    Emergente para registrar Categorias de Cursos
+-->
+<div class="modal" id="miPopupAsistenteSeminario">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">                               
+                        <form id="formAsistenteSeminario" action="ControllerCurso" method="POST">
+                            <div class="panel">
+                                <div class="panel-heading estilo2">
+                                    <h3 class="panel-title">
+                                        <label id="titulo">Registrar Asistente</label>
+                                        <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    <input type="hidden" id="idSeminario" name="idSeminario"/>
+                                    <div class="row">
+                                        <label class="col-md-12">Identificación</label>
+                                        <div class="col-md-3">                                            
+                                            <div class="form-group">
+                                                <label for="ddlIdentificacion">
+                                                    Tipo
+                                                </label>
+                                                <select name="ddlIdentificacion" id="ddlIdentificacion" class="form-control">
+                                                    <option value="">Seleccionar...</option>
+                                                    <option value="CC" > Cédula </option>
+                                                    <option value="CE" > Cédula Extranjería </option>
+                                                    <option value="TI" > Tarjeta de Identidad </option>
+                                                    <option value="RC" > Registro Civil </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <label for="txtIdentificacion">
+                                                    Número
+                                                </label>
+                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">                                        
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtNombre">
+                                                    Nombres y Apellidos
+                                                </label>
+                                                <input name="txtNombre" id="txtNombre" type="text"  class="form-control" placeholder="Ejm: Juan Sebastián">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtTelefono">
+                                                    Teléfono
+                                                </label>
+                                                <input name="txtTelefono" id="txtTelefono" type="text" class="form-control" placeholder="Ejm: 1234567" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtCorreo">
+                                                    Correo Electrónico
+                                                </label>
+                                                <input name="txtCorreo" id="txtCorreo" type="email" class="form-control" placeholder="Ejm: jsmontoya37@misena.edu.co" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-offset-3 col-md-6">
+                                            <div class="form-group">
+                                                <input id="btnAsistenteSeminario" class="btn btn-default btn-block" type="button" name="action" onclick="seminario.registrarAsistente()" value="Registrar">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
