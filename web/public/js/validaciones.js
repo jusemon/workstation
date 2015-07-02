@@ -177,13 +177,13 @@ if (document.getElementById('formUsuario') !== null) {
                 fecha: true,
                 edad: true
             },
-            txtPass: {
+            txtPass4: {
                 required: true,
                 pass: true
             },
             txtPass2: {
                 required: true,
-                equalTo: txtPass
+                equalTo: "#txtPass4"
             },
             txtTelefono: {
                 required: true,
@@ -266,7 +266,7 @@ if (document.getElementById('form_estudiante') !== null) {
             },
             txtPass2: {
                 required: true,
-                equalTo: txtPass
+                equalTo: "#txtPass"
             },
             txtDireccion: {
                 required: true,

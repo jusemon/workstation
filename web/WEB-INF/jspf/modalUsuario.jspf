@@ -91,7 +91,7 @@
                                                 <label for="txtPass">
                                                     Contraseña
                                                 </label>
-                                                <input name="txtPass" id="txtPass" type="password" class="form-control" required>
+                                                <input name="txtPass" id="txtPass4" type="password" class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">

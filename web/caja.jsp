@@ -42,7 +42,6 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         </h4>
                     </div>
                 </div>
-
                 <!--Gestión de créditos-->
                 <div class="panel panel-default">
                     <!--

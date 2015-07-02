@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-07-2015 a las 17:55:47
+-- Tiempo de generación: 02-07-2015 a las 18:39:43
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -1319,11 +1319,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarInscripcion`(
 BEGIN
 	declare msg varchar(40);    
 	if (exists(select idIncripcion from tblInscripcion where idIncripcion=idIncripci)) then
-		set msg="Esta inscripción ya existe";
+		set msg="Esta inscripci��n ya existe";
 		select msg as Respuesta;
 	else
 		insert into tblInscripcion (idIncripcion,idSeminario, precioSeminario, fechaAsistencia,idVenta) Values(idIncripci,idSeminar,precioSeminar,fechaAsistenc,idVen);
-		set msg="La inscripci������������n se ha registrado exitosamente";
+		set msg="La inscripción se ha registrado exitosamente";
 		select msg as Respuesta; 
 	end if;
 END$$
@@ -1404,7 +1404,7 @@ declare msg varchar(100);
         `documentoUsuar`, 
         `idCur`
     );
-    set msg= CONVERT(CONCAT('Se ha registrado su preincripci��n a ',(SELECT `nombreCurso` from tblcurso WHERE `idCurso` = idCur)) using utf8);
+    set msg= CONVERT(CONCAT('Se ha registrado su preincripción a ',(SELECT `nombreCurso` from tblcurso WHERE `idCurso` = idCur)) using utf8);
     select msg as mensaje, 'success' as tipo;
 end if;
 END$$
@@ -1565,8 +1565,6 @@ CREATE TABLE IF NOT EXISTS `tblacudiente` (
   `fechaNacimiento` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
 --
 -- Estructura de tabla para la tabla `tblarticulo`
 --
@@ -1646,35 +1644,6 @@ CREATE TABLE IF NOT EXISTS `tblclase` (
   `documentoUsuario` varchar(20) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `tblclase`
---
-
-INSERT INTO `tblclase` (`idClase`, `fecha`, `estadoPago`, `estadoAsistencia`, `creditoCreado`, `precioClase`, `idCurso`, `documentoUsuario`) VALUES
-(1, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(2, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(3, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(4, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(5, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(6, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(7, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(8, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(9, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(10, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(11, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(12, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(13, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(14, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(15, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(16, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(17, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(18, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(19, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(20, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(21, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(22, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(23, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567'),
-(24, NULL, b'0', b'0', b'0', 5000, 2, 'CC101722567');
 
 -- --------------------------------------------------------
 
@@ -1768,18 +1737,8 @@ CREATE TABLE IF NOT EXISTS `tbldetalleusuario` (
   `telefonoMovil` varchar(15) NOT NULL,
   `generoUsuario` bit(1) NOT NULL,
   `estadoBeneficiario` bit(1) NOT NULL DEFAULT b'0'
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `tbldetalleusuario`
---
-
-INSERT INTO `tbldetalleusuario` (`idDetalleUsuario`, `direccionUsuario`, `telefonoMovil`, `generoUsuario`, `estadoBeneficiario`) VALUES
-(1, 'asdasdasd', '3218016237', b'1', b'0'),
-(2, 'Calle 45', '3214752456', b'1', b'0'),
-(3, 'asdasd', '1231232323', b'1', b'0');
-
--- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `tblempresa`
@@ -1815,14 +1774,6 @@ CREATE TABLE IF NOT EXISTS `tblinscrito` (
   `correo` varchar(40) NOT NULL,
   `idseminario` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `tblinscrito`
---
-
-INSERT INTO `tblinscrito` (`idinscrito`, `documento`, `nombres`, `telefono`, `correo`, `idseminario`) VALUES
-(7, '', 'Juan Montoya', '321321321', 'jsmontya@asd.com', 1),
-(8, 'CE4565852', 'lorenzo Chimeno', '9874563', 'lorenzo@lor.com', 1);
 
 -- --------------------------------------------------------
 
@@ -1899,14 +1850,7 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
   `documentoAuxiliar` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `tblmovimiento`
---
 
-INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento`, `idtipoMovimiento`, `documentoUsuario`, `numeroAuxiliar`, `nombreAuxiliar`, `documentoAuxiliar`) VALUES
-(1, '2015-07-01 13:00:05', 14400, 1, 'CC1017225673', '123', 'Sebas', NULL),
-(2, '2015-07-01 13:00:33', 12000, 3, 'CC1017225673', '1', 'Juan Montoya', 'CC101722567'),
-(3, '2015-07-01 13:05:30', 1300, 3, 'CC1017225673', '2', 'Juan Montoya', 'CC101722567');
 
 -- --------------------------------------------------------
 
@@ -1920,9 +1864,8 @@ CREATE TABLE IF NOT EXISTS `tblpreinscripcion` (
   `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `documentoUsuario` varchar(20) NOT NULL,
   `idCurso` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `tblrol`
@@ -2004,18 +1947,9 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
 --
 
 INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`, `telefonoFijo`) VALUES
-('CC101722567', '1981-03-13', 'Juan', 'Montoya', 'correo@correo.co', 'Esdfgdfg4', 0, 1, 3, NULL, '2359731'),
 ('CC1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL, '5861529'),
-('CC1017225674', '1996-01-18', 'Operario', 'Operar', 'jsmontoya378@outlook.com', 'Es120300', 1, NULL, 2, NULL, '2359731'),
-('CC1017225675', '1996-01-18', 'Operario', 'Operar', 'jsmontoya@outlook.com', 'Es120300', 1, NULL, 2, NULL, '2359731'),
-('CC1017225678', '2001-03-02', 'Vanessa', 'Soto', 'jsun@asd.co', '123', 1, 2, 3, NULL, '2359731'),
 ('CC8101926', '1984-01-06', 'David', 'Cano Arango', 'dcano62@misena.edu.co', '123', 1, NULL, 1, NULL, '1234567'),
-('CE5465465', '1969-12-28', 'Lorenzo', 'Chimeno Trenado', 'lchimeno37@misena.edu.co', '123', 1, NULL, 1, NULL, '9876543'),
-('TI1017225', '2010-01-01', 'adasd', 'asdasd', 'asd@hoasd.com', 'Es12345', 1, 3, 3, NULL, '14231233');
-
---
--- Índices para tablas volcadas
---
+('CE5465465', '1969-12-28', 'Lorenzo', 'Chimeno Trenado', 'lchimeno37@misena.edu.co', '123', 1, NULL, 1, NULL, '9876543');
 
 --
 -- Indices de la tabla `tblacudiente`
@@ -2180,17 +2114,17 @@ MODIFY `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT de la tabla `tbldetalleusuario`
 --
 ALTER TABLE `tbldetalleusuario`
-MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT de la tabla `tblinscrito`
 --
 ALTER TABLE `tblinscrito`
-MODIFY `idinscrito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+MODIFY `idinscrito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT de la tabla `tblmodulo`
 --
@@ -2200,12 +2134,12 @@ MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 -- AUTO_INCREMENT de la tabla `tblmovimiento`
 --
 ALTER TABLE `tblmovimiento`
-MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --
 ALTER TABLE `tblpreinscripcion`
-MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT de la tabla `tblrol`
 --

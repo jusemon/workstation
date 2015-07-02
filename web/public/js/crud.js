@@ -216,6 +216,7 @@ var curso = {
             data: {
                 action: 'cursosDisponibles'
             },
+            async: false,
             success: function (data) {
                 for (var i = 0; i < data.length; i++) {
                     var html = '<div class="col-md-6">'
@@ -549,6 +550,7 @@ var seminario = {
             data: {
                 action: 'seminariosDisponibles'
             },
+            async: false,
             success: function (data) {
                 var html = data;
                 $("#seminariosDisponibles").append(html);
@@ -771,9 +773,14 @@ var estudiante = {
                     url: $(form).attr('action'),
                     data: $(form).serialize() + '&action=' + accion + '&id=' + id + '&tipo=' + tipo,
                     success: function (data) {
-                        if (data['tipo'] !== 'error') {
-                            var identificacion = $('#miPopupEstudiante').find('#ddlIdentificacion').val() + $('#miPopupEstudiante').find('#txtIdentificacion').val();
-                            matricula.registrarBeneficiario(identificacion);
+                        if (accion === 'Editar') {
+
+                        }
+                        else {
+                            if (data['tipo'] !== 'error') {
+                                var identificacion = $('#miPopupEstudiante').find('#ddlIdentificacion').val() + $('#miPopupEstudiante').find('#txtIdentificacion').val();
+                                matricula.registrarBeneficiario(identificacion);
+                            }
                         }
                         $('#miPopupEstudiante').modal('hide');
                         mensaje(data);
