@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-07-2015 a las 17:52:57
+-- Tiempo de generación: 02-07-2015 a las 17:55:47
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -1841,7 +1841,7 @@ CREATE TABLE IF NOT EXISTS `tblmodulo` (
 --
 
 INSERT INTO `tblmodulo` (`idmodulo`, `enlace`, `nombre`) VALUES
-(1, 'matricula.jsp', 'Matriculas'),
+(1, 'matricula.jsp', 'Matrículas'),
 (2, 'empresa.jsp', 'Empresas'),
 (3, 'curso.jsp', 'Cursos y Seminarios'),
 (5, 'articulo.jsp', 'Artículos'),
