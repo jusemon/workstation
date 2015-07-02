@@ -27,14 +27,14 @@
                                 </div>
                                 <div class="row">
                                     <ul class="nav nav-tabs" role="tablist">
-                                        <li>
-                                            <a  onclick="usuario.actualizarDatos(documentoUsuario)" href="#actualizarDatos" role="tab" data-toggle="tab">Actualizar Datos</a>
+                                        <li id="opcionActualizarDatos">
+                                            <a onclick="usuario.actualizarDatos(documentoUsuario)" href="#actualizarDatos" role="tab" data-toggle="tab">Actualizar Datos</a>
                                         </li>
-                                        <li>
+                                        <li id="opcionPreincripciones">
                                             <a href="#preincripciones" role="tab" data-toggle="tab">Preincripciones Actuales</a>
                                         </li>
-                                        <li>
-                                            <a href="#inhabilitar" role="tab" data-toggle="tab">Inhabilitar Suscripción</a>
+                                        <li id="opcionInhabilitar">
+                                            <a href="#inhabilitar" role="tab" data-toggle="tab">Desactivar Cuenta</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content">
@@ -156,6 +156,16 @@
                                                 <tbody>
                                                 </tbody>
                                             </table>
+                                        </div>
+                                        <div class="tab-pane fade" id="inhabilitar"> 
+                                            <div class="row">
+                                                <div class="col-md-offset-3 col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="action">¿Está seguro que desea desactivar su cuenta? Una vez desactivada no podra iniciar sesión en el aplicativo y deberá comunicarse con el administrador para reactivarla.</label>
+                                                        <input class="btn btn-default btn-block" type="button" name="action" value="Desactivar Suscripcion" id="btnUsuario" onclick="usuario.myAjax('Estado', documentoUsuario,'cuenta')">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>                                    
                                 </div>
