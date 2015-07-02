@@ -98,8 +98,8 @@
     </div>
 </div>
 
-<%@include file="WEB-INF/jspf/modalAcudiente.jspf" %>
 <%@include file="WEB-INF/jspf/modalEstudiante.jspf" %>
+<%@include file="WEB-INF/jspf/modalAcudiente.jspf" %>
 <%@include file="WEB-INF/jspf/modalMatricula.jspf" %>
 <%@include file="WEB-INF/jspf/modalBeneficiario.jspf" %>
 <%@include file="WEB-INF/jspf/footer.jspf" %>

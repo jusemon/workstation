@@ -10,10 +10,14 @@ import Model.Data.ModelAcudiente;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +31,8 @@ public class ControllerAcudiente extends HttpServlet {
 
     ObjAcudiente _objAcudiente;
     ModelAcudiente daoModelAcudiente = new ModelAcudiente();
+    SimpleDateFormat formatoFechaEntrada = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat formatoFechaSalida = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,7 +53,24 @@ public class ControllerAcudiente extends HttpServlet {
                     try {
                         //Beneficiario 0->No Subvencionado 1->Subvencionado?
                         response.setContentType("application/json");
-                        
+                        String tipoDocumento = request.getParameter("ddlIdentificacion").trim();
+                        long numeroIdentificacion = Long.parseLong(request.getParameter("txtIdentificacion").trim());
+                        String identificacion = tipoDocumento + numeroIdentificacion;
+                        String nombre = request.getParameter("txtNombre").trim();
+                        String apellido = request.getParameter("txtApellido").trim();
+                        String telefonoFijo = request.getParameter("txtTelefono").trim();
+                        String fechaNacimiento = request.getParameter("dateFechaNacimiento").trim();
+                        _objAcudiente = new ObjAcudiente();
+                        _objAcudiente.setDocumentoAcudiente(identificacion);
+                        _objAcudiente.setNombreAcudiente(nombre + " " + apellido);
+                        _objAcudiente.setTelefonoAcudiente(telefonoFijo);
+                        try {
+                            _objAcudiente.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
+                        } catch (ParseException ex) {
+                            String salida = Mensaje(false, null, "A ocurrido un error al intentar registrar al acudiente");
+                            response.getWriter().write(salida);
+                            break;
+                        }
                         String salida = Mensaje(daoModelAcudiente.Add(_objAcudiente), "El acudiente ha sido registrado", "A ocurrido un error al intentar registrar al acudiente");
                         response.getWriter().write(salida);
 

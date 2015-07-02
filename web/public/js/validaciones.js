@@ -199,6 +199,41 @@ if (document.getElementById('formUsuario') !== null) {
     });
 }
 
+if (document.getElementById('formAcudiente') !== null) {
+    validationAcudiente = $('#formAcudiente');
+    validationAcudiente.validate({
+        rules: {
+            ddlIdentificacion: {
+                required: true
+            },
+            txtIdentificacion: {
+                required: true,
+                identificacion: true,
+                digits: true
+            },
+            txtNombre: {
+                required: true,
+                nombres: true
+            },
+            txtApellido: {
+                required: true,
+                nombres: true
+            },
+            dateFechaNacimiento: {
+                required: true,
+                fecha: true,
+                mayorDeEdad: true
+            },
+            txtTelefono: {
+                required: true,
+                minlength: 7,
+                maxlength: 15,
+                digits: true
+            }
+        }
+    });
+}
+
 if (document.getElementById('form_estudiante') !== null) {
     validationEstudiante = $('#form_estudiante');
     validationEstudiante.validate({
@@ -379,6 +414,9 @@ $('#miPopupCurso').on('shown.bs.modal', function () {
 });
 $('#miPopupUsuario').on('shown.bs.modal', function () {
     validationUsuario.validate().resetForm();
+});
+$('#miPopupAcudiente').on('shown.bs.modal', function () {
+    validationAcudiente.validate().resetForm();
 });
 $('#miPopupArticulo').on('shown.bs.modal', function () {
     validationArticulo.validate().resetForm();

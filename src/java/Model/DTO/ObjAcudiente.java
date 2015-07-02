@@ -11,7 +11,7 @@ public class ObjAcudiente {
     private String documentoAcudiente;
     private String nombreAcudiente;
     private String telefonoAcudiente;
-    private Date fechaNacimiento;
+    private String fechaNacimiento;
 
     public String getDocumentoAcudiente() {
         return documentoAcudiente;
@@ -37,11 +37,11 @@ public class ObjAcudiente {
         this.telefonoAcudiente = telefonoAcudiente;
     }
 
-    public Date getFechaNacimiento() {
+    public String getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 

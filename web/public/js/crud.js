@@ -13,7 +13,7 @@ $('.fecha').datepicker({
 $('.fecha2').datetimepicker({
     locale: "es"
 });
-var validationCurso, validationArticulo, validationEstudiante, validationUsuario, validationEmpresa, validationUsuarioPerfil, validationBeneficiario, validationOperarios, validationAsistenteSeminario;
+var validationCurso, validationArticulo, validationEstudiante, validationUsuario, validationEmpresa, validationUsuarioPerfil, validationBeneficiario, validationOperarios, validationAsistenteSeminario, validationAcudiente;
 var tablaCurso, tablaCategoriaCurso, tablaClases, tablaCredito, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso, tablaPreinscritos, tablaPreincripciones, tablaOperarios, tablaDetalleSeminario;
 var curso = {
     myAjax: function (accion, id, aux, typo) {
@@ -939,6 +939,29 @@ var estudiante = {
             curso.seleccionar(data['idCurso']);
             preinscrito.actualizarTabla();
         }
+    },
+    registrarAcudiente: function () {
+        if (validationAcudiente.valid()) {
+            $.ajax({
+                url: "ControllerAcudiente",
+                type: 'POST',
+                data: $('#formAcudiente').serialize() + '&action=Registrar',
+                success: function (data) {
+                    if (data['tipo'] !== 'error') {
+                        var identificacion = $('#miPopupAcudiente').find('#txtIdentificacionEstudiante').val();
+                        var beneficiario = $('#miPopupAcudiente').find('#beneficiario').val();
+                        if (beneficiario == 1) {
+                            matricula.optionsBeneficio(identificacion);
+                            $('#miPopupBeneficiario').modal('show');
+                        }
+                        matricula.registrarBeneficiario(identificacion);
+                    }
+                }
+            });
+        }
+        else {
+
+        }
     }
 };
 var preinscrito = {
@@ -1303,16 +1326,25 @@ var matricula = {
         $('#miPopupBeneficiario').modal('show');
     },
     registrarBeneficiario: function (identificacion) {
-        var beneficiario;
-        beneficiario = $('input:radio[name=radioBeneficiario]:checked').val();
-        if (beneficiario === '1') {
-            matricula.optionsBeneficio(identificacion);
-            $('#miPopupBeneficiario').modal('show');
+        var beneficiario, menor;
+        beneficiario = $('inputradio[name=radioBeneficiario]:checked').val();
+        menor = mayorDeEdad($('#miPopupEstudiante').find('#dateFechaNacimiento').val());
+        if (menor !== true) {
+            $('#miPopupAcudiente').modal('show');
+            $('#miPopupAcudiente').find('#txtIdentificacionEstudiante').val(identificacion);
+            $('#miPopupAcudiente').find('#beneficiario').val(beneficiario);
+        }
+        else {
+            if (beneficiario === '1') {
+                matricula.optionsBeneficio(identificacion);
+                $('#miPopupBeneficiario').modal('show');
+            }
         }
     },
     asignarEmpresa: function () {
         var idEstudiante = $('#miPopupBeneficiario').find('#ddlEstudiante').val();
         var idEmpresa = $('#miPopupBeneficiario').find('#ddlEmpresa').val();
+        var valorBeneficio = $('#miPopupBeneficiario').find('#txtValorBeneficio').val();
         if (validationBeneficiario.valid()) {
             $.ajax({
                 url: "ControllerMatricula",
@@ -1320,7 +1352,8 @@ var matricula = {
                 data: {
                     action: 'asignarEmpresa',
                     nitEmpresa: idEmpresa,
-                    documentoEstudiante: idEstudiante
+                    documentoEstudiante: idEstudiante,
+                    valorBeneficio: valorBeneficio
                 }
             });
         }

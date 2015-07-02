@@ -9,9 +9,10 @@ import Controller.Validaciones.Validador;
 import Model.DTO.ObjAcudiente;
 import Model.DTO.ObjUsuario;
 import Model.DTO.ObjDetalleUsuario;
+import Model.DTO.ObjSubsidio;
 import Model.Data.ModelAcudiente;
 import Model.Data.ModelEstudiante;
-import Model.Data.ModelCurso;
+import Model.Data.ModelSubsidio;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -148,6 +149,11 @@ public class ControllerEstudiante extends HttpServlet {
                     response.getWriter().write(getTableEstudiantes());
                     break;
                 }
+                case "asignarEmpresa": {
+                    response.setContentType("application/json");
+                    response.getWriter().write(asignarEmpresa(request));
+                    break;
+                }
                 case "EnlistarPreinscritos": {
                     response.setContentType("application/json");
                     response.getWriter().write(getTablePreinscritos());
@@ -160,7 +166,6 @@ public class ControllerEstudiante extends HttpServlet {
                     } catch (ParseException ex) {
                         String salida = Mensaje(false, "", "Ha ocurrido un error con la fecha de nacimiento");
                         response.getWriter().write(salida);
-
                     }
                     break;
                 }
@@ -408,5 +413,19 @@ public class ControllerEstudiante extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String asignarEmpresa(HttpServletRequest request) {        
+        String nitEmpresa = request.getParameter("nitEmpresa");
+        String documentoEstudiante = request.getParameter("documentoEstudiante");
+        int valorBeneficio = Integer.parseInt(request.getParameter("valorBeneficio"));
+        ObjSubsidio _objSubsidio = new ObjSubsidio();
+        _objSubsidio.setDocumentoUsuario(documentoEstudiante);
+        _objSubsidio.setNitEmpresa(nitEmpresa);
+        _objSubsidio.setValorSubsidio(valorBeneficio);
+        ModelSubsidio daoModelSubsidio = new ModelSubsidio();
+        String salida = Mensaje(daoModelSubsidio.Add(_objSubsidio), "Se ha registrado el beneficio", "Ha ocurrido un error al intentar registrar el beneficio");
+        daoModelSubsidio.Signout();
+        return  salida;
+    }
 
 }

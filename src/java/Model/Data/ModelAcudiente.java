@@ -7,6 +7,7 @@ package Model.Data;
 
 import Model.DTO.ObjAcudiente;
 import Model.JDBC.ConnectionDB;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,10 +26,14 @@ public class ModelAcudiente extends ConnectionDB {
 
     public boolean Add(ObjAcudiente _objAcudiente) {
         boolean objReturn = false;
-        String sql = "call spIngresarAcudiente (?,?,?,?)";
+        String sql = "call spIngresarAcudiente(?,?,?,?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
+            pStmt.setString(1, _objAcudiente.getDocumentoAcudiente());
+            pStmt.setString(2, _objAcudiente.getNombreAcudiente());
+            pStmt.setString(3, _objAcudiente.getTelefonoAcudiente());
+            pStmt.setDate(4, Date.valueOf(_objAcudiente.getFechaNacimiento()));
 
             int updateCount = pStmt.executeUpdate();
             if (updateCount > 0) {
