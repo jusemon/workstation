@@ -36,7 +36,7 @@
                     <a href="#estudiantes" role="tab" data-toggle="tab">Listado de Estudiantes</a>
                 </li>
                 <li>
-                    <a href="#matriculas" role="tab" data-toggle="tab">Listado de Matriculas</a>
+                    <a href="#matriculas" role="tab" data-toggle="tab">Listado de Matrículas</a>
                 </li>
                 <li>
                     <a href="#preinscritos" role="tab" data-toggle="tab">Listado de Preinscritos</a>
