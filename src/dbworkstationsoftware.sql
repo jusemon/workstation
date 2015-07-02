@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-07-2015 a las 06:19:29
+-- Tiempo de generación: 02-07-2015 a las 17:52:57
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -889,6 +889,28 @@ BEGIN
 	end if;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarAcudiente`(
+    in `documentoAcudien` varchar (20), 
+    in `nombreAcudien` varchar (50), 
+    in `telefonoAcudien` varchar(20), 
+    in `fechaNacimien` date
+ )
+BEGIN
+    INSERT INTO `tblacudiente`
+        (
+            `documentoAcudiente`, 
+            `nombreAcudiente`, 
+            `telefonoAcudiente`, 
+            `fechaNacimiento`
+        ) VALUES 
+        (
+            `documentoAcudien`, 
+            `nombreAcudien`, 
+            `telefonoAcudien`, 
+            `fechaNacimien`
+        );
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarArticulo`(
     IN `idCategoriaArticu` int, 
     IN `descripcionArticu` varchar(50), 
@@ -916,6 +938,17 @@ BEGIN
             `precioVen`
         );
     END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarBeneficio`( in `valorSubsid` int, `nitEmpre` varchar(20), in `documentoUsuar` varchar(20))
+BEGIN
+	declare msg varchar(40);    
+	if (exists(select idSubsidio from tblsubsidio where documentoUsuario=documentoUsuar and nitEmpresa=nitEmpre)) then
+		set msg="Este subsidio ya existe";
+		select msg as Respuesta;
+	else
+		insert into tblsubsidio ( `valorSubsidio`, `nitEmpresa`, `documentoUsuario`) Values( `valorSubsid`, `nitEmpre`, `documentoUsuar`);
+	end if;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarCategoriaArticulo`(IN `nombre` VARCHAR(30))
@@ -1415,19 +1448,6 @@ INSERT INTO `tblcurso`(
 END IF;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarSubsidio`(IN `idSubsid` INT, IN `nitEmpre` INT, IN `idClien` VARCHAR(30), IN `fechaAsignaci` DATETIME, IN `valorSubsid` int)
-BEGIN
-	declare msg varchar(40);    
-	if (exists(select idSubsideo from tblSubsideo where idSubsidio=idSubsid)) then
-		set msg="Este subsidio ya existe";
-		select msg as Respuesta;
-	else
-		insert into tblSubsidio (nitEmpresa,idCliente,fechaAsignacion,valorSubsidio) Values(nitEmpre,idClien,fechaAsignaci,valorSubsid);
-		set msg="Este subsidio se ha registrado exitosamente";
-		select msg as Respuesta; 
-	end if;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarUsuario`(
     in `documentoUsuar` varchar(40), 
     in `fechaNacimien` date, 
@@ -1748,7 +1768,7 @@ CREATE TABLE IF NOT EXISTS `tbldetalleusuario` (
   `telefonoMovil` varchar(15) NOT NULL,
   `generoUsuario` bit(1) NOT NULL,
   `estadoBeneficiario` bit(1) NOT NULL DEFAULT b'0'
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbldetalleusuario`
@@ -1756,7 +1776,8 @@ CREATE TABLE IF NOT EXISTS `tbldetalleusuario` (
 
 INSERT INTO `tbldetalleusuario` (`idDetalleUsuario`, `direccionUsuario`, `telefonoMovil`, `generoUsuario`, `estadoBeneficiario`) VALUES
 (1, 'asdasdasd', '3218016237', b'1', b'0'),
-(2, 'Calle 45', '3214752456', b'1', b'0');
+(2, 'Calle 45', '3214752456', b'1', b'0'),
+(3, 'asdasd', '1231232323', b'1', b'0');
 
 -- --------------------------------------------------------
 
@@ -1983,13 +2004,14 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
 --
 
 INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`, `telefonoFijo`) VALUES
-('CC101722567', '1981-03-13', 'Juan', 'Montoya', 'correo@correo.co', 'Esdfgdfg4', 1, 1, 3, NULL, '2359731'),
+('CC101722567', '1981-03-13', 'Juan', 'Montoya', 'correo@correo.co', 'Esdfgdfg4', 0, 1, 3, NULL, '2359731'),
 ('CC1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL, '5861529'),
 ('CC1017225674', '1996-01-18', 'Operario', 'Operar', 'jsmontoya378@outlook.com', 'Es120300', 1, NULL, 2, NULL, '2359731'),
 ('CC1017225675', '1996-01-18', 'Operario', 'Operar', 'jsmontoya@outlook.com', 'Es120300', 1, NULL, 2, NULL, '2359731'),
 ('CC1017225678', '2001-03-02', 'Vanessa', 'Soto', 'jsun@asd.co', '123', 1, 2, 3, NULL, '2359731'),
 ('CC8101926', '1984-01-06', 'David', 'Cano Arango', 'dcano62@misena.edu.co', '123', 1, NULL, 1, NULL, '1234567'),
-('CE5465465', '1969-12-28', 'Lorenzo', 'Chimeno Trenado', 'lchimeno37@misena.edu.co', '123', 1, NULL, 1, NULL, '9876543');
+('CE5465465', '1969-12-28', 'Lorenzo', 'Chimeno Trenado', 'lchimeno37@misena.edu.co', '123', 1, NULL, 1, NULL, '9876543'),
+('TI1017225', '2010-01-01', 'adasd', 'asdasd', 'asd@hoasd.com', 'Es12345', 1, 3, 3, NULL, '14231233');
 
 --
 -- Índices para tablas volcadas
@@ -2163,7 +2185,7 @@ MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 -- AUTO_INCREMENT de la tabla `tbldetalleusuario`
 --
 ALTER TABLE `tbldetalleusuario`
-MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `tblinscrito`
 --
