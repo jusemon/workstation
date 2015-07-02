@@ -7,7 +7,7 @@ $(document).ready(function () {
         $.notify('Bienvenido al Sistema WorkStation', 'success');
     }
     else if (enlace.indexOf('mensaje=3') !== -1) {
-        $.notify('Su cuenta se encuentra desactivada, ponganse en contacto con el administrador', 'warning');
+        $.notify('Su cuenta se encuentra desactivada, póngase en contacto con el administrador', 'warning');
     }
     var URLactual = window.location.pathname;
     if (URLactual.indexOf('index') !== -1) {
@@ -47,23 +47,7 @@ $(document).ready(function () {
     });
 });
 
-$('#radioBtn2 a').on('click', function () {
-    var sel = $(this).data('title');
-    var tog = $(this).data('toggle');
-    $('#' + tog).prop('value', sel);
-    $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
-    $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
-});
 
-$('#radioBtn a').on('click', function () {
-    var sel = $(this).data('title');
-    var tog = $(this).data('toggle');
-    $('#' + tog).prop('value', sel);
-    $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
-    $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
-});
-
-//Empresa
 
 
 

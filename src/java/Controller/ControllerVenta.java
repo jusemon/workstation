@@ -241,9 +241,14 @@ public class ControllerVenta extends HttpServlet {
                             tablaDetalle.addCell(currencyFormatter.format(Integer.parseInt(next.get("precioArticulo"))));
                         }
                         //Creo el Footer
+                        int total = Integer.parseInt(venta.get("totalVenta"));
+                        float subtotal = (total/1.16f);
+                        float iva  = (subtotal-total);
                         headerIzquierda = new Paragraph();
+                        headerIzquierda.add(new Chunk("Subtotal: ", helveticaBold));
+                        headerIzquierda.add(new Chunk(currencyFormatter.format(subtotal)));
                         headerIzquierda.add(new Chunk("Total: ", helveticaBold));
-                        headerIzquierda.add(new Chunk(currencyFormatter.format(Integer.parseInt(venta.get("totalVenta")))));
+                        headerIzquierda.add(new Chunk(currencyFormatter.format(total)));
                         PdfPCell footerCell = new PdfPCell(headerIzquierda);
                         footerCell.setBorder(0);
                         footerCell.setColspan(4);
