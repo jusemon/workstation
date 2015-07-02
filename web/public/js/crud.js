@@ -952,7 +952,10 @@ var estudiante = {
                         var beneficiario = $('#miPopupAcudiente').find('#beneficiario').val();
                         if (beneficiario == 1) {
                             matricula.optionsBeneficio(identificacion);
+                            $('#miPopupAcudiente').modal('hide');
                             $('#miPopupBeneficiario').modal('show');
+                        } else {
+                            $('#miPopupAcudiente').modal('hide');
                         }
                         matricula.registrarBeneficiario(identificacion);
                     }

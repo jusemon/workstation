@@ -72,6 +72,10 @@
         <servlet-name>ObjIncrito</servlet-name>
         <servlet-class>Model.DTO._objIsncrito</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControllerAcudiente</servlet-name>
+        <servlet-class>Controller.ControllerAcudiente</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControllerCliente</servlet-name>
         <url-pattern>/ControllerCliente</url-pattern>
@@ -143,6 +147,10 @@
     <servlet-mapping>
         <servlet-name>ObjIncrito</servlet-name>
         <url-pattern>/ObjIncrito</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControllerAcudiente</servlet-name>
+        <url-pattern>/ControllerAcudiente</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -35,7 +35,7 @@
                                                 <label for="txtIdentificacion">
                                                     Número
                                                 </label>
-                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 1017225673" required>
+                                                <input name="txtIdentificacion" id="txtIdentificacion" type="text" class="form-control" placeholder="Ejm: 456550" required>
                                             </div>
                                         </div>
                                     </div>
@@ -45,7 +45,7 @@
                                                 <label for="txtNombre">
                                                     Nombres
                                                 </label>
-                                                <input name="txtNombre" id="txtNombre" type="text"  class="form-control" placeholder="Ejm: Juan Sebastián">
+                                                <input name="txtNombre" id="txtNombre" type="text"  class="form-control" placeholder="Ejm: Lorenzo">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -53,7 +53,7 @@
                                                 <label for="txtApellido">
                                                     Apellidos
                                                 </label>
-                                                <input name="txtApellido" id="txtApellido" type="text" class="form-control" placeholder="Ejm: Montoya Montoya">
+                                                <input name="txtApellido" id="txtApellido" type="text" class="form-control" placeholder="Ejm: Chimeno Trenado">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -61,7 +61,7 @@
                                                 <label for="dateFechaNacimiento">
                                                     Fecha de Nacimiento
                                                 </label>
-                                                <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" class="form-control fecha" placeholder="Ejm: 10/10/2014">
+                                                <input name="dateFechaNacimiento" id="dateFechaNacimiento" type="text" class="form-control fecha" placeholder="Ejm: 28/12/1969">
                                             </div>
                                         </div>
                                     </div>
@@ -79,7 +79,7 @@
                                                 <label for="txtCorreo">
                                                     Correo Electrónico
                                                 </label>
-                                                <input name="txtCorreo" id="txtCorreo" type="email" class="form-control" placeholder="Ejm: jsmontoya37@misena.edu.co" >
+                                                <input name="txtCorreo" id="txtCorreo" type="email" class="form-control" placeholder="Ejm: lchimeno@misena.edu.co" >
                                             </div>
                                         </div>
                                     </div>

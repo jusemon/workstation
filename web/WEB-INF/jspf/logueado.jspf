@@ -26,7 +26,7 @@
                                 <a href="javascript:void(0)" onclick="usuario.miPerfil(documentoUsuario)"  class="btn btn-primary btn-block btn-sm">Mi Perfil</a>
                             </p>
                         </div>
-                    </div>
+                    </div
                 </div>
             </li>
             <li class="divider"></li>
