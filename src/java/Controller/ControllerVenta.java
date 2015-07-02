@@ -6,9 +6,12 @@
 package Controller;
 
 import Controller.Validaciones.Validador;
+import Model.DTO.ObjCredito;
 import Model.DTO.ObjVenta;
 import Model.DTO.ObjDetalleMovimiento;
+import Model.DTO.ObjMovimiento;
 import Model.DTO.ObjUsuario;
+import Model.Data.ModelCredito;
 import Model.Data.ModelVenta;
 import com.google.gson.Gson;
 import com.itextpdf.text.*;
@@ -20,8 +23,11 @@ import java.util.Map;
 import java.sql.ResultSet;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,6 +66,8 @@ public class ControllerVenta extends HttpServlet {
                     String documentoCliente = null;
                     String nombreCliente = null;
                     int numeroVenta = 0;
+                    boolean credito = false;
+                    credito = Boolean.valueOf(request.getParameter("credito"));
                     if (Validador.validarDocumento(request.getParameter("documentoCliente")) & Validador.validarNombresCompletos(request.getParameter("txtNombreCliente"))
                             & Validador.validarNumero(request.getParameter("txtNumeroVenta"))) {
                         documentoCliente = (request.getParameter("documentoCliente"));
@@ -84,17 +92,58 @@ public class ControllerVenta extends HttpServlet {
                         _objDetalleMovimiento.setDescuento(lenght);
                         listOjbDetalleMovimientos.add(_objDetalleMovimiento);
                     }
+
                     _objUsuario.setDocumentoUsuario(documentoUsuario);
                     _objVenta.setIdVenta(numeroVenta);
                     _objVenta.setDocumentoCliente(documentoCliente);
                     _objVenta.setNombreCliente(nombreCliente);
                     _objVenta.setTotalVenta(totalCompra);
-                    daoModelVenta = new ModelVenta();
-                    String salida = Mensaje(daoModelVenta.Add(_objVenta, _objUsuario, listOjbDetalleMovimientos), "La venta ha sido registrada", "Ha ocurrido un error");
-                    daoModelVenta.Signout();
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write(salida);
+
+                    if (credito) {
+                        ModelCredito daoModelCredito = new ModelCredito();
+                        ObjCredito _objCredito = new ObjCredito();
+                        ObjMovimiento _objMovimiento = new ObjMovimiento();
+
+                        ResultSet rs2 = null;
+                        try {
+                            rs2 = daoModelCredito.buscarCreditoByDocumento(_objVenta.getDocumentoCliente());
+
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
+                        if (rs2 != null) {
+                            try {
+                                if (!rs2.next()) {
+                                    _objCredito.setDocumentoUsuario(documentoCliente);
+                                    _objCredito.setSaldoInicial(50000);
+                                    _objCredito.setSaldoActual(50000 - _objVenta.getTotalVenta());
+                                    _objMovimiento.setDocumentoUsuario(documentoUsuario);
+                                    _objMovimiento.setDocumentoAuxiliar(documentoCliente);
+                                    daoModelCredito.Add(_objCredito, _objMovimiento, listOjbDetalleMovimientos, "Venta");
+                                } else {
+                                    while (rs2.next()) {
+                                        _objCredito.setDocumentoUsuario(rs2.getString("documentoUsuario"));
+                                        _objCredito.setSaldoInicial(rs2.getDouble("saldoInicial"));
+                                        _objCredito.setSaldoActual(rs2.getDouble("saldoActual"));
+                                        _objCredito.setEstadoCredito(rs2.getInt("estadoCredito"));
+                                        _objCredito.setIdCredito(rs2.getInt("idCredito"));
+                                        _objCredito.setFechaInicio(rs2.getString("fechaInicio"));
+                                    }
+                                }
+                            } catch (SQLException ex) {
+                                Logger.getLogger(ControllerMatricula.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        daoModelCredito.Signout();
+                    } else {
+                        daoModelVenta = new ModelVenta();
+                        String salida = Mensaje(daoModelVenta.Add(_objVenta, _objUsuario, listOjbDetalleMovimientos), "La venta ha sido registrada", "Ha ocurrido un error");
+                        daoModelVenta.Signout();
+                        response.setContentType("application/json");
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write(salida);
+                    }
+
                     break;
                 }
                 case "Consultar": {

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-07-2015 a las 00:47:04
+-- Tiempo de generación: 02-07-2015 a las 06:19:29
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -160,7 +160,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstadoUsuario`(
 BEGIN
 	UPDATE tblusuario SET 
             `estadoUsuario`=`estadoUsuar` 
-        WHERE `documentoUsuar`=`documentoUsuar`;
+        WHERE `documentoUsuario`=`documentoUsuar`;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarEstudiante`(
@@ -1348,12 +1348,15 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarPreinscripcion`(
 )
 BEGIN	
 
-declare msg varchar(60);    
+declare msg varchar(100);    
     if (exists(SELECT `documentoUsuario` FROM `tblpreinscripcion` WHERE `documentoUsuario` = `documentoUsuar` and `idCurso` = `idCur`)) then
 		set msg= CONVERT(CONCAT('Este cliente ya se ha preinscrito a ',(SELECT `nombreCurso` from tblcurso WHERE `idCurso` = idCur)) using utf8);
 		select msg as mensaje, 'error' as tipo;
     elseif (exists(SELECT `documentoUsuario` FROM `tblpreinscripcion` WHERE `documentoUsuario` = `documentoUsuar` and estado = 1)) then
                 set msg=CONVERT(CONCAT('Este cliente se encuentra preinscrito a ',(SELECT `nombreCurso` from tblcurso WHERE `idCurso` = (SELECT idCurso from `tblpreinscripcion` WHERE `documentoUsuario` = `documentoUsuar` and estado = 1))) using utf8);
+		select msg as mensaje, 'error' as tipo;
+    elseif (exists(SELECT `documentoUsuario` FROM `tblUsuario` WHERE `documentoUsuario` = `documentoUsuar` and idrol !=4)) then
+                set msg=CONVERT(CONCAT('Usted cuenta con rol de ', (SELECT descripcion FROM tblrol WHERE idrol = (SELECT idrol FROM tblusuario WHERE `documentoUsuario` = `documentoUsuar`)), ' por lo cual no se puede preinscribir.') using utf8);
 		select msg as mensaje, 'error' as tipo;
     else
     INSERT INTO `tblpreinscripcion`
@@ -1368,7 +1371,7 @@ declare msg varchar(60);
         `documentoUsuar`, 
         `idCur`
     );
-    set msg= CONVERT(CONCAT('Se ha registrado su preincripción a ',(SELECT `nombreCurso` from tblcurso WHERE `idCurso` = idCur)) using utf8);
+    set msg= CONVERT(CONCAT('Se ha registrado su preincripci��n a ',(SELECT `nombreCurso` from tblcurso WHERE `idCurso` = idCur)) using utf8);
     select msg as mensaje, 'success' as tipo;
 end if;
 END$$
@@ -1848,6 +1851,11 @@ INSERT INTO `tblmodulorol` (`idmodulo`, `idrol`) VALUES
 (5, 1),
 (6, 1),
 (9, 1),
+(1, 2),
+(2, 2),
+(3, 2),
+(5, 2),
+(6, 2),
 (7, 3),
 (8, 3),
 (7, 4),
@@ -1891,7 +1899,7 @@ CREATE TABLE IF NOT EXISTS `tblpreinscripcion` (
   `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `documentoUsuario` varchar(20) NOT NULL,
   `idCurso` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1977,8 +1985,9 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
 INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`, `telefonoFijo`) VALUES
 ('CC101722567', '1981-03-13', 'Juan', 'Montoya', 'correo@correo.co', 'Esdfgdfg4', 1, 1, 3, NULL, '2359731'),
 ('CC1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL, '5861529'),
-('CC1017225674', '1996-01-18', 'Operario', 'Operar', 'jsmontoya378@outlook.com', 'Es120300', 1, NULL, 2, NULL, '2359732'),
-('CC1017225678', '2001-03-02', 'Vanessa', 'Soto', 'jsun@asd.co', 'Abcde123', 1, 2, 3, NULL, '2359731'),
+('CC1017225674', '1996-01-18', 'Operario', 'Operar', 'jsmontoya378@outlook.com', 'Es120300', 1, NULL, 2, NULL, '2359731'),
+('CC1017225675', '1996-01-18', 'Operario', 'Operar', 'jsmontoya@outlook.com', 'Es120300', 1, NULL, 2, NULL, '2359731'),
+('CC1017225678', '2001-03-02', 'Vanessa', 'Soto', 'jsun@asd.co', '123', 1, 2, 3, NULL, '2359731'),
 ('CC8101926', '1984-01-06', 'David', 'Cano Arango', 'dcano62@misena.edu.co', '123', 1, NULL, 1, NULL, '1234567'),
 ('CE5465465', '1969-12-28', 'Lorenzo', 'Chimeno Trenado', 'lchimeno37@misena.edu.co', '123', 1, NULL, 1, NULL, '9876543');
 
@@ -2174,7 +2183,7 @@ MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --
 ALTER TABLE `tblpreinscripcion`
-MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `tblrol`
 --

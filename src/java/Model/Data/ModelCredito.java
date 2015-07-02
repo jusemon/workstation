@@ -10,7 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import Model.DTO.ObjCredito;
+import Model.DTO.ObjDetalleMovimiento;
 import Model.DTO.ObjMovimiento;
+import Model.DTO.ObjUsuario;
+import Model.DTO.ObjVenta;
+import java.util.List;
 
 /**
  *
@@ -24,7 +28,7 @@ public class ModelCredito extends ConnectionDB {
         getConnection();
     }
 
-    public boolean Add(ObjCredito _objCredito, ObjMovimiento _objMovimiento) {
+    public boolean Add(ObjCredito _objCredito, ObjMovimiento _objMovimiento, List<ObjDetalleMovimiento> _listObjDetalleMovimientos, String tipo) {
         boolean objReturn = false;
         String sql = "call spIngresarCredito(?,?,?)";
         try {
@@ -41,7 +45,7 @@ public class ModelCredito extends ConnectionDB {
             if (rs.next()) {
                 resultado[0] = rs.getString("Respuesta");
                 resultado[1] = rs.getString("tipo");
-                System.out.println(resultado[0]+" Tipo: "+ resultado[1]);
+                System.out.println(resultado[0] + " Tipo: " + resultado[1]);
             }
             if (resultado[1].equals("success")) {
                 objReturn = true;
@@ -53,11 +57,30 @@ public class ModelCredito extends ConnectionDB {
                 int updateCount2 = pStmt.executeUpdate();
                 if (updateCount2 > 0) {
                     objReturn = true;
-                    String sql3 = "call spIngresarDetalleMovimientoCredito(?)";
-                    pStmt = connection.prepareCall(sql3);
-                    pStmt.setString(1, _objCredito.getDocumentoUsuario());
-                    int updateCount3 = pStmt.executeUpdate();
-                    if (updateCount3 > 0) {
+                    String sql3 = "";
+
+                    if (tipo == null) {
+                        sql3 = "call spIngresarDetalleMovimientoCredito(?)";
+                        pStmt = connection.prepareCall(sql3);
+                        pStmt.setString(1, _objCredito.getDocumentoUsuario());
+                    } else {
+                        sql3 = "call spIngresarDetalleVenta(?,?,?,?,?)";
+                        pStmt = connection.prepareCall(sql3);
+                        for (ObjDetalleMovimiento _objDetalle : _listObjDetalleMovimientos) {
+                            pStmt.setInt(1, _objDetalle.getIdArticulo());
+                            pStmt.setInt(2, _objDetalle.getCantidad());
+                            pStmt.setInt(3, _objDetalle.getDescuento());
+                            pStmt.setInt(4, _objDetalle.getTotalDetalleMovimiento());
+                            pStmt.setInt(5, _objDetalle.getPrecioArticulo());
+                            if (pStmt.executeUpdate() > 0) {
+                                objReturn = true;
+                            } else {
+                                objReturn = false;
+                                connection.rollback();
+                            }
+                        }
+                    }
+                    if (objReturn) {
                         String sql4 = "call spIngresarDetalleCredito()";
                         pStmt = connection.prepareCall(sql4);
                         int updateCount4 = pStmt.executeUpdate();

@@ -47,7 +47,8 @@ public class ControllerLogin extends HttpServlet {
                     HttpSession session = request.getSession();
                     String email = request.getParameter("nom");
                     String pass = request.getParameter("pass");
-                    if (comprobarUsuario(email, pass)) {
+                    int resultado = comprobarUsuario(email, pass);
+                    if (resultado == 1) {
                         session.setAttribute("usuario", email);
                         session.setAttribute("pass", pass);
                         session.setAttribute("correo", _objUsuario.getEmailUsuario());
@@ -62,13 +63,8 @@ public class ControllerLogin extends HttpServlet {
                         } catch (Exception e) {
                             System.err.println(e.getMessage());
                         }
-
-                        response.sendRedirect("index.jsp?mensaje=1");
-
-                    } else {
-                        response.sendRedirect("index.jsp?mensaje=2");
-
                     }
+                    response.sendRedirect("index.jsp?mensaje=" + resultado);
                     break;
                 }
                 case "Cerrar Sesion": {
@@ -83,7 +79,7 @@ public class ControllerLogin extends HttpServlet {
         }
     }
 
-    public boolean comprobarUsuario(String email, String pass) {
+    public int comprobarUsuario(String email, String pass) {
         ResultSet rs;
         _objUsuario.setEmailUsuario(email);
         _objUsuario.setPassword(pass);
@@ -94,8 +90,12 @@ public class ControllerLogin extends HttpServlet {
                 if (rs.getString("emailUsuario").equalsIgnoreCase(email) && rs.getString("password").equals(pass)) {
                     _objUsuario.setDocumentoUsuario(rs.getString("documentoUsuario"));
                     _objUsuario.setNombreUsuario(rs.getString("nombreUsuario"));
+                    _objUsuario.setEstadoUsuario(rs.getInt("estadoUsuario"));
+                    if (_objUsuario.getEstadoUsuario() == 0) {
+                        return 3;
+                    }
                     _objUsuario.setIdrol(rs.getInt("idRol"));
-                    return true;
+                    return 1;
                 }
             }
 
@@ -104,14 +104,14 @@ public class ControllerLogin extends HttpServlet {
         } finally {
             _modelUsuario.Signout();
         }
-        return false;
+        return 2;
     }
 
     //Este metodo imprime la barra superior segun los privilegios del usuario logueado
     public String imprimirBarra(String email, String pass) {
         ResultSet result;
         String barraModulos = "";
-        if (!comprobarUsuario(email, pass)) {
+        if (comprobarUsuario(email, pass)!=1) {
             barraModulos += "            <li id=\"btnnuestro\" class=\"\"><a href=\"nuestro.jsp\">Nuestros Cursos</a></li>\n"
                     + "            <li id=\"btnacerca\" class=\"\"><a href=\"acerca.jsp\">Acerca de Nosotros</a></li>";
             return barraModulos;
@@ -127,7 +127,6 @@ public class ControllerLogin extends HttpServlet {
                 barraModulos += "";
                 barraModulos += "<li id=\"" + btn + "\"><a href=\"" + result.getString("enlace") + "\">" + result.getString("nombre") + "</a></li>";
                 barraModulos += "";
-
             }
         } catch (Exception e) {
             barraModulos = "Ha ocurrido un error" + e.getMessage();

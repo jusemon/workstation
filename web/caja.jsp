@@ -228,6 +228,10 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                         <select id="clienteRegistrado" class="form-control" style="width: 100%">
                                                             <option></option>
                                                         </select>
+                                                        <label for="chkAddCredito">
+                                                            Añadir a crédito 
+                                                        </label>
+                                                        <input type="checkbox" id="chkAddCredito" name="chkAddCredito"/>                                                        
                                                     </div>
                                                 </div>
                                             </div>

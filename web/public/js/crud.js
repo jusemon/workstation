@@ -605,7 +605,7 @@ var seminario = {
 //            ]
         });
     },
-    recargarDetalle: function (idSeminario) {
+    recargarDetalle: function () {
         tablaDetalleSeminario.ajax.reload();
     },
     actualizarTabla: function () {
@@ -628,11 +628,13 @@ var seminario = {
         });
     },
     mostrarRegistroAsistente: function () {
-        var fechaSeminario = $('#fecha').text();
+        var fechaSeminario = $('#miPopupDetalleSeminario').find('#fecha').text();
         if (validacionFechaRegistroASeminario(fechaSeminario) === true) {
             var idSeminario = $('#formDetalleSeminario').find('#idSeminario').val();
             $('#formAsistenteSeminario').find('#idSeminario').val(idSeminario);
             $('#miPopupAsistenteSeminario').modal('show');
+        } else {
+            $.notify('El seminario ya paso', 'error');
         }
     },
     registrarAsistente: function () {
@@ -645,7 +647,7 @@ var seminario = {
                     mensaje(data);
                     if (data['tipo'] === 'success') {
                         var cupos = $('#miPopupDetalleSeminario').find('#restantes').val();
-                        $('#miPopupDetalleSeminario').find('#restantes').val(cupos-1);
+                        $('#miPopupDetalleSeminario').find('#restantes').val(cupos - 1);
                         seminario.recargarDetalle();
                     }
                     $('#miPopupAsistenteSeminario').modal('hide');
@@ -1040,8 +1042,15 @@ var usuario = {
                     tipo: tipo
                 },
                 success: function (data, textStatus, jqXHR) {
-                    mensaje(data);
-                    usuario.actualizarTabla();
+                    if (tipo === 'cuenta') {
+                        mensaje(data);
+                        setTimeout(function () {
+                            location.href = 'index.jsp';
+                        }, 2000);
+                    } else {
+                        mensaje(data);
+                        usuario.actualizarTabla();
+                    }
                 }
             });
         }
@@ -1126,6 +1135,27 @@ var usuario = {
             },
             success: function (data, textStatus, jqXHR) {
                 $('#miPopupConfiguracion').find('#txtNombre').text(data.nombreUsuario + " " + data.apellidoUsuario);
+                if (parseInt(data.idrol) === 1) {
+                    $('#opcionActualizarDatos').removeClass('active');
+                    $('#actualizarDatos').removeClass('active');
+                    $('#opcionPreincripciones').hide();
+                    $('#opcionInhabilitar').hide();
+                }
+                else if (parseInt(data.idrol) === 2) {
+                    $('#opcionActualizarDatos').removeClass('active');
+                    $('#actualizarDatos').removeClass('active');
+                    $('#opcionPreincripciones').hide();
+                    $('#opcionInhabilitar').show().removeClass('active');
+                    $('#inhabilitar').removeClass('active');
+                }
+                else if (parseInt(data.idrol) === 3) {
+                    $('#opcionActualizarDatos').removeClass('active');
+                    $('#actualizarDatos').removeClass('active');
+                    $('#opcionPreincripciones').show().removeClass('active');
+                    $('#preincripciones').removeClass('active');
+                    $('#opcionInhabilitar').show().removeClass('active');
+                    $('#inhabilitar').removeClass('active');
+                }
                 $('#miPopupConfiguracion').modal('show');
             }
         });
@@ -1890,6 +1920,7 @@ var venta = {
                 var numeroVenta = $('#tabMovimientos').find('#txtNumero').val();
                 var documentoCliente = $('#tabMovimientos').find('#ddlIdentificacion').val() + $('#tabMovimientos').find('#txtIdentificacion').val();
                 var total = $('#tabMovimientos').find('#txtTotalMovimiento').val();
+                var chkCredito = document.getElementById('chkAddCredito').checked;
                 $.ajax({
                     type: 'POST',
                     url: "ControllerVenta",
@@ -1900,7 +1931,9 @@ var venta = {
                         txtNombreCliente: nombre, txtNumeroVenta: numeroVenta,
                         txtTotalVenta: total,
                         documentoUsuario: documentoUsuario,
-                        documentoCliente: documentoCliente
+                        documentoCliente: documentoCliente,
+                        credito: chkCredito
+
                     },
                     success: function (data, textStatus, jqXHR) {
                         venta.limpiarDetalle();
@@ -1909,6 +1942,9 @@ var venta = {
                         mensaje(data);
                         venta.contador();
                         venta.actualizarTabla();
+                        if (chkCredito) {
+                            credito.actualizarTabla();
+                        }
                     }
                 });
             } else {
@@ -2114,15 +2150,15 @@ var operario = {
         }
     },
     registrar: function () {
-        habilitar('formOperario');
-        limpiar('formOperario');
+        limpiar('#formOperario');
+        habilitar('#formOperario');
         $('#miPopupOperario').find('#titulo').text('Registrar Operario');
         $('#miPopupOperario').find('#btnOperario').val('Registrar').attr('type', 'button');
         $('#miPopupOperario').modal('show');
     },
     consultar: function (data) {
-        limpiar('formOperario');
-        desabilitar('formOperario');
+        limpiar('#formOperario');
+        desabilitar('#formOperario');
         $('#miPopupOperario').find('#titulo').text('Consultar Operario');
         $('#miPopupOperario').find('#txtIdentificacion').val(data['numeroDocumento']);
         $('#miPopupOperario').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + data['tipoDocumento'] + '"]').prop('selected', true);
@@ -2138,7 +2174,7 @@ var operario = {
     },
     editar: function (data) {
         operario.consultar(data);
-        habilitar('formOperario');
+        habilitar('#formOperario');
         $('#miPopupOperario').find('#titulo').text('Editar Operario');
         $('#miPopupOperario').find('#btnOperario').val('Editar').attr('type', 'button');
     },
@@ -2158,7 +2194,7 @@ var operario = {
     actualizarTabla: function () {
         tablaOperarios.ajax.reload();
     }
-}
+};
 compra.cargar();
 venta.cargar();
 categoriaCurso.cargar();
@@ -2178,3 +2214,6 @@ operario.cargar();
 if (typeof documentoUsuario !== 'undefined') {
     preinscripcion.cargar();
 }
+$('#miPopupDetalleSeminario').on('hidden.bs.modal', function () {
+    tablaDetalleSeminario.destroy();
+});

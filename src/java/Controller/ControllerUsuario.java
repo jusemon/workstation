@@ -22,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -201,8 +202,14 @@ public class ControllerUsuario extends HttpServlet {
             daoModelUsuario = new ModelUsuario();
             ResultSet result = daoModelUsuario.buscarPorID(id);
             while (result.next()) {
+                respuesta.put("documentoUsuario", result.getString("documentoUsuario"));
+                respuesta.put("fechaNacimiento", result.getString("fechaNacimiento"));
                 respuesta.put("nombreUsuario", result.getString("nombreUsuario"));
                 respuesta.put("apellidoUsuario", result.getString("apellidoUsuario"));
+                respuesta.put("telefonoFijo", result.getString("telefonoFijo"));
+                respuesta.put("emailUsuario", result.getString("emailUsuario"));
+                respuesta.put("estadoUsuario", result.getString("estadoUsuario"));
+                respuesta.put("idrol", result.getString("idrol"));
             }
             daoModelUsuario.Signout();
             salida = new Gson().toJson(respuesta);
@@ -233,6 +240,7 @@ public class ControllerUsuario extends HttpServlet {
             String nombre = request.getParameter("txtNombre").trim();
             String apellido = request.getParameter("txtApellido").trim();
             String fechaNacimiento = request.getParameter("dateFechaNacimiento").trim();
+            String telefonoFijo = request.getParameter("txtTelefono").trim();
             String correo = request.getParameter("txtCorreo").trim();
             int estado = 1;
             int rol = 4;
@@ -241,6 +249,7 @@ public class ControllerUsuario extends HttpServlet {
             _objUsuario.setNombreUsuario(nombre);
             _objUsuario.setApellidoUsuario(apellido);
             _objUsuario.setFechaNacimiento(formatoFechaSalida.format(formatoFechaEntrada.parse(fechaNacimiento)));
+            _objUsuario.setTelefonoFijo(telefonoFijo);
             _objUsuario.setEmailUsuario(correo);
             _objUsuario.setEstadoUsuario(estado);
             _objUsuario.setPassword(pass);
@@ -369,6 +378,13 @@ public class ControllerUsuario extends HttpServlet {
             _objUsuario = new ObjUsuario();
             _objUsuario.setDocumentoUsuario(documentoUsuario);
             _objUsuario.setEstadoUsuario(estado);
+            if (request.getParameter("tipo")!=null) {
+                if (request.getParameter("tipo").equals("cuenta")) {
+                    HttpSession session = request.getSession();
+                    session.invalidate();
+                    return Mensaje(daoModelUsuario.cambiarEstado(_objUsuario), "La cuenta ha sido desactivada", "Ha ocurrido un error al intentar desactivar la cuenta");
+                }
+            }
             return Mensaje(daoModelUsuario.cambiarEstado(_objUsuario), "El estado ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
 
         } catch (Exception e) {

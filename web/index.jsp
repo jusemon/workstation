@@ -12,8 +12,8 @@ Este contenedor tiene el contenido de la pagina, en este caso un carrusel que pa
 -->
 <div class="container-fluid" style="height: 100%;">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div id="ejemplo_carrusel" class="carousel slide" style="">
+        <div class="col-md-8 col-md-offset-2" style="height: 100%;">
+            <div id="ejemplo_carrusel" class="carousel slide" style="height: 100%;">
                 <!-- Indicadores circulares -->
                 <ol class="carousel-indicators">
                     <li data-target="#ejemplo_carrusel" data-slide-to="0" class="active"></li>
@@ -23,22 +23,22 @@ Este contenedor tiene el contenido de la pagina, en este caso un carrusel que pa
 
                 <!-- Bloque para las imágenes -->
                 <div class="carousel-inner">
-                    <div class="item active">
-                        <img class="imgIndex" src="public/images/ceramica.JPG" alt="300px">
+                    <div class="item text-center active">
+                        <img class="imgIndex" src="public/images/ceramica.JPG">
                         <div class="carousel-caption">
                             <h3>Ceramica</h3>
                             <p></p>
                         </div>
                     </div>
                     <div class="item text-center">
-                        <img class="imgIndex" src="public/images/marmolina.JPG" alt="300px">
+                        <img class="imgIndex" src="public/images/marmolina.JPG">
                         <div class="carousel-caption">
                             <h3>Marmilona</h3>
                             <p></p>
                         </div>
                     </div>
                     <div class="item text-center">
-                        <img class="imgIndex" src="public/images/vintage1.JPG" alt="300px">
+                        <img class="imgIndex" src="public/images/vintage2.JPG">
                         <div class="carousel-caption">
                             <h3>Vintage</h3>
                             <p></p>
