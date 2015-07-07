@@ -50,27 +50,10 @@ public class ControllerCredito extends HttpServlet {
 
             switch (request.getParameter("action")) {
 
-                // <editor-fold defaultstate="collapsed" desc="Ingresar un crédito nuevo">
-                /*case "Registrar": {
-                    String documentoUsuario = request.getParameter("txtDocumentoUsuario").trim();
-                    _ObjCredito.setDocumentoUsuario(documentoUsuario);
-                    String fechaInicio = request.getParameter("txtFechaInicio").trim();
-                    _ObjCredito.setFechaInicio(fechaInicio);
-                    double saldoInicial = Double.parseDouble(request.getParameter("txtSaldoInicial").trim());
-                    _ObjCredito.setSaldoInicial(saldoInicial);
-                    double saldoActual = Double.parseDouble(request.getParameter("txtSaldoActual").trim());
-                    _ObjCredito.setSaldoActual(saldoActual);
-                    int estadoCredito = Integer.parseInt(request.getParameter("ddlEstadoCredito").trim());
-                    _ObjCredito.setEstadoCredito(estadoCredito);
-                    daoModelCredito = new ModelCredito();
-                    salida = Mensaje(daoModelCredito.Add(_ObjCredito), "El crédito ha sido registrado", "Ha ocurrido un error al intentar registrar el crédito");
-                    daoModelCredito.Signout();
-                    response.setContentType("application/json");
-                    response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write(salida);
-                    break;
+                // <editor-fold defaultstate="collapsed" desc="Abonar">
+                case "Abonar":{
+                    
                 }
-                */
                 // </editor-fold>
                 // <editor-fold defaultstate="collapsed" desc="Listar los créditos">
                 case "Enlistar": {
@@ -192,8 +175,18 @@ public class ControllerCredito extends HttpServlet {
                 arreglo[4] = result.getString("saldoActual").trim();
                 arreglo[5] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"credito.estado(" + arreglo[0] + ")\">"
                         + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
-                arreglo[6] = "<a class=\"btn-sm btn-success btn-block\" href=\"javascript:void(0)\" onclick=\"credito.myAjax('Consultar'," + arreglo[0] + ", '', 'Credito')\">"
-                        + "<span class=\"glyphicon glyphicon-search\"></span></a>";
+
+                arreglo[6] = "<div class=\"btn-group\">\n"
+                        + "  <button type=\"button\" class=\"btn btn-info btn-block dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n"
+                        + "    Acciones <span class=\"caret\"></span>\n"
+                        + "  </button>\n"
+                        + "  <ul class=\"dropdown-menu\">\n"
+                        + "    <li><a class=\"btn btn-success\" href=\"javascript:void(0)\" onclick=\"credito.myAjax('Consultar'," + arreglo[0] + ", '', 'Credito')\">"
+                        + "<span class=\"glyphicon glyphicon-search\"></span>Consultar</a></li>\n"
+                        + "    <li><a class=\"btn btn-primary \"  href=\"javascript:void(0)\" onclick=\"abono.myAjax('Registrar'," + arreglo[0] + ",'Abonar', 'Credito')\">"
+                        + "<span class=\"glyphicon glyphicon-edit\"></span>Abonar</a></li>\n"
+                        + "  </ul>\n"
+                        + "</div>";
                 lista.add(arreglo);
             }
         } catch (Exception e) {

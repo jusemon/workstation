@@ -42,47 +42,34 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         </h4>
                     </div>
                 </div>
-                <!--Gestión de créditos-->
-                <div class="panel panel-default">
-                    <!--
-                    Aqui el boton que desplegara la gestión de créditos
-                    -->
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a id="btnGestionCredito" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas">
-                                Gestión de Créditos
-                            </a>
-                        </h4>
-                    </div>
-                </div>
                 <!-- Gestion de Diario de Caja-->
                 <!---div class="panel panel-default">
-                    <!--
-                    Aquí el botón que desplegara la gestión Diario de Caja
-                    >
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-                                Gestión de Diario de Caja
-                            </a>
-                        </h4>
-                    </div>
-                    <!--
-                    Aquí el contenido de la gestión de Diario de Caja, en este caso un boton para registrar  Movimientos diarios
-                    
-                    >                              
-                    <div id="collapseFour" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupDiario" data-dismiss="modal" name="regDiario" value="Registrar Diario">
-                                    </div>
+                <!--
+                Aquí el botón que desplegara la gestión Diario de Caja
+                >
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                            Gestión de Diario de Caja
+                        </a>
+                    </h4>
+                </div>
+                <!--
+                Aquí el contenido de la gestión de Diario de Caja, en este caso un boton para registrar  Movimientos diarios
+                
+                >                              
+                <div id="collapseFour" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input data-toggle="modal" class="btn btn-default btn-block" type="button" data-target="#miPopupDiario" data-dismiss="modal" name="regDiario" value="Registrar Diario">
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div-->
+                </div>
+            </div-->
             </div>
         </div>
         <div id="contenedor" class="col-md-9">
@@ -94,10 +81,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         </li>
                         <li>
                             <a href="#ventas" role="tab" data-toggle="tab">Listado de Ventas</a>
-                        </li>
-                        <li>
-                            <a href="#abonos" role="tab" data-toggle="tab">Listado de Abonos</a>                            
-                        </li>                            
+                        </li>              
                         <li>
                             <a href="#creditos" role="tab" data-toggle="tab">Listado de Créditos</a>                            
                         </li>                            
@@ -125,26 +109,12 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                             <table id="tblVentas" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Número Venta</th>
+                                        <th class="text-center">Id. Venta</th>
                                         <th class="text-center">Fecha</th>
-                                        <th class="text-center">Cedula Cliente</th>
+                                        <th class="text-center">Cedúla Cliente</th>
                                         <th class="text-center">Nombre Cliente</th>
-                                        <th class="text-center">Total </th>                                
+                                        <th class="text-center">Total Venta</th>                                
                                         <th class="text-center">Consultar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane fade" id="abonos">
-                            <table id="tblAbono" class="table table-responsive table-hover" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">Id. Abono</th>
-                                        <th class="text-center">Id. Crédito</th>
-                                        <th class="text-center">Valor Abono ($)</th>                                
-                                        <th class="text-center">Fecha Pago</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -340,7 +310,17 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                 <div class="col-md-offset-2 col-md-5">
                                                     <input id="btnMovimiento" type="submit" class="btn btn-default" value="Efectuar Compra" onclick="compra.efectuarCompra()">
                                                 </div>
-                                                <div class="col-md-2 text-center">
+                                                <div id="subtotal">
+                                                    <div class="col-md-2 text-right">
+                                                        <label for="txtSubTotalMovimiento" id="lblSubtotal">
+                                                            Subtotal
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input type="number" value="0" id="txtSubTotalMovimiento" class="form-control" readonly="true">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-offset-7 col-md-2 text-right">
                                                     <label for="txtTotalMovimiento" id="total">
                                                     </label>
                                                 </div>

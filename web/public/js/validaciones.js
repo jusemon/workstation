@@ -49,7 +49,7 @@ $.validator.addMethod("fechaMayor", function (value, element) {
             }
         }
     }
-}, 'La fecha ingresada no puede ser menor o igual a la actual.');
+}, 'La fecha ingresada no debe ser menor o igual a la fecha actual.');
 
 //Validación para calcular que el cliente cuenta con por lo menos 5 años de edad
 $.validator.addMethod("edad", function (value, element) {
@@ -177,7 +177,7 @@ if (document.getElementById('formUsuario') !== null) {
                 fecha: true,
                 edad: true
             },
-            txtPass4: {
+            txtPass: {
                 required: true,
                 pass: true
             },

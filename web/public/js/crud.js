@@ -957,13 +957,14 @@ var estudiante = {
                     if (data['tipo'] !== 'error') {
                         var identificacion = $('#miPopupAcudiente').find('#txtIdentificacionEstudiante').val();
                         var beneficiario = $('#miPopupAcudiente').find('#beneficiario').val();
+                        $('#miPopupAcudiente').modal('hide');
                         if (beneficiario == 1) {
                             matricula.optionsBeneficio(identificacion);
-                            $('#miPopupAcudiente').modal('hide');
                             $('#miPopupBeneficiario').modal('show');
                         } else {
                             $('#miPopupAcudiente').modal('hide');
                         }
+                        mensaje(data);
                         matricula.registrarBeneficiario(identificacion);
                     }
                 }
@@ -1104,6 +1105,16 @@ var usuario = {
         $('#miPopupUsuario').find('#txtNombre').val(data['nombreUsuario']);
         $('#miPopupUsuario').find('#txtApellido').val(data['apellidoUsuario']);
         $('#miPopupUsuario').find('#dateFechaNacimiento').val(data['fechaNacimiento']);
+        var Edad = data['fechaNacimiento'];
+        if (mayorDeEdad(Edad) === false) {
+            $('#miPopupUsuario').find('#txtIdentificacionAcudiente').val(data['documentoAcudiente']).$('.row:first').show();
+            $('#miPopupUsuario').find('#txtNombreAcudiente').val(data['nombreAcudiente']);
+        }else{
+            $('#miPopupUsuario').find('#txtIdentificacionAcudiente').$('.row:first').hide();       
+        }
+        /*
+         * 
+         */
         $('#miPopupUsuario').find('#txtCorreo').val(data['emailUsuario']);
         $('#miPopupUsuario').find('#txtPass').val(data['password']);
         $('#miPopupUsuario').find('#txtPass2').val(data['password']);
@@ -1712,6 +1723,8 @@ var compra = {
             elementos.precioArticulo = $(this).find('#valor').val();
             salida += elementos.cantidad * elementos.precioArticulo;
         });
+        var subtotal = salida / 1.16;
+        $('#tabMovimientos').find('#txtSubTotalMovimiento').val(subtotal.toFixed(2));
         $('#tabMovimientos').find('#txtTotalMovimiento').val(salida);
     },
     cargar: function () {
@@ -1813,8 +1826,9 @@ var compra = {
         compra.limpiarDetalle();
         $('#contenidoDinamico').data('actual', 'compra');
         $('#tabMovimientos').find('#nombre').text('Nombre del Proveedor');
-        $('#tabMovimientos').find('#numero').text('Numero de Factura ');
-        $('#tabMovimientos').find('#total').text('Total compra');
+        $('#tabMovimientos').find('#numero').text('Número de Factura ');
+        $('#tabMovimientos').find('#subtotal').hide();
+        $('#tabMovimientos').find('#total').text('Total compra: $');
         document.getElementById('tipoMovimiento').checked = false;
         $('#tabMovimientos').find('#tipoMovimiento').parents('.row:first').hide();
         $('#tabMovimientos').find('#txtIdentificacion').attr('disabled', true).parents('.row:first').hide();
@@ -2018,8 +2032,10 @@ var venta = {
         venta.limpiarDetalle();
         $('#contenidoDinamico').data('actual', 'venta');
         $('#tabMovimientos').find('#nombre').text('Nombre del Cliente');
-        $('#tabMovimientos').find('#numero').text('Numero de Venta');
-        $('#tabMovimientos').find('#total').text('Total venta');
+        $('#tabMovimientos').find('#numero').text('Id. Venta');
+        $('#tabMovimientos').find('#subtotal').show();
+        $('#tabMovimientos').find('#lblSubtotal').text('Subtotal venta: $');
+        $('#tabMovimientos').find('#total').text('Total venta: $');
         if (tipo === 'Registrar') {
             $('#tabMovimientos').find('#tipoMovimiento').parents('.row:first').show();
             $('#tabMovimientos').find('#ddlIdentificacion option').prop('selected', false);
@@ -2043,6 +2059,9 @@ var venta = {
             $('#tabMovimientos').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + datos.Venta.documentoCliente.substring(0, 2) + '"]').prop('selected', true);
             $('#tabMovimientos').find('#ddlIdentificacion').attr('disabled', true);
             $('#tabMovimientos').find('#txtIdentificacion').val(datos.Venta.documentoCliente.substring(2)).attr('readOnly', true).parents('.row:first').show();
+            var subtotal = parseInt(datos.Venta.totalVenta) / 1.16;
+            var iva = parseInt(datos.Venta.totalVenta) - subtotal;
+            $('#tabMovimientos').find('#txtSubTotalMovimiento').val(subtotal.toFixed(2)).show();
             $('#tabMovimientos').find('#txtTotalMovimiento').val(datos.Venta.totalVenta);
             $('#tabMovimientos').find('#ddlArticulos').attr('disabled', true).parents('.row:first').hide();
             $('#tabMovimientos').find('#btnArticulo').attr('disabled', true).parents('.row:first').hide();

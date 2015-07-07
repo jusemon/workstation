@@ -6,11 +6,11 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">                               
-                        <form method="POST" action="ControllerAbono">
+                        <form id="formAbono" action="ControllerCredito" method="POST">
                             <div class="panel">
                                 <div class="panel-heading estilo2">
                                     <h3 class="panel-title">
-                                        Registrar nuevo abono
+                                        <label id="titulo">Registrar abono</label>
                                         <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                                     </h3>
                                 </div>
@@ -34,22 +34,12 @@
                                                 <input name="txtValorAbono" id="txtValorAbono" type="number" class="form-control" placeholder="Ej: 25000" required>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="dateFechaPago">
-                                                    Fecha de pago
-                                                </label>
-                                                <input name="dateFechaPago" id="dateFechaPago" type="date" class="form-control" placeholder="" required>
-                                            </div>
-                                        </div>
-                                    </div>                                
+                                    </div>                                                                 
                                 </div>
                                 <div class="panel-footer">
                                     <div class="col-md-offset-3 col-md-6">
                                         <div class="form-group">
-                                            <input  class="btn btn-default btn-block" id="btnAbono" type="submit" name="action" value="Registrar">
+                                            <input id="btnAbono"  class="btn btn-default btn-block" onclick="abono.myAjax($('#formAbono').find('#btnAbono').val())" type="submit" name="action">
                                         </div>
                                     </div>
                                 </div>

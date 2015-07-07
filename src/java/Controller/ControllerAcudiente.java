@@ -60,6 +60,7 @@ public class ControllerAcudiente extends HttpServlet {
                         String apellido = request.getParameter("txtApellido").trim();
                         String telefonoFijo = request.getParameter("txtTelefono").trim();
                         String fechaNacimiento = request.getParameter("dateFechaNacimiento").trim();
+                        String documentoEstudiante = request.getParameter("txtIdentificacionEstudiante").trim();
                         _objAcudiente = new ObjAcudiente();
                         _objAcudiente.setDocumentoAcudiente(identificacion);
                         _objAcudiente.setNombreAcudiente(nombre + " " + apellido);
@@ -71,7 +72,7 @@ public class ControllerAcudiente extends HttpServlet {
                             response.getWriter().write(salida);
                             break;
                         }
-                        String salida = Mensaje(daoModelAcudiente.Add(_objAcudiente), "El acudiente ha sido registrado", "A ocurrido un error al intentar registrar al acudiente");
+                        String salida = Mensaje(daoModelAcudiente.Add(_objAcudiente, documentoEstudiante), "El acudiente ha sido registrado", "A ocurrido un error al intentar registrar al acudiente");
                         response.getWriter().write(salida);
 
                     } catch (NumberFormatException | IOException e) {

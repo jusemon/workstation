@@ -80,16 +80,16 @@ public class ControllerVenta extends HttpServlet {
                         break;
                     }
 
-                    int lenght = Integer.parseInt(request.getParameter("size"));
+                    int length = Integer.parseInt(request.getParameter("size"));
                     int totalCompra = Integer.parseInt(request.getParameter("txtTotalVenta"));
                     listOjbDetalleMovimientos = new ArrayList<>();
-                    for (int i = 0; i < lenght; i++) {
+                    for (int i = 0; i < length; i++) {
                         _objDetalleMovimiento = new ObjDetalleMovimiento();
                         _objDetalleMovimiento.setIdArticulo(Integer.parseInt(request.getParameter("lista[" + i + "][idArticulo]")));
                         _objDetalleMovimiento.setCantidad(Integer.parseInt(request.getParameter("lista[" + i + "][cantidad]")));
                         _objDetalleMovimiento.setPrecioArticulo(Integer.parseInt(request.getParameter("lista[" + i + "][precioArticulo]")));
                         _objDetalleMovimiento.setTotalDetalleMovimiento(_objDetalleMovimiento.getCantidad() * _objDetalleMovimiento.getPrecioArticulo());
-                        _objDetalleMovimiento.setDescuento(lenght);
+                        _objDetalleMovimiento.setDescuento(length);
                         listOjbDetalleMovimientos.add(_objDetalleMovimiento);
                     }
 
@@ -128,6 +128,9 @@ public class ControllerVenta extends HttpServlet {
                                         _objCredito.setEstadoCredito(rs2.getInt("estadoCredito"));
                                         _objCredito.setIdCredito(rs2.getInt("idCredito"));
                                         _objCredito.setFechaInicio(rs2.getString("fechaInicio"));
+                                        _objMovimiento.setDocumentoUsuario(documentoUsuario);
+                                        _objMovimiento.setDocumentoAuxiliar(documentoCliente);
+                                        daoModelCredito.Update(_objCredito, _objMovimiento, listOjbDetalleMovimientos, "Venta", _objVenta.getTotalVenta());
                                     }
                                 }
                             } catch (SQLException ex) {
@@ -238,9 +241,14 @@ public class ControllerVenta extends HttpServlet {
                             tablaDetalle.addCell(currencyFormatter.format(Integer.parseInt(next.get("precioArticulo"))));
                         }
                         //Creo el Footer
+                        int total = Integer.parseInt(venta.get("totalVenta"));
+                        float subtotal = (total/1.16f);
+                        float iva  = (subtotal-total);
                         headerIzquierda = new Paragraph();
+                        headerIzquierda.add(new Chunk("Subtotal: ", helveticaBold));
+                        headerIzquierda.add(new Chunk(currencyFormatter.format(subtotal)));
                         headerIzquierda.add(new Chunk("Total: ", helveticaBold));
-                        headerIzquierda.add(new Chunk(currencyFormatter.format(Integer.parseInt(venta.get("totalVenta")))));
+                        headerIzquierda.add(new Chunk(currencyFormatter.format(total)));
                         PdfPCell footerCell = new PdfPCell(headerIzquierda);
                         footerCell.setBorder(0);
                         footerCell.setColspan(4);

@@ -117,7 +117,7 @@ public class ControllerMatricula extends HttpServlet {
                 case "asignarEmpresa": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write(asigarEmpresa(request));
+                    response.getWriter().write(asignarEmpresa(request));
                     break;
                 }
                 case "ConsultarPreinscripcionesCliente": {
@@ -315,12 +315,16 @@ public class ControllerMatricula extends HttpServlet {
                                 _objCredito.setEstadoCredito(rs2.getInt("estadoCredito"));
                                 _objCredito.setIdCredito(rs2.getInt("idCredito"));
                                 _objCredito.setFechaInicio(rs2.getString("fechaInicio"));
+                                _objMovimiento.setDocumentoUsuario(documentoUsuario);
+                                _objMovimiento.setDocumentoAuxiliar(documentoCliente);
+                                daoModelCredito.Update(_objCredito, _objMovimiento, null, null, precioClase);
                             }
+                            
                         }
                     } catch (SQLException ex) {
                         Logger.getLogger(ControllerMatricula.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } 
+                }
                 daoModelCredito.Signout();
             }
             clases.add(_objClase);
@@ -383,7 +387,7 @@ public class ControllerMatricula extends HttpServlet {
         return new Gson().toJson(resultados);
     }
 
-    private String asigarEmpresa(HttpServletRequest request) {
+    private String asignarEmpresa(HttpServletRequest request) {
         String nitEmpresa;
         String documentoEstudiante;
         if (Validador.validarString(request.getParameter("nitEmpresa")) && Validador.validarString(request.getParameter("documentoEstudiante"))) {
