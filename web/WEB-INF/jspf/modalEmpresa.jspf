@@ -14,6 +14,7 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="text-warning">Todos los campos son obligatorios</div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -68,7 +69,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="txtEmailContacto">
-                                                    Email Contacto
+                                                    Correo Contacto
                                                 </label>
                                                 <input name="txtEmailContacto" id="txtEmailContacto" type="email" class="form-control" placeholder="Ejm: direccion@correo.com" required>
                                             </div>

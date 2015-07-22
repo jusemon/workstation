@@ -15,6 +15,7 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="text-warning">Todos los campos son obligatorios</div>
                                     <div class="row">
                                         <div class="form-group">
                                             <input name="idCurso" id="idCurso" type="hidden">

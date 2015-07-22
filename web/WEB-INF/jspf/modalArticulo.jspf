@@ -16,6 +16,7 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="text-warning">Todos los campos son obligatorios</div>
                                     <input type="hidden" name="idArticulo" id="idArticulo"/>
                                     <div class="row">
                                         <div class="col-md-12">

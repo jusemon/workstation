@@ -50,7 +50,7 @@
                                 <th class="text-center">Documento</th>
                                 <th class="text-center">Nombres</th>
                                 <th class="text-center">Fecha Nacimiento</th>
-                                <th class="text-center">Telefono</th>
+                                <th class="text-center">Teléfono</th>
                                 <th class="text-center">Consultar</th>
                                 <th class="text-center">Editar</th>
                                 <th class="text-center">Matricular</th>
@@ -84,7 +84,7 @@
                                 <th class="text-center">Cliente</th>
                                 <th class="text-center">Curso</th>
                                 <th class="text-center">Fecha Preinscripción</th>
-                                <th class="text-center">Email Cliente</th>
+                                <th class="text-center">Correo Cliente</th>
                                 <th class="text-center">Consultar</th>
                                 <th class="text-center">Inscribir</th>
                             </tr>

@@ -161,8 +161,9 @@ if (document.getElementById('formUsuario') !== null) {
             },
             txtIdentificacion: {
                 required: true,
-                identificacion: true,
-                digits: true
+                digits: true,
+                minlength: 3,
+                maxlength:15
             },
             txtNombre: {
                 required: true,

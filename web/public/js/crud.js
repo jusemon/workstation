@@ -68,7 +68,7 @@ var curso = {
 
                 });
             } else {
-                $.notify('Ups, uno o mas campos contienen datos erroneos', 'error');
+                $.notify('Uno o más campos contienen datos erroneos', 'error');
             }
         }
         else if (accion === 'getOptionsCursos') {
@@ -788,7 +788,7 @@ var estudiante = {
                     }
                 });
             } else {
-                $.notify('Uno o mas campos contienen datos erroneos', 'error');
+                $.notify('Uno o más campos contienen datos erroneos', 'error');
             }
         }
         else if (accion === 'getOptionsFichas') {
@@ -1047,7 +1047,7 @@ var usuario = {
                     }
                 });
             } else {
-                $.notify('Uno o mas campos contienen datos erroneos', 'error');
+                $.notify('Uno o más campos contienen datos erroneos', 'error');
             }
         }
         else if (accion === 'Actualizar') {
@@ -1063,7 +1063,7 @@ var usuario = {
                     }
                 });
             } else {
-                $.notify('Uno o mas campos contienen datos erroneos', 'error');
+                $.notify('Uno o más campos contienen datos erroneos', 'error');
             }
         }
         else if (accion === 'Estado') {
@@ -2206,7 +2206,7 @@ var operario = {
                     }
                 });
             } else {
-                $.notify('Ups, uno o mas campos contienen datos erroneos', 'error');
+                $.notify('Uno o más campos contienen datos erroneos', 'error');
             }
 
         }
