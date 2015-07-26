@@ -41,6 +41,7 @@ public class ControllerLogin extends HttpServlet {
 
         response.setContentType("text/html;charset=UTF-8");
         try {
+            request.setCharacterEncoding("UTF-8");
             switch (request.getParameter("Action")) {
                 case "Iniciar Sesión": {
                     _modelModulo = new ModelModulo();
