@@ -179,7 +179,7 @@ div.dataTables_wrapper {
 .item{
     overflow: hidden;
     width: auto;
-    max-height: 500px;
+    max-height: 700px;
 }
 
 #ejemplo_carrusel{

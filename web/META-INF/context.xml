@@ -1,5 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiJARLocking="true" path="/WorkStationAlpha">
-  <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="20" maxIdle="10" maxWait="-1" name="asd" password="" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/dbworkstationsoftware?zeroDateTimeBehavior=convertToNull" username="root"/>
-  <ResourceLink global="asd" name="ads" type="javax.sql.DataSource"/>
 </Context>
