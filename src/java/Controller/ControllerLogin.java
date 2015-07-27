@@ -41,8 +41,9 @@ public class ControllerLogin extends HttpServlet {
 
         response.setContentType("text/html;charset=UTF-8");
         try {
+            request.setCharacterEncoding("UTF-8");
             switch (request.getParameter("Action")) {
-                case "Iniciar Sesion": {
+                case "Iniciar Sesión": {
                     _modelModulo = new ModelModulo();
                     HttpSession session = request.getSession();
                     String email = request.getParameter("nom");
@@ -67,7 +68,7 @@ public class ControllerLogin extends HttpServlet {
                     response.sendRedirect("index.jsp?mensaje=" + resultado);
                     break;
                 }
-                case "Cerrar Sesion": {
+                case "Cerrar Sesión": {
                     HttpSession session = request.getSession();
                     session.invalidate();
                     response.sendRedirect("index.jsp");

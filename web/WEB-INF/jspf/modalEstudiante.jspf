@@ -15,6 +15,7 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body">
+                                    <div id="obligatoriedad" class="text-warning"></div>
                                     <div class="row">
                                         <div class="form-group">
                                             <input name="idCurso" id="idCurso" type="hidden">

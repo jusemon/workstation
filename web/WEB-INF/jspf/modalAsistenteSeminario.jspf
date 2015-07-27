@@ -17,6 +17,7 @@
                                     </h3>
                                 </div>
                                 <div class="panel-body">
+                                    <div id="obligatoriedad" class="text-warning"></div>
                                     <input type="hidden" id="idSeminario" name="idSeminario"/>
                                     <div class="row">
                                         <label class="col-md-12">Identificación</label>

@@ -68,7 +68,7 @@ var curso = {
 
                 });
             } else {
-                $.notify('Ups, uno o mas campos contienen datos erroneos', 'error');
+                $.notify('Uno o más campos contienen datos erroneos', 'error');
             }
         }
         else if (accion === 'getOptionsCursos') {
@@ -148,9 +148,9 @@ var curso = {
     registrar: function () {
         limpiar("#formCurso");
         habilitar('#formCurso');
-        categoriaCurso.myAjax('getOptionsCategorias');
-        $('#miPopupCurso').find('#titulo').empty();
-        $('#miPopupCurso').find('#titulo').append('Registrar Curso');
+        categoriaCurso.myAjax('getOptionsCategorias');        
+        $('#miPopupCurso').find('#titulo').text('Registrar Curso');        
+        $('#miPopupCurso').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupCurso').find('#tipo').val('Curso');
         $('#miPopupCurso').find('#txtFechaSeminario').parents('.row:first').hide();
         $('#miPopupCurso').find('#txtCupoSeminario').parents('.row:first').hide();
@@ -161,8 +161,8 @@ var curso = {
     editar: function (data) {
         curso.consultar(data);
         habilitar('#formCurso');
-        $('#miPopupCurso').find('#titulo').empty();
-        $('#miPopupCurso').find('#titulo').append('Editar Curso');
+        $('#miPopupCurso').find('#titulo').text('Editar Curso');
+        $('#miPopupCurso').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupCurso').find('#tipo').val('Curso');
         $('#miPopupCurso').find('#ContenedorCategoria').show();
         $('#miPopupCurso').find('#btnCurso').attr('type', 'button').attr('value', 'Editar').attr('disabled', false);
@@ -479,9 +479,9 @@ var seminario = {
     },
     registrar: function () {
         limpiar('#formCurso');
-        habilitar('#formCurso');
-        $('#miPopupCurso').find('#titulo').empty();
-        $('#miPopupCurso').find('#titulo').append('Registrar Seminario');
+        habilitar('#formCurso');        
+        $('#miPopupCurso').find('#titulo').text('Registrar Seminario');        
+        $('#miPopupCurso').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupCurso').find('#tipo').val('Seminario');
         $('#miPopupCurso').find('#txtFechaSeminario').parents('.row:first').show();
         $('#miPopupCurso').find('#txtCupoSeminario').parents('.row:first').show();
@@ -496,8 +496,8 @@ var seminario = {
         habilitar('#formCurso');
         $('#miPopupCurso').find('#txtCantidadClases').attr('readOnly', true);
         $('#miPopupCurso').find('#ContenedorCategoria').hide().find('#ddlCategoria').attr('disabled', true);
-        $('#miPopupCurso').find('#titulo').empty();
-        $('#miPopupCurso').find('#titulo').append('Editar Seminario');
+        $('#miPopupCurso').find('#titulo').text('Editar Seminario');
+        $('#miPopupCurso').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupCurso').find('#tipo').val('Seminario');
         $('#miPopupCurso').find('#btnCurso').attr('type', 'button').attr('value', 'Editar').attr('disabled', false);
     },
@@ -788,7 +788,7 @@ var estudiante = {
                     }
                 });
             } else {
-                $.notify('Uno o mas campos contienen datos erroneos', 'error');
+                $.notify('Uno o más campos contienen datos erroneos', 'error');
             }
         }
         else if (accion === 'getOptionsFichas') {
@@ -857,8 +857,7 @@ var estudiante = {
     },
     consultar: function (data) {
         limpiar("#form_estudiante");
-        $('#miPopupEstudiante').find('#titulo').empty();
-        $('#miPopupEstudiante').find('#titulo').append('Consultar Estudiante');
+        $('#miPopupEstudiante').find('#titulo').text('Consultar Estudiante');
         $('#miPopupEstudiante').find('#txtIdentificacion').val(data['numeroDocumento']);
         $('#miPopupEstudiante').find('#ddlIdentificacion option').prop('selected', false).filter('[value="' + data['tipoDocumento'] + '"]').prop('selected', true);
         $('#miPopupEstudiante').find('#txtNombre').val(data['nombreUsuario']);
@@ -892,9 +891,9 @@ var estudiante = {
     preinscribir: function (data, idCurso) {
         limpiar("#form_estudiante");
         estudiante.consultar(data);
-        $('#miPopupEstudiante').find('#titulo').empty();
         $('#miPopupEstudiante').find('#idCurso').val(idCurso);
-        $('#miPopupEstudiante').find('#titulo').append('Formalizar Inscripcion');
+        $('#miPopupEstudiante').find('#titulo').text('Formalizar Inscripcion');        
+        $('#miPopupEstudiante').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'submit').attr('value', 'Formalizar Inscripción').attr('disabled', false);
         $('#miPopupEstudiante').find('#radioGeneroFemenino').prop('checked', false);
         $('#miPopupEstudiante').find('#radioGeneroMasculino').prop('checked', false);
@@ -908,16 +907,16 @@ var estudiante = {
     registrar: function () {
         habilitar('#form_estudiante');
         limpiar("#form_estudiante");
-        $('#miPopupEstudiante').find('#titulo').empty();
-        $('#miPopupEstudiante').find('#titulo').append('Registrar Estudiante');
+        $('#miPopupEstudiante').find('#titulo').text('Registrar Estudiante');
+        $('#miPopupEstudiante').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'button').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupEstudiante').modal('show');
     },
     editar: function (data) {
         limpiar("#form_estudiante");
         estudiante.consultar(data);
-        $('#miPopupEstudiante').find('#titulo').empty();
-        $('#miPopupEstudiante').find('#titulo').append('Editar Estudiante');
+        $('#miPopupEstudiante').find('#titulo').text('Editar Estudiante');
+        $('#miPopupEstudiante').find('#obligatoriedad').text('Todos los campos son obligatorios');
         habilitar('#form_estudiante');
         $('#miPopupEstudiante').find('#btnEstudiante').attr('type', 'button').attr('value', 'Editar').attr('disabled', false);
     },
@@ -1047,7 +1046,7 @@ var usuario = {
                     }
                 });
             } else {
-                $.notify('Uno o mas campos contienen datos erroneos', 'error');
+                $.notify('Uno o más campos contienen datos erroneos', 'error');
             }
         }
         else if (accion === 'Actualizar') {
@@ -1063,7 +1062,7 @@ var usuario = {
                     }
                 });
             } else {
-                $.notify('Uno o mas campos contienen datos erroneos', 'error');
+                $.notify('Uno o más campos contienen datos erroneos', 'error');
             }
         }
         else if (accion === 'Estado') {
@@ -1125,9 +1124,9 @@ var usuario = {
     registrar: function () {
         usuario.habilitar();
         habilitar('#formUsuario');
-        limpiar("#formUsuario");
-        $('#miPopupUsuario').find('#titulo').empty();
-        $('#miPopupUsuario').find('#titulo').append('Registro');
+        limpiar("#formUsuario");        
+        $('#miPopupUsuario').find('#titulo').text('Registro');
+        $('#miPopupUsuario').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupUsuario').find('#btnUsuario').attr('type', 'button').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupUsuario').modal('show');
     },
@@ -1135,6 +1134,7 @@ var usuario = {
         limpiar("#formUsuario");
         usuario.consultar(data);
         $('#miPopupUsuario').find('#titulo').text('Actualizar Datos');
+        $('#miPopupUsuario').find('#obligatoriedad').text('Todos los campos son obligatorios');
         habilitar('#formUsuario');
         $('#miPopupUsuario').find('#btnUsuario').attr('type', 'button').attr('value', 'Editar').attr('disabled', false);
     },
@@ -1156,8 +1156,8 @@ var usuario = {
     },
     recuperarPass: function () {
         limpiar('#formUsuario');
-        $('#miPopupUsuario').find('#titulo').empty();
-        $('#miPopupUsuario').find('#titulo').append('Recuperar Contraseña');
+        $('#miPopupUsuario').find('#titulo').text('Recuperar Contraseña');
+        $('#miPopupUsuario').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupUsuario').find('#txtNombre').attr('type', 'hidden').attr('disabled', true).parents('.row:first').hide();
         $('#miPopupUsuario').find('#txtApellido').attr('type', 'hidden').attr('disabled', true).parents('.row:first').hide();
         $('#miPopupUsuario').find('#dateFechaNacimiento').attr('type', 'hidden').attr('disabled', true).parents('.row:first').hide();
@@ -1487,9 +1487,9 @@ var articulo = {
         }
     },
     registrar: function () {
-        limpiar('#formArticulo');
-        $('#miPopupArticulo').find('#titulo').empty();
-        $('#miPopupArticulo').find('#titulo').append('Registrar Artículo');
+        limpiar('#formArticulo');       
+        $('#miPopupArticulo').find('#titulo').text('Registrar Artículo');
+        $('#miPopupArticulo').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupArticulo').find('#btnArticulo').attr('value', 'Registrar');
         $('#miPopupArticulo').find('#txtPrecioCompra').attr('readOnly', false);
         $('#miPopupArticulo').find('#txtPrecioVenta');
@@ -1500,8 +1500,8 @@ var articulo = {
     },
     editar: function (tr) {
         var data = tablaArticulo.row(tr).data();
-        $('#miPopupArticulo').find('#titulo').empty();
-        $('#miPopupArticulo').find('#titulo').append('Editar Artículo');
+        $('#miPopupArticulo').find('#titulo').text('Editar Artículo');
+        $('#miPopupArticulo').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupArticulo').find('#idArticulo').val(data[0]);
         $('#miPopupArticulo').find('#txtDescripcion').val(data[2]);
         $('#miPopupArticulo').find('#txtCantidadArticulo').val(data[3]).attr('readOnly', true);
@@ -1646,16 +1646,16 @@ var empresa = {
         }
     },
     registrar: function () {
-        limpiar('#formEmpresa');
-        $('#miPopupEmpresa').find('#titulo').empty();
-        $('#miPopupEmpresa').find('#titulo').append('Registrar Empresa');
+        limpiar('#formEmpresa');        
+        $('#miPopupEmpresa').find('#titulo').text('Registrar Empresa');
+        $('#miPopupEmpresa').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupEmpresa').find('#btnEmpresa').attr('value', 'Registrar');
         $('#miPopupEmpresa').modal('show');
     },
     editar: function (tr) {
         var data = tablaEmpresa.row(tr).data();
-        $('#miPopupEmpresa').find('#titulo').empty();
-        $('#miPopupEmpresa').find('#titulo').append('Editar Empresa');
+        $('#miPopupEmpresa').find('#titulo').text('Editar Empresa');
+        $('#miPopupEmpresa').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupEmpresa').find('#txtNitEmpresa').val(data[0]);
         $('#miPopupEmpresa').find('#txtNombreEmpresa').val(data[1]);
         $('#miPopupEmpresa').find('#txtDireccionEmpresa').val(data[2]);
@@ -2206,7 +2206,7 @@ var operario = {
                     }
                 });
             } else {
-                $.notify('Ups, uno o mas campos contienen datos erroneos', 'error');
+                $.notify('Uno o más campos contienen datos erroneos', 'error');
             }
 
         }
@@ -2215,6 +2215,7 @@ var operario = {
         limpiar('#formOperario');
         habilitar('#formOperario');
         $('#miPopupOperario').find('#titulo').text('Registrar Operario');
+        $('#miPopupOperario').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupOperario').find('#btnOperario').val('Registrar').attr('type', 'button');
         $('#miPopupOperario').modal('show');
     },
@@ -2238,6 +2239,7 @@ var operario = {
         operario.consultar(data);
         habilitar('#formOperario');
         $('#miPopupOperario').find('#titulo').text('Editar Operario');
+        $('#miPopupOperario').find('#obligatoriedad').text('Todos los campos son obligatorios');
         $('#miPopupOperario').find('#btnOperario').val('Editar').attr('type', 'button');
     },
     cargar: function () {
@@ -2278,4 +2280,29 @@ if (typeof documentoUsuario !== 'undefined') {
 }
 $('#miPopupDetalleSeminario').on('hidden.bs.modal', function () {
     tablaDetalleSeminario.destroy();
+});
+
+$('#miPopupCurso').on('hidden.bs.modal', function () {
+    $(this).find('#obligatoriedad').text('');
+});
+$('#miPopupUsuario').on('hidden.bs.modal', function () {
+    $(this).find('#obligatoriedad').text('');
+});
+$('#miPopupAcudiente').on('hidden.bs.modal', function () {
+    $(this).find('#obligatoriedad').text('');
+});
+$('#miPopupArticulo').on('hidden.bs.modal', function () {
+    $(this).find('#obligatoriedad').text('');
+});
+$('#miPopupEstudiante').on('hidden.bs.modal', function () {
+    $(this).find('#obligatoriedad').text('');
+});
+$('#miPopupBeneficiario').on('hidden.bs.modal', function () {
+    $(this).find('#obligatoriedad').text('');
+});
+$('#miPopupOperario').on('hidden.bs.modal', function () {
+    $(this).find('#obligatoriedad').text('');
+});
+$('#miPopupAsistenteSeminario').on('hidden.bs.modal', function () {
+    $(this).find('#obligatoriedad').text('');
 });

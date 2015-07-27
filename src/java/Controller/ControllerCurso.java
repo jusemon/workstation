@@ -502,7 +502,7 @@ public class ControllerCurso extends HttpServlet {
                 return (salida);
             }
         } else {
-            return Mensaje(false, null, "Uno o mas campos contienen datos erroneos");
+            return Mensaje(false, null, "Uno o más campos contienen datos erroneos");
         }
 
     }

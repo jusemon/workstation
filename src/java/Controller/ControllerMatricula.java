@@ -91,7 +91,7 @@ public class ControllerMatricula extends HttpServlet {
                     String tipo = request.getParameter("tipo");
                     String salida = null;
                     if (documentoUsuario == null) {
-                        salida = Mensaje(false, null, "Debes estar registrado y con la sesion iniciada");
+                        salida = Mensaje(false, null, "Debes estar registrado y con la sesión iniciada");
                     } else {
                         salida = presincribir(idCurso, documentoUsuario);
                     }

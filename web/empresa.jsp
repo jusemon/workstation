@@ -45,9 +45,9 @@
                                 <th class="text-center">NIT</th>
                                 <th class="text-center">Nombre</th>
                                 <th class="text-center">Dirección</th>
-                                <th class="text-center">Nombre contacto</th>
-                                <th class="text-center">Teléfono contacto</th>
-                                <th class="text-center">Correo electrónico</th>
+                                <th class="text-center">Nombre Contacto</th>
+                                <th class="text-center">Teléfono Contacto</th>
+                                <th class="text-center">Correo Electrónico</th>
                                 <th class="text-center">Editar</th>
                             </tr>
                         </thead>
