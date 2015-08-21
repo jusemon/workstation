@@ -8,13 +8,10 @@ package Controller;
 import com.google.gson.Gson;
 import Model.DTO.ObjCredito;
 import Model.DTO.ObjMovimiento;
-import Model.Data.ModelAbono;
 import Model.Data.ModelCredito;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -49,7 +46,6 @@ public class ControllerAbono extends HttpServlet {
             Map<String, String> respuesta;
             ResultSet result;
             switch (request.getParameter("action")) {
-
                 // <editor-fold defaultstate="collapsed" desc="Registrar un abono">
                 case "Registrar": {
                     daoModelCredito = new ModelCredito();

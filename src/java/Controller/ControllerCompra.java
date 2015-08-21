@@ -59,6 +59,7 @@ public class ControllerCompra extends HttpServlet {
             String action = request.getParameter("action");
             switch (action) {
                 case "Registrar": {
+                    
                     String documentoUsuario = (request.getParameter("documentoUsuario"));
                     String facturaProveedor = (request.getParameter("txtNumeroFactura"));
                     String nombreProveedor = (request.getParameter("txtNombre"));

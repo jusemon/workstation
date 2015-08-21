@@ -25,8 +25,8 @@ import java.util.Map;
  */
 public class ControllerArticulo extends HttpServlet {
 
-    public ModelArticulo daoModelArticulo;
-    public ObjArticulo _objArticulo = new ObjArticulo();   
+    private ModelArticulo daoModelArticulo;
+    private ObjArticulo _objArticulo;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,50 +39,22 @@ public class ControllerArticulo extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
         if (request.getParameter("action") != null) {
             String action = request.getParameter("action");
             try {
                 switch (action) {
                     //<editor-fold defaultstate="collapsed" desc="Registrar un Articulo">
                     case "Registrar": {
-                        String descripcionArticulo = request.getParameter("txtDescripcion");
-                        int precioCompra = Integer.parseInt(request.getParameter("txtPrecioCompra"));
-                        int precioVenta = Integer.parseInt(request.getParameter("txtPrecioVenta"));
-                        int idCategoriaArticulo;
-                        idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
-                        _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
-                        _objArticulo.setDescripcionArticulo(descripcionArticulo);
-                        _objArticulo.setPrecioCompra(precioCompra);
-                        _objArticulo.setPrecioVenta(precioVenta);
-                        daoModelArticulo = new ModelArticulo();
-                        String salida = Mensaje(daoModelArticulo.Add(_objArticulo), "Artículo registrado correctamente", "Ha ocurrido un error al intentar registrar el artículo");
-                        daoModelArticulo.Signout();
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
-                        response.getWriter().write(salida);
-
+                        response.getWriter().write(registrarArticulo(request));
                         break;
                     }
                     //</editor-fold>
 
                     //<editor-fold defaultstate="collapsed" desc="Editar un Articulo">
                     case "Editar": {
-                        int idArticulo = Integer.parseInt(request.getParameter("idArticulo"));
-                        String descripcionArticulo = request.getParameter("txtDescripcion");
-                        int precioVenta = Integer.parseInt(request.getParameter("txtPrecioVenta"));
-                        int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
-                        _objArticulo.setIdArticulo(idArticulo);
-                        _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
-                        _objArticulo.setDescripcionArticulo(descripcionArticulo);
-                        _objArticulo.setPrecioVenta(precioVenta);
-                        daoModelArticulo = new ModelArticulo();
-                        String salida = Mensaje(daoModelArticulo.Edit(_objArticulo), "Artículo actualizado sorrectamente", "Ha ocurrido un error al intentar actualizar el artículo");
-                        daoModelArticulo.Signout();
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
-                        response.getWriter().write(salida);
+                        response.getWriter().write(editarArticulo(request));
                         break;
                     }
                     //</editor-fold>
@@ -90,8 +62,6 @@ public class ControllerArticulo extends HttpServlet {
                     //<editor-fold defaultstate="collapsed" desc="Consultar un Articulo por ID">
                     case "Consultar": {
                         int id = Integer.parseInt(request.getParameter("id"));
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(consultarArticulo(id));
                         break;
                     }
@@ -105,8 +75,6 @@ public class ControllerArticulo extends HttpServlet {
                         Map<String, String> salida = new LinkedHashMap<>();
                         salida.put("idArticulo", resultado);
                         String respuesta = new Gson().toJson(salida);
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(respuesta);
                         break;
                     }
@@ -116,8 +84,6 @@ public class ControllerArticulo extends HttpServlet {
                     case "getOptionsArticulos": {
                         String tipo = request.getParameter("tipo");
                         String resultado = getOptionsArticulos(tipo);
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(resultado);
                         break;
                     }
@@ -125,8 +91,6 @@ public class ControllerArticulo extends HttpServlet {
 
                     //<editor-fold defaultstate="collapsed" desc="Enlistar todos los Articulos">
                     case "Enlistar": {
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(getTableArticulo());
                         break;
                     }
@@ -142,7 +106,61 @@ public class ControllerArticulo extends HttpServlet {
 
     }
 
-    public String getTableArticulo() {
+    private String registrarArticulo(HttpServletRequest request) throws IOException {
+        String descripcionArticulo = request.getParameter("txtDescripcion");
+        int precioCompra = Integer.parseInt(request.getParameter("txtPrecioCompra"));
+        int precioVenta = Integer.parseInt(request.getParameter("txtPrecioVenta"));
+        int idCategoriaArticulo;
+        idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
+        _objArticulo = new ObjArticulo();
+        _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
+        _objArticulo.setDescripcionArticulo(descripcionArticulo);
+        _objArticulo.setPrecioCompra(precioCompra);
+        _objArticulo.setPrecioVenta(precioVenta);
+        daoModelArticulo = new ModelArticulo();
+        String salida = mensaje(daoModelArticulo.Add(_objArticulo), "Artículo registrado correctamente", "Ha ocurrido un error al intentar registrar el artículo");
+        daoModelArticulo.Signout();
+        return salida;
+    }
+    
+    private String consultarArticulo(int id) {
+        ResultSet result = null;
+        Map<String, String> salida = new LinkedHashMap<>();
+        try {
+            daoModelArticulo = new ModelArticulo();
+            result = daoModelArticulo.consultarPorID(id);
+            while (result.next()) {
+                salida.put("idArticulo", result.getString("idArticulo"));
+                salida.put("descripcionArticulo", result.getString("descripcionArticulo"));
+                salida.put("cantidadDisponible", result.getString("cantidadDisponible"));
+                salida.put("precioVenta", result.getString("precioVenta"));
+                salida.put("precioCompra", result.getString("precioCompra"));
+            }
+        } catch (Exception e) {
+            salida.put("tipo", "error");
+            salida.put("mensaje", "Ha ocurrido un error: " + e);
+        }
+        String respuesta = new Gson().toJson(salida);
+        return respuesta;
+    }
+
+    private String editarArticulo(HttpServletRequest request) {
+        int idArticulo = Integer.parseInt(request.getParameter("idArticulo"));
+        String descripcionArticulo = request.getParameter("txtDescripcion");
+        int precioVenta = Integer.parseInt(request.getParameter("txtPrecioVenta"));
+        int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoria"));
+        _objArticulo = new ObjArticulo();
+        _objArticulo.setIdArticulo(idArticulo);
+        _objArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
+        _objArticulo.setDescripcionArticulo(descripcionArticulo);
+        _objArticulo.setPrecioVenta(precioVenta);
+        daoModelArticulo = new ModelArticulo();
+        String salida = mensaje(daoModelArticulo.Edit(_objArticulo), "Artículo actualizado correctamente", "Ha ocurrido un error al intentar actualizar el artículo");
+        daoModelArticulo.Signout();
+        return salida;
+    }
+
+    private String getTableArticulo() {
         ResultSet result;
         List<String[]> lista = new ArrayList<>();
         int contador = 0;
@@ -204,41 +222,6 @@ public class ControllerArticulo extends HttpServlet {
         return respuesta;
     }
 
-    private String consultarArticulo(int id) {
-        ResultSet result = null;
-        Map<String, String> salida = new LinkedHashMap<>();
-        try {
-            daoModelArticulo = new ModelArticulo();
-            result = daoModelArticulo.consultarPorID(id);
-            while (result.next()) {
-                salida.put("idArticulo", result.getString("idArticulo"));
-                salida.put("descripcionArticulo", result.getString("descripcionArticulo"));
-                salida.put("cantidadDisponible", result.getString("cantidadDisponible"));
-                salida.put("precioVenta", result.getString("precioVenta"));
-                salida.put("precioCompra", result.getString("precioCompra"));
-            }
-        } catch (Exception e) {
-            salida.put("tipo", "error");
-            salida.put("mensaje", "Ha ocurrido un error: " + e);
-        }
-        String respuesta = new Gson().toJson(salida);
-        return respuesta;
-    }
-
-    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-        if (entrada) {
-            mensaje.put("mensaje", mensajeSuccess);
-            mensaje.put("tipo", "success");
-
-        } else {
-            mensaje.put("mensaje", mensajeError);
-            mensaje.put("tipo", "error");
-        }
-        String salida = new Gson().toJson(mensaje);
-        return salida;
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -277,4 +260,19 @@ public class ControllerArticulo extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
+        Map<String, String> mensaje = new LinkedHashMap<>();
+        if (entrada) {
+            mensaje.put("mensaje", mensajeSuccess);
+            mensaje.put("tipo", "success");
+
+        } else {
+            mensaje.put("mensaje", mensajeError);
+            mensaje.put("tipo", "error");
+        }
+        String salida = new Gson().toJson(mensaje);
+        return salida;
+    }
+
 }

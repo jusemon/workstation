@@ -76,7 +76,7 @@ public class ControllerVenta extends HttpServlet {
                     } else {
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
-                        response.getWriter().write(Mensaje(false, null, "Ha ingresado datos incorrectos"));
+                        response.getWriter().write(mensaje(false, null, "Ha ingresado datos incorrectos"));
                         break;
                     }
 
@@ -140,7 +140,7 @@ public class ControllerVenta extends HttpServlet {
                         daoModelCredito.Signout();
                     } else {
                         daoModelVenta = new ModelVenta();
-                        String salida = Mensaje(daoModelVenta.Add(_objVenta, _objUsuario, listOjbDetalleMovimientos), "La venta ha sido registrada", "Ha ocurrido un error");
+                        String salida = mensaje(daoModelVenta.Add(_objVenta, _objUsuario, listOjbDetalleMovimientos), "La venta ha sido registrada", "Ha ocurrido un error");
                         daoModelVenta.Signout();
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
@@ -301,7 +301,7 @@ public class ControllerVenta extends HttpServlet {
         return salida;
     }
 
-    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
+    public String mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
         Map<String, String> mensaje = new LinkedHashMap<>();
         if (entrada) {
             mensaje.put("mensaje", mensajeSuccess);
