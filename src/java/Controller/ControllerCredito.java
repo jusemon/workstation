@@ -167,16 +167,17 @@ public class ControllerCredito extends HttpServlet {
                     estado[0] = "danger";
                     estado[1] = "remove";
                 }
-                String[] arreglo = new String[7];
+                String[] arreglo = new String[8];
                 arreglo[0] = result.getString("idCredito").trim();
                 arreglo[1] = result.getString("documentoUsuario").trim();
-                arreglo[2] = result.getString("fechaInicio").trim();
-                arreglo[3] = result.getString("saldoInicial").trim();
-                arreglo[4] = result.getString("saldoActual").trim();
-                arreglo[5] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"credito.estado(" + arreglo[0] + ")\">"
+                arreglo[2] = result.getString("nombre").trim();
+                arreglo[3] = result.getString("fechaInicio").trim();
+                arreglo[4] = result.getString("saldoInicial").trim();
+                arreglo[5] = result.getString("saldoActual").trim();
+                arreglo[6] = "<a class=\"btn-sm btn-" + estado[0] + " btn-block\" href=\"javascript:void(0)\"  onclick=\"credito.estado(" + arreglo[0] + ")\">"
                         + "<span class=\"glyphicon glyphicon-" + estado[1] + "\"></span></a>";
 
-                arreglo[6] = "<div class=\"btn-group\">\n"
+                arreglo[7] = "<div class=\"btn-group\">\n"
                         + "  <button type=\"button\" class=\"btn btn-info btn-block dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n"
                         + "    Acciones <span class=\"caret\"></span>\n"
                         + "  </button>\n"

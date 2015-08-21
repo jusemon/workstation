@@ -162,7 +162,7 @@ public class ControllerCurso extends HttpServlet {
                     break;
                 }
                 //</editor-fold>
-                // <editor-fold defaultstate="collapsed" desc="Obtener el detalle del Seminario">
+                // <editor-fold defaultstate="collapsed" desc="Obtener el detalle Asistente del Seminario">
                 case "DetalleAsistentesSeminario": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");

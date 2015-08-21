@@ -44,7 +44,7 @@
                                 <th class="text-center">Documento</th>
                                 <th class="text-center">Nombres</th>
                                 <th class="text-center">Correo</th>
-                                <th class="text-center">Telefono</th>
+                                <th class="text-center">Teléfono</th>
                                 <th class="text-center">Estado</th>
                                 <th class="text-center">Acciones</th>
                             </tr>

@@ -2088,6 +2088,11 @@ var credito = {
     actualizarTabla: function () {
         tablaCredito.ajax.reload();
     },
+    consultar: function (idCredito){
+        $.ajax({
+            
+        });
+    },
     cargar: function () {
         tablaCredito = $('#tblCreditos').DataTable({
             "ajax": {
@@ -2102,7 +2107,7 @@ var credito = {
             }
         });
     },
-    show: function (tipo, datos) {
+    show: function (tipo) {
         $("#ddlArticulos").off();
         $("#ddlArticulos").on("select2:select", function (e) {
             var id = e.params.data.id;
@@ -2259,6 +2264,7 @@ var operario = {
         tablaOperarios.ajax.reload();
     }
 };
+
 compra.cargar();
 venta.cargar();
 categoriaCurso.cargar();

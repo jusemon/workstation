@@ -111,7 +111,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                     <tr>
                                         <th class="text-center">Id. Venta</th>
                                         <th class="text-center">Fecha</th>
-                                        <th class="text-center">Cedúla Cliente</th>
+                                        <th class="text-center">Cédula Cliente</th>
                                         <th class="text-center">Nombre Cliente</th>
                                         <th class="text-center">Total Venta</th>                                
                                         <th class="text-center">Consultar</th>
@@ -127,6 +127,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                     <tr>
                                         <th class="text-center">Id. Crédito</th>
                                         <th class="text-center">Documento</th>
+                                        <th class="text-center">Nombre</th>
                                         <th class="text-center">Fecha inicio</th>
                                         <th class="text-center">Saldo inicial ($)</th>
                                         <th class="text-center">Saldo actual ($)</th>
