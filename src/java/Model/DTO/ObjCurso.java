@@ -96,5 +96,7 @@ public class ObjCurso {
     public void setIdCategoriaCurso(int idCategoriaCurso) {
         this.idCategoriaCurso = idCategoriaCurso;
     }
+}    // end ObjCurso
 
-}//end ObjCurso
+
+//~ Formatted by Jindent --- http://www.jindent.com

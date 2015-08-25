@@ -34,5 +34,7 @@ public class ObjRol {
     public void setIdrol(int idrol) {
         this.idrol = idrol;
     }
+}    // end ObjRol
 
-}//end ObjRol
+
+//~ Formatted by Jindent --- http://www.jindent.com

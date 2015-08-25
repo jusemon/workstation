@@ -51,5 +51,7 @@ public class ObjDetalleUsuario {
     public void setEstadoBeneficiario(int estadoBeneficiario) {
         this.estadoBeneficiario = estadoBeneficiario;
     }
+}    // end ObjDetalleUsuario
 
-}//end ObjDetalleUsuario
+
+//~ Formatted by Jindent --- http://www.jindent.com

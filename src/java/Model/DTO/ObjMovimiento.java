@@ -7,8 +7,8 @@ package Model.DTO;
  */
 public class ObjMovimiento {
 
-    private int idMovimiento;
     private String fechaMovimiento = "";
+    private int idMovimiento;
     private int totalMovimiento;
     private int idtipoMovimiento;
     private String documentoUsuario;
@@ -31,8 +31,6 @@ public class ObjMovimiento {
         this.nombreAuxiliar = nombreAuxiliar;
     }
 
-    
-    
     public int getIdMovimiento() {
         return idMovimiento;
     }
@@ -72,5 +70,7 @@ public class ObjMovimiento {
     public void setDocumentoUsuario(String documentoUsuario) {
         this.documentoUsuario = documentoUsuario;
     }
+}    // end ObjMovimiento
 
-}//end ObjMovimiento
+
+//~ Formatted by Jindent --- http://www.jindent.com

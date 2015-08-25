@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,8 +6,12 @@
  */
 package Model.Data;
 
+//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjInscrito;
+
 import Model.JDBC.ConnectionDB;
+
+//~--- JDK imports ------------------------------------------------------------
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,17 +40,21 @@ public class ModelInscrito extends ConnectionDB {
             pStmt.setString(3, _objInscrito.getTelefono());
             pStmt.setString(4, _objInscrito.getCorreo());
             pStmt.setInt(5, _objInscrito.getIdseminario());
-            if (pStmt.executeUpdate()>0) {
+
+            if (pStmt.executeUpdate() > 0) {
                 objReturn = true;
             }
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 
     public ResultSet EnlistarPorSeminario(int idSeminario) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");    // To change body of generated methods, choose Tools | Templates.
     }
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

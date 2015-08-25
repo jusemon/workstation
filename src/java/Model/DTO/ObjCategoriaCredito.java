@@ -24,5 +24,7 @@ public class ObjCategoriaCredito {
     public void setNombreCategoria(String nombreCategoria) {
         this.nombreCategoria = nombreCategoria;
     }
+}    // end ObjCategoriaCredito
 
-}//end ObjCategoriaCredito
+
+//~ Formatted by Jindent --- http://www.jindent.com

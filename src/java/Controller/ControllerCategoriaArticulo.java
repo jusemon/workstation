@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,15 +6,23 @@
  */
 package Controller;
 
+//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjCategoriaArticulo;
+
 import Model.Data.ModelCategoriaArticulo;
+
 import com.google.gson.Gson;
+
+//~--- JDK imports ------------------------------------------------------------
 import java.io.IOException;
+
 import java.sql.ResultSet;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +34,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerCategoriaArticulo extends HttpServlet {
 
-    public ModelCategoriaArticulo daoModelCategoriaArticulo;
     public ObjCategoriaArticulo _objCategoriaArticulo = new ObjCategoriaArticulo();
+    public ModelCategoriaArticulo daoModelCategoriaArticulo;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,52 +53,67 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         if (request.getParameter("action") != null) {
             switch (request.getParameter("action")) {
 
-                //<editor-fold defaultstate="collapsed" desc="Registrar una Categoría de Artículo">
+                // <editor-fold defaultstate="collapsed" desc="Registrar una Categoría de Artículo">
                 case "Registrar": {
                     String nombreCategoriaArticulo = request.getParameter("txtNombre").trim();
+
                     _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                     daoModelCategoriaArticulo = new ModelCategoriaArticulo();
-                    String salida = Mensaje(daoModelCategoriaArticulo.Add(_objCategoriaArticulo), "La categoría ha sido registrada correctamente.", "Ha ocurrido un error al intentar registrar la categoría");
+
+                    String salida = Mensaje(daoModelCategoriaArticulo.Add(_objCategoriaArticulo),
+                            "La categoría ha sido registrada correctamente.",
+                            "Ha ocurrido un error al intentar registrar la categoría");
+
                     daoModelCategoriaArticulo.Signout();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(salida);
+
                     break;
                 }
-                //</editor-fold>
 
-                //<editor-fold defaultstate="collapsed" desc="Editar una Categoría de Artículo">
+                // </editor-fold>
+                // <editor-fold defaultstate="collapsed" desc="Editar una Categoría de Artículo">
                 case "Editar": {
                     int idCategoriaArticulo = Integer.parseInt(request.getParameter("idCategoriaArticulo").trim());
                     String nombreCategoriaArticulo = request.getParameter("txtNombre").trim();
+
                     _objCategoriaArticulo.setIdCategoriaArticulo(idCategoriaArticulo);
                     _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                     daoModelCategoriaArticulo = new ModelCategoriaArticulo();
-                    String salida = Mensaje(daoModelCategoriaArticulo.Edit(_objCategoriaArticulo), "La categoría ha sido actualizada correctamente", "Ha ocurrido un error al intentar actualizar la categoría");
+
+                    String salida = Mensaje(daoModelCategoriaArticulo.Edit(_objCategoriaArticulo),
+                            "La categoría ha sido actualizada correctamente",
+                            "Ha ocurrido un error al intentar actualizar la categoría");
+
                     daoModelCategoriaArticulo.Signout();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(salida);
+
                     break;
                 }
-                //</editor-fold>
 
-                //<editor-fold defaultstate="collapsed" desc="Enlistar todas las Categorías de Artículo">
+                // </editor-fold>
+                // <editor-fold defaultstate="collapsed" desc="Enlistar todas las Categorías de Artículo">
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableCategoriaArticulo());
+
                     break;
                 }
-                                //</editor-fold>
 
-                //<editor-fold defaultstate="collapsed" desc="Obtener las opciones de Categorías de Artículo">
+                // </editor-fold>
+                // <editor-fold defaultstate="collapsed" desc="Obtener las opciones de Categorías de Artículo">
                 case "getOptionsCategorias": {
                     response.setContentType("application/text");
                     response.getWriter().write(getOptionsCategorias());
+
                     break;
                 }
-                //</editor-fold>
+
+                // </editor-fold>
             }
         }
     }
@@ -99,14 +123,18 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         int contador = 0;
         List<String[]> lista = new ArrayList<>();
         String[] arreglo;
+
         try {
             daoModelCategoriaArticulo = new ModelCategoriaArticulo();
             result = daoModelCategoriaArticulo.ListAll();
+
             while (result.next()) {
                 arreglo = new String[3];
                 arreglo[0] = result.getString("idCategoriaArticulo").trim();
                 arreglo[1] = result.getString("nombreCategoriaArticulo").trim();
-                arreglo[2] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"categoriaArticulo.editar(" + contador + ")\"><span class=\"glyphicon glyphicon-pencil\"></span></a>";
+                arreglo[2]
+                        = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"categoriaArticulo.editar("
+                        + contador + ")\"><span class=\"glyphicon glyphicon-pencil\"></span></a>";
                 lista.add(arreglo);
                 contador++;
             }
@@ -115,21 +143,26 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         } finally {
             daoModelCategoriaArticulo.Signout();
         }
+
         String salida = new Gson().toJson(lista);
+
         salida = "{\"data\":" + salida + "}";
+
         return salida;
     }
 
     public String getOptionsCategorias() {
         ResultSet result;
         String OptionsCategorias = "";
+
         try {
             daoModelCategoriaArticulo = new ModelCategoriaArticulo();
             result = daoModelCategoriaArticulo.ListAll();
-            while (result.next()) {
-                OptionsCategorias += "<option value=\"" + result.getString("idCategoriaArticulo").trim() + "\">" + result.getString("nombreCategoriaArticulo").trim() + "</option>";
-            }
 
+            while (result.next()) {
+                OptionsCategorias += "<option value=\"" + result.getString("idCategoriaArticulo").trim() + "\">"
+                        + result.getString("nombreCategoriaArticulo").trim() + "</option>";
+            }
         } catch (Exception e) {
             OptionsCategorias = "Ha Ocurrido un error" + e.getMessage();
         } finally {
@@ -141,15 +174,17 @@ public class ControllerCategoriaArticulo extends HttpServlet {
 
     public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
         Map<String, String> mensaje = new LinkedHashMap<>();
+
         if (entrada) {
             mensaje.put("mensaje", mensajeSuccess);
             mensaje.put("tipo", "success");
-
         } else {
             mensaje.put("mensaje", mensajeError);
             mensaje.put("tipo", "error");
         }
+
         String salida = new Gson().toJson(mensaje);
+
         return salida;
     }
 
@@ -190,6 +225,8 @@ public class ControllerCategoriaArticulo extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }    // </editor-fold>
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

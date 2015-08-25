@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,6 +6,7 @@
  */
 package Model.JDBC;
 
+//~--- JDK imports ------------------------------------------------------------
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,13 +18,13 @@ import java.sql.Statement;
  */
 public class ConnectionDB {
 
-    protected Connection connection;
-    protected Statement stmt;
     private final String login = "root";
     private final String password = "";
     private final String database = "dbworkstationsoftware";
     private final String port = "3306";
     private final String url = "jdbc:mysql://127.0.0.1:" + port + "/" + database;
+    protected Connection connection;
+    protected Statement stmt;
     private String errorString;
 
     /**
@@ -42,10 +44,13 @@ public class ConnectionDB {
      */
     public Connection getConnection() {
         connection = null;
+
         try {
-            //obtenemos el driver de para mysql
+
+            // obtenemos el driver de para mysql
             Class.forName("com.mysql.jdbc.Driver");
-            //obtenemos la conexión
+
+            // obtenemos la conexión
             connection = DriverManager.getConnection(this.url, this.login, this.password);
             stmt = connection.createStatement();
             System.out.println("Conectado");
@@ -81,3 +86,6 @@ public class ConnectionDB {
         return this.stmt;
     }
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

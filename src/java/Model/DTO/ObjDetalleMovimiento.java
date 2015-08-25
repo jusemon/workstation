@@ -6,10 +6,10 @@ package Model.DTO;
  */
 public class ObjDetalleMovimiento {
 
+    private int descuento = 0;
     private int idDetalleMovimiento;
     private int idArticulo;
     private int cantidad;
-    private int descuento = 0;
     private int totalDetalleMovimiento;
     private int idMovimiento;
     private int precioArticulo;
@@ -69,5 +69,7 @@ public class ObjDetalleMovimiento {
     public void setIdMovimiento(int idMovimiento) {
         this.idMovimiento = idMovimiento;
     }
+}    // end ObjDetalleMovimiento
 
-}//end ObjDetalleMovimiento
+
+//~ Formatted by Jindent --- http://www.jindent.com

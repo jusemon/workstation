@@ -111,7 +111,7 @@
                                 <th class="text-center">Código</th>
                                 <th class="text-center">Nombre</th>
                                 <th class="text-center">Estado</th>
-                                 <th class="text-center">Acciones</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>

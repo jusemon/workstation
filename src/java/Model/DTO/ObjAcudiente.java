@@ -1,5 +1,6 @@
 package Model.DTO;
 
+//~--- JDK imports ------------------------------------------------------------
 import java.sql.Date;
 
 /**
@@ -44,5 +45,7 @@ public class ObjAcudiente {
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+}    // end ObjAcudiente
 
-}//end ObjAcudiente
+
+//~ Formatted by Jindent --- http://www.jindent.com

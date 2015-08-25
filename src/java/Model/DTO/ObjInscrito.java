@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -65,5 +66,7 @@ public class ObjInscrito {
     public void setIdseminario(int idseminario) {
         this.idseminario = idseminario;
     }
-
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

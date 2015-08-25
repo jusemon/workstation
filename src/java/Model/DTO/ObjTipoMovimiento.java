@@ -25,5 +25,7 @@ public class ObjTipoMovimiento {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+}    // end ObjTipoMovimiento
 
-}//end ObjTipoMovimiento
+
+//~ Formatted by Jindent --- http://www.jindent.com

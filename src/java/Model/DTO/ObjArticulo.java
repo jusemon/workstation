@@ -60,5 +60,7 @@ public class ObjArticulo {
     public void setPrecioVenta(int precioVenta) {
         this.precioVenta = precioVenta;
     }
+}    // end ObjArticulo
 
-}//end ObjArticulo
+
+//~ Formatted by Jindent --- http://www.jindent.com

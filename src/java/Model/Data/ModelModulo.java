@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,10 +6,14 @@
  */
 package Model.Data;
 
+//~--- non-JDK imports --------------------------------------------------------
 import Model.JDBC.ConnectionDB;
+
+//~--- JDK imports ------------------------------------------------------------
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +32,9 @@ public class ModelModulo extends ConnectionDB {
     public ResultSet ListByUser(String user) throws Exception {
         ResultSet rs = null;
         String sql = "CALL `spConsultarUsuarioModulo` (?)";
+
         pStmt = connection.prepareCall(sql);
+
         try {
             getStmt();
             pStmt.setString(1, user);
@@ -35,28 +42,33 @@ public class ModelModulo extends ConnectionDB {
         } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
         }
+
         return rs;
     }
 
     public ResultSet ListAll() throws Exception {
         ResultSet rs = null;
         String sql = "SELECT `idmodulo`, `enlace`, `nombre` FROM `tblmodulo`";
+
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
         } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
         }
+
         return rs;
     }
 
     public String[] convertirRSaArray(ResultSet entrada) {
         String[] salida = null;
         List aux = new ArrayList();
+
         try {
             while (entrada.next()) {
                 aux.add(entrada.getString("enlace"));
             }
+
             salida = new String[aux.size()];
 
             for (int i = 0; i < salida.length; i++) {
@@ -65,7 +77,10 @@ public class ModelModulo extends ConnectionDB {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return salida;
     }
-
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

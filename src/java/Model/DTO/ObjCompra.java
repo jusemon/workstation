@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,6 +6,7 @@
  */
 package Model.DTO;
 
+//~--- JDK imports ------------------------------------------------------------
 import java.sql.Date;
 
 /**
@@ -49,5 +51,7 @@ public class ObjCompra {
     public void setNombreProveedor(String nombreProveedor) {
         this.nombreProveedor = nombreProveedor;
     }
-
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

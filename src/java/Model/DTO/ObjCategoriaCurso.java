@@ -24,5 +24,7 @@ public class ObjCategoriaCurso {
     public void setNombreCategoriaCurso(String nombreCategoriaCurso) {
         this.nombreCategoriaCurso = nombreCategoriaCurso;
     }
+}    // end ObjCategoriaCurso
 
-}//end ObjCategoriaCurso
+
+//~ Formatted by Jindent --- http://www.jindent.com

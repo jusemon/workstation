@@ -1,5 +1,6 @@
 package Model.DTO;
 
+//~--- JDK imports ------------------------------------------------------------
 import java.sql.Date;
 
 /**
@@ -9,6 +10,7 @@ import java.sql.Date;
  */
 public class ObjUsuario {
 
+    private String documentoAcudiente = null;
     private String documentoUsuario;
     private String fechaNacimiento;
     private String nombreUsuario;
@@ -19,7 +21,6 @@ public class ObjUsuario {
     private int estadoUsuario;
     private int idDetalleUsuario;
     private int idrol;
-    private String documentoAcudiente = null;
 
     public String getDocumentoUsuario() {
         return documentoUsuario;
@@ -60,7 +61,7 @@ public class ObjUsuario {
     public void setTelefonoFijo(String telefonoFijo) {
         this.telefonoFijo = telefonoFijo;
     }
-    
+
     public String getEmailUsuario() {
         return emailUsuario;
     }
@@ -108,5 +109,7 @@ public class ObjUsuario {
     public void setDocumentoAcudiente(String documentoAcudiente) {
         this.documentoAcudiente = documentoAcudiente;
     }
+}    // end ObjUsuario
 
-}//end ObjUsuario
+
+//~ Formatted by Jindent --- http://www.jindent.com

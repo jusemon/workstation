@@ -6,9 +6,9 @@ package Model.DTO;
  */
 public class ObjAbono {
 
-    private int idAbono;
     private int valorAbono = 0;
     private String fechaPago = "";
+    private int idAbono;
     private int idCredito;
 
     public int getIdAbono() {
@@ -42,5 +42,7 @@ public class ObjAbono {
     public void setIdCredito(int idCredito) {
         this.idCredito = idCredito;
     }
+}    // end ObjAbono
 
-}//end ObjAbono
+
+//~ Formatted by Jindent --- http://www.jindent.com

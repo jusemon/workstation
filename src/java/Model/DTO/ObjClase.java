@@ -78,5 +78,7 @@ public class ObjClase {
     public void setDocumentoUsuario(String documentoUsuario) {
         this.documentoUsuario = documentoUsuario;
     }
+}    // end ObjClase
 
-}//end ObjClase
+
+//~ Formatted by Jindent --- http://www.jindent.com

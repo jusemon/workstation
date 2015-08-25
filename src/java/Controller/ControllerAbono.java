@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,14 +6,22 @@
  */
 package Controller;
 
-import com.google.gson.Gson;
+//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjCredito;
 import Model.DTO.ObjMovimiento;
+
 import Model.Data.ModelCredito;
+
+import com.google.gson.Gson;
+
+//~--- JDK imports ------------------------------------------------------------
 import java.io.IOException;
+
 import java.sql.ResultSet;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,9 +33,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerAbono extends HttpServlet {
 
-    ModelCredito daoModelCredito;    
     ObjCredito _objCredito = new ObjCredito();
     ObjMovimiento _objMovimiento = new ObjMovimiento();
+    ModelCredito daoModelCredito;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,12 +49,15 @@ public class ControllerAbono extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
         if (request.getParameter("action") != null) {
             String salida, aux;
             int id;
             Map<String, String> respuesta;
             ResultSet result;
+
             switch (request.getParameter("action")) {
+
                 // <editor-fold defaultstate="collapsed" desc="Registrar un abono">
                 case "Registrar": {
                     daoModelCredito = new ModelCredito();
@@ -55,32 +67,36 @@ public class ControllerAbono extends HttpServlet {
 
                     _objCredito.setIdCredito(idCredito);
                     _objMovimiento.setTotalMovimiento(valorAbono);
-
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
-                    salida = Mensaje(daoModelCredito.AddAbono(_objCredito, _objMovimiento, null, null, valorAbono), "El abono ha sido registrado", "Ha ocurrido un error al intentar registrar el abono");
+                    salida = Mensaje(daoModelCredito.AddAbono(_objCredito, _objMovimiento, null, null, valorAbono),
+                            "El abono ha sido registrado", "Ha ocurrido un error al intentar registrar el abono");
                     daoModelCredito.Signout();
                     response.getWriter().write(salida);
+
                     break;
                 }
-                //</editor-fold>
+
+                // </editor-fold>
             }
+
             response.sendRedirect("caja.jsp");
         }
     }
 
-    
     public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
         Map<String, String> mensaje = new LinkedHashMap<>();
+
         if (entrada) {
             mensaje.put("mensaje", mensajeSuccess);
             mensaje.put("tipo", "success");
-
         } else {
             mensaje.put("mensaje", mensajeError);
             mensaje.put("tipo", "error");
         }
+
         String salida = new Gson().toJson(mensaje);
+
         return salida;
     }
 
@@ -121,6 +137,8 @@ public class ControllerAbono extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }    // </editor-fold>
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com
