@@ -7,8 +7,8 @@ package Model.DTO;
  */
 public class ObjSubsidio {
 
-    private int idSubsidio;
     private String fechaAsignacion = "";
+    private int idSubsidio;
     private int valorSubsidio;
     private String nitEmpresa;
     private String documentoUsuario;
@@ -52,5 +52,7 @@ public class ObjSubsidio {
     public void setDocumentoUsuario(String documentoUsuario) {
         this.documentoUsuario = documentoUsuario;
     }
+}    // end ObjSubsidio
 
-}//end ObjSubsidio
+
+//~ Formatted by Jindent --- http://www.jindent.com

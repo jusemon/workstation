@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,12 +6,17 @@
  */
 package Model.Data;
 
+//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjCurso;
 import Model.DTO.ObjSeminario;
+
 import Model.JDBC.ConnectionDB;
+
+//~--- JDK imports ------------------------------------------------------------
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,9 +34,10 @@ public class ModelCurso extends ConnectionDB {
         getConnection();
     }
 
-    public boolean Add(ObjCurso _objCurso) {
-        boolean objReturn = false;
+    public String[] Add(ObjCurso _objCurso) {
+        String[] objReturn = new String[2];
         String sql = "call spIngresarCurso(?,?,?,?,?,?,?)";
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
@@ -42,14 +49,16 @@ public class ModelCurso extends ConnectionDB {
             pStmt.setInt(6, _objCurso.getPrecioCurso());
             pStmt.setInt(7, _objCurso.getIdCategoriaCurso());
 
-            int updateCount = pStmt.executeUpdate();
-            if (updateCount > 0) {
-                objReturn = true;
-            }
+            ResultSet rs = pStmt.executeQuery();
 
+            while (rs.next()) {
+                objReturn[0] = rs.getString("msg");
+                objReturn[1] = rs.getString("tipo");
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 
@@ -71,13 +80,14 @@ public class ModelCurso extends ConnectionDB {
             pStmt.setInt(9, _objSeminario.getIdCategoriaCurso());
 
             int updateCount = pStmt.executeUpdate();
+
             if (updateCount > 0) {
                 objReturn = true;
             }
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 
@@ -85,11 +95,13 @@ public class ModelCurso extends ConnectionDB {
         ResultSet rs = null;
         String sql = "call spConsultarCursoPorID(?)";
         Map<String, String> respuesta = new LinkedHashMap<>();
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, ID);
             rs = pStmt.executeQuery();
+
             while (rs.next()) {
                 respuesta.put("idCurso", rs.getString("idCurso"));
                 respuesta.put("nombreCurso", rs.getString("nombreCurso"));
@@ -104,6 +116,7 @@ public class ModelCurso extends ConnectionDB {
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
+
         return respuesta;
     }
 
@@ -111,11 +124,13 @@ public class ModelCurso extends ConnectionDB {
         ResultSet rs = null;
         Map<String, String> respuesta = new LinkedHashMap<>();
         String sql = "call spConsultarSeminarioPorID(?)";
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, ID);
             rs = pStmt.executeQuery();
+
             while (rs.next()) {
                 respuesta.put("idCurso", rs.getString("idCurso"));
                 respuesta.put("nombreCurso", rs.getString("nombreCurso"));
@@ -132,6 +147,7 @@ public class ModelCurso extends ConnectionDB {
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
+
         return respuesta;
     }
 
@@ -150,13 +166,16 @@ public class ModelCurso extends ConnectionDB {
             pStmt.setString(6, _objCurso.getDescripcionCurso());
             pStmt.setInt(7, _objCurso.getPrecioCurso());
             pStmt.setInt(8, _objCurso.getIdCategoriaCurso());
+
             int updateCount = pStmt.executeUpdate();
+
             if (updateCount > 0) {
                 objReturn = true;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 
@@ -177,13 +196,16 @@ public class ModelCurso extends ConnectionDB {
             pStmt.setString(8, _objSeminario.getFechaSeminario());
             pStmt.setInt(9, _objSeminario.getCupoSeminario());
             pStmt.setInt(10, _objSeminario.getIdCategoriaCurso());
+
             int updateCount = pStmt.executeUpdate();
+
             if (updateCount > 0) {
                 objReturn = true;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 
@@ -198,13 +220,14 @@ public class ModelCurso extends ConnectionDB {
             pStmt.setInt(2, _objCurso.getEstadoCurso());
 
             int updateCount = pStmt.executeUpdate();
+
             if (updateCount > 0) {
                 objReturn = true;
             }
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 
@@ -213,10 +236,12 @@ public class ModelCurso extends ConnectionDB {
         ResultSet rs = null;
         Map<String, String> respuesta = null;
         String sql = "call spConsultarCursosDisponibles()";
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             rs = pStmt.executeQuery();
+
             while (rs.next()) {
                 respuesta = new LinkedHashMap<>();
                 respuesta.put("idCurso", rs.getString("idCurso"));
@@ -233,25 +258,28 @@ public class ModelCurso extends ConnectionDB {
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
+
         return lista;
     }
 
     public ResultSet ListAll() throws Exception {
         ResultSet rs = null;
         String sql = "call spConsultarCursos()";
+
         try {
             pStmt = connection.prepareCall(sql);
             rs = pStmt.executeQuery();
-
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
+
         return rs;
     }
 
     public ResultSet ListAll(String seminarios) throws Exception {
         ResultSet rs = null;
         String sql = "call spConsultarSeminarios()";
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
@@ -259,6 +287,7 @@ public class ModelCurso extends ConnectionDB {
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
+
         return rs;
     }
 
@@ -267,10 +296,12 @@ public class ModelCurso extends ConnectionDB {
         ResultSet rs = null;
         Map<String, String> respuesta = null;
         String sql = "call spConsultarSeminariosDisponibles()";
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             rs = pStmt.executeQuery();
+
             while (rs.next()) {
                 respuesta = new LinkedHashMap<>();
                 respuesta.put("idCurso", rs.getString("idCurso"));
@@ -284,16 +315,17 @@ public class ModelCurso extends ConnectionDB {
                 respuesta.put("nombreCategoriaCurso", rs.getString("nombreCategoriaCurso"));
                 lista.add(respuesta);
             }
-
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
+
         return lista;
     }
 
     public ResultSet ListAsistentes(int idSeminario) {
-ResultSet rs = null;
+        ResultSet rs = null;
         String sql = "call spConsultarAsistentesSeminario(?)";
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
@@ -302,5 +334,10 @@ ResultSet rs = null;
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
-        return rs;    }
+
+        return rs;
+    }
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

@@ -25,5 +25,7 @@ public class ObjModuloRol {
     public void setIdrol(int idrol) {
         this.idrol = idrol;
     }
+}    // end ObjModuloRol
 
-}//end ObjModuloRol
+
+//~ Formatted by Jindent --- http://www.jindent.com

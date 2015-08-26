@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,12 +6,17 @@
  */
 package Model.Data;
 
+//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjUsuario;
+
 import Model.JDBC.ConnectionDB;
+
+//~--- JDK imports ------------------------------------------------------------
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,6 +37,7 @@ public class ModelUsuario extends ConnectionDB {
     public boolean Add(ObjUsuario _objUsuario) {
         boolean objReturn = false;
         String sql = "call spIngresarUsuario (?,?,?,?,?,?,?,?,?)";
+
         try {
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objUsuario.getDocumentoUsuario());
@@ -44,31 +51,37 @@ public class ModelUsuario extends ConnectionDB {
             pStmt.setInt(9, _objUsuario.getIdrol());
 
             int updateCount = pStmt.executeUpdate();
+
             if (updateCount > 0) {
                 objReturn = true;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 
     public ResultSet ListAll() throws Exception {
         ResultSet rs = null;
-        String sql = "SELECT `documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente` FROM `tblusuario` ";
+        String sql
+                = "SELECT `documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente` FROM `tblusuario` ";
+
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
         } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
         }
+
         return rs;
     }
 
-    //Busca el usuario en la base de datos segun su nombre  de usuario y contraseña
+    // Busca el usuario en la base de datos segun su nombre  de usuario y contraseña
     public ResultSet Find(ObjUsuario _objUsuario) {
         ResultSet rs = null;
         String sql = "call spConsultarUsuarioPorPassYCorreo (?,?)";
+
         try {
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objUsuario.getEmailUsuario());
@@ -77,6 +90,7 @@ public class ModelUsuario extends ConnectionDB {
         } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
         }
+
         return rs;
     }
 
@@ -91,6 +105,7 @@ public class ModelUsuario extends ConnectionDB {
         } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
         }
+
         return rs;
     }
 
@@ -99,9 +114,11 @@ public class ModelUsuario extends ConnectionDB {
         Map<String, String> respuesta;
         List<Map<String, String>> salida = new ArrayList<>();
         String sql = "call spConsultarClientesYEstudiantes()";
+
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
+
             while (rs.next()) {
                 respuesta = new LinkedHashMap<>();
                 respuesta.put("tipoDocumento", rs.getString("documentoUsuario").substring(0, 2));
@@ -122,16 +139,19 @@ public class ModelUsuario extends ConnectionDB {
                 respuesta.put("estadoBeneficiario", rs.getString("estadoBeneficiario"));
                 salida.add(respuesta);
             }
+
             return salida;
         } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
         }
+
         return null;
     }
 
     public boolean Edit(ObjUsuario _objUsuario) {
         boolean objReturn = false;
         String sql = "call spActualizarUsuario (?,?,?,?,?,?,?,?,?)";
+
         try {
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objUsuario.getDocumentoUsuario());
@@ -145,24 +165,28 @@ public class ModelUsuario extends ConnectionDB {
             pStmt.setInt(9, _objUsuario.getIdrol());
 
             int updateCount = pStmt.executeUpdate();
+
             if (updateCount > 0) {
                 objReturn = true;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 
     public ResultSet ListOperarios() {
         ResultSet rs = null;
         String sql = "call spConsultarOperarios()";
+
         try {
             pStmt = connection.prepareCall(sql);
             rs = pStmt.executeQuery();
         } catch (SQLException e) {
             System.err.println("SQLException: " + e.getMessage());
         }
+
         return rs;
     }
 
@@ -177,13 +201,17 @@ public class ModelUsuario extends ConnectionDB {
             pStmt.setInt(2, _objUsuario.getEstadoUsuario());
 
             int updateCount = pStmt.executeUpdate();
+
             if (updateCount > 0) {
                 objReturn = true;
             }
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

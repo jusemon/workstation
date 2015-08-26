@@ -43,5 +43,7 @@ public class ObjPreinscripcion {
     public void setIdCurso(int idCurso) {
         this.idCurso = idCurso;
     }
+}    // end ObjPreinscripcion
 
-}//end ObjPreinscripcion
+
+//~ Formatted by Jindent --- http://www.jindent.com

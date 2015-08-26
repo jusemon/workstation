@@ -1,20 +1,17 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Model.DTO;
 
 /**
  *
  * @author lorenzo
  */
-
-
-
 public class ObjVenta {
-         
+
     private int idVenta;
     private String nombreCliente;
     private String documentoCliente;
@@ -36,12 +33,14 @@ public class ObjVenta {
     public void setNombreCliente(String nombreCliente) {
         this.nombreCliente = nombreCliente;
     }
+
     public String getDocumentoCliente() {
         return documentoCliente;
     }
 
     public void setDocumentoCliente(String documentoCliente) {
-        this.documentoCliente = documentoCliente;}
+        this.documentoCliente = documentoCliente;
+    }
 
     public String getFechaVenta() {
         return fechaVenta;
@@ -58,7 +57,7 @@ public class ObjVenta {
     public void setTotalVenta(int totalVenta) {
         this.totalVenta = totalVenta;
     }
-
-
-   
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

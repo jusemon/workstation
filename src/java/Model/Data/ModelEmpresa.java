@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,11 +6,16 @@
  */
 package Model.Data;
 
+//~--- non-JDK imports --------------------------------------------------------
+import Model.DTO.ObjEmpresa;
+
 import Model.JDBC.ConnectionDB;
+
+//~--- JDK imports ------------------------------------------------------------
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import Model.DTO.ObjEmpresa;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -38,7 +44,9 @@ public class ModelEmpresa extends ConnectionDB {
             pStmt.setString(4, _objEmpresa.getNombreContacto());
             pStmt.setString(5, _objEmpresa.getTelefonoContacto());
             pStmt.setString(6, _objEmpresa.getEmailContacto());
+
             ResultSet rs = pStmt.executeQuery();
+
             while (rs.next()) {
                 objReturn.put("mensaje", rs.getString("mensaje"));
                 objReturn.put("tipo", rs.getString("tipo"));
@@ -46,17 +54,17 @@ public class ModelEmpresa extends ConnectionDB {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 
     public ResultSet ListAll() throws Exception {
-
         ResultSet rs = null;
         String sql = "call spListarEmpresas";
+
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
-
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
@@ -67,15 +75,16 @@ public class ModelEmpresa extends ConnectionDB {
     public ResultSet buscarPorNIT(String nitEmpresa) {
         ResultSet rs = null;
         String sql = "call spConsultarEmpresabyNIT(?)";
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, nitEmpresa);
             rs = pStmt.executeQuery();
-
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
+
         return rs;
     }
 
@@ -94,12 +103,17 @@ public class ModelEmpresa extends ConnectionDB {
             pStmt.setString(6, _objEmpresa.getEmailContacto());
 
             int updateCount = pStmt.executeUpdate();
+
             if (updateCount > 0) {
                 objReturn = true;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

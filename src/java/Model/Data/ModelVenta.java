@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,13 +6,18 @@
  */
 package Model.Data;
 
+//~--- non-JDK imports --------------------------------------------------------
+import Model.DTO.ObjDetalleMovimiento;
+import Model.DTO.ObjUsuario;
+import Model.DTO.ObjVenta;
+
 import Model.JDBC.ConnectionDB;
+
+//~--- JDK imports ------------------------------------------------------------
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import Model.DTO.ObjVenta;
-import Model.DTO.ObjDetalleMovimiento;
-import Model.DTO.ObjUsuario;
+
 import java.util.List;
 
 /**
@@ -26,7 +32,8 @@ public class ModelVenta extends ConnectionDB {
         getConnection();
     }
 
-    public boolean Add(ObjVenta _objVenta, ObjUsuario _objUsuario, List<ObjDetalleMovimiento> _listObjDetalleMovimientos) {
+    public boolean Add(ObjVenta _objVenta, ObjUsuario _objUsuario,
+            List<ObjDetalleMovimiento> _listObjDetalleMovimientos) {
         boolean objReturn = false;
         String sql1 = "call spIngresarVenta (?,?,?,?,?)";
         String sql2 = "call spIngresarDetalleVenta (?,?,?,?,?)";
@@ -42,15 +49,18 @@ public class ModelVenta extends ConnectionDB {
             pStmt.setString(5, _objVenta.getDocumentoCliente());
 
             int updadeCount = pStmt.executeUpdate();
+
             if (updadeCount > 0) {
                 objReturn = true;
                 pStmt = connection.prepareCall(sql2);
+
                 for (ObjDetalleMovimiento _objDetalle : _listObjDetalleMovimientos) {
                     pStmt.setInt(1, _objDetalle.getIdArticulo());
                     pStmt.setInt(2, _objDetalle.getCantidad());
                     pStmt.setInt(3, _objDetalle.getDescuento());
                     pStmt.setInt(4, _objDetalle.getTotalDetalleMovimiento());
                     pStmt.setInt(5, _objDetalle.getPrecioArticulo());
+
                     if (pStmt.executeUpdate() > 0) {
                         objReturn = true;
                     } else {
@@ -60,30 +70,35 @@ public class ModelVenta extends ConnectionDB {
             } else {
                 connection.rollback();
             }
+
             connection.commit();
         } catch (SQLException sqlE) {
             System.out.println(sqlE.getMessage());
+
             try {
                 connection.rollback();
             } catch (Exception e) {
                 System.out.println(sqlE.getMessage());
+
                 return false;
             }
         }
+
         return objReturn;
     }
 
     public ResultSet ListAll() throws Exception {
         ResultSet rs = null;
         String sql = "call spConsultarVentas()";
+
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
-        return rs;
 
+        return rs;
     }
 
     public boolean Edit(ObjVenta _objVenta) {
@@ -99,12 +114,14 @@ public class ModelVenta extends ConnectionDB {
             pStmt.setInt(4, _objVenta.getTotalVenta());
 
             int updateCount = pStmt.executeUpdate();
+
             if (updateCount > 0) {
                 objReturn = true;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 
@@ -112,6 +129,7 @@ public class ModelVenta extends ConnectionDB {
         ResultSet[] rs = new ResultSet[2];
         String sql = "call spConsultarVentaPorID(?)";
         String sql2 = "call spConsultarDetallesVentaPorID(?)";
+
         try {
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, idVenta);
@@ -122,6 +140,7 @@ public class ModelVenta extends ConnectionDB {
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
+
         return rs;
     }
 
@@ -129,16 +148,21 @@ public class ModelVenta extends ConnectionDB {
         ResultSet rs = null;
         String sql = "call spContadorVenta()";
         String salida = null;
+
         try {
             pStmt = connection.prepareCall(sql);
             rs = pStmt.executeQuery();
+
             while (rs.next()) {
                 salida = rs.getString("idVenta");
             }
         } catch (Exception e) {
             System.out.println(e);
         }
+
         return salida;
     }
-    
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

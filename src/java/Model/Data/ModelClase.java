@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,8 +6,12 @@
  */
 package Model.Data;
 
+//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjClase;
+
 import Model.JDBC.ConnectionDB;
+
+//~--- JDK imports ------------------------------------------------------------
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +31,7 @@ public class ModelClase extends ConnectionDB {
     public String[] Add(ObjClase _objClase) {
         String[] objReturn = new String[2];
         String sql = "call spIngresarClase(?,?,?,?,?,?,?)";
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
@@ -36,10 +42,13 @@ public class ModelClase extends ConnectionDB {
             pStmt.setInt(5, _objClase.getEstadoPago());
             pStmt.setInt(6, _objClase.getCreditoCreado());
             pStmt.setFloat(7, _objClase.getPrecioClase());
+
             ResultSet rs = pStmt.executeQuery();
+
             while (rs.next()) {
                 objReturn[0] = rs.getString("tipo");
                 objReturn[1] = rs.getString("mensaje");
+
                 if (objReturn[0].equals("error")) {
                     return objReturn;
                 }
@@ -48,6 +57,7 @@ public class ModelClase extends ConnectionDB {
             objReturn[0] = "error";
             objReturn[1] = "Ha ocurrido un error: " + e;
         }
+
         return objReturn;
     }
 
@@ -68,24 +78,24 @@ public class ModelClase extends ConnectionDB {
             pStmt.setFloat(8, _objFicha.getPrecioClase());
 
             int updateCount = pStmt.executeUpdate();
+
             if (updateCount > 0) {
                 objReturn = true;
             }
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 
     public ResultSet ListAll() {
-
         ResultSet rs = null;
         String sql = "call spConsultarClasesCurso()";
+
         try {
             getStmt();
             rs = stmt.executeQuery(sql);
-
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
@@ -101,29 +111,35 @@ public class ModelClase extends ConnectionDB {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, _objFicha.getIdClase());
+
             int updateCount = pStmt.executeUpdate();
+
             if (updateCount > 0) {
                 objReturn = true;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
         return objReturn;
     }
 
     public ResultSet buscarPorDocumentoUsuario(String ID) {
         ResultSet rs = null;
         String sql = "call spConsultarClasePorDocumentoUsuario(?)";
+
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, ID);
             rs = pStmt.executeQuery();
-
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
         }
+
         return rs;
     }
-
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

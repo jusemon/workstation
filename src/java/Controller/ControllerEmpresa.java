@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,28 +6,36 @@
  */
 package Controller;
 
+//~--- non-JDK imports --------------------------------------------------------
+import Model.DTO.ObjEmpresa;
+
+import Model.Data.ModelEmpresa;
+
+import com.google.gson.Gson;
+
+//~--- JDK imports ------------------------------------------------------------
 /**
  *
  * @author David
  */
 import java.io.IOException;
+
 import java.sql.ResultSet;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import Model.DTO.ObjEmpresa;
-import Model.Data.ModelEmpresa;
-import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public class ControllerEmpresa extends HttpServlet {
 
-    ModelEmpresa daoModelEmpresa;
     ObjEmpresa _objEmpresa = new ObjEmpresa();
+    ModelEmpresa daoModelEmpresa;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,58 +56,92 @@ public class ControllerEmpresa extends HttpServlet {
                 // <editor-fold defaultstate="collapsed" desc="Registrar una Empresa">
                 case "Registrar": {
                     daoModelEmpresa = new ModelEmpresa();
+
                     String nitEmpresa = request.getParameter("txtNitEmpresa").trim();
+
                     _objEmpresa.setNitEmpresa(nitEmpresa);
+
                     String nombreEmpresa = request.getParameter("txtNombreEmpresa").trim();
+
                     _objEmpresa.setNombreEmpresa(nombreEmpresa);
+
                     String direccionEmpresa = request.getParameter("txtDireccionEmpresa").trim();
+
                     _objEmpresa.setDireccionEmpresa(direccionEmpresa);
+
                     String nombreContacto = request.getParameter("txtNombreContacto").trim();
+
                     _objEmpresa.setNombreContacto(nombreContacto);
+
                     String telefonoContacto = request.getParameter("txtTelefonoContacto").trim();
+
                     _objEmpresa.setTelefonoContacto(telefonoContacto);
+
                     String emailContacto = request.getParameter("txtEmailContacto").trim();
+
                     _objEmpresa.setEmailContacto(emailContacto);
+
                     String salida = new Gson().toJson(daoModelEmpresa.Add(_objEmpresa));
+
                     daoModelEmpresa.Signout();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(salida);
+
                     break;
                 }
+
                 // </editor-fold>
-                
                 // <editor-fold defaultstate="collapsed" desc="Editar una Empresa">
                 case "Editar": {
                     daoModelEmpresa = new ModelEmpresa();
+
                     String nitEmpresa = request.getParameter("txtNitEmpresa").trim();
+
                     _objEmpresa.setNitEmpresa(nitEmpresa);
+
                     String nombreEmpresa = request.getParameter("txtNombreEmpresa").trim();
+
                     _objEmpresa.setNombreEmpresa(nombreEmpresa);
+
                     String direccionEmpresa = request.getParameter("txtDireccionEmpresa").trim();
+
                     _objEmpresa.setDireccionEmpresa(direccionEmpresa);
+
                     String nombreContacto = request.getParameter("txtNombreContacto").trim();
+
                     _objEmpresa.setNombreContacto(nombreContacto);
+
                     String telefonoContacto = request.getParameter("txtTelefonoContacto").trim();
+
                     _objEmpresa.setTelefonoContacto(telefonoContacto);
+
                     String emailContacto = request.getParameter("txtEmailContacto").trim();
+
                     _objEmpresa.setEmailContacto(emailContacto);
-                    String salida = Mensaje(daoModelEmpresa.Edit(_objEmpresa), "Datos de la empresa actualizados", "Ha ocurrido un error al intentar actualizar los datos de la empresa seleccionada");
+
+                    String salida
+                            = Mensaje(daoModelEmpresa.Edit(_objEmpresa), "Datos de la empresa actualizados",
+                                    "Ha ocurrido un error al intentar actualizar los datos de la empresa seleccionada");
+
                     daoModelEmpresa.Signout();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(salida);
+
                     break;
                 }
-                // </editor-fold>
 
+                // </editor-fold>
                 // <editor-fold defaultstate="collapsed" desc="Enlistar las Empresas">
                 case "Enlistar": {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(getTableEmpresa());
+
                     break;
                 }
+
                 // </editor-fold>
             }
         }
@@ -109,9 +152,11 @@ public class ControllerEmpresa extends HttpServlet {
         List<String[]> lista = new ArrayList<>();
         int contador = 0;
         String[] arreglo;
+
         try {
             daoModelEmpresa = new ModelEmpresa();
             result = daoModelEmpresa.ListAll();
+
             while (result.next()) {
                 arreglo = new String[7];
                 arreglo[0] = result.getString("nitEmpresa").trim();
@@ -120,8 +165,9 @@ public class ControllerEmpresa extends HttpServlet {
                 arreglo[3] = result.getString("nombreContacto").trim();
                 arreglo[4] = result.getString("telefonoContacto").trim();
                 arreglo[5] = result.getString("emailContacto").trim();
-                arreglo[6] = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"empresa.editar(" + contador + ")\">"
-                        + "<span class=\"glyphicon glyphicon-pencil\"></span></a>";
+                arreglo[6]
+                        = "<a class=\"btn-sm btn-primary btn-block \" href=\"javascript:void(0)\"  onclick=\"empresa.editar("
+                        + contador + ")\">" + "<span class=\"glyphicon glyphicon-pencil\"></span></a>";
                 lista.add(arreglo);
                 contador++;
             }
@@ -130,22 +176,27 @@ public class ControllerEmpresa extends HttpServlet {
         } finally {
             daoModelEmpresa.Signout();
         }
+
         String salida = new Gson().toJson(lista);
+
         salida = "{\"data\":" + salida + "}";
+
         return salida;
     }
 
     public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
         Map<String, String> mensaje = new LinkedHashMap<>();
+
         if (entrada) {
             mensaje.put("mensaje", mensajeSuccess);
             mensaje.put("tipo", "success");
-
         } else {
             mensaje.put("mensaje", mensajeError);
             mensaje.put("tipo", "error");
         }
+
         String salida = new Gson().toJson(mensaje);
+
         return salida;
     }
 
@@ -186,5 +237,8 @@ public class ControllerEmpresa extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }    // </editor-fold>
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com

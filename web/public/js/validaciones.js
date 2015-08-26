@@ -163,7 +163,7 @@ if (document.getElementById('formUsuario') !== null) {
                 required: true,
                 digits: true,
                 minlength: 3,
-                maxlength:15
+                maxlength: 15
             },
             txtNombre: {
                 required: true,
@@ -470,7 +470,7 @@ function validacionFechaRegistroASeminario(fechaSeminario) {
                     return true;
                 }
             }
-            else {                
+            else {
                 return false;
             }
         }

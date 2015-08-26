@@ -1,18 +1,17 @@
 package Model.DTO;
 
-
 /**
  * @author David
  * @version 1.0
  */
 public class ObjCredito {
-    
-    private int idCredito;    
+
     private String documentoUsuario = "";
     private String fechaInicio = "";
     private double saldoInicial = 0;
     private double saldoActual = 0;
-    private int estadoCredito; 
+    private int idCredito;
+    private int estadoCredito;
 
     public int getIdCredito() {
         return idCredito;
@@ -21,6 +20,7 @@ public class ObjCredito {
     public void setIdCredito(int idCredito) {
         this.idCredito = idCredito;
     }
+
     public String getDocumentoUsuario() {
         return documentoUsuario;
     }
@@ -60,7 +60,7 @@ public class ObjCredito {
     public void setEstadoCredito(int estadoCredito) {
         this.estadoCredito = estadoCredito;
     }
+}    // end ObjCredito
 
 
-
-}//end ObjCredito
+//~ Formatted by Jindent --- http://www.jindent.com

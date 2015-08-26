@@ -61,5 +61,7 @@ public class ObjEmpresa {
     public void setEmailContacto(String emailContacto) {
         this.emailContacto = emailContacto;
     }
+}    // end ObjEmpresa
 
-}//end ObjEmpresa
+
+//~ Formatted by Jindent --- http://www.jindent.com

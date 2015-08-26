@@ -33,5 +33,7 @@ public class ObjModulo {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+}    // end ObjModulo
 
-}//end ObjModulo
+
+//~ Formatted by Jindent --- http://www.jindent.com

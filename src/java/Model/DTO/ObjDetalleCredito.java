@@ -1,9 +1,9 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Model.DTO;
 
 /**
@@ -11,11 +11,10 @@ package Model.DTO;
  * @author aprendiz
  */
 public class ObjDetalleCredito {
-    
+
     private int idDetalleCredito;
     private int idCredito;
     private int idMovimiento;
-    
 
     public int getIdDetalleCredito() {
         return idDetalleCredito;
@@ -41,3 +40,6 @@ public class ObjDetalleCredito {
         this.idMovimiento = idMovimiento;
     }
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com
