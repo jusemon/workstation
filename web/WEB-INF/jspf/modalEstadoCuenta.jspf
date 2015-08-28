@@ -1,4 +1,4 @@
-<%@ page pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!-- 
     Emergente para el Estado de cuenta
 -->
@@ -22,44 +22,109 @@
                                         <div class="col-md-12">
                                             <div class="form-group">                                      
                                                 <div class="tab-content" id="vistaHaber">                                                 
-                                                        <table id="tblHaber" class="table table-responsive table-hover" cellspacing="0" width="100%">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th class="text-center">Movimiento</th>                                
-                                                                    <th class="text-center">Fecha</th>
-                                                                    <th class="text-center">Descripciòn</th>
-                                                                    <th class="text-center">Haber</th>
-                                                                    <th class="text-center">Debe</th>
-                                                                    <th class="text-center">Saldo</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            </tbody>
-                                                        </table>                                                
+                                                    <table id="tblHaber" class="table table-responsive table-hover" cellspacing="0" width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">Movimiento</th>                                
+                                                                <th class="text-center">Fecha</th>
+                                                                <th class="text-center">Descripciòn</th>
+                                                                <th class="text-center">Debe/Cargo</th>
+                                                                <th class="text-center">Haber/abono</th>
+                                                                <th class="text-center">Saldo</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>                                                
                                                 </div>     
                                             </div>
                                         </div>
                                     </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-offset-6 col-md-3">
-                                        <div class="form-group">
-                                            <input id="btnMostrarFormularioRegistro" class="btn btn-default btn-block" type="button" onclick="seminario.mostrarRegistroAsistente()" value="Añadir Asistente">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel-footer">
                                     <div class="row">
-                                        <div class="col-md-offset-3 col-md-6">
+                                        <div class="col-md-2">
                                             <div class="form-group">
-                                                <input id="btnCategoriaCurso" class="btn btn-default btn-block" type="button" name="action" value="Aceptar" data-dismiss="modal" data-target="miPopupDetalleSeminario">
+                                                <label for="idMovimientoB">
+                                                    Movimiento
+                                                </label>
+                                                <select name="idMovimientoB" id="idMovimientoB" class="form-control" required>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="idMovimientoB">
+                                                    Fecha
+                                                </label>
+                                                <select name="idMovimientoB" id="idMovimientoB" class="form-control" required>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="idMovimientoB">
+                                                    Descripciòn
+                                                </label>
+                                                <select name="idDescripciòn" id="idDescripciòn" class="form-control" required>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="idMovimientoB">
+                                                    Debe/Cargo
+                                                </label>
+                                                <select name="idDebe" id="idDebe" class="form-control" required>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="idMovimientoB">
+                                                    Haber/abono
+                                                </label>
+                                                <select name="idHaber" id="idHaber" class="form-control" required>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="idMovimientoB">
+                                                    Saldo
+                                                </label>
+                                                <select name="idSaldo" id="idSaldo" class="form-control" required>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-offset-6 col-md-3">
+                                            <div class="form-group">
+                                                <input id="btnMostrarFormularioHaber" class="btn btn-default btn-block" type="button" onclick="" value="Añadir Movimiento">
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="col-md-offset-3 col-md-6">
+                                                <div class="form-group">
+                                                    <input id="btnCategoria" class="btn btn-default btn-block" type="button" name="action" value="Aceptar" data-dismiss="modal" data-target="miPopupEstadoDeCuenta">
+                                                </div>
+                                            </div>
+                                        </div>
 
+                                    </div>
                                 </div>
-                            </div>
                         </form>
                     </div>
                 </div>
