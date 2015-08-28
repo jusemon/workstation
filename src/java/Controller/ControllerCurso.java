@@ -515,7 +515,7 @@ public class ControllerCurso extends HttpServlet {
             _objCurso.setHorasPorClase(horasPorClase);
             _objCurso.setEstadoCurso(estado);
             _objCurso.setPrecioCurso(precio);
-            salida = mensaje(daoModelCurso.Edit(_objCurso), "El Curso ha sido registrado", "Ha ocurrido un error al intentar registrar el Curso");
+            salida = mensaje(daoModelCurso.Edit(_objCurso), "El curso ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Curso");
             daoModelCurso.Signout();
             return (salida);
         } else {
@@ -536,7 +536,7 @@ public class ControllerCurso extends HttpServlet {
             _objSeminario.setCantidadClases(cantidadClases);
             _objSeminario.setCupoSeminario(cupoSeminario);
             _objSeminario.setFechaSeminario(formatearFecha(fechaSeminario));
-            salida = mensaje(daoModelCurso.Edit(_objSeminario), "El Seminario ha sido registrado", "Ha ocurrido un error al intentar registrar el Seminario");
+            salida = mensaje(daoModelCurso.Edit(_objSeminario), "El seminario ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Seminario");
             daoModelCurso.Signout();
             return (salida);
         }

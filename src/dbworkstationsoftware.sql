@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 25, 2015 at 09:19 PM
+-- Generation Time: Aug 26, 2015 at 05:37 PM
 -- Server version: 5.6.25
 -- PHP Version: 5.6.11
 
@@ -89,13 +89,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spActualizarCredito`(
 BEGIN
         declare msg varchar(100);
     	if (saldoActu < 0 ) then
-		set msg=convert('No se puede realizar la transacci��n. El saldo est�� debajo de lo permitido.' using utf8);
+		set msg=convert('No se puede realizar la transacción. El saldo está debajo de lo permitido.' using utf8);
 		select msg as Respuesta, 'error' as tipo;
        	else
             UPDATE tblcredito 
             SET `saldoActual` = `saldoActu` 
             WHERE `idCredito` = `idCredi`;
-            set msg=convert('El cr��dito se ha actualizado correctamente.' using utf8);	
+            set msg=convert('El crédito se ha actualizado correctamente.' using utf8);	
             select msg as Respuesta, 'success' as tipo; 
 	end if;
 END$$
@@ -844,11 +844,11 @@ BEGIN
     END IF;    
     set totalVen= cantidadClases*(select distinct `precioClase` FROM tblclase WHERE `documentoUsuario`= `documentoClien` and `idCurso`=`idCur`);
     set nombreClien = (select convert(concat(`nombreUsuario`, ' ', `apellidoUsuario`) using utf8) from tblusuario WHERE `documentoUsuario` = `documentoClien`);        
-	if (exists(select numeroAuxiliar from tblMovimiento where numeroAuxiliar=`idVen` and `idtipoMovimiento`=3)) then
+	if (exists(select numeroAuxiliar from tblmovimiento where numeroAuxiliar=`idVen` and `idtipoMovimiento`=3)) then
 		set msg="Esta venta ya existe";
 		select msg as Respuesta;
 	else
-            insert into tblMovimiento 
+            insert into tblmovimiento 
             (
                 `fechaMovimiento`, 
                 `totalMovimiento`, 
@@ -1117,7 +1117,7 @@ BEGIN
         `cantid`, 
         `descuen`, 
         `totalDetalleMovimien`,
-        (SELECT MAX(`idMovimiento`) FROM tblMovimiento),
+        (SELECT MAX(`idMovimiento`) FROM tblmovimiento),
         `precioArticu`
     );
     UPDATE `tblarticulo` SET `cantidadDisponible`=`cantidadDisponible` + `cantid`,`precioCompra`= `precioArticu` WHERE `idArticulo` = `idArticu`;
@@ -1125,8 +1125,8 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleCredito`()
 BEGIN
-	insert into tblDetalleCredito (idCredito,idMovimiento) 
-        Values((SELECT max(`idCredito`) from tblcredito),(SELECT max(`idMovimiento`) from tblmovimiento));
+	INSERT INTO tbldetallecredito (idCredito,idMovimiento) 
+        VALUES((SELECT max(`idCredito`) from tblcredito),(SELECT max(`idMovimiento`) from tblmovimiento));
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarDetalleEstudiante`(
@@ -1151,7 +1151,7 @@ in documentoUsuar varchar (30)
 )
 BEGIN
    declare idClas int;
-   set idClas = (SELECT min(idClase) from tblClase where documentoUsuario = documentoUsuar and estadoPago=0 and estadoAsistencia=0 );
+   set idClas = (SELECT min(idClase) from tblclase where documentoUsuario = documentoUsuar and estadoPago=0 and estadoAsistencia=0 );
    INSERT INTO `tbldetallemovimiento`
    (
        `idClase`, 
@@ -1166,7 +1166,7 @@ BEGIN
        1, 
        0, 
        (SELECT `precioClase` FROM tblclase WHERE `idClase` = `idClas`),
-       (SELECT MAX(`idMovimiento`) FROM tblMovimiento),
+       (SELECT MAX(`idMovimiento`) FROM tblmovimiento),
        (SELECT `precioClase` FROM tblclase WHERE `idClase` = `idClas`)
    );    
 END$$
@@ -1193,7 +1193,7 @@ BEGIN
         `cantid`, 
         `descuen`, 
         `totalDetalleMovimien`,
-        (SELECT MAX(`idMovimiento`) FROM tblMovimiento),
+        (SELECT MAX(`idMovimiento`) FROM tblmovimiento),
         `precioArticu`
     );
     UPDATE `tblarticulo` SET `cantidadDisponible`=`cantidadDisponible` - `cantid`,`precioVenta`= `precioArticu` WHERE `idArticulo` = `idArticu`;
@@ -1210,11 +1210,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarEmpresa`(
  )
 BEGIN
 	declare msg varchar(40);    
-	if (exists(select nitEmpresa from tblEmpresa where nitEmpresa=nitEmpre)) then
+	if (exists(select nitEmpresa from tblempresa where nitEmpresa=nitEmpre)) then
 		set msg="Esta empresa ya existe";
 		select msg as mensaje, 'success' as tipo;
 	else
-		insert into tblEmpresa (nitEmpresa,nombreEmpresa,direccionEmpresa,nombreContacto,telefonoContacto,emailContacto) Values(nitEmpre,nombreEmpre,direccionEmpre,nombreContac,telefonoContac,emailContac);
+		insert into tblempresa (nitEmpresa,nombreEmpresa,direccionEmpresa,nombreContacto,telefonoContacto,emailContacto) Values(nitEmpre,nombreEmpre,direccionEmpre,nombreContac,telefonoContac,emailContac);
 		set msg="La empresa se ha registrado exitosamente";		
 		select msg as mensaje, 'error' as tipo; 
 	end if;
@@ -1294,24 +1294,6 @@ ELSE
 END IF;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarFactura`(
-    in idFactu       int,
-    in fechafactu    datetime,
-    in totalFactu    varchar(50)
-    
- )
-BEGIN
-	declare msg varchar(40);    
-	if (exists(select idFactura from tblFactura where idFactura=idFactu)) then
-		set msg="Esta factura ya existe";
-		select msg as Respuesta;
-	else
-		insert into tblFactura (fechaFactura,totalFactura) Values(fechafactu,totalFactu);
-		set msg="La factura se ha registrado exitosamente";
-		select msg as Respuesta; 
-	end if;
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarInscripcion`(
     in idIncripci       int,
     in idSeminar        int,
@@ -1321,12 +1303,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarInscripcion`(
  )
 BEGIN
 	declare msg varchar(40);    
-	if (exists(select idIncripcion from tblInscripcion where idIncripcion=idIncripci)) then
-		set msg="Esta inscripción ya existe";
+	if (exists(select idIncripcion from tblinscripcion where idIncripcion=idIncripci)) then
+		set msg=CONVERT("Esta inscripción ya existe" using utf8);
 		select msg as Respuesta;
 	else
-		insert into tblInscripcion (idIncripcion,idSeminario, precioSeminario, fechaAsistencia,idVenta) Values(idIncripci,idSeminar,precioSeminar,fechaAsistenc,idVen);
-		set msg="La inscripción se ha registrado exitosamente";
+		insert into tblinscripcion (idIncripcion,idSeminario, precioSeminario, fechaAsistencia,idVenta) Values(idIncripci,idSeminar,precioSeminar,fechaAsistenc,idVen);
+		set msg=CONVERT("La inscripción se ha registrado exitosamente" using utf8);
 		select msg as Respuesta; 
 	end if;
 END$$
@@ -1360,7 +1342,7 @@ BEGIN
     declare msg varchar(40);  
     declare nombreClien VARCHAR(50);
     set nombreClien = (SELECT concat(`nombreUsuario`, ' ', `apellidoUsuario`) FROM tblusuario where `documentoUsuario` = `documentoClien`);
-        insert into tblMovimiento 
+        insert into tblmovimiento 
         (
             `fechaMovimiento`, 
             `totalMovimiento`, 
@@ -1391,7 +1373,7 @@ declare msg varchar(100);
     elseif (exists(SELECT `documentoUsuario` FROM `tblpreinscripcion` WHERE `documentoUsuario` = `documentoUsuar` and estado = 1)) then
                 set msg=CONVERT(CONCAT('Este cliente se encuentra preinscrito a ',(SELECT `nombreCurso` from tblcurso WHERE `idCurso` = (SELECT idCurso from `tblpreinscripcion` WHERE `documentoUsuario` = `documentoUsuar` and estado = 1))) using utf8);
 		select msg as mensaje, 'error' as tipo;
-    elseif (exists(SELECT `documentoUsuario` FROM `tblUsuario` WHERE `documentoUsuario` = `documentoUsuar` and idrol !=4)) then
+    elseif (exists(SELECT `documentoUsuario` FROM `tblusuario` WHERE `documentoUsuario` = `documentoUsuar` and idrol !=4)) then
                 set msg=CONVERT(CONCAT('Usted cuenta con rol de ', (SELECT descripcion FROM tblrol WHERE idrol = (SELECT idrol FROM tblusuario WHERE `documentoUsuario` = `documentoUsuar`)), ' por lo cual no se puede preinscribir.') using utf8);
 		select msg as mensaje, 'error' as tipo;
     else
@@ -1498,11 +1480,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarVenta`(
  )
 BEGIN
 	declare msg varchar(40);    
-	if (exists(select numeroAuxiliar from tblMovimiento where numeroAuxiliar=`idVen` and `idtipoMovimiento`=3)) then
+	if (exists(select numeroAuxiliar from tblmovimiento where numeroAuxiliar=`idVen` and `idtipoMovimiento`=3)) then
 		set msg="Esta venta ya existe";
 		select msg as Respuesta;
 	else
-            insert into tblMovimiento 
+            insert into tblmovimiento 
             (
                 `fechaMovimiento`, 
                 `totalMovimiento`, 
@@ -1525,14 +1507,28 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarArticulos`()
 BEGIN
-
-SELECT * FROM tblarticulo INNER JOIN tblcategoriaarticulo ON tblarticulo.idCategoriaArticulo = tblcategoriaarticulo.idCategoriaArticulo;
+    SELECT  
+        a.idArticulo as idArticulo,
+        a.descripcionArticulo as descripcionArticulo, 
+        a.cantidadDisponible as cantidadDisponible, 
+        a.precioCompra as precioCompra, 
+        a.precioVenta as precioVenta, 
+        a.idCategoriaArticulo as idCategoriaArticulo, 
+        ca.nombreCategoriaArticulo as nombreCategoriaArticulo
+    FROM tblarticulo a INNER JOIN tblcategoriaarticulo ca ON a.idCategoriaArticulo = ca.idCategoriaArticulo;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarArticulosConExistencias`()
 BEGIN
-
-SELECT * FROM tblarticulo INNER JOIN tblcategoriaarticulo ON tblarticulo.idCategoriaArticulo = tblcategoriaarticulo.idCategoriaArticulo where `cantidadDisponible`>0;
+    SELECT  
+        a.idArticulo as idArticulo,
+        a.descripcionArticulo as descripcionArticulo, 
+        a.cantidadDisponible as cantidadDisponible, 
+        a.precioCompra as precioCompra, 
+        a.precioVenta as precioVenta, 
+        a.idCategoriaArticulo as idCategoriaArticulo, 
+        ca.nombreCategoriaArticulo as nombreCategoriaArticulo
+    FROM tblarticulo a INNER JOIN tblcategoriaarticulo ca ON a.idCategoriaArticulo = ca.idCategoriaArticulo WHERE a.cantidadDisponible > 0;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarCreditos`()
@@ -1540,13 +1536,15 @@ select idCredito, documentoUsuario, fechaInicio, saldoInicial, saldoActual, esta
 from tblcredito$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarDetalleCreditos`()
+Begin
 select d.idDetalleCredito, d.idCredito, d.idMovimiento, d.fechaDetalle
-from tblDetalleCredito d inner join tblCredito c on(d.idCredito = c.idCredito)$$
+from tbldetallecredito d inner join tblcredito c on(d.idCredito = c.idCredito);
+END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spListarEmpresas`()
 BEGIN
 
-SELECT * FROM tblEmpresa;
+SELECT nitEmpresa, nombreEmpresa, direccionEmpresa, nombreContacto, telefonoContacto, emailContacto FROM tblempresa;
 END$$
 
 DELIMITER ;
@@ -1655,7 +1653,7 @@ CREATE TABLE IF NOT EXISTS `tblclase` (
   `precioClase` float NOT NULL,
   `idCurso` int(11) NOT NULL,
   `documentoUsuario` varchar(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tblclase`
@@ -1663,8 +1661,8 @@ CREATE TABLE IF NOT EXISTS `tblclase` (
 
 INSERT INTO `tblclase` (`idClase`, `fecha`, `estadoPago`, `estadoAsistencia`, `creditoCreado`, `precioClase`, `idCurso`, `documentoUsuario`) VALUES
 (25, '2015-07-02', b'1', b'1', b'0', 5000, 2, 'CC1220654321'),
-(26, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
-(27, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
+(26, '2015-08-26', b'0', b'1', b'1', 5000, 2, 'CC1220654321'),
+(27, '2015-08-26', b'0', b'1', b'1', 5000, 2, 'CC1220654321'),
 (28, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
 (29, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
 (30, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
@@ -1685,7 +1683,31 @@ INSERT INTO `tblclase` (`idClase`, `fecha`, `estadoPago`, `estadoAsistencia`, `c
 (45, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
 (46, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
 (47, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
-(48, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321');
+(48, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
+(49, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(50, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(51, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(52, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(53, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(54, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(55, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(56, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(57, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(58, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(59, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(60, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(61, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(62, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(63, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(64, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(65, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(66, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(67, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(68, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(69, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(70, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(71, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(72, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123');
 
 -- --------------------------------------------------------
 
@@ -1920,14 +1942,15 @@ CREATE TABLE IF NOT EXISTS `tblpreinscripcion` (
   `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `documentoUsuario` varchar(20) NOT NULL,
   `idCurso` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tblpreinscripcion`
 --
 
 INSERT INTO `tblpreinscripcion` (`idPreinscripcion`, `estado`, `fecha`, `documentoUsuario`, `idCurso`) VALUES
-(1, b'1', '2015-07-02 12:32:24', 'CC1128414247', 1);
+(1, b'1', '2015-07-02 12:32:24', 'CC1128414247', 1),
+(3, b'1', '2015-08-26 09:29:38', 'CC2132132', 2);
 
 -- --------------------------------------------------------
 
@@ -2013,6 +2036,7 @@ CREATE TABLE IF NOT EXISTS `tblusuario` (
 INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`, `apellidoUsuario`, `emailUsuario`, `password`, `estadoUsuario`, `idDetalleUsuario`, `idrol`, `documentoAcudiente`, `telefonoFijo`) VALUES
 ('CC1017225673', '1994-11-03', 'Juan Sebastián', 'Montoya Montoya', 'jsmontoya37@misena.edu.co', '123', 1, NULL, 1, NULL, '5861529'),
 ('CC1220654321', '1987-11-10', 'Pepito', 'Pérez', 'pepito@correo.com', '123456Ad', 0, 1, 3, NULL, '2101554'),
+('CC2132132', '2000-02-02', 'asd', 'asd', 'correo@prueba.com', 'Es120300', 1, NULL, 4, NULL, '1231231'),
 ('CC8101926', '1984-01-06', 'David', 'Cano Arango', 'dcano62@misena.edu.co', '123', 1, NULL, 1, NULL, '1234567'),
 ('CE5465465', '1969-12-28', 'Lorenzo', 'Chimeno Trenado', 'lchimeno37@misena.edu.co', '123', 1, NULL, 1, NULL, '9876543'),
 ('TI123123123', '2010-01-01', 'Monita', 'Martinez', 'monita@correo.com', 'Es120300', 0, 2, 3, 'CC121321321', '1231232');
@@ -2181,7 +2205,7 @@ ALTER TABLE `tblcategoriacurso`
 -- AUTO_INCREMENT for table `tblclase`
 --
 ALTER TABLE `tblclase`
-  MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=49;
+  MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=73;
 --
 -- AUTO_INCREMENT for table `tblcredito`
 --
@@ -2226,7 +2250,7 @@ ALTER TABLE `tblmovimiento`
 -- AUTO_INCREMENT for table `tblpreinscripcion`
 --
 ALTER TABLE `tblpreinscripcion`
-  MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `tblrol`
 --
