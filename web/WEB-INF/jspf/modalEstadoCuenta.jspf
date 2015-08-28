@@ -20,45 +20,22 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <ul class="nav nav-tabs" role="tablist">
-                                                    <li>
-                                                        <a href="#vistaHaber" role="tab" data-toggle="tab">Haber</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#vistaDebe" role="tab" data-toggle="tab">Debe</a>
-                                                    </li>
-                                                </ul>
-                                                <div class="tab-content">
-                                                    <div class="tab-pane fade in" id="vistaHaber">
+                                            <div class="form-group">                                      
+                                                <div class="tab-content" id="vistaHaber">                                                 
                                                         <table id="tblHaber" class="table table-responsive table-hover" cellspacing="0" width="100%">
                                                             <thead>
                                                                 <tr>
-                                                                    <th class="text-center">ID</th>                                
+                                                                    <th class="text-center">Movimiento</th>                                
                                                                     <th class="text-center">Fecha</th>
-                                                                    <th class="text-center">Monto</th>
-                                                                    <th class="text-center">Editar</th>
+                                                                    <th class="text-center">Descripciòn</th>
+                                                                    <th class="text-center">Haber</th>
+                                                                    <th class="text-center">Debe</th>
+                                                                    <th class="text-center">Saldo</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                             </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div class="tab-pane fade" id="preincripciones">
-                                                        <table id="tblPreinscripciones" class="table table-responsive table-hover" cellspacing="0" width="100%">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th class="text-center">Tipo</th>                                
-                                                                    <th class="text-center">Nombre</th>
-                                                                    <th class="text-center">Fecha Preincripción</th>
-                                                                    <th class="text-center">Consultar</th>
-                                                                    <th class="text-center">Cancelar</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
+                                                        </table>                                                
                                                 </div>     
                                             </div>
                                         </div>
