@@ -143,6 +143,21 @@ public class ModelCredito extends ConnectionDB {
 
         return rs;
     }
+    public ResultSet consultarDetalleCreditoByID(int idCredito) {
+        ResultSet rs = null;
+        String sql = "call spConsultarDetalleCreditoByID(?)";
+
+        try {
+            getStmt();
+            pStmt = connection.prepareCall(sql);
+            pStmt.setInt(1, idCredito);
+            rs = pStmt.executeQuery();
+        } catch (SQLException e) {
+            System.err.println("SQLException:" + e.getMessage());
+        }
+
+        return rs;
+    }
 
     public ResultSet buscarCreditoByDocumento(String documentoUsuario) {
         ResultSet rs = null;
