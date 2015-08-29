@@ -43,10 +43,10 @@
                                     <div class="row">
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="idMovimientoB">
+                                                <label for="MovimientoB">
                                                     Movimiento
                                                 </label>
-                                                <select name="idMovimientoB" id="idMovimientoB" class="form-control" required>
+                                                <select name="Movimiento" id="Movimiento" class="form-control" required>
                                                 </select>
                                             </div>
                                         </div>
@@ -54,10 +54,10 @@
 
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="idMovimientoB">
+                                                <label for="fechaMovimiento">
                                                     Fecha
                                                 </label>
-                                                <select name="idMovimientoB" id="idMovimientoB" class="form-control" required>
+                                                      <input name="fechaMovimiento" id="fechaMovimiento" type="text" class="form-control fecha" placeholder="">
                                                 </select>
                                             </div>
                                         </div>
@@ -65,10 +65,10 @@
 
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="idMovimientoB">
+                                                <label for="txtDescripcion">
                                                     Descripciòn
                                                 </label>
-                                                <select name="idDescripciòn" id="idDescripciòn" class="form-control" required>
+                                                <select name="txtDescripcion" id="txtDescripcion" class="form-control" required>
                                                 </select>
                                             </div>
                                         </div>
@@ -76,10 +76,10 @@
 
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="idMovimientoB">
+                                                <label for="debe">
                                                     Debe/Cargo
                                                 </label>
-                                                <select name="idDebe" id="idDebe" class="form-control" required>
+                                                <select name="debe" id="debe" class="form-control" required>
                                                 </select>
                                             </div>
                                         </div>
@@ -90,7 +90,7 @@
                                                 <label for="idMovimientoB">
                                                     Haber/abono
                                                 </label>
-                                                <select name="idHaber" id="idHaber" class="form-control" required>
+                                                <select name="haber" id="haber" class="form-control" required>
                                                 </select>
                                             </div>
                                         </div>
@@ -98,10 +98,10 @@
 
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="idMovimientoB">
+                                                <label for="saldo">
                                                     Saldo
                                                 </label>
-                                                <select name="idSaldo" id="idSaldo" class="form-control" required>
+                                                <select name="saldo" id="saldo" class="form-control" required>
                                                 </select>
                                             </div>
                                         </div>
@@ -110,7 +110,7 @@
                                     <div class="row">
                                         <div class="col-md-offset-6 col-md-3">
                                             <div class="form-group">
-                                                <input id="btnMostrarFormularioHaber" class="btn btn-default btn-block" type="button" onclick="" value="Añadir Movimiento">
+                                                <input id="btnMostrarFormularioHaber" class="btn btn-default btn-block" type="button" onclick="" value="AñadirMovimiento">
                                             </div>
                                         </div>
                                     </div>
