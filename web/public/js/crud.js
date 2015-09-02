@@ -676,14 +676,14 @@ var abono = {
                         } else
                             abono.consultar(data);
                     }
-                    else if (accion === 'Registrar' || accion === 'Editar') {
+                    else if (accion === 'Abonar' || accion === 'Editar') {
                         $('#miPopupAbono').modal('hide');
                         abono.mensaje(data);
-                        abono.actualizarTabla();
+                        credito.actualizarTabla();
                     }
                     else if (accion === 'Estado') {
                         abono.mensaje(data);
-                        abono.actualizarTabla();
+                        credito.actualizarTabla();
                     }
                 }
             });
@@ -694,22 +694,24 @@ var abono = {
             $(form).submit();
         }
     },
-    consultar: function (data) {
-        limpiar("#formAbono");
-        $('#miPopupAbono').find('#titulo').empty();
-        $('#miPopupAbono').find('#titulo').append('Consultar Abono');
-        $('#miPopupAbono').find('#idAbono').val(data['idAbono']);
-        $('#miPopupAbono').find('#txtIdCredito').val(data['idCredito']);
-        $('#miPopupAbono').find('#txtValorAbono').val(data['valorAbono']);
-        $('#miPopupAbono').find('#dateFechaPago').val(data['fechaPago']);
-        $('#miPopupAbono').find('#btnAbono').attr('type', 'hidden').attr('disabled', true);
-        $('#miPopupAbono').modal('show');
-    },
-    registrar: function (idCredito) {
+//    consultar: function (data) {
+//        limpiar("#formAbono");
+//        $('#miPopupAbono').find('#titulo').empty();
+//        $('#miPopupAbono').find('#titulo').append('Consultar Abono');
+//        $('#miPopupAbono').find('#idAbono').val(data['idAbono']);
+//        $('#miPopupAbono').find('#txtIdCredito').val(data['idCredito']);
+//        $('#miPopupAbono').find('#txtValorAbono').val(data['valorAbono']);
+//        $('#miPopupAbono').find('#dateFechaPago').val(data['fechaPago']);
+//        $('#miPopupAbono').find('#btnAbono').attr('type', 'hidden').attr('disabled', true);
+//        $('#miPopupAbono').modal('show');
+//    },
+    registrar: function (idCredito, documentoCliente) {
         limpiar("#formAbono");       
         $('#miPopupAbono').find('#titulo').text('Registrar Abono');
         $('#miPopupAbono').find('#txtIdCredito').val(idCredito);
-        $('#miPopupAbono').find('#btnAbono').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
+        $('#miPopupAbono').find('#documentoCliente').val(documentoCliente);
+        $('#miPopupAbono').find('#documentoUsuario').val(documentoUsuario);
+        $('#miPopupAbono').find('#btnAbono').attr('type', 'submit').attr('value', 'Abonar').attr('disabled', false);
         $('#miPopupAbono').modal('show');
         
     },
@@ -721,22 +723,6 @@ var abono = {
     },
     mensaje: function (data) {
         $.notify(data['mensaje'], data['tipo']);
-    },
-    cargar: function () {
-        tablaAbono = $('#tblAbono').DataTable({
-            "ajax": {
-                "url": "ControllerAbono",
-                "type": "POST",
-                "data": {
-                    action: 'Enlistar'
-                }
-            }, "language": {
-                "url": "public/js/locales/Spanish.json"
-            }
-        });
-    },
-    actualizarTabla: function () {
-        tablaAbono.ajax.reload();
     }
 };
 var estudiante = {
@@ -2285,7 +2271,6 @@ venta.cargar();
 categoriaCurso.cargar();
 curso.cargar();
 seminario.cargar();
-//abono.cargar();
 estudiante.cargar();
 categoriaArticulo.cargar();
 articulo.cargar();

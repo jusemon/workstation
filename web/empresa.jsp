@@ -14,7 +14,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        Gestión de Empresa
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            Gestión de Empresa
+                        </a>
                     </h3>
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse">

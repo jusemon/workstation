@@ -6,6 +6,7 @@
 package Controller;
 
 import Model.DTO.ObjCredito;
+import Model.DTO.ObjMovimiento;
 import Model.Data.ModelCredito;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -26,7 +27,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ControllerCredito extends HttpServlet {
 
-    ObjCredito _ObjCredito = new ObjCredito();
+    ObjCredito _objCredito = new ObjCredito();
+    ObjMovimiento _objMovimiento;
     ModelCredito daoModelCredito;
     Map<String, String> respuesta;
 
@@ -51,9 +53,16 @@ public class ControllerCredito extends HttpServlet {
             switch (request.getParameter("action")) {
 
                 // <editor-fold defaultstate="collapsed" desc="Abonar">
+                // <editor-fold defaultstate="collapsed" desc="Registrar un abono">
                 case "Abonar": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    salida = abonar(request);
+                    response.getWriter().write(salida);
+                    break;
                 }
 
+                // </editor-fold>
                 // </editor-fold>
                 // <editor-fold defaultstate="collapsed" desc="Consultar Detalle">
                 case "ConsultarDetalle": {
@@ -108,7 +117,25 @@ public class ControllerCredito extends HttpServlet {
         }
     }
 
-    public String cambiarEstado(int idCredito) {
+    private String abonar(HttpServletRequest request) {
+        daoModelCredito = new ModelCredito();
+        _objMovimiento = new ObjMovimiento();
+        int idCredito = Integer.parseInt(request.getParameter("txtIdCredito"));
+        int valorAbono = Integer.parseInt(request.getParameter("txtValorAbono"));
+        String documentoCliente = request.getParameter("documentoCliente");
+        String documentoUsuario = request.getParameter("documentoUsuario");
+        _objCredito = new ObjCredito();
+        _objCredito.setIdCredito(idCredito);
+        _objMovimiento.setTotalMovimiento(valorAbono);
+        _objMovimiento.setDocumentoAuxiliar(documentoCliente);
+        _objMovimiento.setDocumentoUsuario(documentoUsuario);        
+        String salida = Utilidades.mensaje(daoModelCredito.AddAbono(_objCredito, _objMovimiento, null, null, valorAbono),
+                "El abono ha sido registrado", "Ha ocurrido un error al intentar registrar el abono");
+        daoModelCredito.Signout();
+        return salida;
+    }
+
+    private String cambiarEstado(int idCredito) {
         int estadoCredito = 0;
         String objReturn = null;
 
@@ -124,10 +151,10 @@ public class ControllerCredito extends HttpServlet {
             }
 
             estadoCredito = (estadoCredito > 0) ? 0 : 1;
-            _ObjCredito = new ObjCredito();
-            _ObjCredito.setIdCredito(idCredito);
-            _ObjCredito.setEstadoCredito(estadoCredito);
-            objReturn = Utilidades.mensaje(daoModelCredito.cambiarEstadoCredito(_ObjCredito),
+            _objCredito = new ObjCredito();
+            _objCredito.setIdCredito(idCredito);
+            _objCredito.setEstadoCredito(estadoCredito);
+            objReturn = Utilidades.mensaje(daoModelCredito.cambiarEstadoCredito(_objCredito),
                     "El estado del crédito ha sido actualizado",
                     "Ha ocurrido un error al intentar actualizar el estado del crédito");
         } catch (SQLException | NumberFormatException e) {
@@ -139,7 +166,7 @@ public class ControllerCredito extends HttpServlet {
         return objReturn;
     }
 
-    public String consultar(int id) {
+    private String consultar(int id) {
         String salida;
 
         respuesta = new LinkedHashMap<>();
@@ -171,7 +198,7 @@ public class ControllerCredito extends HttpServlet {
         return salida;
     }
 
-    public String getTableCredito() {
+    private String getTableCredito() {
         List<String[]> lista = new ArrayList<>();
 
         try {
@@ -207,7 +234,7 @@ public class ControllerCredito extends HttpServlet {
                         + "    <li><a class=\"btn btn-success\" href=\"javascript:void(0)\" onclick=\"credito.consultarDetalle(" + arreglo[0] + ", '" + arreglo[1] + "' )\">"
                         + "<span class=\"glyphicon glyphicon-search\"></span>Consultar</a></li>\n"
                         + "    <li><a class=\"btn btn-primary \"  href=\"javascript:void(0)\" onclick=\"abono.registrar("
-                        + arreglo[0] + ")\">"
+                        + arreglo[0] + ", '"+arreglo[1]+"')\">"
                         + "<span class=\"glyphicon glyphicon-edit\"></span>Abonar</a></li>\n" + "  </ul>\n" + "</div>";
                 lista.add(arreglo);
             }
@@ -262,4 +289,5 @@ public class ControllerCredito extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }    // </editor-fold>
+
 }
