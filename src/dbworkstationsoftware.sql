@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.11
+-- version 4.2.11
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-08-2015 a las 03:22:25
--- Versión del servidor: 5.6.24
--- Versión de PHP: 5.6.8
+-- Tiempo de generación: 02-09-2015 a las 04:35:28
+-- Versión del servidor: 5.6.21
+-- Versión de PHP: 5.6.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -360,18 +360,30 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByDocumento`(
     in documentoUsuar varchar(20)
 )
 BEGIN
-    select c.idCredito, c.documentoUsuario, c.saldoInicial, c.saldoActual, c.estadoCredito
-    FROM tblCredito c inner join tblusuario u on c.documentoUsuario = u.documentoUsuario
-    WHERE c.documentoUsuario = documentoUsuar;
+    declare msg varchar(100);    
+    if ((select idCredito from tblcredito where documentoUsuario=documentoUsuar) is not null) then        
+        select c.idCredito, c.documentoUsuario, c.saldoInicial, c.saldoActual, c.estadoCredito,c.`fechaInicio`, 'success' as tipo
+        FROM tblCredito c inner join tblusuario u on c.documentoUsuario = u.documentoUsuario
+        WHERE c.documentoUsuario = documentoUsuar;
+    else
+        set msg=convert('No existe el crédito' using utf8);
+        select msg as Respuesta, 'error' as tipo; 
+    end if;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCreditoByID`(
     in idCredi int
 )
 BEGIN
-    select idCredito, documentoUsuario, fechaInicio, saldoInicial, saldoActual, estadoCredito
-    FROM tblcredito 
-    WHERE idCredito=idCredi;
+    declare msg varchar(100);    
+    if ((select documentoUsuario from tblcredito where idCredito=idCredi) is not null) then        
+        SELECT idCredito, documentoUsuario, fechaInicio, saldoInicial, saldoActual, estadoCredito, 'success' as tipo
+        FROM tblcredito 
+        WHERE idCredito=idCredi;
+    else
+        set msg=convert('No existe el crédito' using utf8);
+        select msg as Respuesta, 'error' as tipo; 
+    end if;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spConsultarCursoPorID`(id int)
@@ -1578,7 +1590,7 @@ INSERT INTO `tblacudiente` (`documentoAcudiente`, `nombreAcudiente`, `telefonoAc
 --
 
 CREATE TABLE IF NOT EXISTS `tblarticulo` (
-  `idArticulo` int(11) NOT NULL,
+`idArticulo` int(11) NOT NULL,
   `idCategoriaArticulo` int(11) NOT NULL,
   `descripcionArticulo` varchar(50) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
   `cantidadDisponible` mediumint(9) NOT NULL,
@@ -1591,11 +1603,11 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
 --
 
 INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioCompra`, `precioVenta`) VALUES
-(1, 2, 'Vinilo', 1, 1200, 1300),
-(2, 3, 'Pincel delgado', 0, 2000, 2500),
-(3, 2, 'Madera de lino', 0, 5000, 5500),
-(4, 1, 'asdasd', 0, 1000, 1200),
-(5, 2, 'adf', 0, 1200, 1300);
+(1, 2, 'Vinilo', 21, 1200, 1300),
+(2, 3, 'Pincel delgado', 10, 1200, 2500),
+(3, 2, 'Madera de lino', 20, 5000, 5500),
+(4, 1, 'asdasd', 20, 1200, 1200),
+(5, 2, 'adf', 17, 1200, 1300);
 
 -- --------------------------------------------------------
 
@@ -1604,7 +1616,7 @@ INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArti
 --
 
 CREATE TABLE IF NOT EXISTS `tblcategoriaarticulo` (
-  `idCategoriaArticulo` int(11) NOT NULL,
+`idCategoriaArticulo` int(11) NOT NULL,
   `nombreCategoriaArticulo` varchar(50) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
@@ -1625,7 +1637,7 @@ INSERT INTO `tblcategoriaarticulo` (`idCategoriaArticulo`, `nombreCategoriaArtic
 --
 
 CREATE TABLE IF NOT EXISTS `tblcategoriacurso` (
-  `idCategoriaCurso` int(11) NOT NULL,
+`idCategoriaCurso` int(11) NOT NULL,
   `nombreCategoriaCurso` varchar(45) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
@@ -1647,7 +1659,7 @@ INSERT INTO `tblcategoriacurso` (`idCategoriaCurso`, `nombreCategoriaCurso`) VAL
 --
 
 CREATE TABLE IF NOT EXISTS `tblclase` (
-  `idClase` int(11) NOT NULL,
+`idClase` int(11) NOT NULL,
   `fecha` date DEFAULT NULL,
   `estadoPago` bit(1) NOT NULL DEFAULT b'0',
   `estadoAsistencia` bit(1) NOT NULL DEFAULT b'0',
@@ -1718,7 +1730,7 @@ INSERT INTO `tblclase` (`idClase`, `fecha`, `estadoPago`, `estadoAsistencia`, `c
 --
 
 CREATE TABLE IF NOT EXISTS `tblcredito` (
-  `idCredito` int(11) NOT NULL,
+`idCredito` int(11) NOT NULL,
   `documentoUsuario` varchar(20) NOT NULL,
   `fechaInicio` datetime DEFAULT CURRENT_TIMESTAMP,
   `saldoInicial` int(11) NOT NULL DEFAULT '0',
@@ -1731,7 +1743,7 @@ CREATE TABLE IF NOT EXISTS `tblcredito` (
 --
 
 INSERT INTO `tblcredito` (`idCredito`, `documentoUsuario`, `fechaInicio`, `saldoInicial`, `saldoActual`, `estadoCredito`) VALUES
-(1, 'CC1220654321', '2015-08-28 19:26:44', 50000, 45000, 1);
+(1, 'CC1220654321', '2015-08-28 19:26:44', 50000, 16100, 1);
 
 -- --------------------------------------------------------
 
@@ -1740,7 +1752,7 @@ INSERT INTO `tblcredito` (`idCredito`, `documentoUsuario`, `fechaInicio`, `saldo
 --
 
 CREATE TABLE IF NOT EXISTS `tblcurso` (
-  `idCurso` int(11) NOT NULL,
+`idCurso` int(11) NOT NULL,
   `nombreCurso` varchar(50) NOT NULL,
   `cantidadClases` int(11) NOT NULL,
   `horasPorClase` int(11) NOT NULL,
@@ -1767,17 +1779,19 @@ INSERT INTO `tblcurso` (`idCurso`, `nombreCurso`, `cantidadClases`, `horasPorCla
 --
 
 CREATE TABLE IF NOT EXISTS `tbldetallecredito` (
-  `idDetalleCredito` int(11) NOT NULL,
+`idDetalleCredito` int(11) NOT NULL,
   `idCredito` int(11) NOT NULL,
   `idMovimiento` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbldetallecredito`
 --
 
 INSERT INTO `tbldetallecredito` (`idDetalleCredito`, `idCredito`, `idMovimiento`) VALUES
-(1, 1, 2);
+(1, 1, 2),
+(2, 1, 4),
+(3, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -1786,7 +1800,7 @@ INSERT INTO `tbldetallecredito` (`idDetalleCredito`, `idCredito`, `idMovimiento`
 --
 
 CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
-  `idDetalleMovimiento` int(11) NOT NULL,
+`idDetalleMovimiento` int(11) NOT NULL,
   `idArticulo` int(11) DEFAULT NULL,
   `idClase` int(11) DEFAULT NULL,
   `cantidad` int(11) NOT NULL,
@@ -1794,7 +1808,7 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
   `totalDetalleMovimiento` int(11) NOT NULL,
   `idMovimiento` int(11) NOT NULL,
   `precioArticulo` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tbldetallemovimiento`
@@ -1803,7 +1817,14 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
 INSERT INTO `tbldetallemovimiento` (`idDetalleMovimiento`, `idArticulo`, `idClase`, `cantidad`, `descuento`, `totalDetalleMovimiento`, `idMovimiento`, `precioArticulo`) VALUES
 (1, 1, NULL, 12, 1, 14400, 1, 1200),
 (2, 1, NULL, 10, 1, 12000, 2, 1200),
-(3, 1, NULL, 1, 1, 1300, 3, 1300);
+(3, 1, NULL, 1, 1, 1300, 3, 1300),
+(4, 1, NULL, 20, 5, 24000, 3, 1200),
+(5, 2, NULL, 20, 5, 24000, 3, 1200),
+(6, 3, NULL, 20, 5, 100000, 3, 5000),
+(7, 4, NULL, 20, 5, 24000, 3, 1200),
+(8, 5, NULL, 20, 5, 24000, 3, 1200),
+(9, 5, NULL, 3, 1, 3900, 4, 1300),
+(10, 2, NULL, 10, 1, 25000, 5, 2500);
 
 -- --------------------------------------------------------
 
@@ -1812,7 +1833,7 @@ INSERT INTO `tbldetallemovimiento` (`idDetalleMovimiento`, `idArticulo`, `idClas
 --
 
 CREATE TABLE IF NOT EXISTS `tbldetalleusuario` (
-  `idDetalleUsuario` int(11) NOT NULL,
+`idDetalleUsuario` int(11) NOT NULL,
   `direccionUsuario` varchar(50) NOT NULL,
   `telefonoMovil` varchar(15) NOT NULL,
   `generoUsuario` bit(1) NOT NULL,
@@ -1856,7 +1877,7 @@ INSERT INTO `tblempresa` (`nitEmpresa`, `nombreEmpresa`, `direccionEmpresa`, `no
 --
 
 CREATE TABLE IF NOT EXISTS `tblinscrito` (
-  `idinscrito` int(11) NOT NULL,
+`idinscrito` int(11) NOT NULL,
   `documento` varchar(20) DEFAULT NULL,
   `nombres` varchar(40) NOT NULL,
   `telefono` varchar(20) NOT NULL,
@@ -1871,7 +1892,7 @@ CREATE TABLE IF NOT EXISTS `tblinscrito` (
 --
 
 CREATE TABLE IF NOT EXISTS `tblmodulo` (
-  `idmodulo` int(11) NOT NULL,
+`idmodulo` int(11) NOT NULL,
   `enlace` varchar(30) NOT NULL,
   `nombre` varchar(30) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
@@ -1929,7 +1950,7 @@ INSERT INTO `tblmodulorol` (`idmodulo`, `idrol`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `tblmovimiento` (
-  `idMovimiento` int(11) NOT NULL,
+`idMovimiento` int(11) NOT NULL,
   `fechaMovimiento` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `totalMovimiento` int(11) NOT NULL,
   `idtipoMovimiento` int(11) NOT NULL,
@@ -1937,7 +1958,7 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
   `numeroAuxiliar` varchar(45) DEFAULT NULL,
   `nombreAuxiliar` varchar(45) DEFAULT NULL,
   `documentoAuxiliar` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblmovimiento`
@@ -1945,7 +1966,10 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
 
 INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento`, `idtipoMovimiento`, `documentoUsuario`, `numeroAuxiliar`, `nombreAuxiliar`, `documentoAuxiliar`) VALUES
 (1, '2015-07-02 12:54:28', 5000, 3, 'CC1017225673', '1', 'Pepito Pérez', 'CC1220654321'),
-(2, '2015-08-28 19:26:45', 5000, 4, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321');
+(2, '2015-08-28 19:26:45', 5000, 4, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321'),
+(3, '2015-09-01 20:31:51', 196000, 1, 'CC1017225673', '001', 'Interno', NULL),
+(4, '2015-09-01 20:56:59', 3900, 4, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321'),
+(5, '2015-09-01 21:34:35', 25000, 4, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321');
 
 -- --------------------------------------------------------
 
@@ -1954,7 +1978,7 @@ INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento
 --
 
 CREATE TABLE IF NOT EXISTS `tblpreinscripcion` (
-  `idPreinscripcion` int(11) NOT NULL,
+`idPreinscripcion` int(11) NOT NULL,
   `estado` bit(1) DEFAULT NULL,
   `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `documentoUsuario` varchar(20) NOT NULL,
@@ -1978,7 +2002,7 @@ INSERT INTO `tblpreinscripcion` (`idPreinscripcion`, `estado`, `fecha`, `documen
 CREATE TABLE IF NOT EXISTS `tblrol` (
   `nombre` varchar(20) NOT NULL,
   `descripcion` varchar(40) NOT NULL,
-  `idrol` int(11) NOT NULL
+`idrol` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 --
@@ -1998,7 +2022,7 @@ INSERT INTO `tblrol` (`nombre`, `descripcion`, `idrol`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `tblsubsidio` (
-  `idSubsidio` int(11) NOT NULL,
+`idSubsidio` int(11) NOT NULL,
   `fechaAsignacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `valorSubsidio` int(11) NOT NULL,
   `nitEmpresa` varchar(20) NOT NULL,
@@ -2066,121 +2090,121 @@ INSERT INTO `tblusuario` (`documentoUsuario`, `fechaNacimiento`, `nombreUsuario`
 -- Indices de la tabla `tblacudiente`
 --
 ALTER TABLE `tblacudiente`
-  ADD PRIMARY KEY (`documentoAcudiente`);
+ ADD PRIMARY KEY (`documentoAcudiente`);
 
 --
 -- Indices de la tabla `tblarticulo`
 --
 ALTER TABLE `tblarticulo`
-  ADD PRIMARY KEY (`idArticulo`), ADD KEY `FK_tblArticulo_idCategoriaArticulo` (`idCategoriaArticulo`);
+ ADD PRIMARY KEY (`idArticulo`), ADD KEY `FK_tblArticulo_idCategoriaArticulo` (`idCategoriaArticulo`);
 
 --
 -- Indices de la tabla `tblcategoriaarticulo`
 --
 ALTER TABLE `tblcategoriaarticulo`
-  ADD PRIMARY KEY (`idCategoriaArticulo`);
+ ADD PRIMARY KEY (`idCategoriaArticulo`);
 
 --
 -- Indices de la tabla `tblcategoriacurso`
 --
 ALTER TABLE `tblcategoriacurso`
-  ADD PRIMARY KEY (`idCategoriaCurso`);
+ ADD PRIMARY KEY (`idCategoriaCurso`);
 
 --
 -- Indices de la tabla `tblclase`
 --
 ALTER TABLE `tblclase`
-  ADD PRIMARY KEY (`idClase`), ADD KEY `idCurso_idx` (`idCurso`);
+ ADD PRIMARY KEY (`idClase`), ADD KEY `idCurso_idx` (`idCurso`);
 
 --
 -- Indices de la tabla `tblcredito`
 --
 ALTER TABLE `tblcredito`
-  ADD PRIMARY KEY (`idCredito`), ADD KEY `fk_tblcredito_tblusuario1` (`documentoUsuario`);
+ ADD PRIMARY KEY (`idCredito`), ADD KEY `fk_tblcredito_tblusuario1` (`documentoUsuario`);
 
 --
 -- Indices de la tabla `tblcurso`
 --
 ALTER TABLE `tblcurso`
-  ADD PRIMARY KEY (`idCurso`), ADD KEY `fk_tblcurso_tblcategoriacurso1_idx` (`idCategoriaCurso`);
+ ADD PRIMARY KEY (`idCurso`), ADD KEY `fk_tblcurso_tblcategoriacurso1_idx` (`idCategoriaCurso`);
 
 --
 -- Indices de la tabla `tbldetallecredito`
 --
 ALTER TABLE `tbldetallecredito`
-  ADD PRIMARY KEY (`idDetalleCredito`), ADD KEY `idMovimiento` (`idMovimiento`), ADD KEY `idCredito` (`idCredito`);
+ ADD PRIMARY KEY (`idDetalleCredito`), ADD KEY `idMovimiento` (`idMovimiento`), ADD KEY `idCredito` (`idCredito`);
 
 --
 -- Indices de la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-  ADD PRIMARY KEY (`idDetalleMovimiento`), ADD KEY `FK_tblDetalleVenta_idArticulo` (`idArticulo`), ADD KEY `fk_tbldetallemovimiento_tblMovimiento1_idx` (`idMovimiento`);
+ ADD PRIMARY KEY (`idDetalleMovimiento`), ADD KEY `FK_tblDetalleVenta_idArticulo` (`idArticulo`), ADD KEY `fk_tbldetallemovimiento_tblMovimiento1_idx` (`idMovimiento`);
 
 --
 -- Indices de la tabla `tbldetalleusuario`
 --
 ALTER TABLE `tbldetalleusuario`
-  ADD PRIMARY KEY (`idDetalleUsuario`);
+ ADD PRIMARY KEY (`idDetalleUsuario`);
 
 --
 -- Indices de la tabla `tblempresa`
 --
 ALTER TABLE `tblempresa`
-  ADD PRIMARY KEY (`nitEmpresa`);
+ ADD PRIMARY KEY (`nitEmpresa`);
 
 --
 -- Indices de la tabla `tblinscrito`
 --
 ALTER TABLE `tblinscrito`
-  ADD PRIMARY KEY (`idinscrito`);
+ ADD PRIMARY KEY (`idinscrito`);
 
 --
 -- Indices de la tabla `tblmodulo`
 --
 ALTER TABLE `tblmodulo`
-  ADD PRIMARY KEY (`idmodulo`);
+ ADD PRIMARY KEY (`idmodulo`);
 
 --
 -- Indices de la tabla `tblmodulorol`
 --
 ALTER TABLE `tblmodulorol`
-  ADD PRIMARY KEY (`idmodulo`,`idrol`), ADD KEY `idrol` (`idrol`);
+ ADD PRIMARY KEY (`idmodulo`,`idrol`), ADD KEY `idrol` (`idrol`);
 
 --
 -- Indices de la tabla `tblmovimiento`
 --
 ALTER TABLE `tblmovimiento`
-  ADD PRIMARY KEY (`idMovimiento`), ADD KEY `fk_tblMovimiento_tblTipoMovimiento1_idx` (`idtipoMovimiento`), ADD KEY `fk_tblMovimiento_tblusuario1_idx` (`documentoUsuario`);
+ ADD PRIMARY KEY (`idMovimiento`), ADD KEY `fk_tblMovimiento_tblTipoMovimiento1_idx` (`idtipoMovimiento`), ADD KEY `fk_tblMovimiento_tblusuario1_idx` (`documentoUsuario`);
 
 --
 -- Indices de la tabla `tblpreinscripcion`
 --
 ALTER TABLE `tblpreinscripcion`
-  ADD PRIMARY KEY (`idPreinscripcion`);
+ ADD PRIMARY KEY (`idPreinscripcion`);
 
 --
 -- Indices de la tabla `tblrol`
 --
 ALTER TABLE `tblrol`
-  ADD PRIMARY KEY (`idrol`);
+ ADD PRIMARY KEY (`idrol`);
 
 --
 -- Indices de la tabla `tblsubsidio`
 --
 ALTER TABLE `tblsubsidio`
-  ADD PRIMARY KEY (`idSubsidio`), ADD KEY `fk_tblsubsidio_tblempresa1_idx` (`nitEmpresa`), ADD KEY `fk_tblsubsidio_tblusuario1_idx` (`documentoUsuario`);
+ ADD PRIMARY KEY (`idSubsidio`), ADD KEY `fk_tblsubsidio_tblempresa1_idx` (`nitEmpresa`), ADD KEY `fk_tblsubsidio_tblusuario1_idx` (`documentoUsuario`);
 
 --
 -- Indices de la tabla `tbltipomovimiento`
 --
 ALTER TABLE `tbltipomovimiento`
-  ADD PRIMARY KEY (`idtipoMovimiento`);
+ ADD PRIMARY KEY (`idtipoMovimiento`);
 
 --
 -- Indices de la tabla `tblusuario`
 --
 ALTER TABLE `tblusuario`
-  ADD PRIMARY KEY (`documentoUsuario`), ADD UNIQUE KEY `emailUsuario_UNIQUE` (`emailUsuario`), ADD KEY `fk_tblestudiante_tblDetalleCliente1_idx` (`idDetalleUsuario`), ADD KEY `fk_tblusuario_tblrol1_idx` (`idrol`), ADD KEY `fk_tblusuario_tblacudiente1_idx` (`documentoAcudiente`);
+ ADD PRIMARY KEY (`documentoUsuario`), ADD UNIQUE KEY `emailUsuario_UNIQUE` (`emailUsuario`), ADD KEY `fk_tblestudiante_tblDetalleCliente1_idx` (`idDetalleUsuario`), ADD KEY `fk_tblusuario_tblrol1_idx` (`idrol`), ADD KEY `fk_tblusuario_tblacudiente1_idx` (`documentoAcudiente`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -2190,77 +2214,77 @@ ALTER TABLE `tblusuario`
 -- AUTO_INCREMENT de la tabla `tblarticulo`
 --
 ALTER TABLE `tblarticulo`
-  MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+MODIFY `idArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `tblcategoriaarticulo`
 --
 ALTER TABLE `tblcategoriaarticulo`
-  MODIFY `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `idCategoriaArticulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `tblcategoriacurso`
 --
 ALTER TABLE `tblcategoriacurso`
-  MODIFY `idCategoriaCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+MODIFY `idCategoriaCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `tblclase`
 --
 ALTER TABLE `tblclase`
-  MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=73;
+MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=73;
 --
 -- AUTO_INCREMENT de la tabla `tblcredito`
 --
 ALTER TABLE `tblcredito`
-  MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `tblcurso`
 --
 ALTER TABLE `tblcurso`
-  MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `tbldetallecredito`
 --
 ALTER TABLE `tbldetallecredito`
-  MODIFY `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-  MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT de la tabla `tbldetalleusuario`
 --
 ALTER TABLE `tbldetalleusuario`
-  MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `idDetalleUsuario` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `tblinscrito`
 --
 ALTER TABLE `tblinscrito`
-  MODIFY `idinscrito` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idinscrito` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tblmodulo`
 --
 ALTER TABLE `tblmodulo`
-  MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT de la tabla `tblmovimiento`
 --
 ALTER TABLE `tblmovimiento`
-  MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --
 ALTER TABLE `tblpreinscripcion`
-  MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `idPreinscripcion` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `tblrol`
 --
 ALTER TABLE `tblrol`
-  MODIFY `idrol` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `idrol` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `tblsubsidio`
 --
 ALTER TABLE `tblsubsidio`
-  MODIFY `idSubsidio` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `idSubsidio` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Restricciones para tablas volcadas
 --

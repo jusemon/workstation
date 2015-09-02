@@ -80,12 +80,13 @@ public class ControllerVenta extends HttpServlet {
             switch (action) {
 
                 case "Registrar": {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
                     String documentoUsuario = (request.getParameter("documentoUsuario"));
                     String documentoCliente;
                     String nombreCliente;
                     int numeroVenta;
                     boolean credito;
-
                     credito = Boolean.valueOf(request.getParameter("credito"));
 
                     if (Validador.validarDocumento(request.getParameter("documentoCliente"))
@@ -97,9 +98,10 @@ public class ControllerVenta extends HttpServlet {
                     } else {
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
-                        response.getWriter().write(mensaje(false, null, "Ha ingresado datos incorrectos"));
+                        response.getWriter().write(Utilidades.mensaje(false, null, "Ha ingresado datos incorrectos"));
                         break;
                     }
+
                     int length = Integer.parseInt(request.getParameter("size"));
                     int totalCompra = Integer.parseInt(request.getParameter("txtTotalVenta"));
                     listOjbDetalleMovimientos = new ArrayList<>();
@@ -125,56 +127,54 @@ public class ControllerVenta extends HttpServlet {
                     _objVenta.setTotalVenta(totalCompra);
 
                     if (credito) {
-                        System.out.println("Entre a crédito");
                         daoModelCredito = new ModelCredito();
                         _objCredito = new ObjCredito();
                         _objMovimiento = new ObjMovimiento();
-                        ResultSet rs2 = null;
+                        ResultSet rs2;
                         try {
+                            String mensaje = null;
+                            String tipo = null;
                             rs2 = daoModelCredito.buscarCreditoByDocumento(_objVenta.getDocumentoCliente());
-                            System.out.println(rs2.first());
-                        } catch (Exception e) {
-                            System.out.println(e);
-                        }
-                        if (rs2 != null) {
-                            try {
-                                if (!rs2.next()) {
-                                    System.out.println("No hay elemento siguiente.");
+                            while (rs2.next()) {
+                                if (rs2.getString("tipo").equals("success")) {
+                                    _objCredito.setDocumentoUsuario(rs2.getString("documentoUsuario"));
+                                    _objCredito.setSaldoInicial(rs2.getDouble("saldoInicial"));
+                                    _objCredito.setSaldoActual(rs2.getDouble("saldoActual"));
+                                    _objCredito.setEstadoCredito(rs2.getInt("estadoCredito"));
+                                    _objCredito.setIdCredito(rs2.getInt("idCredito"));
+                                    _objCredito.setFechaInicio(rs2.getString("fechaInicio"));
+                                    _objMovimiento.setDocumentoUsuario(documentoUsuario);
+                                    _objMovimiento.setDocumentoAuxiliar(documentoCliente);
+                                    String salida = Utilidades.mensaje(daoModelCredito.update(_objCredito, _objMovimiento, listOjbDetalleMovimientos,
+                                            "Venta", _objVenta.getTotalVenta()), "Se ha registrado la venta y actualizado el crédito",
+                                            "Ha ocurrido un error al intentar registrar la venta y actualizar el crédito");
+                                    response.getWriter().write(salida);
+                                    break;
+                                } else {
                                     _objCredito.setDocumentoUsuario(documentoCliente);
                                     _objCredito.setSaldoInicial(50000);
                                     _objCredito.setSaldoActual(50000 - _objVenta.getTotalVenta());
                                     _objMovimiento.setDocumentoUsuario(documentoUsuario);
                                     _objMovimiento.setDocumentoAuxiliar(documentoCliente);
-                                    daoModelCredito.Add(_objCredito, _objMovimiento, listOjbDetalleMovimientos, "Venta");
-                                } else {
-                                    while (rs2.next()) {
-                                        _objCredito.setDocumentoUsuario(rs2.getString("documentoUsuario"));
-                                        _objCredito.setSaldoInicial(rs2.getDouble("saldoInicial"));
-                                        _objCredito.setSaldoActual(rs2.getDouble("saldoActual"));
-                                        _objCredito.setEstadoCredito(rs2.getInt("estadoCredito"));
-                                        _objCredito.setIdCredito(rs2.getInt("idCredito"));
-                                        _objCredito.setFechaInicio(rs2.getString("fechaInicio"));
-                                        _objMovimiento.setDocumentoUsuario(documentoUsuario);
-                                        _objMovimiento.setDocumentoAuxiliar(documentoCliente);
-                                        daoModelCredito.Update(_objCredito, _objMovimiento, listOjbDetalleMovimientos,
-                                                "Venta", _objVenta.getTotalVenta());
-                                    }
+                                    String salida = Utilidades.mensaje(daoModelCredito.Add(_objCredito, _objMovimiento, listOjbDetalleMovimientos, "Venta"), 
+                                            "Se ha registrado la venta y se ha generado un crédito", 
+                                            "Ha ocurrido un error al intentar registrar la venta y generar el crédito");
+                                    response.getWriter().write(salida);
+                                    break;
                                 }
-                            } catch (SQLException ex) {
-                                Logger.getLogger(ControllerMatricula.class.getName()).log(Level.SEVERE, null, ex);
+
                             }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ControllerMatricula.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
                         daoModelCredito.Signout();
                     } else {
                         daoModelVenta = new ModelVenta();
 
-                        String salida = mensaje(daoModelVenta.Add(_objVenta, _objUsuario, listOjbDetalleMovimientos),
+                        String salida = Utilidades.mensaje(daoModelVenta.Add(_objVenta, _objUsuario, listOjbDetalleMovimientos),
                                 "La venta ha sido registrada", "Ha ocurrido un error");
-
                         daoModelVenta.Signout();
-                        response.setContentType("application/json");
-                        response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(salida);
                     }
 
@@ -375,22 +375,6 @@ public class ControllerVenta extends HttpServlet {
         String salida = new Gson().toJson(lista);
 
         salida = "{\"data\":" + salida + "}";
-
-        return salida;
-    }
-
-    public String mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-
-        if (entrada) {
-            mensaje.put("mensaje", mensajeSuccess);
-            mensaje.put("tipo", "success");
-        } else {
-            mensaje.put("mensaje", mensajeError);
-            mensaje.put("tipo", "error");
-        }
-
-        String salida = new Gson().toJson(mensaje);
 
         return salida;
     }

@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,17 +5,11 @@
  */
 package Controller;
 
-//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjUsuario;
-
 import Model.Data.ModelModulo;
 import Model.Data.ModelUsuario;
-
-//~--- JDK imports ------------------------------------------------------------
 import java.io.IOException;
-
 import java.sql.ResultSet;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -232,6 +225,3 @@ public class ControllerLogin extends HttpServlet {
         return "Short description";
     }    // </editor-fold>
 }
-
-
-//~ Formatted by Jindent --- http://www.jindent.com

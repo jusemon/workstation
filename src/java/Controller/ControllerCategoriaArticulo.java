@@ -60,7 +60,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                     _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                     daoModelCategoriaArticulo = new ModelCategoriaArticulo();
 
-                    String salida = Mensaje(daoModelCategoriaArticulo.Add(_objCategoriaArticulo),
+                    String salida = Utilidades.mensaje(daoModelCategoriaArticulo.Add(_objCategoriaArticulo),
                             "La categoría ha sido registrada correctamente.",
                             "Ha ocurrido un error al intentar registrar la categoría");
 
@@ -82,7 +82,7 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                     _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                     daoModelCategoriaArticulo = new ModelCategoriaArticulo();
 
-                    String salida = Mensaje(daoModelCategoriaArticulo.Edit(_objCategoriaArticulo),
+                    String salida = Utilidades.mensaje(daoModelCategoriaArticulo.Edit(_objCategoriaArticulo),
                             "La categoría ha sido actualizada correctamente",
                             "Ha ocurrido un error al intentar actualizar la categoría");
 
@@ -170,22 +170,6 @@ public class ControllerCategoriaArticulo extends HttpServlet {
         }
 
         return OptionsCategorias;
-    }
-
-    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-
-        if (entrada) {
-            mensaje.put("mensaje", mensajeSuccess);
-            mensaje.put("tipo", "success");
-        } else {
-            mensaje.put("mensaje", mensajeError);
-            mensaje.put("tipo", "error");
-        }
-
-        String salida = new Gson().toJson(mensaje);
-
-        return salida;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

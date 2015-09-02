@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,29 +5,19 @@
  */
 package Controller;
 
-//~--- non-JDK imports --------------------------------------------------------
 import Controller.Validaciones.Validador;
-
 import Model.DTO.ObjUsuario;
-
 import Model.Data.ModelUsuario;
-
 import com.google.gson.Gson;
-
-//~--- JDK imports ------------------------------------------------------------
 import java.io.IOException;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -114,22 +103,6 @@ public class ControllerUsuario extends HttpServlet {
         }
     }
 
-    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-
-        if (entrada) {
-            mensaje.put("mensaje", mensajeSuccess);
-            mensaje.put("tipo", "success");
-        } else {
-            mensaje.put("mensaje", mensajeError);
-            mensaje.put("tipo", "error");
-        }
-
-        String salida = new Gson().toJson(mensaje);
-
-        return salida;
-    }
-
     private String getOptionsClientes() {
         daoModelUsuario = new ModelUsuario();
 
@@ -192,7 +165,7 @@ public class ControllerUsuario extends HttpServlet {
             daoModelUsuario.Signout();
             salida = new Gson().toJson(respuesta);
         } catch (SQLException e) {
-            salida = Mensaje(false, "", "A ocurrido un error" + e.getMessage());
+            salida = Utilidades.mensaje(false, "", "A ocurrido un error" + e.getMessage());
         }
 
         return salida;
@@ -262,7 +235,7 @@ public class ControllerUsuario extends HttpServlet {
             daoModelUsuario.Signout();
             salida = new Gson().toJson(respuesta);
         } catch (SQLException e) {
-            salida = Mensaje(false, "", "A ocurrido un error" + e.getMessage());
+            salida = Utilidades.mensaje(false, "", "A ocurrido un error" + e.getMessage());
         }
 
         return salida;
@@ -316,11 +289,11 @@ public class ControllerUsuario extends HttpServlet {
             }
 
             daoModelUsuario = new ModelUsuario();
-            salida = Mensaje(daoModelUsuario.Edit(_objUsuario), nombre + " ha sido actualizado correctamente",
+            salida = Utilidades.mensaje(daoModelUsuario.Edit(_objUsuario), nombre + " ha sido actualizado correctamente",
                     "Ha ocurrido un error al intentar actualizar al usuario");
             daoModelUsuario.Signout();
         } catch (NumberFormatException | ParseException e) {
-            salida = Mensaje(false, "", "Ha ocurrido un error" + e.getMessage());
+            salida = Utilidades.mensaje(false, "", "Ha ocurrido un error" + e.getMessage());
         }
 
         return salida;
@@ -375,11 +348,11 @@ public class ControllerUsuario extends HttpServlet {
             }
 
             daoModelUsuario = new ModelUsuario();
-            salida = Mensaje(daoModelUsuario.Add(_objUsuario), nombre + " ha sido registrado correctamente",
+            salida = Utilidades.mensaje(daoModelUsuario.Add(_objUsuario), nombre + " ha sido registrado correctamente",
                     "Ha ocurrido un error al intentar registrar al usuario");
             daoModelUsuario.Signout();
         } catch (NumberFormatException | ParseException e) {
-            salida = Mensaje(false, "", "Ha ocurrido un error" + e.getMessage());
+            salida = Utilidades.mensaje(false, "", "Ha ocurrido un error" + e.getMessage());
         }
 
         return salida;
@@ -466,20 +439,17 @@ public class ControllerUsuario extends HttpServlet {
 
                     session.invalidate();
 
-                    return Mensaje(daoModelUsuario.cambiarEstado(_objUsuario), "La cuenta ha sido desactivada",
+                    return Utilidades.mensaje(daoModelUsuario.cambiarEstado(_objUsuario), "La cuenta ha sido desactivada",
                             "Ha ocurrido un error al intentar desactivar la cuenta");
                 }
             }
 
-            return Mensaje(daoModelUsuario.cambiarEstado(_objUsuario), "El estado ha sido actualizado",
+            return Utilidades.mensaje(daoModelUsuario.cambiarEstado(_objUsuario), "El estado ha sido actualizado",
                     "Ha ocurrido un error al intentar actualizar el estado");
         } catch (Exception e) {
-            return Mensaje(false, "", "Ha ocurrido un error en el controller " + e.getMessage());
+            return Utilidades.mensaje(false, "", "Ha ocurrido un error en el controller " + e.getMessage());
         } finally {
             daoModelUsuario.Signout();
         }
     }
 }
-
-
-//~ Formatted by Jindent --- http://www.jindent.com

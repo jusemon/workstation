@@ -235,7 +235,7 @@ public class ControllerCurso extends HttpServlet {
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            mensaje(false, "", "Ha ocurrido un error en el Controller " + e.getMessage());
+            Utilidades.mensaje(false, "", "Ha ocurrido un error en el Controller " + e.getMessage());
         } finally {
 
             daoModelCurso.Signout();
@@ -261,10 +261,10 @@ public class ControllerCurso extends HttpServlet {
             _objCurso = new ObjCurso();
             _objCurso.setIdCurso(id);
             _objCurso.setEstadoCurso(estado);
-            return mensaje(daoModelCurso.cambiarEstado(_objCurso), "El estado ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
+            return Utilidades.mensaje(daoModelCurso.cambiarEstado(_objCurso), "El estado ha sido actualizado", "Ha ocurrido un error al intentar actualizar el estado");
 
         } catch (Exception e) {
-            return mensaje(false, "", "Ha ocurrido un error en el controller " + e.getMessage());
+            return Utilidades.mensaje(false, "", "Ha ocurrido un error en el controller " + e.getMessage());
         } finally {
             daoModelCurso.Signout();
         }
@@ -463,7 +463,7 @@ public class ControllerCurso extends HttpServlet {
                 _objCurso.setHorasPorClase(horasPorClase);
                 _objCurso.setEstadoCurso(estado);
                 _objCurso.setPrecioCurso(precio);
-                salida = mensaje(daoModelCurso.Add(_objCurso));
+                salida = Utilidades.mensaje(daoModelCurso.Add(_objCurso));
                 daoModelCurso.Signout();
                 return (salida);
             } else {
@@ -483,12 +483,12 @@ public class ControllerCurso extends HttpServlet {
                 _objSeminario.setCantidadClases(cantidadClases);
                 _objSeminario.setCupoSeminario(cupoSeminario);
                 _objSeminario.setFechaSeminario(formatearFecha(fechaSeminario));
-                salida = mensaje(daoModelCurso.Add(_objSeminario), "El Seminario ha sido registrado", "Ha ocurrido un error al intentar registrar el Seminario");
+                salida = Utilidades.mensaje(daoModelCurso.Add(_objSeminario), "El Seminario ha sido registrado", "Ha ocurrido un error al intentar registrar el Seminario");
                 daoModelCurso.Signout();
                 return (salida);
             }
         } else {
-            return mensaje(false, null, "Uno o más campos contienen datos erroneos");
+            return Utilidades.mensaje(false, null, "Uno o más campos contienen datos erroneos");
         }
 
     }
@@ -515,7 +515,7 @@ public class ControllerCurso extends HttpServlet {
             _objCurso.setHorasPorClase(horasPorClase);
             _objCurso.setEstadoCurso(estado);
             _objCurso.setPrecioCurso(precio);
-            salida = mensaje(daoModelCurso.Edit(_objCurso), "El curso ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Curso");
+            salida = Utilidades.mensaje(daoModelCurso.Edit(_objCurso), "El curso ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Curso");
             daoModelCurso.Signout();
             return (salida);
         } else {
@@ -536,7 +536,7 @@ public class ControllerCurso extends HttpServlet {
             _objSeminario.setCantidadClases(cantidadClases);
             _objSeminario.setCupoSeminario(cupoSeminario);
             _objSeminario.setFechaSeminario(formatearFecha(fechaSeminario));
-            salida = mensaje(daoModelCurso.Edit(_objSeminario), "El seminario ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Seminario");
+            salida = Utilidades.mensaje(daoModelCurso.Edit(_objSeminario), "El seminario ha sido actualizado", "Ha ocurrido un error al intentar actualizar el Seminario");
             daoModelCurso.Signout();
             return (salida);
         }
@@ -590,14 +590,14 @@ public class ControllerCurso extends HttpServlet {
             String aux = "";
             try {
                 daoModelInscrito = new ModelInscrito();
-                aux = mensaje(daoModelInscrito.Add(_objInscrito), "Inscripción realizada", "Ha ocurrido un error");
+                aux = Utilidades.mensaje(daoModelInscrito.Add(_objInscrito), "Inscripción realizada", "Ha ocurrido un error");
                 daoModelInscrito.Signout();
             } catch (Exception e) {
                 System.err.println(e);
             }
             return aux;
         }
-        return mensaje(false, "", "Uno o más campos contienen errores");
+        return Utilidades.mensaje(false, "", "Uno o más campos contienen errores");
     }
 
     private String detalleSAsistentesSeminario(HttpServletRequest request) {
@@ -634,25 +634,4 @@ public class ControllerCurso extends HttpServlet {
         return "{\"data\":" + resultado + "}";
     }
 
-    private String mensaje(String[] entrada) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-        mensaje.put("mensaje", entrada[0]);
-        mensaje.put("tipo", entrada[1]);
-        String salida = new Gson().toJson(mensaje);
-        return salida;
-    }
-
-    private String mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-        if (entrada) {
-            mensaje.put("mensaje", mensajeSuccess);
-            mensaje.put("tipo", "success");
-
-        } else {
-            mensaje.put("mensaje", mensajeError);
-            mensaje.put("tipo", "error");
-        }
-        String salida = new Gson().toJson(mensaje);
-        return salida;
-    }
 }

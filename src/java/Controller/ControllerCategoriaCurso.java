@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,23 +5,13 @@
  */
 package Controller;
 
-//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjCategoriaCurso;
-
 import Model.Data.ModelCategoriaCurso;
-
 import com.google.gson.Gson;
-
-//~--- JDK imports ------------------------------------------------------------
 import java.io.IOException;
-
 import java.sql.ResultSet;
-
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -79,7 +68,7 @@ public class ControllerCategoriaCurso extends HttpServlet {
                     _objCategoriaCurso.setNombreCategoriaCurso(nombre);;
                     daoModelCategoriaCurso = new ModelCategoriaCurso();
 
-                    String salida = Mensaje(daoModelCategoriaCurso.Edit(_objCategoriaCurso),
+                    String salida = Utilidades.mensaje(daoModelCategoriaCurso.Edit(_objCategoriaCurso),
                             "La categoría ha sido actualizada",
                             "Ha ocurrido un error al intentar actualizar la categoría");
 
@@ -170,22 +159,6 @@ public class ControllerCategoriaCurso extends HttpServlet {
         return lista;
     }
 
-    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-
-        if (entrada) {
-            mensaje.put("mensaje", mensajeSuccess);
-            mensaje.put("tipo", "success");
-        } else {
-            mensaje.put("mensaje", mensajeError);
-            mensaje.put("tipo", "error");
-        }
-
-        String salida = new Gson().toJson(mensaje);
-
-        return salida;
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -225,6 +198,3 @@ public class ControllerCategoriaCurso extends HttpServlet {
         return "Short description";
     }    // </editor-fold>
 }
-
-
-//~ Formatted by Jindent --- http://www.jindent.com

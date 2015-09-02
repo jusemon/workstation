@@ -6,36 +6,25 @@
  */
 package Controller;
 
-//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjCompra;
 import Model.DTO.ObjDetalleMovimiento;
 import Model.DTO.ObjUsuario;
-
 import Model.Data.ModelCompra;
-
 import com.google.gson.Gson;
-
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
-
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
-
-//~--- JDK imports ------------------------------------------------------------
 import java.io.IOException;
 import java.io.OutputStream;
-
 import java.sql.ResultSet;
-
 import java.text.NumberFormat;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -103,7 +92,7 @@ public class ControllerCompra extends HttpServlet {
                     _objCompra.setTotalCompra(totalCompra);
                     daoModelCompra = new ModelCompra();
 
-                    String salida = Mensaje(daoModelCompra.Add(_objCompra, _objUsuario, listObjDetalleMovimientos),
+                    String salida = Utilidades.mensaje(daoModelCompra.Add(_objCompra, _objUsuario, listObjDetalleMovimientos),
                             "La compra ha sido registrada", "Ha ocurrido un error");
 
                     daoModelCompra.Signout();
@@ -319,22 +308,6 @@ public class ControllerCompra extends HttpServlet {
         String salida = new Gson().toJson(lista);
 
         salida = "{\"data\":" + salida + "}";
-
-        return salida;
-    }
-
-    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-
-        if (entrada) {
-            mensaje.put("mensaje", mensajeSuccess);
-            mensaje.put("tipo", "success");
-        } else {
-            mensaje.put("mensaje", mensajeError);
-            mensaje.put("tipo", "error");
-        }
-
-        String salida = new Gson().toJson(mensaje);
 
         return salida;
     }

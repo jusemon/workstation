@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,32 +5,22 @@
  */
 package Controller;
 
-//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjEmpresa;
-
 import Model.Data.ModelEmpresa;
-
 import com.google.gson.Gson;
-
-//~--- JDK imports ------------------------------------------------------------
-/**
- *
- * @author David
- */
 import java.io.IOException;
-
 import java.sql.ResultSet;
-
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author David
+ */
 public class ControllerEmpresa extends HttpServlet {
 
     ObjEmpresa _objEmpresa = new ObjEmpresa();
@@ -120,9 +109,8 @@ public class ControllerEmpresa extends HttpServlet {
 
                     _objEmpresa.setEmailContacto(emailContacto);
 
-                    String salida
-                            = Mensaje(daoModelEmpresa.Edit(_objEmpresa), "Datos de la empresa actualizados",
-                                    "Ha ocurrido un error al intentar actualizar los datos de la empresa seleccionada");
+                    String salida = Utilidades.mensaje(daoModelEmpresa.Edit(_objEmpresa), "Datos de la empresa actualizados",
+                            "Ha ocurrido un error al intentar actualizar los datos de la empresa seleccionada");
 
                     daoModelEmpresa.Signout();
                     response.setContentType("application/json");
@@ -184,22 +172,6 @@ public class ControllerEmpresa extends HttpServlet {
         return salida;
     }
 
-    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-
-        if (entrada) {
-            mensaje.put("mensaje", mensajeSuccess);
-            mensaje.put("tipo", "success");
-        } else {
-            mensaje.put("mensaje", mensajeError);
-            mensaje.put("tipo", "error");
-        }
-
-        String salida = new Gson().toJson(mensaje);
-
-        return salida;
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -239,6 +211,3 @@ public class ControllerEmpresa extends HttpServlet {
         return "Short description";
     }    // </editor-fold>
 }
-
-
-//~ Formatted by Jindent --- http://www.jindent.com

@@ -112,7 +112,7 @@ public class ModelCredito extends ConnectionDB {
                     }
                 }
             }
-
+            
             connection.rollback();
 
             return false;
@@ -197,7 +197,7 @@ public class ModelCredito extends ConnectionDB {
         return objReturn;
     }
 
-    public boolean Update(ObjCredito _objCredito, ObjMovimiento _objMovimiento,
+    public boolean update(ObjCredito _objCredito, ObjMovimiento _objMovimiento,
             List<ObjDetalleMovimiento> _listObjDetalleMovimientos, String tipo, double precio) {
         boolean objReturn = false;
         String sql = "call spActualizarCredito(?,?)";
@@ -216,7 +216,6 @@ public class ModelCredito extends ConnectionDB {
             if (rs.next()) {
                 resultado[0] = rs.getString("Respuesta");
                 resultado[1] = rs.getString("tipo");
-                System.out.println(resultado[0] + " Tipo: " + resultado[1]);
             }
 
             if (resultado[1].equals("success")) {

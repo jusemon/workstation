@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,24 +5,16 @@
  */
 package Controller;
 
-//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjCredito;
-
 import Model.Data.ModelCredito;
-
 import com.google.gson.Gson;
-
-//~--- JDK imports ------------------------------------------------------------
 import java.io.IOException;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -64,7 +55,7 @@ public class ControllerCredito extends HttpServlet {
                 }
 
                 // </editor-fold>
-                // <editor-fold defaultstate="collapsed" desc="Abonar">
+                // <editor-fold defaultstate="collapsed" desc="Consultar Detalle">
                 case "ConsultarDetalle": {
                     int idCredito = Integer.parseInt(request.getParameter("idCredito"));
                     String documentoCliente = request.getParameter("documentoCliente");
@@ -126,44 +117,26 @@ public class ControllerCredito extends HttpServlet {
 
             ResultSet result;
 
-            result = daoModelCredito.consultarDetalleCreditoByID(idCredito);
+            result = daoModelCredito.buscarCreditoByID(idCredito);
 
             while (result.next()) {
                 estadoCredito = Integer.parseInt(result.getString("estadoCredito"));
             }
 
-            estadoCredito = (estadoCredito > 0)
-                    ? 0
-                    : 1;
+            estadoCredito = (estadoCredito > 0) ? 0 : 1;
             _ObjCredito = new ObjCredito();
             _ObjCredito.setIdCredito(idCredito);
             _ObjCredito.setEstadoCredito(estadoCredito);
-            objReturn = Mensaje(daoModelCredito.cambiarEstadoCredito(_ObjCredito),
+            objReturn = Utilidades.mensaje(daoModelCredito.cambiarEstadoCredito(_ObjCredito),
                     "El estado del crédito ha sido actualizado",
                     "Ha ocurrido un error al intentar actualizar el estado del crédito");
         } catch (SQLException | NumberFormatException e) {
-            objReturn = Mensaje(false, "", "Ha ocurrido un error en el controlador " + e.getMessage());
+            objReturn = Utilidades.mensaje(false, "", "Ha ocurrido un error en el controlador " + e.getMessage());
         } finally {
             daoModelCredito.Signout();
         }
 
         return objReturn;
-    }
-
-    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-
-        if (entrada) {
-            mensaje.put("mensaje", mensajeSuccess);
-            mensaje.put("tipo", "success");
-        } else {
-            mensaje.put("mensaje", mensajeError);
-            mensaje.put("tipo", "error");
-        }
-
-        String salida = new Gson().toJson(mensaje);
-
-        return salida;
     }
 
     public String consultar(int id) {
@@ -188,7 +161,7 @@ public class ControllerCredito extends HttpServlet {
         } catch (Exception e) {
             System.err.println(e.getMessage());
             daoModelCredito.Signout();
-            salida = new Gson().toJson(Mensaje(false, "", "Ha ocurrido un error en el Controller " + e.getMessage()));
+            salida = new Gson().toJson(Utilidades.mensaje(false, "", "Ha ocurrido un error en el Controller " + e.getMessage()));
 
             return salida;
         }

@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,33 +5,23 @@
  */
 package Controller;
 
-//~--- non-JDK imports --------------------------------------------------------
 import Controller.Validaciones.Validador;
-
 import Model.DTO.ObjAcudiente;
 import Model.DTO.ObjDetalleUsuario;
 import Model.DTO.ObjSubsidio;
 import Model.DTO.ObjUsuario;
-
 import Model.Data.ModelAcudiente;
 import Model.Data.ModelEstudiante;
 import Model.Data.ModelSubsidio;
-
 import com.google.gson.Gson;
-
-//~--- JDK imports ------------------------------------------------------------
 import java.io.IOException;
-
 import java.sql.ResultSet;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -79,7 +68,7 @@ public class ControllerEstudiante extends HttpServlet {
                         if (datosEstudiante == null) {
                             response.setContentType("application/json");
 
-                            String salida = Mensaje(false, "", "Uno o más campos contienen datos incorrectos.");
+                            String salida = Utilidades.mensaje(false, "", "Uno o más campos contienen datos incorrectos.");
 
                             response.getWriter().write(salida);
 
@@ -91,7 +80,7 @@ public class ControllerEstudiante extends HttpServlet {
                         response.setContentType("application/json");
                         daoModelEstudiante = new ModelEstudiante();
 
-                        String salida = Mensaje(daoModelEstudiante.Add(_objUsuario, _objDetalleUsuario),
+                        String salida = Utilidades.mensaje(daoModelEstudiante.Add(_objUsuario, _objDetalleUsuario),
                                 "El estudiante ha sido registrado",
                                 "Ha ocurrido un error al intentar registrar al estudiante");
 
@@ -102,7 +91,7 @@ public class ControllerEstudiante extends HttpServlet {
                     } catch (ParseException ex) {
                         response.setContentType("application/json");
 
-                        String salida = Mensaje(false, "", "Ha ocurrido un error con la fecha de nacimiento");
+                        String salida = Utilidades.mensaje(false, "", "Ha ocurrido un error con la fecha de nacimiento");
 
                         response.getWriter().write(salida);
                     }
@@ -167,7 +156,7 @@ public class ControllerEstudiante extends HttpServlet {
                         response.setContentType("application/json");
                         daoModelEstudiante = new ModelEstudiante();
 
-                        String salida = Mensaje(daoModelEstudiante.Edit(_objUsuario, _objDetalleUsuario),
+                        String salida = Utilidades.mensaje(daoModelEstudiante.Edit(_objUsuario, _objDetalleUsuario),
                                 "El estudiante ha sido actualizado",
                                 "A ocurrido un error al intentar actualizar al estudiante");
 
@@ -178,7 +167,7 @@ public class ControllerEstudiante extends HttpServlet {
                     } catch (ParseException ex) {
                         response.setContentType("application/json");
 
-                        String salida = Mensaje(false, "", "Ha ocurrido un error con la fecha de nacimiento");
+                        String salida = Utilidades.mensaje(false, "", "Ha ocurrido un error con la fecha de nacimiento");
 
                         response.getWriter().write(salida);
                     }
@@ -213,7 +202,7 @@ public class ControllerEstudiante extends HttpServlet {
                     try {
                         response.getWriter().write(Formalizar(request));
                     } catch (ParseException ex) {
-                        String salida = Mensaje(false, "", "Ha ocurrido un error con la fecha de nacimiento");
+                        String salida = Utilidades.mensaje(false, "", "Ha ocurrido un error con la fecha de nacimiento");
 
                         response.getWriter().write(salida);
                     }
@@ -302,23 +291,7 @@ public class ControllerEstudiante extends HttpServlet {
 
         return salida;
     }
-
-    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-
-        if (entrada) {
-            mensaje.put("mensaje", mensajeSuccess);
-            mensaje.put("tipo", "success");
-        } else {
-            mensaje.put("mensaje", mensajeError);
-            mensaje.put("tipo", "error");
-        }
-
-        String salida = new Gson().toJson(mensaje);
-
-        return salida;
-    }
-
+    
     private String Consultar(String id, String tipo) {
         ResultSet result = null;
 
@@ -522,7 +495,7 @@ public class ControllerEstudiante extends HttpServlet {
         _objSubsidio.setValorSubsidio(valorBeneficio);
 
         ModelSubsidio daoModelSubsidio = new ModelSubsidio();
-        String salida = Mensaje(daoModelSubsidio.Add(_objSubsidio), "Se ha registrado el beneficio",
+        String salida = Utilidades.mensaje(daoModelSubsidio.Add(_objSubsidio), "Se ha registrado el beneficio",
                 "Ha ocurrido un error al intentar registrar el beneficio");
 
         daoModelSubsidio.Signout();
@@ -530,6 +503,3 @@ public class ControllerEstudiante extends HttpServlet {
         return salida;
     }
 }
-
-
-//~ Formatted by Jindent --- http://www.jindent.com

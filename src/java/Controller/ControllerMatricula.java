@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,37 +5,28 @@
  */
 package Controller;
 
-//~--- non-JDK imports --------------------------------------------------------
 import Controller.Validaciones.Validador;
-
 import Model.DTO.ObjClase;
 import Model.DTO.ObjCredito;
 import Model.DTO.ObjCurso;
 import Model.DTO.ObjDetalleCredito;
 import Model.DTO.ObjMovimiento;
 import Model.DTO.ObjUsuario;
-
 import Model.Data.ModelCredito;
 import Model.Data.ModelEmpresa;
 import Model.Data.ModelEstudiante;
 import Model.Data.ModelMatricula;
 import Model.Data.ModelPreinscripcion;
-
 import com.google.gson.Gson;
-
-//~--- JDK imports ------------------------------------------------------------
 import java.io.IOException;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -108,7 +98,7 @@ public class ControllerMatricula extends HttpServlet {
                     String salida = null;
 
                     if (documentoUsuario == null) {
-                        salida = Mensaje(false, null, "Debes estar registrado y con la sesión iniciada");
+                        salida = Utilidades.mensaje(false, null, "Debes estar registrado y con la sesión iniciada");
                     } else {
                         salida = presincribir(idCurso, documentoUsuario);
                     }
@@ -219,43 +209,16 @@ public class ControllerMatricula extends HttpServlet {
             return new Gson().toJson(objetos);
         }
 
-        return Mensaje(false, null, "Uno o más campos contienen datos incorrectos.");
-    }
-
-    public String Mensaje(boolean entrada, String mensajeSuccess, String mensajeError) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-
-        if (entrada) {
-            mensaje.put("mensaje", mensajeSuccess);
-            mensaje.put("tipo", "success");
-        } else {
-            mensaje.put("mensaje", mensajeError);
-            mensaje.put("tipo", "error");
-        }
-
-        String salida = new Gson().toJson(mensaje);
-
-        return salida;
-    }
-
-    public String Mensaje(String entrada[]) {
-        Map<String, String> mensaje = new LinkedHashMap<>();
-
-        mensaje.put("mensaje", entrada[0]);
-        mensaje.put("tipo", entrada[1]);
-
-        String salida = new Gson().toJson(mensaje);
-
-        return salida;
+        return Utilidades.mensaje(false, null, "Uno o más campos contienen datos incorrectos.");
     }
 
     private String presincribir(int id, String documentoUsuario) {
         try {
             daoModelPreinscripcion = new ModelPreinscripcion();
 
-            return Mensaje(daoModelPreinscripcion.Add(id, documentoUsuario));
+            return Utilidades.mensaje(daoModelPreinscripcion.Add(id, documentoUsuario));
         } catch (Exception e) {
-            return Mensaje(false, "", "Ha Ocurrido un Error");
+            return Utilidades.mensaje(false, "", "Ha Ocurrido un Error");
         } finally {
             daoModelPreinscripcion.Signout();
         }
@@ -385,7 +348,7 @@ public class ControllerMatricula extends HttpServlet {
                                 _objCredito.setFechaInicio(rs2.getString("fechaInicio"));
                                 _objMovimiento.setDocumentoUsuario(documentoUsuario);
                                 _objMovimiento.setDocumentoAuxiliar(documentoCliente);
-                                daoModelCredito.Update(_objCredito, _objMovimiento, null, null, precioClase);
+                                daoModelCredito.update(_objCredito, _objMovimiento, null, null, precioClase);
                             }
                         }
                     } catch (SQLException ex) {
@@ -490,9 +453,9 @@ public class ControllerMatricula extends HttpServlet {
 
             daoModelMatricula.Signout();
 
-            return Mensaje(resultado);
+            return Utilidades.mensaje(resultado);
         } else {
-            return Mensaje(false, "", "Ha ocurrido un error con los datos seleccionados");
+            return Utilidades.mensaje(false, "", "Ha ocurrido un error con los datos seleccionados");
         }
     }
 
@@ -540,6 +503,3 @@ public class ControllerMatricula extends HttpServlet {
         return new Gson().toJson(aux);
     }
 }
-
-
-//~ Formatted by Jindent --- http://www.jindent.com
