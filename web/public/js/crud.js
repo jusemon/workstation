@@ -705,12 +705,13 @@ var abono = {
         $('#miPopupAbono').find('#btnAbono').attr('type', 'hidden').attr('disabled', true);
         $('#miPopupAbono').modal('show');
     },
-    registrar: function () {
-        limpiar("#formAbono");
-        $('#miPopupAbono').find('#titulo').empty();
-        $('#miPopupAbono').find('#titulo').append('Registrar Abono');
+    registrar: function (idCredito) {
+        limpiar("#formAbono");       
+        $('#miPopupAbono').find('#titulo').text('Registrar Abono');
+        $('#miPopupAbono').find('#txtIdCredito').val(idCredito);
         $('#miPopupAbono').find('#btnAbono').attr('type', 'submit').attr('value', 'Registrar').attr('disabled', false);
         $('#miPopupAbono').modal('show');
+        
     },
     editar: function (data) {
         abono.consultar(data);

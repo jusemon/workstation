@@ -206,8 +206,8 @@ public class ControllerCredito extends HttpServlet {
                         + "  <ul class=\"dropdown-menu\">\n"
                         + "    <li><a class=\"btn btn-success\" href=\"javascript:void(0)\" onclick=\"credito.consultarDetalle(" + arreglo[0] + ", '" + arreglo[1] + "' )\">"
                         + "<span class=\"glyphicon glyphicon-search\"></span>Consultar</a></li>\n"
-                        + "    <li><a class=\"btn btn-primary \"  href=\"javascript:void(0)\" onclick=\"abono.myAjax('Registrar',"
-                        + arreglo[0] + ",'Abonar', 'Credito')\">"
+                        + "    <li><a class=\"btn btn-primary \"  href=\"javascript:void(0)\" onclick=\"abono.registrar("
+                        + arreglo[0] + ")\">"
                         + "<span class=\"glyphicon glyphicon-edit\"></span>Abonar</a></li>\n" + "  </ul>\n" + "</div>";
                 lista.add(arreglo);
             }

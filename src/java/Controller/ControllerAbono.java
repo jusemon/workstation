@@ -48,7 +48,6 @@ public class ControllerAbono extends HttpServlet {
             ResultSet result;
 
             switch (request.getParameter("action")) {
-
                 // <editor-fold defaultstate="collapsed" desc="Registrar un abono">
                 case "Registrar": {
                     daoModelCredito = new ModelCredito();
