@@ -6,7 +6,6 @@
  */
 package Controller;
 
-//~--- non-JDK imports --------------------------------------------------------
 import Controller.Validaciones.Validador;
 
 import Model.DTO.ObjCredito;
@@ -55,6 +54,9 @@ public class ControllerVenta extends HttpServlet {
     ObjUsuario _objUsuario = new ObjUsuario();
     List<ObjDetalleMovimiento> listOjbDetalleMovimientos = new ArrayList<>();
     ObjDetalleMovimiento _objDetalleMovimiento = new ObjDetalleMovimiento();
+    ModelCredito daoModelCredito;
+    ObjCredito _objCredito;
+    ObjMovimiento _objMovimiento;
     ModelVenta daoModelVenta;
 
     /**
@@ -76,12 +78,13 @@ public class ControllerVenta extends HttpServlet {
             String action = request.getParameter("action");
 
             switch (action) {
+
                 case "Registrar": {
                     String documentoUsuario = (request.getParameter("documentoUsuario"));
-                    String documentoCliente = null;
-                    String nombreCliente = null;
-                    int numeroVenta = 0;
-                    boolean credito = false;
+                    String documentoCliente;
+                    String nombreCliente;
+                    int numeroVenta;
+                    boolean credito;
 
                     credito = Boolean.valueOf(request.getParameter("credito"));
 
@@ -95,13 +98,10 @@ public class ControllerVenta extends HttpServlet {
                         response.setContentType("application/json");
                         response.setCharacterEncoding("UTF-8");
                         response.getWriter().write(mensaje(false, null, "Ha ingresado datos incorrectos"));
-
                         break;
                     }
-
                     int length = Integer.parseInt(request.getParameter("size"));
                     int totalCompra = Integer.parseInt(request.getParameter("txtTotalVenta"));
-
                     listOjbDetalleMovimientos = new ArrayList<>();
 
                     for (int i = 0; i < length; i++) {
@@ -125,20 +125,21 @@ public class ControllerVenta extends HttpServlet {
                     _objVenta.setTotalVenta(totalCompra);
 
                     if (credito) {
-                        ModelCredito daoModelCredito = new ModelCredito();
-                        ObjCredito _objCredito = new ObjCredito();
-                        ObjMovimiento _objMovimiento = new ObjMovimiento();
+                        System.out.println("Entre a crédito");
+                        daoModelCredito = new ModelCredito();
+                        _objCredito = new ObjCredito();
+                        _objMovimiento = new ObjMovimiento();
                         ResultSet rs2 = null;
-
                         try {
                             rs2 = daoModelCredito.buscarCreditoByDocumento(_objVenta.getDocumentoCliente());
+                            System.out.println(rs2.first());
                         } catch (Exception e) {
                             System.out.println(e);
                         }
-
                         if (rs2 != null) {
                             try {
                                 if (!rs2.next()) {
+                                    System.out.println("No hay elemento siguiente.");
                                     _objCredito.setDocumentoUsuario(documentoCliente);
                                     _objCredito.setSaldoInicial(50000);
                                     _objCredito.setSaldoActual(50000 - _objVenta.getTotalVenta());
@@ -541,6 +542,3 @@ public class ControllerVenta extends HttpServlet {
         return "Short description";
     }    // </editor-fold>
 }
-
-
-//~ Formatted by Jindent --- http://www.jindent.com
