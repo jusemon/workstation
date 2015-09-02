@@ -2085,6 +2085,21 @@ var venta = {
     }
 };
 var credito = {
+    consultarDetalle: function (idCredito, documentoCliente) {
+        $.ajax({
+            url: "ControllerCredito",
+            type: 'POST',
+            data: {
+                action: 'ConsultarDetalle',
+                documentoCliente: documentoCliente,
+                idCredito: idCredito
+            }, 
+            success: function (data, textStatus, jqXHR) {
+                $("#miPopupEstadoDeCuenta").modal('show');
+                console.log(data);
+            }
+        });
+    },
     actualizarTabla: function () {
         tablaCredito.ajax.reload();
     },

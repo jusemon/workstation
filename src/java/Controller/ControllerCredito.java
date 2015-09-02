@@ -64,6 +64,14 @@ public class ControllerCredito extends HttpServlet {
                 }
 
                 // </editor-fold>
+                // <editor-fold defaultstate="collapsed" desc="Abonar">
+                case "ConsultarDetalle": {
+                    int idCredito = Integer.parseInt(request.getParameter("idCredito"));
+                    String documentoCliente = request.getParameter("documentoCliente");
+                    daoModelCredito = new ModelCredito();
+                    daoModelCredito.buscarCreditoByID(idCredito);
+                }
+                // </editor-fold>
                 // <editor-fold defaultstate="collapsed" desc="Listar los créditos">
                 case "Enlistar": {
                     response.setContentType("application/json");
@@ -118,7 +126,7 @@ public class ControllerCredito extends HttpServlet {
 
             ResultSet result;
 
-            result = daoModelCredito.buscarCreditoByID(idCredito);
+            result = daoModelCredito.consultarDetalleCreditoByID(idCredito);
 
             while (result.next()) {
                 estadoCredito = Integer.parseInt(result.getString("estadoCredito"));
@@ -223,8 +231,7 @@ public class ControllerCredito extends HttpServlet {
                         + "  <button type=\"button\" class=\"btn btn-info btn-block dropdown-toggle\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\n"
                         + "    Acciones <span class=\"caret\"></span>\n" + "  </button>\n"
                         + "  <ul class=\"dropdown-menu\">\n"
-                        + "    <li><a class=\"btn btn-success\" href=\"javascript:void(0)\" onclick=\"credito.myAjax('Consultar',"
-                        + arreglo[0] + ", '', 'Credito')\">"
+                        + "    <li><a class=\"btn btn-success\" href=\"javascript:void(0)\" onclick=\"credito.consultarDetalle(" + arreglo[0] + ", '" + arreglo[1] + "' )\">"
                         + "<span class=\"glyphicon glyphicon-search\"></span>Consultar</a></li>\n"
                         + "    <li><a class=\"btn btn-primary \"  href=\"javascript:void(0)\" onclick=\"abono.myAjax('Registrar',"
                         + arreglo[0] + ",'Abonar', 'Credito')\">"
