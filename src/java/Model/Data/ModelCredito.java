@@ -58,21 +58,15 @@ public class ModelCredito extends ConnectionDB {
 
             if (resultado[1].equals("success")) {
                 objReturn = true;
-
                 String sql2 = "call spIngresarMovimientoCredito(?,?,?)";
-
                 pStmt = connection.prepareCall(sql2);
                 pStmt.setDouble(1, _objCredito.getSaldoInicial() - _objCredito.getSaldoActual());
                 pStmt.setString(2, _objMovimiento.getDocumentoUsuario());
                 pStmt.setString(3, _objMovimiento.getDocumentoAuxiliar());
-
                 int updateCount2 = pStmt.executeUpdate();
-
                 if (updateCount2 > 0) {
                     objReturn = true;
-
                     String sql3 = "";
-
                     if (tipo == null) {
                         sql3 = "call spIngresarDetalleMovimientoCredito(?)";
                         pStmt = connection.prepareCall(sql3);

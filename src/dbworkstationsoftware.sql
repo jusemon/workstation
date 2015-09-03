@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-09-2015 a las 04:37:43
+-- Tiempo de generación: 03-09-2015 a las 05:08:53
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -1625,8 +1625,8 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
 --
 
 INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioCompra`, `precioVenta`) VALUES
-(1, 2, 'Vinilo', 21, 1200, 1300),
-(2, 3, 'Pincel delgado', 10, 1200, 2500),
+(1, 2, 'Vinilo', 10, 1200, 1300),
+(2, 3, 'Pincel delgado', 8, 1200, 2500),
 (3, 2, 'Madera de lino', 20, 5000, 5500),
 (4, 1, 'asdasd', 20, 1200, 1200),
 (5, 2, 'adf', 17, 1200, 1300);
@@ -1700,12 +1700,12 @@ INSERT INTO `tblclase` (`idClase`, `fecha`, `estadoPago`, `estadoAsistencia`, `c
 (26, '2015-08-26', b'0', b'1', b'1', 5000, 2, 'CC1220654321'),
 (27, '2015-08-26', b'0', b'1', b'1', 5000, 2, 'CC1220654321'),
 (28, '2015-08-28', b'0', b'1', b'1', 5000, 2, 'CC1220654321'),
-(29, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
-(30, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
-(31, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
-(32, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
-(33, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
-(34, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
+(29, '2015-09-02', b'0', b'1', b'1', 5000, 2, 'CC1220654321'),
+(30, '2015-09-02', b'0', b'1', b'1', 5000, 2, 'CC1220654321'),
+(31, '2015-09-02', b'1', b'1', b'0', 5000, 2, 'CC1220654321'),
+(32, '2015-09-02', b'0', b'1', b'1', 5000, 2, 'CC1220654321'),
+(33, '2015-09-02', b'0', b'1', b'1', 5000, 2, 'CC1220654321'),
+(34, '2015-09-02', b'0', b'1', b'1', 5000, 2, 'CC1220654321'),
 (35, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
 (36, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
 (37, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
@@ -1720,10 +1720,10 @@ INSERT INTO `tblclase` (`idClase`, `fecha`, `estadoPago`, `estadoAsistencia`, `c
 (46, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
 (47, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
 (48, NULL, b'0', b'0', b'0', 5000, 2, 'CC1220654321'),
-(49, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
-(50, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
-(51, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
-(52, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
+(49, '2015-09-02', b'0', b'1', b'1', 5000, 2, 'TI123123123'),
+(50, '2015-09-02', b'1', b'1', b'0', 5000, 2, 'TI123123123'),
+(51, '2015-09-02', b'0', b'1', b'1', 5000, 2, 'TI123123123'),
+(52, '2015-09-02', b'0', b'1', b'1', 5000, 2, 'TI123123123'),
 (53, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
 (54, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
 (55, NULL, b'0', b'0', b'0', 5000, 2, 'TI123123123'),
@@ -1758,14 +1758,15 @@ CREATE TABLE IF NOT EXISTS `tblcredito` (
   `saldoInicial` int(11) NOT NULL DEFAULT '0',
   `saldoActual` int(11) NOT NULL DEFAULT '0',
   `estadoCredito` tinyint(4) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblcredito`
 --
 
 INSERT INTO `tblcredito` (`idCredito`, `documentoUsuario`, `fechaInicio`, `saldoInicial`, `saldoActual`, `estadoCredito`) VALUES
-(1, 'CC1220654321', '2015-08-28 19:26:44', 50000, 26100, 1);
+(1, 'CC1220654321', '2015-08-28 19:26:44', 50000, 21100, 1),
+(2, 'TI123123123', '2015-09-02 22:03:41', 50000, 48700, 1);
 
 -- --------------------------------------------------------
 
@@ -1804,7 +1805,7 @@ CREATE TABLE IF NOT EXISTS `tbldetallecredito` (
 `idDetalleCredito` int(11) NOT NULL,
   `idCredito` int(11) NOT NULL,
   `idMovimiento` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbldetallecredito`
@@ -1813,7 +1814,10 @@ CREATE TABLE IF NOT EXISTS `tbldetallecredito` (
 INSERT INTO `tbldetallecredito` (`idDetalleCredito`, `idCredito`, `idMovimiento`) VALUES
 (1, 1, 2),
 (2, 1, 4),
-(3, 1, 5);
+(3, 1, 5),
+(4, 1, 16),
+(5, 2, 18),
+(6, 2, 20);
 
 -- --------------------------------------------------------
 
@@ -1830,7 +1834,7 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
   `totalDetalleMovimiento` int(11) NOT NULL,
   `idMovimiento` int(11) NOT NULL,
   `precioArticulo` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tbldetallemovimiento`
@@ -1846,7 +1850,10 @@ INSERT INTO `tbldetallemovimiento` (`idDetalleMovimiento`, `idArticulo`, `idClas
 (7, 4, NULL, 20, 5, 24000, 3, 1200),
 (8, 5, NULL, 20, 5, 24000, 3, 1200),
 (9, 5, NULL, 3, 1, 3900, 4, 1300),
-(10, 2, NULL, 10, 1, 25000, 5, 2500);
+(10, 2, NULL, 10, 1, 25000, 5, 2500),
+(11, 1, NULL, 10, 1, 13000, 17, 1300),
+(12, 2, NULL, 2, 1, 5000, 18, 2500),
+(13, 1, NULL, 1, 1, 1300, 20, 1300);
 
 -- --------------------------------------------------------
 
@@ -1980,7 +1987,7 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
   `numeroAuxiliar` varchar(45) DEFAULT NULL,
   `nombreAuxiliar` varchar(45) DEFAULT NULL,
   `documentoAuxiliar` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblmovimiento`
@@ -1993,7 +2000,14 @@ INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento
 (4, '2015-09-01 20:56:59', 3900, 4, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321'),
 (5, '2015-09-01 21:34:35', 25000, 4, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321'),
 (11, '2015-09-02 21:32:27', 5000, 5, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321'),
-(13, '2015-09-02 21:36:56', 5000, 5, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321');
+(13, '2015-09-02 21:36:56', 5000, 5, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321'),
+(14, '2015-09-02 21:43:25', 5000, 3, 'CC1017225673', '2', 'Pepito Pérez', 'CC1220654321'),
+(15, '2015-09-02 21:50:52', 5000, 3, 'CC1017225673', '3', 'Monita Martinez', 'TI123123123'),
+(16, '2015-09-02 22:01:55', 5000, 4, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321'),
+(17, '2015-09-02 22:02:59', 13000, 3, 'CC1017225673', '4', 'Monita Martinez', 'TI123123123'),
+(18, '2015-09-02 22:03:41', 5000, 4, 'CC1017225673', NULL, 'Monita Martinez', 'TI123123123'),
+(19, '2015-09-02 22:05:33', 5000, 5, 'CC1017225673', NULL, 'Monita Martinez', 'TI123123123'),
+(20, '2015-09-02 22:05:48', 1300, 4, 'CC1017225673', NULL, 'Monita Martinez', 'TI123123123');
 
 -- --------------------------------------------------------
 
@@ -2259,7 +2273,7 @@ MODIFY `idClase` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=73;
 -- AUTO_INCREMENT de la tabla `tblcredito`
 --
 ALTER TABLE `tblcredito`
-MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `idCredito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `tblcurso`
 --
@@ -2269,12 +2283,12 @@ MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- AUTO_INCREMENT de la tabla `tbldetallecredito`
 --
 ALTER TABLE `tbldetallecredito`
-MODIFY `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT de la tabla `tbldetalleusuario`
 --
@@ -2294,7 +2308,7 @@ MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 -- AUTO_INCREMENT de la tabla `tblmovimiento`
 --
 ALTER TABLE `tblmovimiento`
-MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --

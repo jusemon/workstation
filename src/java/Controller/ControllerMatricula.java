@@ -285,7 +285,7 @@ public class ControllerMatricula extends HttpServlet {
         int precioClase = Integer.parseInt(request.getParameter("precio"));
         String documentoUsuario = request.getParameter("documentoUsuario");
         String documentoCliente = request.getParameter("txtDocumento");
-        ModelEstudiante daoModelEstudiante = new ModelEstudiante();
+        daoModelEstudiante = new ModelEstudiante();
         ResultSet rs = daoModelEstudiante.buscarPorID(documentoCliente);
         String estadoPago = "on";
 
@@ -298,9 +298,7 @@ public class ControllerMatricula extends HttpServlet {
         }
 
         if (beneficiario == 0) {
-            estadoPago = (request.getParameter("estadoPago") != null)
-                    ? request.getParameter("estadoPago")
-                    : "off";
+            estadoPago = (request.getParameter("estadoPago") != null) ? request.getParameter("estadoPago") : "off";
         }
 
         int idCurso = Integer.parseInt(request.getParameter("idCursoMatricula"));
@@ -312,34 +310,17 @@ public class ControllerMatricula extends HttpServlet {
             _objClase.setDocumentoUsuario(documentoCliente);
             _objClase.setIdCurso(idCurso);
             _objClase.setPrecioClase(precioClase);
-            _objClase.setEstadoPago((estadoPago.equals("on")
-                    ? 1
-                    : 0));
-            _objClase.setCreditoCreado((estadoPago.equals("off")
-                    ? 1
-                    : 0));
+            _objClase.setEstadoPago((estadoPago.equals("on") ? 1 : 0));
+            _objClase.setCreditoCreado((estadoPago.equals("off") ? 1 : 0));
 
             if (_objClase.getCreditoCreado() == 1) {
                 ObjCredito _objCredito = new ObjCredito();
                 ResultSet rs2 = null;
-
                 try {
                     rs2 = daoModelCredito.buscarCreditoByDocumento(_objClase.getDocumentoUsuario());
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-
-                if (rs2 != null) {
-                    try {
-                        if (!rs2.next()) {
-                            _objCredito.setDocumentoUsuario(documentoCliente);
-                            _objCredito.setSaldoInicial(50000);
-                            _objCredito.setSaldoActual(50000 - _objClase.getPrecioClase());
-                            _objMovimiento.setDocumentoUsuario(documentoUsuario);
-                            _objMovimiento.setDocumentoAuxiliar(documentoCliente);
-                            daoModelCredito.Add(_objCredito, _objMovimiento, null, null);
-                        } else {
-                            while (rs2.next()) {
+                    if (rs2 != null) {
+                        while (rs2.next()) {
+                            if (rs2.getString("tipo").equals("success")) {
                                 _objCredito.setDocumentoUsuario(rs2.getString("documentoUsuario"));
                                 _objCredito.setSaldoInicial(rs2.getDouble("saldoInicial"));
                                 _objCredito.setSaldoActual(rs2.getDouble("saldoActual"));
@@ -349,11 +330,18 @@ public class ControllerMatricula extends HttpServlet {
                                 _objMovimiento.setDocumentoUsuario(documentoUsuario);
                                 _objMovimiento.setDocumentoAuxiliar(documentoCliente);
                                 daoModelCredito.update(_objCredito, _objMovimiento, null, null, precioClase);
+                            } else {
+                                _objCredito.setDocumentoUsuario(documentoCliente);
+                                _objCredito.setSaldoInicial(50000);
+                                _objCredito.setSaldoActual(50000 - _objClase.getPrecioClase());
+                                _objMovimiento.setDocumentoUsuario(documentoUsuario);
+                                _objMovimiento.setDocumentoAuxiliar(documentoCliente);
+                                daoModelCredito.Add(_objCredito, _objMovimiento, null, null);
                             }
                         }
-                    } catch (SQLException ex) {
-                        Logger.getLogger(ControllerMatricula.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                } catch (Exception e) {
+                    System.out.println(e);
                 }
 
                 daoModelCredito.Signout();
