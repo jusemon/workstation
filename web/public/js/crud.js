@@ -694,17 +694,6 @@ var abono = {
             $(form).submit();
         }
     },
-//    consultar: function (data) {
-//        limpiar("#formAbono");
-//        $('#miPopupAbono').find('#titulo').empty();
-//        $('#miPopupAbono').find('#titulo').append('Consultar Abono');
-//        $('#miPopupAbono').find('#idAbono').val(data['idAbono']);
-//        $('#miPopupAbono').find('#txtIdCredito').val(data['idCredito']);
-//        $('#miPopupAbono').find('#txtValorAbono').val(data['valorAbono']);
-//        $('#miPopupAbono').find('#dateFechaPago').val(data['fechaPago']);
-//        $('#miPopupAbono').find('#btnAbono').attr('type', 'hidden').attr('disabled', true);
-//        $('#miPopupAbono').modal('show');
-//    },
     registrar: function (idCredito, documentoCliente) {
         limpiar("#formAbono");       
         $('#miPopupAbono').find('#titulo').text('Registrar Abono');

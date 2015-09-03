@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-09-2015 a las 04:35:28
+-- Tiempo de generación: 03-09-2015 a las 04:37:43
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -882,20 +882,42 @@ BEGIN
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `spIngresarAbono`(
-    in idAbo        int,
-    in valorAbo     int,
-    in fechaPa    datetime,
-    in idCredi      int
- )
+    in idCredi          int,
+    in total             int,
+    in documentoUsuar       VARCHAR(30) ,    
+    in documentoClien       VARCHAR(45)
+)
 BEGIN
-	declare msg varchar(40);    
-	if (exists(select idAbono from tblabono where idAbono=idAbo)) then
-		set msg="Este abono ya fue registrado.";
-		select msg as Respuesta;
-	else
-		insert into tblabono (idCredito,valorAbono,fechaPago) Values(idCredi,valorAbo,fechaPa);
-		set msg="El abono se ha registrado correctamente.";
-		select msg as Respuesta; 
+        declare msg varchar(100);
+        declare nombreClien VARCHAR(50);       
+        declare saldoActu int;
+        set saldoActu =  (SELECT `saldoActual` FROM tblcredito WHERE `idCredito` = `idCredi`) + total;
+        set nombreClien = (SELECT concat(`nombreUsuario`, ' ', `apellidoUsuario`) FROM tblusuario where `documentoUsuario` = `documentoClien`);
+    	if (saldoActu > 50000 ) then
+		set msg=convert('No se puede realizar la transacci��n. El saldo est�� encima de lo permitido.' using utf8);
+		select msg as Respuesta, 'error' as tipo;
+       	else
+            UPDATE tblcredito 
+            SET `saldoActual` = `saldoActu` 
+            WHERE `idCredito` = `idCredi`;
+            insert into tblmovimiento 
+            (
+                `fechaMovimiento`, 
+                `totalMovimiento`, 
+                `idtipoMovimiento`, 
+                `documentoUsuario`, 
+                `nombreAuxiliar`,
+                documentoAuxiliar
+            ) VALUES (
+                NOW(),
+                `total`,
+                5,
+                documentoUsuar,
+                `nombreClien`,
+                documentoClien
+            );
+            set msg=convert('Se ha registrado el abono correctamente.' using utf8);	
+            select msg as Respuesta, 'success' as tipo; 
 	end if;
 END$$
 
@@ -1743,7 +1765,7 @@ CREATE TABLE IF NOT EXISTS `tblcredito` (
 --
 
 INSERT INTO `tblcredito` (`idCredito`, `documentoUsuario`, `fechaInicio`, `saldoInicial`, `saldoActual`, `estadoCredito`) VALUES
-(1, 'CC1220654321', '2015-08-28 19:26:44', 50000, 16100, 1);
+(1, 'CC1220654321', '2015-08-28 19:26:44', 50000, 26100, 1);
 
 -- --------------------------------------------------------
 
@@ -1958,7 +1980,7 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
   `numeroAuxiliar` varchar(45) DEFAULT NULL,
   `nombreAuxiliar` varchar(45) DEFAULT NULL,
   `documentoAuxiliar` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblmovimiento`
@@ -1969,7 +1991,9 @@ INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento
 (2, '2015-08-28 19:26:45', 5000, 4, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321'),
 (3, '2015-09-01 20:31:51', 196000, 1, 'CC1017225673', '001', 'Interno', NULL),
 (4, '2015-09-01 20:56:59', 3900, 4, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321'),
-(5, '2015-09-01 21:34:35', 25000, 4, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321');
+(5, '2015-09-01 21:34:35', 25000, 4, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321'),
+(11, '2015-09-02 21:32:27', 5000, 5, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321'),
+(13, '2015-09-02 21:36:56', 5000, 5, 'CC1017225673', NULL, 'Pepito Pérez', 'CC1220654321');
 
 -- --------------------------------------------------------
 
@@ -2048,7 +2072,8 @@ INSERT INTO `tbltipomovimiento` (`idtipoMovimiento`, `descripcion`) VALUES
 (1, 'Compra a Proveedor'),
 (2, 'Ingreso de producto propio'),
 (3, 'Venta a cliente'),
-(4, 'Credito');
+(4, 'Credito'),
+(5, 'Abono');
 
 -- --------------------------------------------------------
 
@@ -2269,7 +2294,7 @@ MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 -- AUTO_INCREMENT de la tabla `tblmovimiento`
 --
 ALTER TABLE `tblmovimiento`
-MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --

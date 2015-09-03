@@ -7,6 +7,8 @@
                 <div class="row">
                     <div class="col-md-12">                               
                         <form id="formAbono" action="ControllerCredito" method="POST">
+                            <input name="documentoUsuario" id="documentoUsuario" type="hidden">
+                            <input name="documentoCliente" id="documentoCliente" type="hidden">
                             <div class="panel">
                                 <div class="panel-heading estilo2">
                                     <h3 class="panel-title">

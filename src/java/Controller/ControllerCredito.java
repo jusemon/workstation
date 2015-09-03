@@ -129,8 +129,7 @@ public class ControllerCredito extends HttpServlet {
         _objMovimiento.setTotalMovimiento(valorAbono);
         _objMovimiento.setDocumentoAuxiliar(documentoCliente);
         _objMovimiento.setDocumentoUsuario(documentoUsuario);        
-        String salida = Utilidades.mensaje(daoModelCredito.AddAbono(_objCredito, _objMovimiento, null, null, valorAbono),
-                "El abono ha sido registrado", "Ha ocurrido un error al intentar registrar el abono");
+        String salida = Utilidades.mensaje(daoModelCredito.abonar(_objCredito, _objMovimiento));
         daoModelCredito.Signout();
         return salida;
     }
