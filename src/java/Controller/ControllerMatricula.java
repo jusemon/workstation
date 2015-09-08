@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -160,8 +158,6 @@ public class ControllerMatricula extends HttpServlet {
                 arreglo[0] = result.getString("documentoUsuario").trim();
                 arreglo[1] = result.getString("nombreCurso").trim();
                 arreglo[2] = result.getString("numeroClases").trim();
-
-                // arreglo[3] = result.getString("numeroClasesFaltantes").trim();
                 arreglo[3] = result.getString("numeroClasesAsistidas").trim();
                 arreglo[4]
                         = "<a class=\"btn-sm btn-success btn-block \" href=\"javascript:void(0)\"  onclick=\"matricula.consultar('"
@@ -280,7 +276,6 @@ public class ControllerMatricula extends HttpServlet {
 
     private String RegistrarAsistencia(HttpServletRequest request) {
         daoModelCredito = new ModelCredito();
-
         int beneficiario = 0;
         int precioClase = Integer.parseInt(request.getParameter("precio"));
         String documentoUsuario = request.getParameter("documentoUsuario");
@@ -288,7 +283,6 @@ public class ControllerMatricula extends HttpServlet {
         daoModelEstudiante = new ModelEstudiante();
         ResultSet rs = daoModelEstudiante.buscarPorID(documentoCliente);
         String estadoPago = "on";
-
         try {
             if (rs.next()) {
                 beneficiario = rs.getInt("estadoBeneficiario");
@@ -296,7 +290,6 @@ public class ControllerMatricula extends HttpServlet {
         } catch (SQLException ex) {
             System.err.println(ex);
         }
-
         if (beneficiario == 0) {
             estadoPago = (request.getParameter("estadoPago") != null) ? request.getParameter("estadoPago") : "off";
         }
@@ -315,7 +308,7 @@ public class ControllerMatricula extends HttpServlet {
 
             if (_objClase.getCreditoCreado() == 1) {
                 ObjCredito _objCredito = new ObjCredito();
-                ResultSet rs2 = null;
+                ResultSet rs2;
                 try {
                     rs2 = daoModelCredito.buscarCreditoByDocumento(_objClase.getDocumentoUsuario());
                     if (rs2 != null) {
@@ -329,14 +322,14 @@ public class ControllerMatricula extends HttpServlet {
                                 _objCredito.setFechaInicio(rs2.getString("fechaInicio"));
                                 _objMovimiento.setDocumentoUsuario(documentoUsuario);
                                 _objMovimiento.setDocumentoAuxiliar(documentoCliente);
-                                daoModelCredito.update(_objCredito, _objMovimiento, null, null, precioClase);
+                                daoModelCredito.update(_objCredito, _objMovimiento, precioClase);
                             } else {
                                 _objCredito.setDocumentoUsuario(documentoCliente);
                                 _objCredito.setSaldoInicial(50000);
                                 _objCredito.setSaldoActual(50000 - _objClase.getPrecioClase());
                                 _objMovimiento.setDocumentoUsuario(documentoUsuario);
                                 _objMovimiento.setDocumentoAuxiliar(documentoCliente);
-                                daoModelCredito.Add(_objCredito, _objMovimiento, null, null);
+                                daoModelCredito.add(_objCredito, _objMovimiento);
                             }
                         }
                     }
@@ -450,11 +443,8 @@ public class ControllerMatricula extends HttpServlet {
     private String ConsultarPreincripcionesCliente(HttpServletRequest request) {
         List<String[]> salida = new ArrayList<>();
         Map<String, Object> aux;
-
         daoModelPreinscripcion = new ModelPreinscripcion();
-
         String documento = request.getParameter("documentoUsuario");
-
         try {
             ResultSet rs = daoModelPreinscripcion.ConsultarPreinscripcionesPorID(documento);
 
@@ -481,13 +471,10 @@ public class ControllerMatricula extends HttpServlet {
             aux = new LinkedHashMap<>();
             aux.put("tipo", "error");
             aux.put("mensaje", "Ha ocurrido un error: " + ex);
-
             return new Gson().toJson(aux);
         }
-
         aux = new LinkedHashMap<>();
         aux.put("data", salida);
-
         return new Gson().toJson(aux);
     }
 }

@@ -1,28 +1,16 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package Controller;
-
-//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjCategoriaArticulo;
-
 import Model.Data.ModelCategoriaArticulo;
-
 import com.google.gson.Gson;
-
-//~--- JDK imports ------------------------------------------------------------
 import java.io.IOException;
-
 import java.sql.ResultSet;
-
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -56,14 +44,9 @@ public class ControllerCategoriaArticulo extends HttpServlet {
                 // <editor-fold defaultstate="collapsed" desc="Registrar una Categoría de Artículo">
                 case "Registrar": {
                     String nombreCategoriaArticulo = request.getParameter("txtNombre").trim();
-
                     _objCategoriaArticulo.setNombreCategoriaArticulo(nombreCategoriaArticulo);
                     daoModelCategoriaArticulo = new ModelCategoriaArticulo();
-
-                    String salida = Utilidades.mensaje(daoModelCategoriaArticulo.Add(_objCategoriaArticulo),
-                            "La categoría ha sido registrada correctamente.",
-                            "Ha ocurrido un error al intentar registrar la categoría");
-
+                    String salida = Utilidades.mensaje(daoModelCategoriaArticulo.add(_objCategoriaArticulo));
                     daoModelCategoriaArticulo.Signout();
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");

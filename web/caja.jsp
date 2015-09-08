@@ -14,7 +14,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
 
 <div class="container-fluid" style="height: 100%">
     <div class="row">
-        <div class="col-md-3" style="height: 100%">
+        <div class="col-md-2" style="height: 100%">
             <div class="panel-group" id="accordion">
                 <!--Gestión de Compras-->
                 <div class="panel panel-default">
@@ -72,7 +72,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
             </div-->
             </div>
         </div>
-        <div id="contenedor" class="col-md-9">
+        <div id="contenedor" class="col-md-10">
             <div class="tab-content" id="contenidoDinamico" data-actual="listas" style="height: 100%">
                 <div role="tabpanel" class="tab-pane fade in active" id="tabListas" style="height: 100%">
                     <ul class="nav nav-tabs" role="tablist">
@@ -364,7 +364,7 @@ finalmente en el pie se ponen los botones de aceptar y cancelar respectivamente.
 <%@include file="WEB-INF/jspf/modalAbono.jspf" %>
 
 <!--Popup Credito-->
-<%@include file="WEB-INF/jspf/modalCredito.jspf" %>
+<%@include file="WEB-INF/jspf/modalEstadoCuenta.jspf" %>
 
 <%@include file="WEB-INF/jspf/footer.jspf" %>
 

@@ -8,124 +8,48 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">                               
-                        <form id="formEstadoDeCuenta" action="ControllerCredito" method="POST">
-                            <div class="panel">
-                                <div class="panel-heading estilo2">
-                                    <h3 class="panel-title">
-                                        <label id="titulo"></label>
-                                        <label id="fecha" style="margin-left: 35%;"></label>
-                                        <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
-                                    </h3>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">                                      
-                                                <div class="tab-content" id="vistaHaber">                                                 
-                                                    <table id="tblHaber" class="table table-responsive table-hover" cellspacing="0" width="100%">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="text-center">Movimiento</th>                                
-                                                                <th class="text-center">Fecha</th>
-                                                                <th class="text-center">Descripciòn</th>
-                                                                <th class="text-center">Debe/Cargo</th>
-                                                                <th class="text-center">Haber/abono</th>
-                                                                <th class="text-center">Saldo</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>                                                
-                                                </div>     
-                                            </div>
+                        <div class="panel">
+                            <div class="panel-heading estilo2">
+                                <h3 class="panel-title">
+                                    <label id="titulo">Estado de Cuenta</label>
+                                    <label id="fecha" style="margin-left: 35%;"></label>
+                                    <button type="button" id="cerrar1" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only" style=" color: #ffffff">Cerrar</span></button>
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">                                      
+                                            <div class="tab-content" id="vistaHaber">                                                 
+                                                <table id="tblHaber" class="table table-responsive table-hover" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">Movimiento</th>                                
+                                                            <th class="text-center">Fecha</th>
+                                                            <th class="text-center">Descripción</th>
+                                                            <th class="text-center">Debe/Cargo</th>
+                                                            <th class="text-center">Haber/Abono</th>
+                                                            <th class="text-center">Saldo</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>                                                
+                                            </div>     
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="MovimientoB">
-                                                    Movimiento
-                                                </label>
-                                                <select name="Movimiento" id="Movimiento" class="form-control" required>
-                                                </select>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="fechaMovimiento">
-                                                    Fecha
-                                                </label>
-                                                      <input name="fechaMovimiento" id="fechaMovimiento" type="text" class="form-control fecha" placeholder="">
-                                                </select>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="txtDescripcion">
-                                                    Descripciòn
-                                                </label>
-                                                <select name="txtDescripcion" id="txtDescripcion" class="form-control" required>
-                                                </select>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="debe">
-                                                    Debe/Cargo
-                                                </label>
-                                                <select name="debe" id="debe" class="form-control" required>
-                                                </select>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="idMovimientoB">
-                                                    Haber/abono
-                                                </label>
-                                                <select name="haber" id="haber" class="form-control" required>
-                                                </select>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="saldo">
-                                                    Saldo
-                                                </label>
-                                                <select name="saldo" id="saldo" class="form-control" required>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-offset-6 col-md-3">
-                                            <div class="form-group">
-                                                <input id="btnMostrarFormularioHaber" class="btn btn-default btn-block" type="button" onclick="" value="AñadirMovimiento">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="panel-footer">
-                                        <div class="row">
-                                            <div class="col-md-offset-3 col-md-6">
-                                                <div class="form-group">
-                                                    <input id="btnCategoria" class="btn btn-default btn-block" type="button" name="action" value="Aceptar" data-dismiss="modal" data-target="miPopupEstadoDeCuenta">
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
-                        </form>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-offset-3 col-md-6">
+                                            <div class="form-group">
+                                                <input id="btnCategoria" class="btn btn-default btn-block" type="button" name="action" value="Aceptar" data-dismiss="modal" data-target="miPopupEstadoDeCuenta">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

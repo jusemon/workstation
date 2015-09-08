@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,30 +6,21 @@
 package Controller;
 
 import Controller.Validaciones.Validador;
-
 import Model.DTO.ObjCredito;
 import Model.DTO.ObjDetalleMovimiento;
 import Model.DTO.ObjMovimiento;
 import Model.DTO.ObjUsuario;
 import Model.DTO.ObjVenta;
-
 import Model.Data.ModelCredito;
 import Model.Data.ModelVenta;
-
 import com.google.gson.Gson;
-
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
-
-//~--- JDK imports ------------------------------------------------------------
 import java.io.IOException;
 import java.io.OutputStream;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.text.NumberFormat;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -38,7 +28,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author siete
+ * @author Lorenzo
  */
 public class ControllerVenta extends HttpServlet {
 
@@ -156,7 +145,7 @@ public class ControllerVenta extends HttpServlet {
                                     _objCredito.setSaldoActual(50000 - _objVenta.getTotalVenta());
                                     _objMovimiento.setDocumentoUsuario(documentoUsuario);
                                     _objMovimiento.setDocumentoAuxiliar(documentoCliente);
-                                    String salida = Utilidades.mensaje(daoModelCredito.Add(_objCredito, _objMovimiento, listOjbDetalleMovimientos, "Venta"), 
+                                    String salida = Utilidades.mensaje(daoModelCredito.add(_objCredito, _objMovimiento, listOjbDetalleMovimientos), 
                                             "Se ha registrado la venta y se ha generado un crédito", 
                                             "Ha ocurrido un error al intentar registrar la venta y generar el crédito");
                                     response.getWriter().write(salida);

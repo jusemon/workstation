@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,12 +5,8 @@
  */
 package Model.Data;
 
-//~--- non-JDK imports --------------------------------------------------------
 import Model.DTO.ObjCategoriaArticulo;
-
 import Model.JDBC.ConnectionDB;
-
-//~--- JDK imports ------------------------------------------------------------
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,19 +23,17 @@ public class ModelCategoriaArticulo extends ConnectionDB {
         getConnection();
     }
 
-    public boolean Add(ObjCategoriaArticulo _objCategoriaArticulo) {
-        boolean objReturn = false;
+    public String[] add(ObjCategoriaArticulo _objCategoriaArticulo) {
+        String[] objReturn = new String[2];
         String sql = "call spIngresarCategoriaArticulo (?)";
-
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setString(1, _objCategoriaArticulo.getNombreCategoriaArticulo());
-
-            int updateCount = pStmt.executeUpdate();
-
-            if (updateCount > 0) {
-                objReturn = true;
+            ResultSet rs = pStmt.executeQuery();
+            while (rs.next()) {
+                objReturn[0] = rs.getString("mensaje");
+                objReturn[1] = rs.getString("tipo");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

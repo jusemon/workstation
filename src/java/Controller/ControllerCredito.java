@@ -10,6 +10,7 @@ import Model.DTO.ObjMovimiento;
 import Model.Data.ModelCredito;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -66,10 +67,14 @@ public class ControllerCredito extends HttpServlet {
                 // </editor-fold>
                 // <editor-fold defaultstate="collapsed" desc="Consultar Detalle">
                 case "ConsultarDetalle": {
-                    int idCredito = Integer.parseInt(request.getParameter("idCredito"));
-                    String documentoCliente = request.getParameter("documentoCliente");
+                    int idCredito = Integer.parseInt(request.getParameter("id"));
                     daoModelCredito = new ModelCredito();
-                    daoModelCredito.buscarCreditoByID(idCredito);
+                    PreparedStatement ps = daoModelCredito.consultarDetalleCreditoByID(idCredito);
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(Utilidades.toDataTableJSON(Utilidades.toJson(ps)));
+                    daoModelCredito.Signout();
+                    break;
                 }
                 // </editor-fold>
                 // <editor-fold defaultstate="collapsed" desc="Listar los créditos">
@@ -128,7 +133,7 @@ public class ControllerCredito extends HttpServlet {
         _objCredito.setIdCredito(idCredito);
         _objMovimiento.setTotalMovimiento(valorAbono);
         _objMovimiento.setDocumentoAuxiliar(documentoCliente);
-        _objMovimiento.setDocumentoUsuario(documentoUsuario);        
+        _objMovimiento.setDocumentoUsuario(documentoUsuario);
         String salida = Utilidades.mensaje(daoModelCredito.abonar(_objCredito, _objMovimiento));
         daoModelCredito.Signout();
         return salida;
@@ -204,7 +209,7 @@ public class ControllerCredito extends HttpServlet {
             ResultSet result = null;
 
             daoModelCredito = new ModelCredito();
-            result = daoModelCredito.ListAll();
+            result = daoModelCredito.listAll();
 
             while (result.next()) {
                 String[] estado = {"success", "ok"};
@@ -233,7 +238,7 @@ public class ControllerCredito extends HttpServlet {
                         + "    <li><a class=\"btn btn-success\" href=\"javascript:void(0)\" onclick=\"credito.consultarDetalle(" + arreglo[0] + ", '" + arreglo[1] + "' )\">"
                         + "<span class=\"glyphicon glyphicon-search\"></span>Consultar</a></li>\n"
                         + "    <li><a class=\"btn btn-primary \"  href=\"javascript:void(0)\" onclick=\"abono.registrar("
-                        + arreglo[0] + ", '"+arreglo[1]+"')\">"
+                        + arreglo[0] + ", '" + arreglo[1] + "')\">"
                         + "<span class=\"glyphicon glyphicon-edit\"></span>Abonar</a></li>\n" + "  </ul>\n" + "</div>";
                 lista.add(arreglo);
             }

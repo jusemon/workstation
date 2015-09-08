@@ -14,7 +14,7 @@ $('.fecha2').datetimepicker({
     locale: "es"
 });
 var validationCurso, validationArticulo, validationEstudiante, validationUsuario, validationEmpresa, validationUsuarioPerfil, validationBeneficiario, validationOperarios, validationAsistenteSeminario, validationAcudiente;
-var tablaCurso, tablaCategoriaCurso, tablaClases, tablaCredito, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso, tablaPreinscritos, tablaPreincripciones, tablaOperarios, tablaDetalleSeminario;
+var tablaCurso, tablaCategoriaCurso, tablaClases, tablaCredito, tablaSeminario, tablaEstudiante, tablaMatricula, tablaArticulo, tablaCategoriaArticulo, tablaEmpresa, tablaCompra, tablaVenta, tablaUsuario, idCurso, tablaPreinscritos, tablaPreincripciones, tablaOperarios, tablaDetalleSeminario, tablaHaber;
 var curso = {
     myAjax: function (accion, id, aux, typo) {
         if (accion === 'Estado') {
@@ -695,14 +695,14 @@ var abono = {
         }
     },
     registrar: function (idCredito, documentoCliente) {
-        limpiar("#formAbono");       
+        limpiar("#formAbono");
         $('#miPopupAbono').find('#titulo').text('Registrar Abono');
         $('#miPopupAbono').find('#txtIdCredito').val(idCredito);
         $('#miPopupAbono').find('#documentoCliente').val(documentoCliente);
         $('#miPopupAbono').find('#documentoUsuario').val(documentoUsuario);
         $('#miPopupAbono').find('#btnAbono').attr('type', 'submit').attr('value', 'Abonar').attr('disabled', false);
         $('#miPopupAbono').modal('show');
-        
+
     },
     editar: function (data) {
         abono.consultar(data);
@@ -2061,20 +2061,14 @@ var venta = {
     }
 };
 var credito = {
-    consultarDetalle: function (idCredito, documentoCliente) {
-        $.ajax({
-            url: "ControllerCredito",
-            type: 'POST',
-            data: {
-                action: 'ConsultarDetalle',
-                documentoCliente: documentoCliente,
-                idCredito: idCredito
-            }, 
-            success: function (data, textStatus, jqXHR) {
-                $("#miPopupEstadoDeCuenta").modal('show');
-                console.log(data);
-            }
-        });
+    consultarDetalle: function (idCredito) {
+        if (typeof tablaHaber === 'undefined') {
+            credito.cargarDetalle(idCredito);
+        } else {
+            tablaHaber.destroy();
+            credito.cargarDetalle(idCredito);
+        }
+        $("#miPopupEstadoDeCuenta").modal('show');
     },
     actualizarTabla: function () {
         tablaCredito.ajax.reload();
@@ -2095,6 +2089,29 @@ var credito = {
             "language": {
                 "url": "public/js/locales/Spanish.json"
             }
+        });
+    },
+    cargarDetalle: function (idCredito) {
+        tablaHaber = $('#tblHaber').DataTable({
+            "ajax": {
+                url: "ControllerCredito",
+                type: 'POST',
+                data: {
+                    action: 'ConsultarDetalle',
+                    id: idCredito
+                }
+            },
+            "language": {
+                "url": "public/js/locales/Spanish.json"
+            },
+            "columns": [
+                {"data": "Movimiento"},
+                {"data": "Fecha"},
+                {"data": "Descripción"},
+                {"data": "Debe/Cargo"},
+                {"data": "Haber/Abono"},
+                {"data": "Saldo"}
+            ]
         });
     },
     show: function (tipo) {
