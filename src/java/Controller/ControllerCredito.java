@@ -69,10 +69,9 @@ public class ControllerCredito extends HttpServlet {
                 case "ConsultarDetalle": {
                     int idCredito = Integer.parseInt(request.getParameter("id"));
                     daoModelCredito = new ModelCredito();
-                    PreparedStatement ps = daoModelCredito.consultarDetalleCreditoByID(idCredito);
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
-                    response.getWriter().write(Utilidades.toDataTableJSON(Utilidades.toJson(ps)));
+                    response.getWriter().write(Utilidades.toDataTableJSON(daoModelCredito.consultarDetalleCreditoByID(idCredito)));
                     daoModelCredito.Signout();
                     break;
                 }

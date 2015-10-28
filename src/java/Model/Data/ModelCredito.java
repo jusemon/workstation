@@ -10,13 +10,19 @@ import Model.DTO.ObjDetalleMovimiento;
 import Model.DTO.ObjMovimiento;
 import Model.JDBC.ConnectionDB;
 import com.google.gson.Gson;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,6 +32,7 @@ import java.util.logging.Logger;
  */
 public class ModelCredito extends ConnectionDB {
 
+    private final static Gson gson = new Gson();
     private PreparedStatement pStmt;
 
     public ModelCredito() {
@@ -167,30 +174,53 @@ public class ModelCredito extends ConnectionDB {
         return rs;
     }
 
-    public PreparedStatement consultarDetalleCreditoByID(int idCredito) {
-        ResultSet rs = null, rs2 = null;
+    public String consultarDetalleCreditoByID(int idCredito) {
         String sql = "call spConsultarDetalleCreditoByIdCredito(?)";
         try {
             getStmt();
             pStmt = connection.prepareCall(sql);
             pStmt.setInt(1, idCredito);
             pStmt.execute();
-//            //Obtengo los debe
-//            rs = pStmt.getResultSet();
-//            while (rs.next()) {
-//
-//            }
-//
-//            //Obtengo los abonos
-//            if (pStmt.getMoreResults()) {
-//                rs2 = pStmt.getResultSet();
-//            }
+            List list = new ArrayList();
+            int saldoInicial = 50000;
+            do {
+                ResultSet rs = pStmt.getResultSet();
 
+                ResultSetMetaData meta = rs.getMetaData();
+                int cc = meta.getColumnCount();
+                while (rs.next()) {
+                    Map map = new LinkedHashMap<>();
+                    for (int i = 1; i <= cc; ++i) {
+                        Class<?> type = Class.forName(meta.getColumnClassName(i));
+                        map.put(meta.getColumnLabel(i), gson.toJsonTree(rs.getObject(i), type));                        
+                    }
+                    list.add(map);
+                }
+            } while (pStmt.getMoreResults());
+            Collections.sort(list, new Comparator<Map>(){
+                @Override
+                public int compare(Map o1, Map o2) {
+                    int uno = ((JsonPrimitive)o1.get("Movimiento")).getAsInt();
+                    int dos = ((JsonPrimitive)o2.get("Movimiento")).getAsInt();
+                    return  Integer.compare(uno, dos);
+                }
+            });
+            for (int i = 0; i < list.size(); i++) {
+                Map aux = (Map)list.get(i);
+                int debe = Integer.parseInt(aux.get("Debe/Cargo").toString());
+                int haber = Integer.parseInt(aux.get("Haber/Abono").toString());
+                saldoInicial = saldoInicial - debe + haber;
+                aux.replace("Saldo", saldoInicial);
+                list.set(i, aux);
+            }
+            return gson.toJson(list);
         } catch (SQLException e) {
             System.err.println("SQLException:" + e.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ModelCredito.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return pStmt;
+        return null;
     }
 
     public ResultSet buscarCreditoByDocumento(String documentoUsuario) {
