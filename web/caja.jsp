@@ -85,9 +85,9 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                         <li>
                             <a href="#creditos" role="tab" data-toggle="tab">Listado de Créditos</a>                            
                         </li>                            
-                        <!--li>
+                        <li>
                             <a href="#diario" role="tab" data-toggle="tab">Diario de caja</a>
-                        </li-->
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade in active" id="compra">
@@ -139,7 +139,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                 </tbody>
                             </table>
                         </div>
-                        <!--div class="tab-pane fade" id="diario">
+                        <div class="tab-pane fade" id="diario">
                             <table id="tblDiario" class="table table-hover tabla" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
@@ -163,7 +163,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                     </tr>
                                 </tbody>
                             </table>
-                        </div-->
+                        </div>
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade in" id="tabMovimientos" style="height: 100%">
