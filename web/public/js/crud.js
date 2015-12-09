@@ -2293,7 +2293,6 @@ if (typeof documentoUsuario !== 'undefined') {
 $('#miPopupDetalleSeminario').on('hidden.bs.modal', function () {
     tablaDetalleSeminario.destroy();
 });
-
 $('#miPopupCurso').on('hidden.bs.modal', function () {
     $(this).find('#obligatoriedad').text('');
 });

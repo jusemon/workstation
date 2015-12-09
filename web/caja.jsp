@@ -174,7 +174,7 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                     <label id='titulo'></label>
                                 </div>
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body">                                
                                 <form id="formMovimiento" method="POST">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -330,6 +330,9 @@ un par de paneles, uno para la gestión de Compras, otro para la gestion de Vent
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-offset-11 col-md-1"><a id="btnVolver" role="tab" data-toggle="tab" href="javascript:void(0)" data-target="#tabListas" class="btn"><span class="glyphicon glyphicon-arrow-left"><b> Atras</b></span></a></div>
                                     </div>
                                 </form>
                             </div>
