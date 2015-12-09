@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-09-2015 a las 07:57:10
+-- Tiempo de generación: 09-12-2015 a las 04:34:05
 -- Versión del servidor: 5.6.21
 -- Versión de PHP: 5.6.3
 
@@ -1624,7 +1624,7 @@ CREATE TABLE IF NOT EXISTS `tblarticulo` (
 --
 
 INSERT INTO `tblarticulo` (`idArticulo`, `idCategoriaArticulo`, `descripcionArticulo`, `cantidadDisponible`, `precioCompra`, `precioVenta`) VALUES
-(1, 2, 'Pincel delgado', 36, 1200, 1500);
+(1, 2, 'Pincel delgado', 35, 1200, 1500);
 
 -- --------------------------------------------------------
 
@@ -1718,7 +1718,7 @@ CREATE TABLE IF NOT EXISTS `tblcredito` (
 --
 
 INSERT INTO `tblcredito` (`idCredito`, `documentoUsuario`, `fechaInicio`, `saldoInicial`, `saldoActual`, `estadoCredito`) VALUES
-(1, 'CC32165498', '2015-09-07 20:53:14', 50000, 28000, 1);
+(1, 'CC32165498', '2015-09-07 20:53:14', 50000, 48500, 1);
 
 -- --------------------------------------------------------
 
@@ -1757,7 +1757,7 @@ CREATE TABLE IF NOT EXISTS `tbldetallecredito` (
 `idDetalleCredito` int(11) NOT NULL,
   `idCredito` int(11) NOT NULL,
   `idMovimiento` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `tbldetallecredito`
@@ -1767,7 +1767,8 @@ INSERT INTO `tbldetallecredito` (`idDetalleCredito`, `idCredito`, `idMovimiento`
 (1, 1, 3),
 (2, 1, 4),
 (3, 1, 5),
-(4, 1, 7);
+(4, 1, 7),
+(5, 1, 8);
 
 -- --------------------------------------------------------
 
@@ -1784,7 +1785,7 @@ CREATE TABLE IF NOT EXISTS `tbldetallemovimiento` (
   `totalDetalleMovimiento` int(11) NOT NULL,
   `idMovimiento` int(11) NOT NULL,
   `precioArticulo` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tbldetallemovimiento`
@@ -1796,7 +1797,8 @@ INSERT INTO `tbldetallemovimiento` (`idDetalleMovimiento`, `idArticulo`, `idClas
 (3, 1, NULL, 2, 1, 3000, 3, 1500),
 (4, NULL, 4, 1, 0, 12000, 4, 12000),
 (5, NULL, 5, 1, 0, 12000, 5, 12000),
-(6, 1, NULL, 10, 1, 15000, 7, 1500);
+(6, 1, NULL, 10, 1, 15000, 7, 1500),
+(7, 1, NULL, 1, 1, 1500, 8, 1500);
 
 -- --------------------------------------------------------
 
@@ -1922,7 +1924,7 @@ CREATE TABLE IF NOT EXISTS `tblmovimiento` (
   `numeroAuxiliar` varchar(45) DEFAULT NULL,
   `nombreAuxiliar` varchar(45) DEFAULT NULL,
   `documentoAuxiliar` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblmovimiento`
@@ -1935,7 +1937,11 @@ INSERT INTO `tblmovimiento` (`idMovimiento`, `fechaMovimiento`, `totalMovimiento
 (4, '2015-09-07 21:02:47', 12000, 4, 'CC1017225673', NULL, 'Maria Eugenia Restrepo Velez', 'CC32165498'),
 (5, '2015-09-07 21:02:59', 12000, 4, 'CC1017225673', NULL, 'Maria Eugenia Restrepo Velez', 'CC32165498'),
 (6, '2015-09-07 21:08:11', 20000, 5, 'CC1017225673', '1', 'Maria Eugenia Restrepo Velez', 'CC32165498'),
-(7, '2015-09-07 22:47:13', 15000, 4, 'CC1017225673', NULL, 'Maria Eugenia Restrepo Velez', 'CC32165498');
+(7, '2015-09-07 22:47:13', 15000, 4, 'CC1017225673', NULL, 'Maria Eugenia Restrepo Velez', 'CC32165498'),
+(8, '2015-10-27 20:16:32', 1500, 4, 'CC1017225673', NULL, 'Maria Eugenia Restrepo Velez', 'CC32165498'),
+(9, '2015-10-27 20:17:31', 20000, 5, 'CC1017225673', '1', 'Maria Eugenia Restrepo Velez', 'CC32165498'),
+(10, '2015-10-27 20:26:13', 1000, 5, 'CC1017225673', '1', 'Maria Eugenia Restrepo Velez', 'CC32165498'),
+(11, '2015-10-27 20:26:27', 1000, 5, 'CC1017225673', '1', 'Maria Eugenia Restrepo Velez', 'CC32165498');
 
 -- --------------------------------------------------------
 
@@ -2200,12 +2206,12 @@ MODIFY `idCurso` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- AUTO_INCREMENT de la tabla `tbldetallecredito`
 --
 ALTER TABLE `tbldetallecredito`
-MODIFY `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `idDetalleCredito` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `tbldetallemovimiento`
 --
 ALTER TABLE `tbldetallemovimiento`
-MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+MODIFY `idDetalleMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `tbldetalleusuario`
 --
@@ -2225,7 +2231,7 @@ MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 -- AUTO_INCREMENT de la tabla `tblmovimiento`
 --
 ALTER TABLE `tblmovimiento`
-MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+MODIFY `idMovimiento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT de la tabla `tblpreinscripcion`
 --
