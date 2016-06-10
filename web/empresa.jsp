@@ -24,7 +24,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input class="btn btn-default btn-block" type="button" value="Registrar empresa" onclick="empresa.registrar()">
+                                    <input class="btn btn-default btn-block" type="button" value="Registrar empresa" tittle="click para registrar" onclick="empresa.registrar()">
                                 </div>
                             </div>
                         </div>

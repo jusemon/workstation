@@ -210,7 +210,7 @@ public class ModelCredito extends ConnectionDB {
                 int debe = Integer.parseInt(aux.get("Debe/Cargo").toString());
                 int haber = Integer.parseInt(aux.get("Haber/Abono").toString());
                 saldoInicial = saldoInicial - debe + haber;
-                aux.replace("Saldo", saldoInicial);
+                aux.put("Saldo", saldoInicial);
                 list.set(i, aux);
             }
             return gson.toJson(list);
